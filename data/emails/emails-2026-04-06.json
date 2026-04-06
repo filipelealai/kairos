@@ -1,0 +1,47 @@
+[
+  {
+    "row_number": 1350,
+    "cnpj": "54186206000187",
+    "email": "ortecgv@terra.com.br",
+    "nome": "Laser Rosa",
+    "email_suspeito": true,
+    "assunto": "Quantas clientes não voltaram depois da primeira sessão?",
+    "corpo": "<p>Provavelmente mais do que você lembra. Na estética, o primeiro atendimento é fácil de fechar. O difícil é a segunda, terceira, quarta sessão — que é onde está o dinheiro real.</p><p>A maioria das clínicas perde esse retorno não por qualidade do serviço, mas porque ninguém foi atrás da cliente depois que ela saiu. Um lembrete no momento certo, pelo WhatsApp, com o link pra remarcar, resolve boa parte disso.</p><p>Se quiser conversar sobre como isso funciona na prática, me responde esse e-mail.</p>"
+  },
+  {
+    "row_number": 1351,
+    "cnpj": "54184083000145",
+    "email": "giljr3@hotmail.com",
+    "nome": "Old Classic",
+    "email_suspeito": false,
+    "assunto": "O horário fantasma de todo fim de semana",
+    "corpo": "<p>Todo sábado tem um. O cara marcou pras 10h, aparece às 10h45 ou simplesmente não vem. Enquanto isso, outro cliente ficou esperando ou desistiu na porta.</p><p>Com R$50k de capital e o porte que a Old Classic tem, faz sentido resolver isso com confirmação automática no dia anterior. Quem não confirma, perde o horário. Quem confirma, o sistema já avisa que está no aguardo. Sem você ter que ligar pra ninguém.</p><p>Vale uma conversa?</p>"
+  },
+  {
+    "row_number": 1352,
+    "cnpj": "54180538000154",
+    "email": "financeiro@morellicont.com.br",
+    "nome": "VW Beauty Studio",
+    "email_suspeito": true,
+    "assunto": "Contato sobre o VW Beauty Studio",
+    "corpo": "<p>Meu nome é Filipe. Trabalho com automação de agendamento para salões de beleza em São Paulo e entrei em contato com o VW Beauty Studio por esse canal.</p><p>Se você puder repassar para o responsável pelo negócio, fico agradecido. O assunto é um sistema de agendamento pelo WhatsApp que funciona sem atendente e que tenho implantado em salões com perfil parecido.</p>"
+  },
+  {
+    "row_number": 1353,
+    "cnpj": "54176064000177",
+    "email": "cassik88@hotmail.com",
+    "nome": "Seraphine Beauty",
+    "email_suspeito": false,
+    "assunto": "Salão premium com atendimento de WhatsApp comum",
+    "corpo": "<p>Um salão com o nome Seraphine e o posicionamento que você claramente tem merecia um primeiro contato com clientes à altura disso. Mas o que acontece na prática é que a maioria dos salões responde orçamento pelo WhatsApp pessoal, com demora, sem padrão.</p><p>A cliente que pesquisa um lugar assim está comparando com outros dois ou três. A que recebe resposta rápida, com informação certa e link para agendar, fecha na hora. As outras ficam esperando.</p><p>Me fala se faz sentido trocar uma ideia sobre isso.</p>"
+  },
+  {
+    "row_number": 1354,
+    "cnpj": "54175514000107",
+    "email": "joao@mpconsult.com.br",
+    "nome": "Barbiero Clube",
+    "email_suspeito": true,
+    "assunto": "Contato sobre o Barbiero Clube",
+    "corpo": "<p>Meu nome é Filipe. Vi o Barbiero Clube nos registros e queria chegar até o responsável pelo negócio.</p><p>Trabalho com automação de agendamento pelo WhatsApp para barbearias em São Paulo. Se você puder repassar ou indicar o contato certo, fico grato.</p>"
+  }
+]
