@@ -1,0 +1,22 @@
+{
+  "name": "kairos",
+  "version": "0.1.0",
+  "description": "Kairos — agente pessoal poderoso de automação, análise e gestão de tarefas",
+  "type": "module",
+  "scripts": {
+    "agent": "tsx",
+    "build": "tsc"
+  },
+  "keywords": [],
+  "author": "filipelealweb",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.82.0",
+    "dotenv": "^17.4.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.2",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
+  }
+}
