@@ -3,3 +3,5 @@ dist/
 .env
 data/cache/
 *.log
+/.env
+.mcp.json
