@@ -6,7 +6,7 @@
  * Útil para expandir a cobertura antes de uma rodada de envio.
  *
  * Uso: npx tsx src/agents/niche-classifier.ts
- * Saída: data/reports/niche-map-YYYY-MM-DD.json
+ * Saída: data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json
  */
 
 import "dotenv/config";
@@ -166,9 +166,9 @@ async function main() {
   };
 
   const dateStr = new Date().toISOString().slice(0, 10);
-  const dir = join(process.cwd(), "data", "reports");
+  const dir = join(process.cwd(), "data", "outputs", "cold-prospecting", "reports");
   mkdirSync(dir, { recursive: true });
-  const outPath = join(dir, `niche-map-${dateStr}.json`);
+  const outPath = join(dir, `niche-classifier_niche-map-${dateStr}.json`);
   writeFileSync(outPath, JSON.stringify(output, null, 2), "utf-8");
 
   // Resumo

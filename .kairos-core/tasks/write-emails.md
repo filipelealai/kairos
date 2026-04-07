@@ -9,8 +9,8 @@ Entrada: |
   - webhook_url: URL do webhook n8n (ENV N8N_LEADS_URL)
   - filtro: Pode disparar = SIM AND Status do Envio IN ("", "NÃO ENVIADO") AND Email não vazio
 Saida: |
-  - emails_file: data/emails/emails-YYYY-MM-DD.json (apenas no modo *write)
-  - handoff: .kairos/handoffs/handoff-email-writer-to-campaign-analyst-{ts}.yaml (apenas no modo *write)
+  - emails_file: data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json (apenas no modo *write)
+  - handoff: .kairos-core/runtime/handoffs/handoff-email-writer-to-campaign-analyst-{ts}.yaml (apenas no modo *write)
 Checklist:
   - "[ ] Buscar leads via webhook e filtrar pendentes"
   - "[ ] Detectar e marcar emails suspeitos (domínio sem relação com a empresa)"
@@ -119,7 +119,7 @@ Para cada lead válido, escreva um e-mail seguindo estes princípios:
 
 ### Passo 5 — Salvar e exibir
 
-**Modo *write:** salve em `data/emails/emails-YYYY-MM-DD.json`
+**Modo *write:** salve em `data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json`
 **Modo *preview:** não salve — apenas exiba
 
 **Exibição do preview:**
@@ -136,12 +136,12 @@ Texto do corpo sem tags HTML...
 ```
 ✓ X e-mails gerados
 ⚠ Y e-mails suspeitos
-Salvo em: data/emails/emails-YYYY-MM-DD.json
+Salvo em: data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json
 ```
 
 ### Passo 6 — Gerar handoff (modo *write)
 
-Salve em `.kairos/handoffs/handoff-email-writer-to-campaign-analyst-{timestamp}.yaml`:
+Salve em `.kairos-core/runtime/handoffs/handoff-email-writer-to-campaign-analyst-{timestamp}.yaml`:
 
 ```yaml
 handoff:
@@ -151,7 +151,7 @@ handoff:
   timestamp: "{ISO timestamp}"
   consumed: false
   context:
-    emails_file: "data/emails/emails-YYYY-MM-DD.json"
+    emails_file: "data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json"
     total_gerados: N
     total_suspeitos: N
   next_action: "Analisar métricas após o disparo com *analyze"

@@ -27,9 +27,10 @@ framework:
   scopeFile: docs/scope.md
 
 runtime:
-  handoffsLocation: .kairos/handoffs/
-  reportsLocation: data/reports/
-  emailsLocation: data/emails/
+  handoffsLocation: .kairos-core/runtime/handoffs/
+  outputsLocation: data/outputs/
+  reportsLocation: data/outputs/cold-prospecting/reports/
+  emailsLocation: data/outputs/cold-prospecting/emails/
 
 versioning:
   scheme: semver

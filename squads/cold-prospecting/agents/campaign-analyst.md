@@ -11,7 +11,7 @@ commands_key:
   - "*trend"   — Comparar com relatório anterior
 
 outputs:
-  - "data/reports/campaign-YYYY-MM-DD.md"
+  - "data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md"
 
 handoff_to: lead-scorer
 ---

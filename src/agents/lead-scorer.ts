@@ -5,7 +5,7 @@
  * para gerar uma lista priorizada de quem contatar primeiro.
  *
  * Uso: npx tsx src/agents/lead-scorer.ts
- * Saída: data/reports/scored-leads-YYYY-MM-DD.csv
+ * Saída: data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv
  */
 
 import "dotenv/config";
@@ -145,9 +145,9 @@ async function main() {
   const csv = [header, ...rows].join("\n");
 
   const dateStr = new Date().toISOString().slice(0, 10);
-  const dir = join(process.cwd(), "data", "reports");
+  const dir = join(process.cwd(), "data", "outputs", "cold-prospecting", "reports");
   mkdirSync(dir, { recursive: true });
-  const outPath = join(dir, `scored-leads-${dateStr}.csv`);
+  const outPath = join(dir, `lead-scorer_scored-leads-${dateStr}.csv`);
   writeFileSync(outPath, csv, "utf-8");
 
   // Resumo no terminal

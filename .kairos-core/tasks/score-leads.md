@@ -8,8 +8,8 @@ Entrada: |
   - webhook_url: URL do webhook n8n (ENV N8N_LEADS_URL)
   - filtro: Pode disparar = SIM AND Status do Envio IN ("", "NÃO ENVIADO")
 Saida: |
-  - csv_file: data/reports/scored-leads-YYYY-MM-DD.csv
-  - handoff: .kairos/handoffs/handoff-lead-scorer-to-niche-classifier-{ts}.yaml
+  - csv_file: data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv
+  - handoff: .kairos-core/runtime/handoffs/handoff-lead-scorer-to-niche-classifier-{ts}.yaml
 Checklist:
   - "[ ] Executar npx tsx src/agents/lead-scorer.ts"
   - "[ ] Verificar que o CSV foi gerado"
@@ -39,7 +39,7 @@ npx tsx src/agents/lead-scorer.ts
 O agente:
 - Busca leads com `Pode disparar = SIM` e `Status do Envio` vazio ou `NÃO ENVIADO`
 - Aplica scoring multidimensional (nicho, capital social, cidade, situação)
-- Salva CSV ranqueado em `data/reports/scored-leads-YYYY-MM-DD.csv`
+- Salva CSV ranqueado em `data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv`
 
 ### Passo 2 — Ler o CSV e exibir análise
 
@@ -62,7 +62,7 @@ Leia as primeiras linhas do CSV gerado e apresente:
 
 ### Passo 3 — Gerar handoff
 
-Salve em `.kairos/handoffs/handoff-lead-scorer-to-niche-classifier-{timestamp}.yaml`:
+Salve em `.kairos-core/runtime/handoffs/handoff-lead-scorer-to-niche-classifier-{timestamp}.yaml`:
 
 ```yaml
 handoff:
@@ -72,7 +72,7 @@ handoff:
   timestamp: "{ISO timestamp}"
   consumed: false
   context:
-    csv_file: "data/reports/scored-leads-YYYY-MM-DD.csv"
+    csv_file: "data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv"
     total_pontuados: N
     tier_a_count: N
     top_nicho: "{nicho dominante}"

@@ -3,7 +3,7 @@
 ## Active Patterns
 
 ### Dados e Saída
-- Niche map: `data/reports/niche-map-YYYY-MM-DD.json`
+- Niche map: `data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json`
 - Script TypeScript: `src/agents/niche-classifier.ts`
 - Usa Claude API em lotes de 30 atividades por chamada
 

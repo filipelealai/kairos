@@ -11,7 +11,7 @@ commands_key:
   - "*recommend"  — Ver recomendações de keywords para o n8n
 
 outputs:
-  - "data/reports/niche-map-YYYY-MM-DD.json"
+  - "data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json"
 
 handoff_from: lead-scorer
 handoff_to: email-writer

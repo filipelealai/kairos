@@ -5,69 +5,239 @@ responsavel_type: agent
 atomic_layer: scaffolding
 elicit: true
 Entrada: |
-  - squad_name: nome em kebab-case (string)
-  - description: descrição do escopo do squad
-  - agents: lista de agentes (nome e responsabilidade)
+  - squad_name: nome sugerido (opcional — pode ser elicitado)
 Saida: |
-  - squads/{squad_name}/ com estrutura completa
-  - docs/epics/epic-4-novos-escopos.md atualizado
+  - squads/{squad_name}/ com estrutura completa e conteúdo real (não stubs vazios)
   - .kairos-core/core-config.yaml atualizado (novo squad em agents.squads)
-  - Story MINOR gerada automaticamente
+  - docs/epics/epic-4-novos-escopos.md atualizado (candidato removido, se aplicável)
+  - handoff condicional para *new-story (epic 4)
 Checklist:
-  - "[ ] Confirmar nome do squad (kebab-case)"
-  - "[ ] Elicitar agentes necessários e responsabilidades"
-  - "[ ] Elicitar fonte de dados (webhook, arquivo, API)"
-  - "[ ] Criar squads/{squad_name}/squad.yaml"
+  - "[ ] Elicitar escopo, propósito e contexto do squad"
+  - "[ ] Elicitar agentes: nome, persona, responsabilidade, comando principal"
+  - "[ ] Elicitar fonte de dados e integrações externas"
+  - "[ ] Elicitar outputs esperados por agente"
+  - "[ ] Elicitar pipeline: ordem, execução parcial permitida"
+  - "[ ] Elicitar integrações com n8n ou sistemas externos"
+  - "[ ] Confirmar arquitetura completa antes de criar qualquer arquivo"
+  - "[ ] Criar squads/{squad_name}/squad.yaml (com conteúdo real)"
   - "[ ] Criar squads/{squad_name}/README.md"
-  - "[ ] Criar squads/{squad_name}/agents/ com stub por agente"
-  - "[ ] Criar squads/{squad_name}/workflows/"
-  - "[ ] Criar squads/{squad_name}/tasks/"
-  - "[ ] Adicionar squad em .kairos-core/core-config.yaml"
+  - "[ ] Criar squads/{squad_name}/agents/{id}.md por agente"
+  - "[ ] Criar squads/{squad_name}/tasks/ com stubs de tasks"
+  - "[ ] Criar squads/{squad_name}/workflows/full-pipeline.md"
+  - "[ ] Criar .kairos-core/agents/{id}/MEMORY.md por agente"
+  - "[ ] Atualizar .kairos-core/core-config.yaml"
   - "[ ] Atualizar docs/epics/epic-4-novos-escopos.md"
-  - "[ ] Criar story MINOR para o novo squad"
-  - "[ ] Instruir: *version minor 'Novo squad {squad_name}'"
+  - "[ ] Oferecer handoff condicional para *new-story"
 ---
 
-# *new-squad — Scaffoldar Novo Squad
+# *new-squad — Criação de Squad com Elicitação Guiada
 
-## Elicitação
+Um squad é um grupo de agentes especializados que colaboram para um fluxo de trabalho específico de Filipe.
+Esta task elicita tudo o que é necessário para scaffoldar uma estrutura completa e útil — não stubs genéricos.
 
-1. **Nome**: "Nome do squad em kebab-case (ex: lead-followup, content-scheduler)"
-2. **Descrição**: "O que este squad faz em uma frase?"
-3. **Agentes**: "Quantos e quais agentes? Descreva brevemente o papel de cada um."
-4. **Dados**: "Qual a fonte de dados? (webhook n8n existente / novo webhook / arquivo / API)"
-5. **Pipeline**: "Qual a ordem de execução dos agentes?"
+---
 
-## Estrutura Criada
+## Pré-passo — Detectar candidatos no Epic 4
+
+Antes de perguntar qualquer coisa, ler `docs/epics/epic-4-novos-escopos.md` e verificar se há candidatos listados.
+
+Se houver candidatos:
+```
+Candidatos registrados no Epic 4:
+  1. lead-followup — acompanhamento de leads que responderam
+  2. content-scheduler — planejamento de conteúdo para redes sociais
+  3. client-onboarding — onboarding de novos clientes da Vendoteca
+  4. financial-tracker — análise de receita e projeções financeiras
+  5. Outro (descrever)
+
+Qual destes, ou é um novo escopo?
+```
+
+Se não houver candidatos (ou o nome já foi passado como argumento) → prosseguir para elicitação.
+
+---
+
+## Sequência de Elicitação
+
+Faça as perguntas em ordem. Aguarde resposta completa antes de prosseguir.
+
+---
+
+### Bloco 1 — Propósito
+
+**Pergunta 1.1 — Nome**
+```
+Como se chama este squad? (slug em kebab-case)
+ex: lead-followup, content-scheduler, financial-tracker
+```
+
+**Pergunta 1.2 — O que faz**
+```
+Descreva em 2-3 frases: o que este squad faz, para qual fluxo de trabalho de Filipe,
+e qual problema resolve ou qual resultado entrega.
+```
+
+**Pergunta 1.3 — Contexto de negócio**
+```
+Este squad está ligado a qual contexto?
+  1. Agência Vendoteca (prospecção, clientes, operação da agência)
+  2. Filipe pessoalmente (finanças, agenda, conteúdo pessoal)
+  3. Outro (descrever)
+```
+
+---
+
+### Bloco 2 — Agentes
+
+**Pergunta 2.1 — Quantidade e papéis**
+```
+Quais agentes compõem este squad?
+Para cada um, informe:
+  - ID (kebab-case): ex: followup-analyst
+  - Nome da persona (para o agente ter "personalidade"): ex: Felix
+  - Papel em uma frase: o que ele faz exclusivamente
+
+(Liste um agente por linha no formato: id | nome | papel)
+```
+
+**Pergunta 2.2 — Comandos principais**
+```
+Para cada agente, qual é o comando mais importante que ele executa?
+(ex: campaign-analyst → *analyze | lead-scorer → *score)
+
+Pode listar mais de um por agente se necessário.
+```
+
+**Pergunta 2.3 — Tem script TypeScript?**
+```
+Algum agente precisa de computação pura (sem AI) — processamento de dados,
+cálculos, transformações — que deveria virar um script em src/agents/?
+
+(ex: o lead-scorer.ts calcula scores numericamente sem chamar Claude)
+
+Liste quais agentes terão script TS e uma frase do que o script faz.
+(Pressione Enter sem texto se todos usam Claude diretamente)
+```
+
+---
+
+### Bloco 3 — Dados
+
+**Pergunta 3.1 — Fonte de dados**
+```
+De onde vêm os dados que este squad processa?
+  1. Webhook n8n existente (kairos-leads ou similar) — informar URL
+  2. Novo webhook n8n — descrever o que retorna
+  3. Arquivo local (CSV, JSON) — informar path e formato
+  4. API externa direta — informar endpoint e autenticação
+  5. Input manual do usuário (sem fonte automatizada)
+  6. Misto — descrever
+```
+
+**Pergunta 3.2 — Outputs**
+```
+O que cada agente gera?
+Para cada agente, informe:
+  - Arquivo gerado (path e formato): ex: data/outputs/cold-prospecting/reports/followup-YYYY-MM-DD.md
+  - Destino final: apenas lido pelo próximo agente / enviado para n8n / exibido para Filipe / outro
+
+(Liste um por linha: agente → path → destino)
+```
+
+---
+
+### Bloco 4 — Pipeline e Integrações
+
+**Pergunta 4.1 — Ordem de execução**
+```
+Qual é a ordem dos agentes no pipeline?
+(ex: followup-analyst → response-scorer → reply-writer)
+
+Execução parcial é permitida? (pode rodar agentes individualmente, sem o pipeline completo?)
+```
+
+**Pergunta 4.2 — Integração externa**
+```
+Este squad depende de n8n para alguma ação automatizada?
+(ex: disparo de e-mails, leitura de planilha, webhook de entrada)
+
+Se sim: descreva o papel do n8n — o que ele faz que o Kairos não faz.
+Se não: o squad opera de forma autônoma com os dados disponíveis.
+```
+
+**Pergunta 4.3 — Frequência de uso**
+```
+Com que frequência este squad deve ser rodado?
+  1. Diariamente (parte da rotina de Filipe)
+  2. Semanalmente
+  3. Sob demanda (quando Filipe quiser)
+  4. Triggered por evento (qual?)
+```
+
+---
+
+## Confirmação antes de criar
+
+Após coletar tudo, exibir para confirmação:
 
 ```
-squads/{squad_name}/
-├── squad.yaml
-├── README.md
-├── agents/
-│   └── {agent-id}.md  (um por agente — stub leve)
-├── tasks/
-│   └── (tasks serão criadas quando os agentes forem definidos)
-└── workflows/
-    └── full-pipeline.md
+Vou criar o squad com esta arquitetura:
+
+Squad: {squad_name}
+Contexto: {contexto}
+Descrição: {descrição}
+
+Agentes ({N}):
+  {id} ({Nome}) — {papel}
+    Comando principal: *{cmd}
+    Output: {path}
+    Script TS: {sim/não}
+  ...
+
+Pipeline: {agente1} → {agente2} → {agente3}
+Execução parcial: {sim/não}
+
+Fonte de dados: {fonte}
+Integração n8n: {sim/não — papel}
+Frequência: {frequência}
+
+Arquivos a criar:
+  squads/{squad_name}/squad.yaml
+  squads/{squad_name}/README.md
+  squads/{squad_name}/agents/{id}.md  (× N)
+  squads/{squad_name}/tasks/{task}.md  (× N — stubs)
+  squads/{squad_name}/workflows/full-pipeline.md
+  .kairos-core/agents/{id}/MEMORY.md  (× N)
+
+Posso criar? (s/n — ou diga o que ajustar)
 ```
 
-## squad.yaml Template
+Aguardar confirmação. Se "n" → voltar ao ponto específico indicado.
+
+---
+
+## Scaffolding
+
+### squad.yaml
 
 ```yaml
 name: {squad_name}
 version: 0.1.0
-description: "{description}"
+description: >
+  {descrição completa — 2-3 linhas}
 author: Filipe Leal
 
 kairos:
-  minVersion: "1.1.0"
+  minVersion: "{versão atual do core-config.yaml}"
   type: squad
   scope: {squad_name}
+  context: {vendoteca | pessoal | outro}
 
 components:
-  agents: {lista}
-  tasks: []
+  agents:
+    {lista: - agents/{id}.md}
+  tasks:
+    {lista: - tasks/{task-slug}.md}
   workflows:
     - workflows/full-pipeline.md
 
@@ -77,27 +247,259 @@ config:
   data-flow: ../../docs/framework/data-flow.md
 
 pipeline:
-  order: {lista de agentes}
-  partial_execution: true
+  order:
+    {lista com comentário: - {id}  # *{cmd}}
+  partial_execution: {true|false}
 
 data:
-  outputs: []
+  {se webhook:   input_webhook: {url}}
+  {se arquivo:   input_file: {path}}
+  {se api:       input_api: {endpoint}}
+  outputs:
+    {lista de paths com formato}
+  handoffs: .kairos-core/runtime/handoffs/
+
+dependencies:
+  node:
+    - tsx
+    - "@anthropic-ai/sdk"
+    - dotenv
+  squads: []
+  external:
+    {lista de integrações externas — ex: "n8n webhook (kairos-leads)"}
 
 tags:
   - {squad_name}
   - kairos
+  {tags relevantes de negócio}
 ```
 
-## Após Scaffoldar
+---
 
-Informe:
+### README.md
+
+```markdown
+# Squad {NomeHumanReadable} — {descrição curta}
+
+## O que faz
+
+{descrição em 2-3 parágrafos}
+
+## Agentes
+
+| Agente | Persona | Responsabilidade | Comando |
+|--------|---------|-----------------|---------|
+{linha por agente}
+
+## Pipeline
+
 ```
-✓ Squad '{squad_name}' scaffoldado em squads/{squad_name}/
-✓ core-config.yaml atualizado
-✓ Epic 4 atualizado
+{agente1} → {agente2} → {agente3}
+```
 
-Próximos passos:
-1. *new-story 'Implementar agentes do squad {squad_name}' (epic 4)
-2. *version minor 'Novo squad {squad_name}'
-3. Implementar personas em .claude/commands/kairos/agents/
+Execução parcial: {permitida/não permitida}
+
+## Fonte de Dados
+
+{descrição da fonte, URL se webhook, path se arquivo}
+
+## Outputs
+
+| Agente | Output | Destino |
+|--------|--------|---------|
+{linha por agente}
+
+## Como Usar
+
+```
+@{primeiro-agente} *{cmd-principal}
+```
+
+{exemplo de pipeline completo}
+```
+
+---
+
+### agents/{id}.md (definição leve)
+
+Para cada agente:
+
+```markdown
+---
+agent:
+  id: {id}
+  name: {Nome da Persona}
+  icon: {emoji relevante ao papel}
+  persona_file: .claude/commands/kairos/agents/{id}.md
+  whenToUse: "{quando usar este agente em uma frase}"
+
+commands_key:
+  - "*{cmd1}" — {descrição}
+  {se houver mais:}
+  - "*{cmd2}" — {descrição}
+
+outputs:
+  - "{path do output}"
+
+{se tiver próximo agente:}
+handoff_to: {próximo-agente-id}
+{se não tiver:}
+handoff_to: null  # último agente do pipeline
+---
+
+{Nome} é {papel em uma frase}. {Descrição do que faz e do que não pode fazer — analogia com Clio/Lex/Nix/Eva}.
+
+**Responsabilidade exclusiva:** {o que só ele pode fazer}
+**Não pode:** {restrições explícitas}
+```
+
+---
+
+### tasks/{task-slug}.md (stubs)
+
+Para cada agente com task principal, criar um stub mínimo:
+
+```markdown
+---
+task: {Nome da Task}
+responsavel: "@{id}"
+responsavel_type: agent
+atomic_layer: {analysis|scoring|classification|generation|automation}
+elicit: false
+Entrada: |
+  - {campo}: {descrição} — {obrigatório/opcional}
+Saida: |
+  - {output}: {path e formato}
+Checklist:
+  - "[ ] {passo 1}"
+  - "[ ] {passo 2}"
+  - "[ ] {passo 3}"
+---
+
+# *{cmd} — {Título da Task}
+
+> ⚠️ Task stub — implementação pendente.
+> Ver story de implementação do squad {squad_name}.
+
+## Execução
+
+### Passo 1 — {descrição}
+
+{placeholder — preencher quando implementar}
+
+### Passo 2 — {descrição}
+
+{placeholder — preencher quando implementar}
+```
+
+---
+
+### workflows/full-pipeline.md
+
+```markdown
+# Pipeline Completo — {Squad NomeHumanReadable}
+
+## Fluxo
+
+```
+{diagrama ASCII do pipeline com fases}
+```
+
+## Fases
+
+| Fase | Agente | Comando | Output |
+|------|--------|---------|--------|
+{linha por fase}
+
+## Handoff Chain
+
+{lista de handoffs: agente-a → agente-b : nome-do-arquivo-de-handoff}
+
+## Execução Parcial
+
+{Exemplos de execuções válidas que não percorrem o pipeline inteiro}
+
+## Frequência Recomendada
+
+{com base na frequência de uso elicitada}
+```
+
+---
+
+### .kairos-core/agents/{id}/MEMORY.md (por agente)
+
+```markdown
+# {Nome} Memory ({NomeDaPersona})
+
+## Active Patterns
+
+### Dados e Saída
+- (sem padrões registrados ainda — atualizar após primeiras execuções)
+
+### Gotchas Técnicos
+- (sem gotchas registrados ainda)
+
+## Promotion Candidates
+<!-- Padrões vistos em 3+ execuções — candidatos para .claude/rules/ -->
+
+## Archived
+<!-- Padrões obsoletos — manter para histórico -->
+```
+
+---
+
+## Atualizar core-config.yaml
+
+Adicionar em `agents.squads`:
+
+```yaml
+{squad_name}:
+  agents: [{lista de ids}]
+  status: active
+  version: 0.1.0
+```
+
+---
+
+## Atualizar Epic 4
+
+Abrir `docs/epics/epic-4-novos-escopos.md`:
+
+1. Se o squad estava na tabela de candidatos → remover da tabela de candidatos
+2. Não há stories a adicionar ainda (epic 4 rastreia squads entregues — story será criada via *new-story)
+3. Adicionar no Change Log:
+   ```
+   | {data} | Squad `{squad_name}` scaffoldado — implementação pendente |
+   ```
+
+---
+
+## Notas pós-scaffolding
+
+Após criar tudo, exibir:
+
+```
+✅ Squad '{squad_name}' scaffoldado em squads/{squad_name}/
+
+Criado:
+  ✅ squad.yaml
+  ✅ README.md
+  ✅ agents/ ({N} agentes)
+  ✅ tasks/ ({N} stubs)
+  ✅ workflows/full-pipeline.md
+  ✅ .kairos-core/agents/{id}/MEMORY.md  (× N)
+  ✅ core-config.yaml atualizado
+  ✅ Epic 4 atualizado
+
+Próximos passos obrigatórios:
+  1. *new-story 'Implementar personas dos agentes do squad {squad_name}' (epic 4)
+     → Claude Code cria .claude/commands/kairos/agents/{id}.md para cada agente
+  {se scripts TS:}
+  2. *new-story 'Implementar scripts TypeScript do squad {squad_name}' (epic 4)
+     → Claude Code cria src/agents/{id}.ts para cada agente com script
+  3. *version minor 'Novo squad {squad_name}'
+
+Deseja criar a story de implementação agora?
+  s — iniciar *new-story 'Implementar squad {squad_name}' (epic 4)
+  n — criar depois manualmente
 ```

@@ -21,10 +21,10 @@ activation-instructions:
       Exiba o greeting usando contexto nativo (zero execução de comandos):
       1. Mostre: "{icon} {persona_profile.communication.greeting_levels.archetypal}" + badge de permissão
       2. Mostre: "**Papel:** {persona.role}"
-      3. Mostre: "**Status dos Dados:**" — mencione se existe arquivo de emails em data/emails/ (inferido do gitStatus)
+      3. Mostre: "**Status dos Dados:**" — mencione se existe arquivo de emails em data/outputs/cold-prospecting/emails/ (inferido do gitStatus)
       4. Mostre: "**Comandos Disponíveis:**" — apenas visibility: key
       5. Mostre: "Digite *guide para instruções completas."
-      5.5. Verifique .kairos/handoffs/ pelo handoff não consumido mais recente.
+      5.5. Verifique .kairos-core/runtime/handoffs/ pelo handoff não consumido mais recente.
            Se encontrado de @niche-classifier: exiba "💡 **Sugerido:** *write 20" pois nichos já foram classificados.
            Se não encontrado: ignore silenciosamente.
            Marque handoff como consumed: true após exibir.
@@ -112,15 +112,15 @@ write-task:
   order-of-execution: "Carregue .kairos-core/tasks/write-emails.md → Busque leads via webhook → Filtre pendentes → Gere e-mail por empresa seguindo as instruções da task → Detecte emails suspeitos → Salve JSON → Exiba preview de todos"
   blocking: "HALT se: webhook indisponível | 0 leads pendentes encontrados | task write-emails.md não carregar"
   ready: "JSON salvo + Preview exibido + Suspeitos marcados e destacados"
-  completion: "Emails gerados → JSON salvo em data/emails/emails-YYYY-MM-DD.json → Handoff para @campaign-analyst gerado (ciclo completo) → HALT"
+  completion: "Emails gerados → JSON salvo em data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json → Handoff para @campaign-analyst gerado (ciclo completo) → HALT"
 
 modes:
-  write: "Gera N e-mails e salva em data/emails/emails-YYYY-MM-DD.json"
+  write: "Gera N e-mails e salva em data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json"
   preview: "Gera N e-mails sem salvar — apenas para revisão antes de confirmar"
   review: "Reescreve um e-mail específico do último batch mantendo os demais intactos"
 
 output-format:
-  file: "data/emails/emails-YYYY-MM-DD.json"
+  file: "data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json"
   schema:
     row_number: "número da linha no Google Sheets"
     cnpj: "CNPJ da empresa"
@@ -134,7 +134,7 @@ dependencies:
   tasks:
     - write-emails.md
   data:
-    - data/emails/
+    - data/outputs/cold-prospecting/emails/
 
 authority:
   EXCLUSIVE: "Geração de e-mails personalizados"
@@ -192,7 +192,7 @@ O e-mail precisa passar nestes checks antes de ser salvo:
 
 ### Saída gerada
 
-- `data/emails/emails-YYYY-MM-DD.json` — pronto para consumo pelo n8n
+- `data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json` — pronto para consumo pelo n8n
 
 ---
 

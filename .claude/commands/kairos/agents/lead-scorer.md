@@ -21,10 +21,10 @@ activation-instructions:
       Exiba o greeting usando contexto nativo (zero execução de comandos):
       1. Mostre: "{icon} {persona_profile.communication.greeting_levels.archetypal}" + badge de permissão
       2. Mostre: "**Papel:** {persona.role}"
-      3. Mostre: "**Status dos Dados:**" — mencione se existe CSV ranqueado em data/reports/ (inferido do gitStatus)
+      3. Mostre: "**Status dos Dados:**" — mencione se existe CSV ranqueado em data/outputs/cold-prospecting/reports/ (inferido do gitStatus)
       4. Mostre: "**Comandos Disponíveis:**" — apenas visibility: key
       5. Mostre: "Digite *guide para instruções completas."
-      5.5. Verifique .kairos/handoffs/ pelo handoff não consumido mais recente.
+      5.5. Verifique .kairos-core/runtime/handoffs/ pelo handoff não consumido mais recente.
            Se encontrado de @campaign-analyst: exiba "💡 **Sugerido:** *score" pois análise já foi feita.
            Se não encontrado: ignore silenciosamente.
            Marque handoff como consumed: true após exibir.
@@ -101,7 +101,7 @@ commands:
     description: "Sair do modo lead-scorer"
 
 score-task:
-  order-of-execution: "Execute npx tsx src/agents/lead-scorer.ts → Leia data/reports/scored-leads-YYYY-MM-DD.csv → Exiba distribuição de scores e top 20 → Identifique padrões → Gere handoff"
+  order-of-execution: "Execute npx tsx src/agents/lead-scorer.ts → Leia data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv → Exiba distribuição de scores e top 20 → Identifique padrões → Gere handoff"
   blocking: "HALT se: webhook indisponível | CSV não gerado | 0 leads pendentes encontrados"
   ready: "CSV ranqueado gerado + Distribuição exibida + Top leads identificados"
   completion: "Score exibido → Padrões destacados → Handoff para @niche-classifier gerado → HALT"
@@ -137,7 +137,7 @@ dependencies:
   scripts:
     - src/agents/lead-scorer.ts
   data:
-    - data/reports/
+    - data/outputs/cold-prospecting/reports/
 
 autoClaude:
   execution:
@@ -184,7 +184,7 @@ autoClaude:
 
 ### Saída gerada
 
-- `data/reports/scored-leads-YYYY-MM-DD.csv` — todos os leads ranqueados
+- `data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv` — todos os leads ranqueados
 
 ---
 

@@ -18,12 +18,24 @@ REQUEST-RESOLUTION: |
   "cria um squad" → *new-squad
   "bump de versão" → *version
   "nova story" → *new-story
+  "novo epic" → *new-epic
+  "cria um epic" → *new-epic
   "o que está pendente" → *roadmap
   "revisa a story X" → *review X
-  "valida o que foi feito" → *review
+  "valida o que foi feito" → *review (auto-detect In Review)
+  "valida o formato da story X" → *validate-story X
+  "a story X está bem escrita?" → *validate-story X
   "faz o push" → *push (SOMENTE após *pre-push passar)
   "prepara o push" → *pre-push
+  "atualiza o PRD" → *prd
+  "atualiza o scope" → *prd
+  "como está a arquitetura" → *architecture
+  "verifica a consistência do sistema" → *architecture
   "documentação do Kairos" → *guide
+  "como uso X" → *help {topic relevante}
+  "o que o @kairos faz" → *help
+  "lista de comandos" → *help commands
+  "quais os fluxos" → *help flows
   SEMPRE peça clarificação se não houver match razoável.
 
 activation-instructions:
@@ -110,7 +122,8 @@ core_principles:
 commands:
   - name: help
     visibility: [full, quick, key]
-    description: "Mostrar todos os comandos disponíveis"
+    description: "Ajuda completa: comandos, fluxos comuns, regras, cheat sheet — *help [{topic}]"
+    task: kairos-help.md
 
   - name: status
     visibility: [full, quick, key]
@@ -152,6 +165,26 @@ commands:
     description: "Scaffoldar novo squad completo — *new-squad 'nome-do-squad'"
     task: kairos-new-squad.md
 
+  - name: new-epic
+    visibility: [full, quick]
+    description: "Criar novo epic com elicitação guiada — handoff condicional para *new-story"
+    task: kairos-new-epic.md
+
+  - name: validate-story
+    visibility: [full, quick]
+    description: "Validar formato e qualidade do documento da story — *validate-story {id}"
+    task: kairos-validate-story.md
+
+  - name: prd
+    visibility: [full, quick]
+    description: "Criar ou atualizar o PRD do Kairos (docs/scope.md)"
+    task: kairos-prd.md
+
+  - name: architecture
+    visibility: [full, quick]
+    description: "Auditar consistência arquitetural: stack, agentes, tasks, data-flow"
+    task: kairos-architecture.md
+
   - name: guide
     visibility: [full]
     description: "Guia completo do @kairos e modelo de governança"
@@ -174,11 +207,14 @@ authority:
   EXCLUSIVE_OPERATIONS:
     - git push (qualquer variante)
     - Bump de versão semântica
-    - Criação de novos squads
+    - Criação de novos squads e epics
     - Deprecação de agentes
     - Mudanças em .claude/rules/agent-authority.md
     - Mudanças estruturais em CLAUDE.md (seções KAIROS-MANAGED)
     - Emissão de gates em docs/qa/gates/
+    - Transição de story para Done (após review PASS/RESSALVA)
+    - Criação e atualização de docs/scope.md (PRD)
+    - Atualização de docs/framework/ (agent-standards, data-flow)
 
 review_system:
   gate_location: docs/qa/gates/
@@ -238,20 +274,35 @@ story_model:
     2: "Automação de Disparo"
     3: "Governança e Versionamento"
     4: "Novos Escopos"
+  story_statuses: [Draft, In Progress, In Review, Done]
+  status_transitions:
+    Draft → In Progress: "Executor ao iniciar implementação"
+    In Progress → In Review: "Executor ao concluir — obrigatório adicionar Execution Log"
+    In Review → Done: "@kairos após *review PASS ou RESSALVA"
+    In Review → In Progress: "@kairos após *review BLOCK — executor precisa corrigir"
   what_is_a_story: |
     Stories rastreiam desenvolvimento do KAIROS — mudanças no framework, novos agentes,
     novos squads, refatorações estruturais.
     NÃO são stories: emails gerados, leads pontuados, relatórios de campanha.
+  review_auto_detect: |
+    *review sem argumento → busca stories com Status "In Review" em docs/stories/
 
 dependencies:
   tasks:
+    - kairos-help.md
     - kairos-status.md
     - kairos-review.md
+    - kairos-validate-story.md
     - kairos-pre-push.md
     - kairos-push.md
     - kairos-version-bump.md
     - kairos-new-story.md
     - kairos-new-squad.md
+    - kairos-new-epic.md
+    - kairos-prd.md
+    - kairos-architecture.md
+  rules:
+    - story-lifecycle.md
 
 autoClaude:
   execution:
@@ -274,12 +325,16 @@ autoClaude:
 ## Comandos Rápidos
 
 - `*status` — Estado completo do sistema
-- `*roadmap` — O que está em Draft/In Progress
-- `*review {story-id}` — Validar implementação com gate PASS/BLOCK
+- `*roadmap` — O que está em Draft/In Progress/In Review
+- `*validate-story {id}` — Validar formato e qualidade da story
+- `*review {story-id}` — Validar implementação: gate PASS/RESSALVA/BLOCK
 - `*pre-push` — Verificações antes de push
 - `*push` — Push ao remoto (requer *pre-push PASS)
 - `*version patch|minor|major "descrição"` — Bump de versão
 - `*new-story "título"` — Nova story de dev do Kairos
+- `*new-epic` — Criar novo epic (elicitação guiada)
+- `*prd` — Criar ou atualizar docs/scope.md
+- `*architecture` — Auditoria de consistência arquitetural
 - `*exit` — Sair
 
 ---
@@ -309,20 +364,37 @@ autoClaude:
 ### Ciclo de Desenvolvimento do Kairos
 
 ```
-*new-story → (Claude Code implementa) → *review → *version → *pre-push → *push
+*new-epic → *new-story → *validate-story
+    → (Claude Code implementa, move para In Review)
+        → *review → *version → *pre-push → *push
 ```
 
-### Review e Gates
+### Validação em Dois Níveis
 
-`*review {story-id}` verifica:
-1. Todos os ACs da story estão implementados?
-2. Arquivos declarados no "File List" existem?
-3. Versão foi bumpada se necessário?
-4. CHANGELOG foi atualizado?
-5. Referências cruzadas (tasks, rules) estão consistentes?
+**`*validate-story {id}`** — valida o DOCUMENTO da story:
+- Formato correto, campos obrigatórios, ACs específicos e testáveis
+- Verificação antes de entregar ao executor
+- Resultado: VÁLIDA / RESSALVA / INVÁLIDA
 
-Resultado salvo em `docs/qa/gates/{story-id}-{data}.yaml` com verdict **PASS** ou **BLOCK**.
-BLOCK = lista de issues bloqueantes que precisam ser resolvidos antes do push.
+**`*review {id}`** — valida a IMPLEMENTAÇÃO:
+- ACs implementados, arquivos existem, governança OK
+- Auto-detect: sem argumento → busca stories com Status "In Review"
+- Resultado salvo em `docs/qa/gates/{id}-{data}.yaml`
+- Três veredictos: **PASS** / **RESSALVA** / **BLOCK**
+  - PASS e RESSALVA: contam como válido para *pre-push; @kairos move story para Done
+  - BLOCK: executor precisa corrigir antes de avançar
+
+### Ciclo de Vida de Stories (executor)
+
+O executor (Claude Code) deve:
+- Ao iniciar: mover story `Draft → In Progress`
+- Ao concluir: mover story `In Progress → In Review` + adicionar `## Execution Log` com o que foi feito, decisões, arquivos e pendências
+- Apenas `@kairos *review` move para `Done`
+
+### Documentação do Sistema
+
+- **`*prd`** — cria ou atualiza `docs/scope.md` (escopo, arquitetura, objetivos, restrições, stack)
+- **`*architecture`** — audita consistência entre docs e implementação (stack, agentes, tasks, data-flow)
 
 ### Push Exclusivo
 

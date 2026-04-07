@@ -7,13 +7,13 @@
 
 ## Descrição
 
-O Kairos gera os e-mails mas ainda não os conecta ao mecanismo de envio. Este epic cobre a ponte entre o output do `@email-writer` (`data/emails/emails-YYYY-MM-DD.json`) e o disparo real via n8n, incluindo atualização de status na planilha e tratamento de emails suspeitos.
+O Kairos gera os e-mails mas ainda não os conecta ao mecanismo de envio. Este epic cobre a ponte entre o output do `@email-writer` (`data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json`) e o disparo real via n8n, incluindo atualização de status na planilha e tratamento de emails suspeitos.
 
 ---
 
 ## Critério de Conclusão
 
-- [ ] Workflow n8n lê `data/emails/emails-YYYY-MM-DD.json` automaticamente
+- [ ] Workflow n8n lê `data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json` automaticamente
 - [ ] E-mails disparados via Gmail/SMTP com assunto e corpo corretos
 - [ ] `email_suspeito = true` → e-mail não enviado (skip silencioso ou log)
 - [ ] `Status do Envio` atualizado para `ENVIADO` na planilha após cada envio

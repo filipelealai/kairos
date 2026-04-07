@@ -29,7 +29,7 @@ handoff:
 
 ## Armazenamento
 
-- Local: `.kairos/handoffs/`
+- Local: `.kairos-core/runtime/handoffs/`
 - Formato do nome: `handoff-{from}-to-{to}-{timestamp}.yaml`
 - Lifecycle: marcado como `consumed: true` após o agente entrante lê-lo na ativação
 
@@ -58,10 +58,10 @@ handoff:
 
 ## Lookup no Activation Step 5.5
 
-Ao ativar, o agente verifica `.kairos/handoffs/` pelo handoff não consumido mais recente:
+Ao ativar, o agente verifica `.kairos-core/runtime/handoffs/` pelo handoff não consumido mais recente:
 
 ```
-1. Listar arquivos em .kairos/handoffs/ ordenados por timestamp (mais recente primeiro)
+1. Listar arquivos em .kairos-core/runtime/handoffs/ ordenados por timestamp (mais recente primeiro)
 2. Pegar o primeiro com consumed: false
 3. Se from_agent + last_command tem match em .kairos-core/data/workflow-chains.yaml:
    → Exibir "💡 Sugerido: *{next_command}"

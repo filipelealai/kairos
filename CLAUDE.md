@@ -88,7 +88,7 @@ Use prefixo `*` dentro de um agente ativo:
 
 ### Handoffs
 
-Ao completar uma fase, cada agente gera um handoff em `.kairos/handoffs/`.
+Ao completar uma fase, cada agente gera um handoff em `.kairos-core/runtime/handoffs/`.
 O próximo agente detecta e sugere o próximo comando automaticamente na ativação.
 
 ### Modelo de Governança
@@ -119,7 +119,7 @@ Stories em `docs/stories/` = desenvolvimento do Kairos. Outputs operacionais = `
 
 src/agents/  # Scripts TypeScript de computação pura (sem AI)
 data/        # Outputs dos agentes (reports, emails)
-.kairos/     # Runtime: handoffs/, logs/ (gitignored)
+.kairos/     # Runtime: handoffs/, logs/ (conteúdo gitignored)
 ```
 
 ## Regras Cross-Cutting
@@ -130,6 +130,7 @@ data/        # Outputs dos agentes (reports, emails)
 | `agent-handoff.md` | Protocolo de handoff compacto entre agentes |
 | `agent-authority.md` | Matriz de autoridade — o que cada agente pode e não pode fazer |
 | `agent-memory-imports.md` | Imports de MEMORY.md por agente |
+| `story-lifecycle.md` | Protocolo do executor: transições de status e Execution Log obrigatório |
 
 ## Versionamento
 

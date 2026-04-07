@@ -190,9 +190,9 @@ async function main() {
   const report = printReport(stats);
 
   const dateStr = new Date().toISOString().slice(0, 10);
-  const dir = join(process.cwd(), "data", "reports");
+  const dir = join(process.cwd(), "data", "outputs", "cold-prospecting", "reports");
   mkdirSync(dir, { recursive: true });
-  const outPath = join(dir, `campaign-${dateStr}.md`);
+  const outPath = join(dir, `campaign-analyst_campaign-${dateStr}.md`);
   writeFileSync(outPath, report, "utf-8");
 
   console.error(`Relatório salvo em: ${outPath}`);

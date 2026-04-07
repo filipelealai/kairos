@@ -46,8 +46,8 @@ Prospecção fria de pequenas e médias empresas brasileiras via e-mail.
 
 **Dados gerenciados:**
 - Google Sheets: planilha de leads com 22k+ registros
-- `data/reports/` — relatórios de campanha, scoring, nicho
-- `data/emails/` — e-mails gerados, prontos para o n8n
+- `data/outputs/cold-prospecting/reports/` — relatórios de campanha, scoring, nicho
+- `data/outputs/cold-prospecting/emails/` — e-mails gerados, prontos para o n8n
 
 ### Escopo 2 — (futuro)
 

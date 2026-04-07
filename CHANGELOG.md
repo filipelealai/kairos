@@ -44,7 +44,7 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 - Tasks refatoradas com frontmatter YAML completo (`elicit`, `Entrada`, `Saida`, `Checklist`)
 - `.kairos-core/agents/{id}/MEMORY.md` para cada agente do squad
 - `.claude/rules/` — 4 rules cross-cutting (lifecycle, handoff, authority, memory-imports)
-- `.kairos/` — diretório de runtime para handoffs (gitignored)
+- `.kairos-core/runtime/` — diretório de runtime para handoffs (conteúdo gitignored)
 
 ### Mudado
 - Agentes migrados de `.claude/commands/` (slash commands simples) para `.claude/commands/kairos/agents/` (personas YAML completas com activation-instructions, greeting estruturado, blocking/completion explícitos)

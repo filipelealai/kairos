@@ -3,7 +3,7 @@
 ## Active Patterns
 
 ### Dados e Saída
-- Relatórios salvos em `data/reports/campaign-YYYY-MM-DD.md`
+- Relatórios salvos em `data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md`
 - Webhook: `https://n8n.vendoteca.com/webhook/kairos-leads` (GET, retorna `{ leads: [...] }`)
 - Script TypeScript: `src/agents/campaign-analyst.ts` (computação local, sem AI)
 

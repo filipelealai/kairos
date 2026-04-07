@@ -9,9 +9,9 @@ Entrada: |
   - filtro: Pode disparar = SIM
   - keywords_de_cobertura: ver seção keyword-coverage-reference no agente
 Saida: |
-  - niche_map_file: data/reports/niche-map-YYYY-MM-DD.json
+  - niche_map_file: data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json
   - recomendacoes: lista de keywords novas por nicho
-  - handoff: .kairos/handoffs/handoff-niche-classifier-to-email-writer-{ts}.yaml
+  - handoff: .kairos-core/runtime/handoffs/handoff-niche-classifier-to-email-writer-{ts}.yaml
 Checklist:
   - "[ ] Executar npx tsx src/agents/niche-classifier.ts"
   - "[ ] Verificar que niche-map foi gerado"
@@ -42,7 +42,7 @@ O agente:
 - Busca leads com `Pode disparar = SIM`
 - Identifica atividades únicas sem match nas keywords de cobertura
 - Usa Claude API para classificar em lotes de 30 por um dos 9 nichos
-- Salva `data/reports/niche-map-YYYY-MM-DD.json`
+- Salva `data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json`
 
 ### Passo 2 — Ler e interpretar o niche-map
 
@@ -72,7 +72,7 @@ saude_clinicas (180 leads):
 
 ### Passo 4 — Gerar handoff
 
-Salve em `.kairos/handoffs/handoff-niche-classifier-to-email-writer-{timestamp}.yaml`:
+Salve em `.kairos-core/runtime/handoffs/handoff-niche-classifier-to-email-writer-{timestamp}.yaml`:
 
 ```yaml
 handoff:
@@ -82,7 +82,7 @@ handoff:
   timestamp: "{ISO timestamp}"
   consumed: false
   context:
-    niche_map_file: "data/reports/niche-map-YYYY-MM-DD.json"
+    niche_map_file: "data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json"
     total_atividades_sem_cobertura: N
     nichos_com_mais_leads: ["{nicho1}", "{nicho2}"]
   next_action: "Gerar e-mails para os top leads com *write 20"

@@ -33,9 +33,9 @@ git log --oneline -5
 Identifique:
 - Arquivos staged (prontos para commit)
 - Arquivos modificados não staged
-- Arquivos untracked relevantes (excluir `.kairos/`, `data/`, `node_modules/`)
+- Arquivos untracked relevantes (excluir `.kairos-core/runtime/`, `data/`, `node_modules/`)
 
-**BLOCK se:** há arquivos modificados não staged que parecem parte da mudança intencional (não são `.kairos/handoffs/` ou `data/`).
+**BLOCK se:** há arquivos modificados não staged que parecem parte da mudança intencional (não são `.kairos-core/runtime/handoffs/` ou `data/`).
 
 ### Passo 2 — Consistência de versão
 

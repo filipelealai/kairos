@@ -9,7 +9,7 @@
  *   npx tsx src/agents/email-writer.ts @filipe       # 10 leads com persona Filipe
  *   npx tsx src/agents/email-writer.ts @filipe 50    # 50 leads
  *
- * Saída: data/emails/emails-YYYY-MM-DD.json
+ * Saída: data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json
  */
 
 import "dotenv/config";
@@ -151,9 +151,9 @@ async function main() {
   }
 
   const dateStr = new Date().toISOString().slice(0, 10);
-  const dir = join(process.cwd(), "data", "emails");
+  const dir = join(process.cwd(), "data", "outputs", "cold-prospecting", "emails");
   mkdirSync(dir, { recursive: true });
-  const outPath = join(dir, `emails-${dateStr}.json`);
+  const outPath = join(dir, `email-writer_emails-${dateStr}.json`);
   writeFileSync(outPath, JSON.stringify(emails, null, 2), "utf-8");
 
   console.error(`\n${ok} e-mails gerados, ${fail} falhas.`);

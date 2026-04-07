@@ -16,18 +16,18 @@
 ┌─────────────────────────────────────────────────────────┐
 │                   KAIROS (Claude Code)                   │
 │                                                          │
-│  @campaign-analyst ──▶ data/reports/campaign-*.md       │
+│  @campaign-analyst ──▶ data/outputs/cold-prospecting/reports/campaign-analyst_campaign-*.md       │
 │          │                                               │
 │          ▼                                               │
-│  @lead-scorer ──────▶ data/reports/scored-leads-*.csv   │
+│  @lead-scorer ──────▶ data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-*.csv   │
 │          │                                               │
 │          ▼                                               │
-│  @niche-classifier ─▶ data/reports/niche-map-*.json     │
+│  @niche-classifier ─▶ data/outputs/cold-prospecting/reports/niche-classifier_niche-map-*.json     │
 │          │                                               │
 │          ▼                                               │
-│  @email-writer ─────▶ data/emails/emails-*.json         │
+│  @email-writer ─────▶ data/outputs/cold-prospecting/emails/email-writer_emails-*.json         │
 └─────────────────────────┬───────────────────────────────┘
-                          │ n8n lê data/emails/
+                          │ n8n lê data/outputs/cold-prospecting/emails/
                           ▼
 ┌─────────────────────────────────────────────────────────┐
 │                    DESTINOS EXTERNOS                     │
@@ -74,7 +74,7 @@
 
 ### @campaign-analyst
 
-**Output:** `data/reports/campaign-YYYY-MM-DD.md`
+**Output:** `data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md`
 
 Conteúdo: métricas agregadas — total de leads, pendentes, distribuição por nicho, por cidade, por capital social, taxa de cobertura.
 
@@ -84,7 +84,7 @@ Conteúdo: métricas agregadas — total de leads, pendentes, distribuição por
 
 ### @lead-scorer
 
-**Output:** `data/reports/scored-leads-YYYY-MM-DD.csv`
+**Output:** `data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv`
 
 **Colunas:** `row_number, cnpj, nome, atividade, cidade, estado, capital_social, score, tier`
 
@@ -94,7 +94,7 @@ Conteúdo: métricas agregadas — total de leads, pendentes, distribuição por
 
 ### @niche-classifier
 
-**Output:** `data/reports/niche-map-YYYY-MM-DD.json`
+**Output:** `data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json`
 
 ```json
 {
@@ -109,7 +109,7 @@ Conteúdo: métricas agregadas — total de leads, pendentes, distribuição por
 
 ### @email-writer
 
-**Output:** `data/emails/emails-YYYY-MM-DD.json`
+**Output:** `data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json`
 
 ```json
 [
@@ -129,7 +129,7 @@ Conteúdo: métricas agregadas — total de leads, pendentes, distribuição por
 
 ## Handoffs (Runtime)
 
-**Local:** `.kairos/handoffs/` (gitignored)
+**Local:** `.kairos-core/runtime/handoffs/` (conteúdo gitignored)
 
 **Formato:** `handoff-{from}-to-{to}-{timestamp}.yaml`
 
@@ -141,7 +141,7 @@ handoff:
   timestamp: "2026-04-06T15:30:00.000Z"
   consumed: false
   context:
-    emails_file: "data/emails/emails-2026-04-06.json"
+    emails_file: "data/outputs/cold-prospecting/emails/email-writer_emails-2026-04-06.json"
     total_gerados: 20
     total_suspeitos: 3
   next_action: "Analisar métricas após o disparo com *analyze"

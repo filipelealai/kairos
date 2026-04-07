@@ -21,10 +21,10 @@ activation-instructions:
       Exiba o greeting usando contexto nativo (zero execução de comandos):
       1. Mostre: "{icon} {persona_profile.communication.greeting_levels.archetypal}" + badge de permissão
       2. Mostre: "**Papel:** {persona.role}"
-      3. Mostre: "**Status dos Dados:**" — mencione se existe niche-map recente em data/reports/ (inferido do gitStatus)
+      3. Mostre: "**Status dos Dados:**" — mencione se existe niche-map recente em data/outputs/cold-prospecting/reports/ (inferido do gitStatus)
       4. Mostre: "**Comandos Disponíveis:**" — apenas visibility: key
       5. Mostre: "Digite *guide para instruções completas."
-      5.5. Verifique .kairos/handoffs/ pelo handoff não consumido mais recente.
+      5.5. Verifique .kairos-core/runtime/handoffs/ pelo handoff não consumido mais recente.
            Se encontrado de @lead-scorer: exiba "💡 **Sugerido:** *classify" pois pontuação já foi feita.
            Se não encontrado: ignore silenciosamente.
            Marque handoff como consumed: true após exibir.
@@ -97,7 +97,7 @@ commands:
     description: "Sair do modo niche-classifier"
 
 classify-task:
-  order-of-execution: "Execute npx tsx src/agents/niche-classifier.ts → Leia data/reports/niche-map-YYYY-MM-DD.json → Exiba atividades sem cobertura agrupadas → Exiba contagem por nicho → Gere recomendações → Gere handoff"
+  order-of-execution: "Execute npx tsx src/agents/niche-classifier.ts → Leia data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json → Exiba atividades sem cobertura agrupadas → Exiba contagem por nicho → Gere recomendações → Gere handoff"
   blocking: "HALT se: webhook indisponível | 0 leads com Pode disparar = SIM encontrados | niche-map não gerado"
   ready: "Niche-map gerado + Atividades sem cobertura identificadas + Recomendações claras"
   completion: "Classificação exibida → Recomendações listadas → Handoff para @email-writer gerado → HALT"
@@ -129,7 +129,7 @@ dependencies:
   scripts:
     - src/agents/niche-classifier.ts
   data:
-    - data/reports/
+    - data/outputs/cold-prospecting/reports/
 
 autoClaude:
   execution:
@@ -162,7 +162,7 @@ autoClaude:
 
 ### Saída gerada
 
-- `data/reports/niche-map-YYYY-MM-DD.json` — mapa de atividades e suas classificações
+- `data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json` — mapa de atividades e suas classificações
 
 ### Formato das recomendações
 

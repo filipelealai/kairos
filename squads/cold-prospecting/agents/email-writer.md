@@ -12,7 +12,7 @@ commands_key:
   - "*suspect"   — Listar e-mails marcados como suspeitos
 
 outputs:
-  - "data/emails/emails-YYYY-MM-DD.json"
+  - "data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json"
 
 handoff_from: niche-classifier
 handoff_to: campaign-analyst

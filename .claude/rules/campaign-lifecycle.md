@@ -20,10 +20,10 @@
 
 | Fase | Agente | Comando | Output |
 |------|--------|---------|--------|
-| 1. Análise | @campaign-analyst (Clio) | `*analyze` | `data/reports/campaign-YYYY-MM-DD.md` |
-| 2. Pontuação | @lead-scorer (Lex) | `*score` | `data/reports/scored-leads-YYYY-MM-DD.csv` |
-| 3. Classificação | @niche-classifier (Nix) | `*classify` | `data/reports/niche-map-YYYY-MM-DD.json` |
-| 4. Geração | @email-writer (Eva) | `*write N` | `data/emails/emails-YYYY-MM-DD.json` |
+| 1. Análise | @campaign-analyst (Clio) | `*analyze` | `data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md` |
+| 2. Pontuação | @lead-scorer (Lex) | `*score` | `data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv` |
+| 3. Classificação | @niche-classifier (Nix) | `*classify` | `data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json` |
+| 4. Geração | @email-writer (Eva) | `*write N` | `data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json` |
 | 5. Disparo | n8n (automático) | — | e-mails enviados, planilha atualizada |
 
 ## Handoff Chain
@@ -37,7 +37,7 @@ niche-classifier → email-writer  : handoff-niche-classifier-to-email-writer-{t
 email-writer     → campaign-analyst : handoff-email-writer-to-campaign-analyst-{ts}.yaml
 ```
 
-Diretório: `.kairos/handoffs/`
+Diretório: `.kairos-core/runtime/handoffs/`
 
 ## Execução Parcial (permitido)
 

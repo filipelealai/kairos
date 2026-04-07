@@ -26,7 +26,7 @@
 @email-writer *write 20
 ```
 
-Após cada fase, o agente gera um handoff em `.kairos/handoffs/`. O próximo agente detecta e sugere o próximo passo automaticamente ao ser ativado.
+Após cada fase, o agente gera um handoff em `.kairos-core/runtime/handoffs/`. O próximo agente detecta e sugere o próximo passo automaticamente ao ser ativado.
 
 ---
 
@@ -34,10 +34,10 @@ Após cada fase, o agente gera um handoff em `.kairos/handoffs/`. O próximo age
 
 | Fase | Arquivo |
 |------|---------|
-| Análise | `data/reports/campaign-YYYY-MM-DD.md` |
-| Scoring | `data/reports/scored-leads-YYYY-MM-DD.csv` |
-| Nichos | `data/reports/niche-map-YYYY-MM-DD.json` |
-| E-mails | `data/emails/emails-YYYY-MM-DD.json` |
+| Análise | `data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md` |
+| Scoring | `data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv` |
+| Nichos | `data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json` |
+| E-mails | `data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json` |
 
 ---
 

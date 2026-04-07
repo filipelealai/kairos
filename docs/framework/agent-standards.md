@@ -31,7 +31,7 @@ activation-instructions:
       3. Status dos dados (inferido do gitStatus)
       4. Comandos com visibility: key
       5. "Digite *guide para instruções completas."
-      5.5. Verificar .kairos/handoffs/ e sugerir próximo comando
+      5.5. Verificar .kairos-core/runtime/handoffs/ e sugerir próximo comando
       6. Signature closing
   - STEP 4: Exibir greeting
   - STEP 5: HALT

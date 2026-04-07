@@ -42,11 +42,11 @@ pipeline:
 data:
   input_webhook: https://n8n.vendoteca.com/webhook/kairos-leads
   outputs:
-    - data/reports/campaign-YYYY-MM-DD.md
-    - data/reports/scored-leads-YYYY-MM-DD.csv
-    - data/reports/niche-map-YYYY-MM-DD.json
-    - data/emails/emails-YYYY-MM-DD.json
-  handoffs: .kairos/handoffs/
+    - data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md
+    - data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv
+    - data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json
+    - data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json
+  handoffs: .kairos-core/runtime/handoffs/
 
 dependencies:
   node:

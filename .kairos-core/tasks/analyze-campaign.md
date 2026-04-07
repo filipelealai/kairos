@@ -7,8 +7,8 @@ elicit: false
 Entrada: |
   - webhook_url: URL do webhook n8n (ENV N8N_LEADS_URL)
 Saida: |
-  - report_file: data/reports/campaign-YYYY-MM-DD.md
-  - handoff: .kairos/handoffs/handoff-campaign-analyst-to-lead-scorer-{ts}.yaml
+  - report_file: data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md
+  - handoff: .kairos-core/runtime/handoffs/handoff-campaign-analyst-to-lead-scorer-{ts}.yaml
 Checklist:
   - "[ ] Executar npx tsx src/agents/campaign-analyst.ts"
   - "[ ] Verificar que o arquivo de relatório foi gerado"
@@ -40,11 +40,11 @@ npx tsx src/agents/campaign-analyst.ts
 Aguarde a conclusão. O agente:
 - Busca todos os leads via webhook
 - Computa métricas localmente (sem chamadas de AI)
-- Salva relatório em `data/reports/campaign-YYYY-MM-DD.md`
+- Salva relatório em `data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md`
 
 ### Passo 2 — Ler e interpretar o relatório
 
-Leia o arquivo gerado em `data/reports/` com a data de hoje.
+Leia o arquivo gerado em `data/outputs/cold-prospecting/reports/` com a data de hoje.
 
 ### Passo 3 — Exibir com análise
 
@@ -59,7 +59,7 @@ Apresente o relatório com os seguintes destaques:
 
 ### Passo 4 — Gerar handoff
 
-Salve em `.kairos/handoffs/handoff-campaign-analyst-to-lead-scorer-{timestamp}.yaml`:
+Salve em `.kairos-core/runtime/handoffs/handoff-campaign-analyst-to-lead-scorer-{timestamp}.yaml`:
 
 ```yaml
 handoff:
@@ -69,7 +69,7 @@ handoff:
   timestamp: "{ISO timestamp}"
   consumed: false
   context:
-    report_file: "data/reports/campaign-YYYY-MM-DD.md"
+    report_file: "data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md"
     total_leads_pendentes: N
     top_nicho: "{nicho com mais leads}"
     top_cidade: "{cidade com mais leads}"

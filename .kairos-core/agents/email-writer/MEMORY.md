@@ -3,9 +3,9 @@
 ## Active Patterns
 
 ### Dados e Saída
-- Emails gerados: `data/emails/emails-YYYY-MM-DD.json`
+- Emails gerados: `data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json`
 - Task de referência: `.kairos-core/tasks/write-emails.md`
-- Handoffs salvos: `.kairos/handoffs/`
+- Handoffs salvos: `.kairos-core/runtime/handoffs/`
 
 ### Domínios Suspeitos Identificados
 <!-- Preencher com padrões reais encontrados -->

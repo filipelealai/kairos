@@ -3,7 +3,7 @@
 ## Active Patterns
 
 ### Dados e Saída
-- CSV ranqueado: `data/reports/scored-leads-YYYY-MM-DD.csv`
+- CSV ranqueado: `data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv`
 - Script TypeScript: `src/agents/lead-scorer.ts`
 - Filtro: `Pode disparar = SIM` AND (`Status do Envio` vazio OR `NÃO ENVIADO`)
 

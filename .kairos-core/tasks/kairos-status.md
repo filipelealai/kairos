@@ -14,7 +14,7 @@ Checklist:
   - "[ ] Listar docs/stories/ → stories por status (Done/In Progress/Draft)"
   - "[ ] Listar docs/epics/ → epics por status"
   - "[ ] Verificar docs/qa/gates/ → último gate e seu verdict"
-  - "[ ] Verificar .kairos/handoffs/ → handoff não consumido mais recente"
+  - "[ ] Verificar .kairos-core/runtime/handoffs/ → handoff não consumido mais recente"
   - "[ ] Exibir resumo formatado"
 ---
 
@@ -49,7 +49,7 @@ Verifique `docs/qa/gates/` pelo arquivo mais recente. Mostre story, verdict e da
 
 ### Passo 6 — Handoff pendente
 
-Verifique `.kairos/handoffs/` por handoff com `consumed: false`. Se existir, mencione qual agente está aguardando ação.
+Verifique `.kairos-core/runtime/handoffs/` por handoff com `consumed: false`. Se existir, mencione qual agente está aguardando ação.
 
 ### Passo 7 — Exibir
 

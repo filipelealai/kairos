@@ -11,7 +11,7 @@ commands_key:
   - "*top 20"  — Ver os 20 melhores leads do último CSV
 
 outputs:
-  - "data/reports/scored-leads-YYYY-MM-DD.csv"
+  - "data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv"
 
 handoff_from: campaign-analyst
 handoff_to: niche-classifier

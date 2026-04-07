@@ -36,7 +36,7 @@
 | Operação | Autoridade |
 |----------|-----------|
 | Gerar e-mails personalizados via Claude Code | EXCLUSIVA |
-| Salvar JSON em `data/emails/` | EXCLUSIVA |
+| Salvar JSON em `data/outputs/cold-prospecting/emails/` | EXCLUSIVA |
 | Revisar e reescrever e-mails do batch (*review) | EXCLUSIVA |
 | Enviar e-mails | BLOQUEADA (responsabilidade do n8n) |
 | Marcar Status do Envio no Google Sheets | BLOQUEADA (responsabilidade do n8n) |

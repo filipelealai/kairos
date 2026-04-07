@@ -5,9 +5,9 @@
 Stories neste diretório rastreiam o **desenvolvimento do próprio Kairos** — mudanças no framework, novos agentes, novos squads, integrações, refatorações estruturais.
 
 **NÃO são stories os outputs operacionais dos squads:**
-- ✗ "Gerei 20 e-mails hoje" → vai para `data/emails/`
-- ✗ "Analisei campanha de abril" → vai para `data/reports/`
-- ✗ "Classifiquei 142 atividades" → vai para `data/reports/`
+- ✗ "Gerei 20 e-mails hoje" → vai para `data/outputs/cold-prospecting/emails/`
+- ✗ "Analisei campanha de abril" → vai para `data/outputs/cold-prospecting/reports/`
+- ✗ "Classifiquei 142 atividades" → vai para `data/outputs/cold-prospecting/reports/`
 - ✓ "Criar workflow n8n de disparo" → story `2.1.story.md`
 - ✓ "Adicionar agente de agendamento" → story em epic 4
 

@@ -22,10 +22,10 @@ activation-instructions:
       1. Mostre: "{icon} {persona_profile.communication.greeting_levels.archetypal}" + badge de permissão do modo atual ([⚠️ Ask], [🟢 Auto], [🔍 Explore])
       2. Mostre: "**Papel:** {persona.role}"
       3. Mostre: "**Status dos Dados:**" como narrativa baseada no gitStatus do system prompt:
-         - Branch, último commit, arquivos de relatório detectados em data/reports/
+         - Branch, último commit, arquivos de relatório detectados em data/outputs/cold-prospecting/reports/
       4. Mostre: "**Comandos Disponíveis:**" — liste apenas comandos com 'key' em visibility
       5. Mostre: "Digite *guide para instruções completas."
-      5.5. Verifique .kairos/handoffs/ pelo handoff não consumido mais recente (YAML com consumed != true).
+      5.5. Verifique .kairos-core/runtime/handoffs/ pelo handoff não consumido mais recente (YAML com consumed != true).
            Se encontrado: leia from_agent e last_command, consulte .kairos-core/data/workflow-chains.yaml
            e exiba: "💡 **Sugerido:** *{next_command}"
            Se não encontrado: ignore silenciosamente.
@@ -75,7 +75,7 @@ persona:
 
 core_principles:
   - CRÍTICO: Execute npx tsx src/agents/campaign-analyst.ts para análise — nunca invente números
-  - CRÍTICO: Sempre compare com relatório anterior se existir em data/reports/
+  - CRÍTICO: Sempre compare com relatório anterior se existir em data/outputs/cold-prospecting/reports/
   - Apresente insights em ordem de impacto — o mais importante primeiro
   - Se o webhook estiver indisponível, bloqueie e informe o usuário
 
@@ -91,7 +91,7 @@ commands:
 
   - name: trend
     visibility: [full, quick, key]
-    description: "Comparar relatório atual com o anterior (requer 2+ relatórios em data/reports/)"
+    description: "Comparar relatório atual com o anterior (requer 2+ relatórios em data/outputs/cold-prospecting/reports/)"
 
   - name: export
     visibility: [full]
@@ -106,7 +106,7 @@ commands:
     description: "Sair do modo campaign-analyst"
 
 analyze-task:
-  order-of-execution: "Execute npx tsx src/agents/campaign-analyst.ts → Leia o arquivo gerado em data/reports/campaign-YYYY-MM-DD.md → Interprete e exiba com insights → Gere handoff se necessário"
+  order-of-execution: "Execute npx tsx src/agents/campaign-analyst.ts → Leia o arquivo gerado em data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md → Interprete e exiba com insights → Gere handoff se necessário"
   blocking: "HALT se: webhook https://n8n.vendoteca.com/webhook/kairos-leads retornar erro | arquivo de relatório não for gerado | dados retornarem 0 leads"
   ready: "Relatório gerado + Insights identificados + Distribuição por nicho e cidade clara"
   completion: "Relatório exibido → Insights acionáveis listados → Handoff para @lead-scorer gerado → HALT"
@@ -117,7 +117,7 @@ dependencies:
   scripts:
     - src/agents/campaign-analyst.ts
   data:
-    - data/reports/
+    - data/outputs/cold-prospecting/reports/
 
 autoClaude:
   execution:
@@ -158,7 +158,7 @@ autoClaude:
 
 ### Saída gerada
 
-- `data/reports/campaign-YYYY-MM-DD.md` — relatório completo em Markdown
+- `data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md` — relatório completo em Markdown
 
 ---
 
