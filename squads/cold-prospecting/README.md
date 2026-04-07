@@ -1,0 +1,67 @@
+# Squad: Cold Prospecting
+
+**Escopo:** Prospecção fria B2B via e-mail para pequenas e médias empresas brasileiras
+**Agentes:** Clio (📊), Lex (🎯), Nix (🗂️), Eva (✉️)
+**Pipeline:** análise → scoring → classificação → e-mails
+
+---
+
+## Ativação
+
+| Agente | Ativar com | Comando principal |
+|--------|-----------|-------------------|
+| Clio — Analista | `@campaign-analyst` | `*analyze` |
+| Lex — Scorer | `@lead-scorer` | `*score` |
+| Nix — Classificador | `@niche-classifier` | `*classify` |
+| Eva — Redatora | `@email-writer` | `*write 20` |
+
+---
+
+## Pipeline Completo
+
+```bash
+@campaign-analyst *analyze
+@lead-scorer *score
+@niche-classifier *classify
+@email-writer *write 20
+```
+
+Após cada fase, o agente gera um handoff em `.kairos/handoffs/`. O próximo agente detecta e sugere o próximo passo automaticamente ao ser ativado.
+
+---
+
+## Saídas Geradas
+
+| Fase | Arquivo |
+|------|---------|
+| Análise | `data/reports/campaign-YYYY-MM-DD.md` |
+| Scoring | `data/reports/scored-leads-YYYY-MM-DD.csv` |
+| Nichos | `data/reports/niche-map-YYYY-MM-DD.json` |
+| E-mails | `data/emails/emails-YYYY-MM-DD.json` |
+
+---
+
+## Estrutura do Squad
+
+```
+squads/cold-prospecting/
+├── squad.yaml              # Manifesto
+├── README.md               # Este arquivo
+├── agents/                 # Definições leves (referências às personas completas)
+│   ├── campaign-analyst.md
+│   ├── lead-scorer.md
+│   ├── niche-classifier.md
+│   └── email-writer.md
+├── tasks/                  # Referências às tasks em .kairos-core/tasks/
+└── workflows/
+    └── full-pipeline.md    # Sequência completa documentada
+```
+
+---
+
+## Documentação de Referência
+
+- [Escopo do Kairos](../../docs/scope.md)
+- [Padrões de Agentes](../../docs/framework/agent-standards.md)
+- [Fluxo de Dados](../../docs/framework/data-flow.md)
+- [Pipeline Lifecycle](.claude/rules/campaign-lifecycle.md)

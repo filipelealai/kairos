@@ -1,0 +1,24 @@
+chains:
+  - from_agent: campaign-analyst
+    last_command: analyze
+    next_command: score
+    next_agent: lead-scorer
+    description: "Após analisar a campanha, pontuar os leads pendentes"
+
+  - from_agent: lead-scorer
+    last_command: score
+    next_command: classify
+    next_agent: niche-classifier
+    description: "Após pontuar, classificar as atividades sem cobertura de nicho"
+
+  - from_agent: niche-classifier
+    last_command: classify
+    next_command: write 10
+    next_agent: email-writer
+    description: "Após classificar nichos, gerar e-mails para os melhores leads"
+
+  - from_agent: email-writer
+    last_command: write
+    next_command: analyze
+    next_agent: campaign-analyst
+    description: "Após gerar e-mails, analisar o resultado da campanha"

@@ -1,0 +1,46 @@
+version: 1.2.0
+installedAt: '2026-04-06T00:00:00.000Z'
+updatedAt: '2026-04-06T00:00:00.000Z'
+
+project:
+  name: kairos
+  type: personal-automation
+  owner: Filipe Leal
+
+agents:
+  master: kairos
+  squads:
+    cold-prospecting:
+      agents: [campaign-analyst, lead-scorer, niche-classifier, email-writer]
+      status: active
+      version: 1.0.0
+
+framework:
+  tasksLocation: .kairos-core/tasks/
+  agentsLocation: .kairos-core/agents/
+  dataLocation: .kairos-core/data/
+  commandsLocation: .claude/commands/kairos/agents/
+  rulesLocation: .claude/rules/
+  squadsLocation: squads/
+  storiesLocation: docs/stories/
+  changelogFile: CHANGELOG.md
+  scopeFile: docs/scope.md
+
+runtime:
+  handoffsLocation: .kairos/handoffs/
+  reportsLocation: data/reports/
+  emailsLocation: data/emails/
+
+versioning:
+  scheme: semver
+  bump_rules:
+    MAJOR: "Novo escopo/squad adicionado OU breaking change em agente existente"
+    MINOR: "Novo agente, nova task, nova rule ou expansão significativa de capacidade"
+    PATCH: "Correção de bug, atualização de MEMORY.md, ajuste de instrução de task/rule"
+  story_required_for: [MAJOR, MINOR]
+  authority: kairos
+
+devLoadAlwaysFiles:
+  - docs/framework/agent-standards.md
+  - docs/framework/data-flow.md
+  - docs/scope.md
