@@ -1,12 +1,18 @@
-# Kairos — Agente Pessoal
+# Kairos — Orquestrador de Agentes
 
-Kairos é o agente pessoal de Filipe Leal. O nome vem do grego καιρός — o tempo certo, o momento oportuno, em contraste com χρόνος (chronos), o tempo cronológico. Em Kairos, cada ação acontece no momento certo.
+Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. O nome vem do grego καιρός — o tempo certo, o momento oportuno. Cada agente age quando faz sentido, não em qualquer momento.
 
 ## Contexto
 
+Kairos organiza trabalho em **squads**: grupos de agentes especializados que operam um domínio. O framework fornece governança, memória persistente, handoffs, workers agendados e ferramentas para criar e evoluir squads ao longo do tempo.
+
+**Uso atual:** pessoal (Filipe Leal), squad único de prospecção B2B.
+**Arquitetura:** desenhada para múltiplos squads, múltiplas integrações, uso individual ou em equipe.
+
 Este repo contém:
-- **Agentes TypeScript** que usam a Claude API para automações, análises e gestão de tarefas
-- **Configuração do Claude Code** com comandos e hooks customizados
+- **Agentes TypeScript** — computação pura para tarefas específicas de cada squad
+- **Personas de agentes** — ativadas com `@nome` no Claude Code, cada uma especializada em um domínio
+- **Infraestrutura de framework** — governança, memória, handoffs, workers, hooks
 
 ## Stack
 
@@ -46,6 +52,17 @@ npx tsx src/agents/nome-do-agente.ts
 - Manter cada agente focado em uma responsabilidade
 - Não criar abstrações desnecessárias — clareza é melhor que elegância prematura
 - Responder em português (Brasil)
+
+## Restrições Operacionais (configurável pelo usuário)
+
+Este espaço é para restrições manuais sobre o que o Claude Code pode ou não fazer neste projeto — independente do que o framework permite.
+
+Exemplos do que colocar aqui:
+- "Não executar operações destrutivas no n8n (delete workflow, delete executions) sem confirmação explícita"
+- "Não modificar workflows n8n marcados como produção diretamente"
+- "Não criar migrações de banco sem revisão manual"
+
+> As diretrizes de como usar skills, MCPs e APIs estão em `.claude/rules/external-integrations.md`.
 
 <!-- KAIROS-MANAGED-START: agent-system -->
 ## Sistema de Agentes Kairos
@@ -136,6 +153,7 @@ data/        # Outputs dos agentes (reports, emails)
 | `story-lifecycle.md` | Protocolo do executor: transições de status e Execution Log obrigatório |
 | `ids-principles.md` | REUTILIZAR > ADAPTAR > CRIAR — hierarquia de criação de artefatos |
 | `framework-layers.md` | Camadas L1–L4 de imutabilidade do framework |
+| `external-integrations.md` | Skills → MCPs → scripts — hierarquia e diretrizes de integração com sistemas externos |
 
 ## Versionamento
 

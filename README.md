@@ -2,18 +2,20 @@
 
 > *καιρός — o tempo certo, o momento oportuno.*
 
-Kairos é um sistema pessoal de automação e inteligência construído em torno dos fluxos de trabalho reais de Filipe Leal. Não é uma plataforma genérica — é um conjunto de agentes de IA que fazem trabalho específico, no momento certo, com total rastreabilidade.
+Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura de governança, memória, handoffs, workers agendados e ferramentas de desenvolvimento para criar, evoluir e operar esses squads ao longo do tempo.
 
-**Versão atual:** `1.2.0` — ver [CHANGELOG.md](CHANGELOG.md)
+Uso atual: pessoal (Filipe Leal). Arquitetura: desenhada para crescer a múltiplos squads, múltiplas integrações e uso em equipe.
+
+**Versão atual:** `1.3.0` — ver [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
-## O que o Kairos faz
+## Squad ativo: cold-prospecting
 
-O escopo ativo é **prospecção B2B fria** para a Agência Vendoteca:
+O squad atualmente em operação é **prospecção B2B fria** para a Agência Vendoteca. Ele integra com n8n e Google Sheets:
 
 ```
-n8n (operacional)  ↔  Kairos (inteligência)  ↔  Google Sheets (dados)
+n8n (operacional)  ↔  Kairos/cold-prospecting (inteligência)  ↔  Google Sheets (dados)
 ```
 
 - **n8n** raspa CNPJs da Receita Federal, popula a planilha, dispara e-mails, atualiza status
@@ -21,6 +23,8 @@ n8n (operacional)  ↔  Kairos (inteligência)  ↔  Google Sheets (dados)
 - A ponte entre os dois é um webhook (`N8N_LEADS_URL`) que expõe os leads da planilha
 
 O Kairos nunca envia e-mails diretamente e nunca escreve na planilha — essas responsabilidades são exclusivas do n8n.
+
+> Esta integração n8n/Sheets é específica do squad `cold-prospecting`. Outros squads integrarão com outras ferramentas.
 
 ---
 

@@ -5,14 +5,20 @@
 
 ---
 
-## I. Separação de Responsabilidades
+## I. Integração com Ferramentas Externas
 
-**Kairos pensa. n8n age.**
+**Kairos pode e deve usar ferramentas externas. A questão é como.**
 
-1. Kairos **nunca envia e-mails diretamente** — qualquer disparo passa exclusivamente pelo n8n.
-2. Kairos **nunca escreve na planilha do Google Sheets** — leitura via webhook é permitida, escrita nunca.
-3. Kairos é **read-only** em relação a fontes externas — sem side effects no acesso a dados.
-4. n8n é o único sistema com permissão de agir sobre destinatários reais.
+1. **Hierarquia de integração** — ao interagir com um sistema externo, seguir esta ordem de preferência:
+   - **Skills do Claude Code** — se existe uma skill para a tarefa, usá-la primeiro
+   - **MCPs configurados** — ferramentas de integração registradas no projeto (n8n-mcp, supabase-mcp, etc.)
+   - **Scripts TypeScript** — `src/agents/` para computação e chamadas HTTP quando não há skill/MCP disponível
+
+2. **Ações com side effects são explícitas** — envio, escrita, deleção, disparo devem ser visíveis ao usuário e confirméveis antes de executar quando irreversíveis.
+
+3. **Escopo de autoridade por squad** — cada squad define quais sistemas externos seus agentes têm autoridade para usar. Não existe autoridade implícita de um agente sobre sistemas de outro squad.
+
+4. **Restrições operacionais são de squad, não de framework** — "nunca enviar e-mail diretamente" é um contrato do squad cold-prospecting com o n8n, não uma limitação do Kairos como framework.
 
 ## II. Controle de Versão e Push
 

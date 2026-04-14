@@ -1,0 +1,37 @@
+# Workers — Agentes Agendados do Kairos
+#
+# Define execuções periódicas de agentes e comandos.
+# Gerenciado via @kairos *workers.
+# Para ativar scheduling real, use @kairos *workers {id} schedule.
+#
+# Campos:
+#   id          — identificador único (kebab-case)
+#   agent       — id do agente (@campaign-analyst, @lead-scorer, etc.)
+#   command     — comando do agente (sem o *)
+#   cron        — expressão cron (5 campos: min hora dia mês dia-semana)
+#   description — o que este worker faz
+#   enabled     — false = definido mas não ativo
+#   created_at  — data de criação
+#   last_run    — última execução (null = nunca)
+
+workers: []
+
+# Exemplos (descomentados por @kairos *workers new):
+#
+# - id: weekly-campaign-analysis
+#   agent: campaign-analyst
+#   command: analyze
+#   cron: "0 9 * * 1"          # Segunda-feira às 9h
+#   description: "Análise semanal da campanha de prospecção"
+#   enabled: false
+#   created_at: "YYYY-MM-DD"
+#   last_run: null
+#
+# - id: daily-email-batch
+#   agent: email-writer
+#   command: write 20
+#   cron: "0 8 * * 1-5"        # Dias úteis às 8h
+#   description: "Gerar batch diário de 20 e-mails"
+#   enabled: false
+#   created_at: "YYYY-MM-DD"
+#   last_run: null

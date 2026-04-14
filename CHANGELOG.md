@@ -6,6 +6,51 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [1.3.0] — 2026-04-14
+
+### Adicionado
+
+**Fundação do Framework (L1)**
+- `.kairos-core/constitution.md` — 17 princípios não-negociáveis em 5 seções
+- `.claude/rules/ids-principles.md` — REUTILIZAR > ADAPTAR > CRIAR: hierarquia de criação de artefatos (L1)
+- `.claude/rules/framework-layers.md` — camadas L1–L4 de imutabilidade com protocolo de mudança por camada (L1)
+- `.claude/rules/external-integrations.md` — hierarquia skills → CLI → MCP → scripts, com diretrizes por tipo de operação
+
+**Novas Capacidades do @kairos**
+- `*kb` — base de conhecimento curada: leitura por tópico e adição guiada (`kairos-kb.md`)
+- `*doctor` — health check do framework: fundação, agentes registrados, tasks, hooks, stories (`kairos-doctor.md`)
+- `*workers` — agentes agendados: registry YAML + `*workers new|schedule|run|delete` + integração com `/schedule` do Claude Code (`kairos-workers.md`)
+
+**Hooks do Claude Code**
+- `.claude/hooks/kairos-precompact.cjs` — PreCompact: injeta versão, stories abertas, último gate e handoffs pendentes antes da compactação de contexto
+- `.claude/hooks/kairos-code-intel.cjs` — PreToolUse (Write|Edit): injeta contexto relevante por padrão de path (exports do claude.ts, formato de task, YAML de persona, story template)
+- Hooks registrados em `.claude/settings.json`
+
+**Infraestrutura**
+- `.kairos-core/templates/` — 6 templates: `story-template.md`, `agent-template.md`, `squad-template/` (squad.yaml, README, agents/, workflows/)
+- `.kairos-core/data/kairos-kb.md` — KB inicial: decisões arquiteturais, gotchas do webhook, convenções de naming, erros comuns, padrões validados
+- `.kairos-core/data/workers.yaml` — registry de workers agendados (inicialmente vazio, com exemplos comentados)
+
+### Modificado
+
+**Identidade do Framework**
+- `README.md`, `CLAUDE.md`, `docs/scope.md` — reframing: Kairos como framework de orquestração de agentes de IA, não "sistema pessoal de automação n8n-driven"; n8n movido para contexto do squad cold-prospecting
+- `core-config.yaml` — `type: personal-automation` → `type: claude-code-orchestrator`; adicionados campos `scope`, `description`, `templatesLocation`, `hooksLocation`, `constitutionFile`, `kbFile`, `workersFile`
+- `constitution.md` — Seção I reescrita: princípio genérico de separação orquestração/ação, sem lock-in em n8n
+- `kairos.md` — `identity` e `focus` refletem papel de orquestrador agnóstico a ferramenta
+- `CLAUDE.md` — seção "Restrições Operacionais" agora é espaço explicitamente do usuário; regras de integração externa movidas para rule de framework
+
+**Memória dos Agentes**
+- `.kairos-core/agents/campaign-analyst/MEMORY.md` — seção `### Gotchas Técnicos` adicionada
+- `.kairos-core/agents/email-writer/MEMORY.md` — seção `### Gotchas Técnicos` adicionada
+- `.kairos-core/agents/niche-classifier/MEMORY.md` — seção `### Gotchas Técnicos` adicionada
+
+**Protocolo de Desenvolvimento**
+- `.claude/rules/story-lifecycle.md` — seção "Decision Log" adicionada: critérios de promoção de decisões para o KB e formato recomendado no Execution Log
+- `docs/framework/agent-standards.md` — regras de Gotchas e promoção ao KB no padrão de MEMORY.md
+
+---
+
 ## [1.2.0] — 2026-04-06
 
 ### Adicionado
