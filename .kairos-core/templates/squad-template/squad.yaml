@@ -1,0 +1,42 @@
+name: {squad-name}
+description: "{Descrição de uma linha do que o squad faz}"
+context: pessoal | vendoteca | {outro}
+status: active | planned
+version: 1.0.0
+
+# Contexto de negócio
+business_context: |
+  {Por que este squad existe e qual problema resolve para Filipe.}
+
+# Agentes do squad
+agents:
+  - id: {agent-id-1}
+    name: {NomeDaPersona}
+    icon: {emoji}
+    role: "{papel do agente no squad}"
+
+  - id: {agent-id-2}
+    name: {NomeDaPersona}
+    icon: {emoji}
+    role: "{papel do agente no squad}"
+
+# Pipeline principal
+pipeline:
+  order: [{agent-id-1}, {agent-id-2}]
+  partial_execution: true  # Cada agente pode rodar individualmente
+  triggers:
+    - {condição de disparo — ex: "volume de pendentes > 500"}
+
+# Dados
+data:
+  source: webhook | arquivo | api | manual
+  source_url: "{URL ou path da fonte}"
+  outputs_location: data/outputs/{squad-name}/
+  reports_location: data/outputs/{squad-name}/reports/
+  emails_location: data/outputs/{squad-name}/emails/  # se aplicável
+
+# Integrações externas
+integrations:
+  n8n: true | false
+  google_sheets: true | false
+  external_apis: []

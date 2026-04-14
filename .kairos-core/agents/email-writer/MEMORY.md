@@ -32,6 +32,14 @@
 - R$50k–100k: negócio estabelecido, pode ter funcionários
 - R$100k+: empresa madura, foco em escala e eficiência
 
+### Gotchas Técnicos
+- `Nome Fantasia` frequentemente vazio — sempre fazer fallback para `Nome` (razão social)
+- `Cidade` vem em UPPERCASE do Sheets — normalizar para exibição no corpo do e-mail
+- Gerar muitos e-mails de uma vez pode causar timeout da Claude API — usar batches de 20-30
+- E-mails gerados são idempotentes por data: re-executar no mesmo dia sobrescreve o arquivo
+- Verificar `email_suspeito: true` antes de incluir lead no batch — esses não devem ser enviados
+- Empresas sem `Nome Fantasia` E com nome genérico na razão social dificultam personalização — tratar com cautela
+
 ## Promotion Candidates
 <!-- Padrões que deveriam ir para .claude/rules/ -->
 

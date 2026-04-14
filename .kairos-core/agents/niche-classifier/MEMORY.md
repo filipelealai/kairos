@@ -20,6 +20,13 @@
 - construcao: constr, obra, engenh, reform, arquitet, empreit
 - juridico: advoc, jurid, direito
 
+### Gotchas Técnicos
+- Script processa atividades em lotes de 30 — atividades idênticas contam como 1 (deduplicadas antes do envio à API)
+- `Atividade Principal` pode ter pequenas variações de texto para o mesmo negócio — o Claude normaliza, mas vale revisar o mapa gerado
+- Se porcentagem de nichos `outro` > 30%: sugerir novas keywords para o workflow do n8n (via `@kairos *new-story` se for mudança estrutural)
+- Reclassificar após adicionar keywords novas ao n8n — o mapa anterior pode estar desatualizado
+- Output JSON é sobrescrito por data — histórico de classificações não é preservado automaticamente
+
 ### Recomendações Anteriores
 <!-- Preencher após execuções reais com keywords sugeridas e resultado -->
 

@@ -152,6 +152,40 @@ A seção `## Execution Log` deve ser adicionada **antes** do `## Change Log` da
 
 ---
 
+## Decision Log — Decisões Arquiteturais Persistentes
+
+Algumas decisões tomadas durante a implementação de uma story não pertencem só àquela story — elas definem como o Kairos funciona e devem ser preservadas para contexto futuro.
+
+### Quando promover ao KB
+
+Se uma decisão no Execution Log atender a pelo menos um destes critérios:
+- Explica um **trade-off arquitetural** (por que X e não Y)
+- Define um **padrão que outros agentes/stories seguirão**
+- Resolve um **gotcha técnico** não documentado em nenhum outro lugar
+- **Contradiz uma suposição óbvia** — alguém razoável poderia fazer diferente
+
+→ Promover para `.kairos-core/data/kairos-kb.md` via `@kairos *kb add`.
+
+### O que NÃO promover
+
+- Decisões óbvias que qualquer dev faria igual ("usei kebab-case por convenção")
+- Detalhes de implementação já visíveis no código
+- Decisões temporárias que serão revisitadas em breve
+
+### Formato para decisões no Execution Log
+
+Ao escrever a seção `### Decisões tomadas`, seja específico sobre alternativas consideradas:
+
+```markdown
+### Decisões tomadas
+
+- **State de sessão vs arquivo para pre_push_passed:** escolhemos estado de sessão 
+  para forçar re-verificação a cada nova sessão — arquivo permitiria burlar o guard.
+  Trade-off aceito: não persiste entre sessões (intencional).
+```
+
+---
+
 ## Responsabilidade do @kairos na transição In Review → Done
 
 Quando `@kairos *review {story_id}` retorna:

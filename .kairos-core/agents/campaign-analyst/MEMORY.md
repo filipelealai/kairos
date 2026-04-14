@@ -18,6 +18,12 @@
 - `Status do Envio = ENVIADO` = desconsiderar
 - Empresas com `Situação` diferente de "ATIVA" = risco de bounce
 
+### Gotchas Técnicos
+- Script não recebe parâmetros — lê o webhook diretamente; reexecutar gera novo relatório sobrescrevendo o do dia
+- Relatório usa data do dia de execução — comparar relatórios de dias diferentes para análise de tendência
+- Se webhook retornar 0 leads: verificar se `N8N_LEADS_URL` está configurado no `.env`
+- `Capital Social` pode vir como number ou string do Sheets — `src/agents/campaign-analyst.ts` já trata isso
+
 ## Promotion Candidates
 <!-- Padrões observados em 3+ execuções — candidatos para .claude/rules/ -->
 

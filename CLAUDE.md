@@ -109,17 +109,20 @@ Stories em `docs/stories/` = desenvolvimento do Kairos. Outputs operacionais = `
 
 ```
 .kairos-core/
-  agents/     # Memória persistente por agente (MEMORY.md)
-  tasks/      # Definições de tasks executáveis (referenciadas pelos agentes)
-  data/       # workflow-chains.yaml, dados de configuração
+  agents/       # Memória persistente por agente (MEMORY.md)
+  tasks/        # Definições de tasks executáveis (referenciadas pelos agentes)
+  data/         # kairos-kb.md, workflow-chains.yaml, dados de configuração
+  templates/    # Templates para stories, agentes, squads
+  constitution.md  # Princípios não-negociáveis do framework (L1)
+  runtime/      # Handoffs e logs (conteúdo gitignored)
 
 .claude/
   commands/kairos/agents/  # Personas completas dos agentes (YAML-in-Markdown)
-  rules/                   # Regras cross-cutting (lifecycle, handoff, authority)
+  hooks/                   # PreCompact e PreToolUse hooks
+  rules/                   # Regras cross-cutting (lifecycle, handoff, authority, IDS, layers)
 
 src/agents/  # Scripts TypeScript de computação pura (sem AI)
 data/        # Outputs dos agentes (reports, emails)
-.kairos/     # Runtime: handoffs/, logs/ (conteúdo gitignored)
 ```
 
 ## Regras Cross-Cutting
@@ -131,6 +134,8 @@ data/        # Outputs dos agentes (reports, emails)
 | `agent-authority.md` | Matriz de autoridade — o que cada agente pode e não pode fazer |
 | `agent-memory-imports.md` | Imports de MEMORY.md por agente |
 | `story-lifecycle.md` | Protocolo do executor: transições de status e Execution Log obrigatório |
+| `ids-principles.md` | REUTILIZAR > ADAPTAR > CRIAR — hierarquia de criação de artefatos |
+| `framework-layers.md` | Camadas L1–L4 de imutabilidade do framework |
 
 ## Versionamento
 

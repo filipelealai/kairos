@@ -19,12 +19,16 @@ framework:
   tasksLocation: .kairos-core/tasks/
   agentsLocation: .kairos-core/agents/
   dataLocation: .kairos-core/data/
+  templatesLocation: .kairos-core/templates/
   commandsLocation: .claude/commands/kairos/agents/
   rulesLocation: .claude/rules/
+  hooksLocation: .claude/hooks/
   squadsLocation: squads/
   storiesLocation: docs/stories/
   changelogFile: CHANGELOG.md
   scopeFile: docs/scope.md
+  constitutionFile: .kairos-core/constitution.md
+  kbFile: .kairos-core/data/kairos-kb.md
 
 runtime:
   handoffsLocation: .kairos-core/runtime/handoffs/

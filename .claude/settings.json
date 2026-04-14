@@ -6,5 +6,30 @@
       "Bash(cat data/*)",
       "Bash(ls *)"
     ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/kairos-code-intel.cjs\"",
+            "timeout": 5
+          }
+        ],
+        "matcher": "Write|Edit"
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/kairos-precompact.cjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
   }
 }

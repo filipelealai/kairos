@@ -139,7 +139,7 @@ handoff_to: "{próximo agente no pipeline}"
 - {padrões verificados e em uso}
 
 ### Gotchas Técnicos
-- {armadilhas conhecidas}
+- {armadilhas conhecidas — inclua causa, sintoma e solução}
 
 ## Promotion Candidates
 <!-- Padrões vistos em 3+ execuções — candidatos para .claude/rules/ -->
@@ -147,6 +147,16 @@ handoff_to: "{próximo agente no pipeline}"
 ## Archived
 <!-- Padrões obsoletos — manter para histórico -->
 ```
+
+**Regras para Gotchas Técnicos:**
+- Cada gotcha deve ter contexto suficiente para ser acionável sem a conversa original
+- Preferir "Campo X pode ser null — usar `String(x || '')`" a "Campo X pode ser null"
+- Gotchas que afetam múltiplos agentes → promover para `.kairos-core/data/kairos-kb.md` via `@kairos *kb add`
+
+**Promoção de Decisões ao KB:**
+- Se um padrão descoberto durante execução for uma **decisão arquitetural** ou **gotcha sistêmico** (não específico a um agente):
+  → Promover para `kairos-kb.md` em vez de apenas manter no MEMORY.md do agente
+  → Usar `@kairos *kb add` para adicionar com contexto completo
 
 ---
 

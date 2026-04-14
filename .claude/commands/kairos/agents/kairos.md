@@ -36,6 +36,10 @@ REQUEST-RESOLUTION: |
   "o que o @kairos faz" → *help
   "lista de comandos" → *help commands
   "quais os fluxos" → *help flows
+  "base de conhecimento" → *kb
+  "decisões arquiteturais" → *kb decisoes
+  "gotchas do sistema" → *kb erros
+  "adiciona isso ao KB" → *kb add
   SEMPRE peça clarificação se não houver match razoável.
 
 activation-instructions:
@@ -185,6 +189,11 @@ commands:
     description: "Auditar consistência arquitetural: stack, agentes, tasks, data-flow"
     task: kairos-architecture.md
 
+  - name: kb
+    visibility: [full, quick]
+    description: "Base de conhecimento: decisões arquiteturais, gotchas, padrões — *kb [{tópico}] | *kb add"
+    task: kairos-kb.md
+
   - name: guide
     visibility: [full]
     description: "Guia completo do @kairos e modelo de governança"
@@ -210,11 +219,14 @@ authority:
     - Criação de novos squads e epics
     - Deprecação de agentes
     - Mudanças em .claude/rules/agent-authority.md
+    - Mudanças em .claude/rules/framework-layers.md (L1)
+    - Mudanças em .kairos-core/constitution.md (L1)
     - Mudanças estruturais em CLAUDE.md (seções KAIROS-MANAGED)
     - Emissão de gates em docs/qa/gates/
     - Transição de story para Done (após review PASS/RESSALVA)
     - Criação e atualização de docs/scope.md (PRD)
     - Atualização de docs/framework/ (agent-standards, data-flow)
+    - Adição ao KB via *kb add
 
 review_system:
   gate_location: docs/qa/gates/
@@ -301,8 +313,13 @@ dependencies:
     - kairos-new-epic.md
     - kairos-prd.md
     - kairos-architecture.md
+    - kairos-kb.md
   rules:
     - story-lifecycle.md
+    - ids-principles.md
+    - framework-layers.md
+  constitution: .kairos-core/constitution.md
+  kb: .kairos-core/data/kairos-kb.md
 
 autoClaude:
   execution:
@@ -335,6 +352,7 @@ autoClaude:
 - `*new-epic` — Criar novo epic (elicitação guiada)
 - `*prd` — Criar ou atualizar docs/scope.md
 - `*architecture` — Auditoria de consistência arquitetural
+- `*kb [{tópico}]` — Base de conhecimento: decisões, gotchas, padrões
 - `*exit` — Sair
 
 ---
