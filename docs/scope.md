@@ -9,7 +9,6 @@
 
 Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura para criar, operar e evoluir esses squads ao longo do tempo.
 
-**Uso atual:** pessoal (Filipe Leal), com um squad ativo.
 **Arquitetura:** desenhada para múltiplos squads, múltiplas integrações externas, uso individual ou em equipe.
 
 O Kairos não é um agente único, nem é dependente de uma ferramenta específica. n8n é a integração do squad atual — não uma parte estrutural do framework.

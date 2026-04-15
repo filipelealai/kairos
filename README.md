@@ -4,27 +4,21 @@
 
 Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura de governança, memória, handoffs, workers agendados e ferramentas de desenvolvimento para criar, evoluir e operar esses squads ao longo do tempo.
 
-Uso atual: pessoal (Filipe Leal). Arquitetura: desenhada para crescer a múltiplos squads, múltiplas integrações e uso em equipe.
-
-**Versão atual:** `1.3.0` — ver [CHANGELOG.md](CHANGELOG.md)
+**Versão atual:** `1.3.1` — ver [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
-## Squad ativo: cold-prospecting
+## Como funciona
 
-O squad atualmente em operação é **prospecção B2B fria** para a Agência Vendoteca. Ele integra com n8n e Google Sheets:
+Squads são criados com `@kairos *new-squad`. Cada squad tem seus próprios agentes, integrações externas e pipeline. O framework fornece a infraestrutura comum.
+
+**Exemplo** — um squad de prospecção B2B integrando com n8n e Google Sheets:
 
 ```
-n8n (operacional)  ↔  Kairos/cold-prospecting (inteligência)  ↔  Google Sheets (dados)
+n8n (operacional)  ↔  Kairos/squad  ↔  Google Sheets (dados)
 ```
 
-- **n8n** raspa CNPJs da Receita Federal, popula a planilha, dispara e-mails, atualiza status
-- **Kairos** analisa a campanha, pontua leads, classifica nichos, gera e-mails personalizados
-- A ponte entre os dois é um webhook (`N8N_LEADS_URL`) que expõe os leads da planilha
-
-O Kairos nunca envia e-mails diretamente e nunca escreve na planilha — essas responsabilidades são exclusivas do n8n.
-
-> Esta integração n8n/Sheets é específica do squad `cold-prospecting`. Outros squads integrarão com outras ferramentas.
+O squad define quais sistemas externos seus agentes têm autoridade para usar. O Kairos não age diretamente sobre sistemas externos — delega para os sistemas definidos pelo squad (ver `constitution.md`).
 
 ---
 
@@ -36,8 +30,7 @@ O Kairos nunca envia e-mails diretamente e nunca escreve na planilha — essas r
 | Linguagem | TypeScript |
 | AI | `@anthropic-ai/sdk` — `claude-sonnet-4-6` |
 | Runner | `tsx` (sem etapa de build) |
-| Automação | n8n (self-hosted) |
-| Dados externos | Google Sheets via webhook n8n |
+| Integrações externas | Definidas por squad (n8n, Supabase, APIs, etc.) |
 
 ---
 
@@ -45,7 +38,7 @@ O Kairos nunca envia e-mails diretamente e nunca escreve na planilha — essas r
 
 - Node.js 18+
 - Uma chave de API da Anthropic ([console.anthropic.com](https://console.anthropic.com))
-- Acesso ao webhook n8n com os leads (ou uma URL compatível)
+- Integrações externas opcionais conforme os squads que você configurar (ver `.env.example`)
 
 ---
 
@@ -58,12 +51,7 @@ npm install
 cp .env.example .env
 ```
 
-Edite `.env`:
-
-```env
-ANTHROPIC_API_KEY=sk-ant-...
-N8N_LEADS_URL=https://seu-n8n.com/webhook/kairos-leads
-```
+Edite `.env` com as variáveis relevantes para seus squads (ver `.env.example` para a lista completa).
 
 ---
 
@@ -72,27 +60,22 @@ N8N_LEADS_URL=https://seu-n8n.com/webhook/kairos-leads
 Cada agente é um script TypeScript autossuficiente:
 
 ```bash
-npx tsx src/agents/campaign-analyst.ts
-npx tsx src/agents/lead-scorer.ts
-npx tsx src/agents/niche-classifier.ts
-npx tsx src/agents/email-writer.ts
+npx tsx src/agents/{nome-do-agente}.ts
 ```
 
 Os outputs são salvos em `data/outputs/{squad}/{tipo}/` com prefixo do agente gerador:
 
 ```
-data/outputs/cold-prospecting/
-  reports/
-    campaign-analyst_campaign-2026-04-06.md
-    lead-scorer_scored-leads-2026-04-06.csv
-    niche-classifier_niche-map-2026-04-06.json
-  emails/
-    email-writer_emails-2026-04-06.json
+data/outputs/{squad}/
+  reports/   # relatórios gerados pelo squad
+  emails/    # outputs prontos para envio (quando aplicável)
 ```
 
 ---
 
-## Pipeline completo (squad cold-prospecting)
+## Pipeline de squad (exemplo)
+
+Cada squad define seu próprio pipeline. **Exemplo** — squad `cold-prospecting`:
 
 ```
 @campaign-analyst *analyze
@@ -103,7 +86,7 @@ data/outputs/cold-prospecting/
         ↓  gera: niche-classifier_niche-map-YYYY-MM-DD.json
 @email-writer *write 20
         ↓  gera: email-writer_emails-YYYY-MM-DD.json
-n8n lê emails e dispara
+(sistema externo de disparo lê os outputs e executa)
 ```
 
 Execução parcial é permitida — cada agente pode ser rodado individualmente.
@@ -112,23 +95,26 @@ Execução parcial é permitida — cada agente pode ser rodado individualmente.
 
 ## Agentes como personas no Claude Code
 
-O Kairos usa o Claude Code como ambiente de execução. Cada agente é uma **persona ativável** no chat:
+O Kairos usa o Claude Code como ambiente de execução. Cada agente é uma **persona ativável** com `@nome`:
 
+**Framework (sempre presente):**
+```
+@kairos   🌀  — governança do framework
+```
+
+**Squads (definidos pelo usuário — exemplo):**
 ```
 @campaign-analyst   Clio 📊  — análise de campanha
 @lead-scorer        Lex  🎯  — pontuação de leads
 @niche-classifier   Nix  🗂️  — classificação de nichos
 @email-writer       Eva  ✉️  — geração de e-mails
-@kairos             🌀       — governança do framework
 ```
 
-Para ativar, basta mencionar o agente pelo nome em uma sessão do Claude Code. Cada agente tem comandos próprios com prefixo `*`:
+Para ativar, basta mencionar o agente pelo nome. Cada agente tem comandos com prefixo `*`:
 
 ```
-@email-writer *write 10    # gera 10 e-mails
-@campaign-analyst *analyze # analisa campanha atual
-@lead-scorer *score        # pontua leads pendentes
 @kairos *status            # estado geral do sistema
+@kairos *new-squad         # criar novo squad
 ```
 
 ---
@@ -162,22 +148,18 @@ Comandos principais:
 ```
 kairos/
 ├── src/
-│   ├── agents/          # Scripts TypeScript — computação pura (sem AI) ou geração
-│   │   ├── campaign-analyst.ts
-│   │   ├── lead-scorer.ts
-│   │   ├── niche-classifier.ts
-│   │   └── email-writer.ts
+│   ├── agents/          # Scripts TypeScript dos agentes (adicionados por squad)
 │   └── tools/
 │       └── claude.ts    # Wrapper da Anthropic SDK — usar sempre este, nunca instanciar diretamente
 │
 ├── data/
 │   └── outputs/         # Outputs dos agentes (gitignored por conteúdo)
-│       └── cold-prospecting/
-│           ├── reports/ # Relatórios de campanha, scoring, nichos
-│           └── emails/  # E-mails gerados, prontos para o n8n
+│       └── {squad}/
+│           ├── reports/ # Relatórios gerados pelo squad
+│           └── emails/  # Outputs prontos para envio (quando aplicável)
 │
 ├── squads/
-│   └── cold-prospecting/
+│   └── {squad}/
 │       ├── squad.yaml           # Manifesto do squad
 │       ├── README.md
 │       ├── agents/              # Definições leves dos agentes
@@ -186,7 +168,7 @@ kairos/
 │
 ├── docs/
 │   ├── scope.md                 # PRD — escopo, arquitetura, objetivos, restrições
-│   ├── epics/                   # Epic files (epic-1 a epic-4)
+│   ├── epics/                   # Epic files
 │   ├── stories/                 # Stories de desenvolvimento do Kairos
 │   ├── framework/
 │   │   ├── agent-standards.md   # Padrões obrigatórios para criação de agentes
@@ -197,13 +179,13 @@ kairos/
 ├── .claude/
 │   ├── commands/kairos/agents/  # Personas completas dos agentes (YAML-in-Markdown)
 │   ├── rules/                   # Regras cross-cutting (lifecycle, handoff, authority...)
-│   └── skills/                  # Skills do Claude Code (n8n, UI, etc.)
+│   └── skills/                  # Skills configuradas pelo usuário/equipe
 │
 ├── .kairos-core/
 │   ├── core-config.yaml         # Configuração central e versão semântica
 │   ├── agents/                  # MEMORY.md persistente por agente
 │   ├── tasks/                   # Definições de tasks executáveis
-│   ├── data/                    # workflow-chains.yaml e dados de configuração
+│   ├── data/                    # KB, workers registry e dados de configuração
 │   └── runtime/                 # Handoffs e logs de execução (conteúdo gitignored)
 │
 ├── CHANGELOG.md
@@ -254,4 +236,4 @@ O Kairos usa um modelo de governança próprio para se auto-documentar e evoluir
 
 ## Licença
 
-MIT — uso pessoal de Filipe Leal.
+MIT

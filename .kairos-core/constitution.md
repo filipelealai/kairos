@@ -45,6 +45,20 @@
 16. Mudanças nas camadas L1 e L2 (ver `.claude/rules/framework-layers.md`) **requerem justificativa explícita** e revisão de @kairos.
 17. A constituição **não é editada** pelo executor — apenas @kairos pode propor mudanças, e apenas com bump MAJOR.
 
+## VI. Fronteira Framework / Usuário
+
+18. **O Kairos é a infraestrutura; squads, agentes e integrações são o que o usuário constrói com ela.** São coisas distintas. A identidade do framework não depende de nenhum squad específico, nenhuma skill ou integração particular.
+
+19. **Artefatos de framework** (infraestrutura): `.kairos-core/`, `.claude/rules/`, `.claude/commands/kairos/agents/`, `src/tools/`, hooks, tasks, templates, constituição. Estes definem o que o Kairos É.
+
+20. **Artefatos do usuário** (produtos do framework): squads em `squads/`, agents em `src/agents/`, skills em `.claude/skills/`, MCPs e integrações configuradas. Estes definem o que o usuário FAZ com o Kairos.
+
+21. **Documentação de framework descreve o framework genericamente.** Squads, pipelines, skills e integrações específicos do usuário só aparecem em docs de framework a título de exemplo, rotulados explicitamente como tal. Nunca apresentados como parte da definição do framework.
+
+22. **Ao versionar, revisar ou evoluir o Kairos**, `@kairos` não trata mudanças em conteúdo de squads do usuário como mudanças de framework — a menos que o framework em si tenha mudado (nova infraestrutura, nova rule, nova task de governança).
+
+23. **Regressão proibida** — nenhuma revisão futura de docs, stories ou changelog deve reclassificar conteúdo do usuário como conteúdo de framework.
+
 ---
 
 *Versão inicial criada em 2026-04-14.*

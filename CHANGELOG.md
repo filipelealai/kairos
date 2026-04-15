@@ -6,6 +6,23 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [1.3.1] — 2026-04-14
+
+### Adicionado
+
+- `.kairos-core/constitution.md` — **Seção VI: Fronteira Framework / Usuário** (princípios 18–23, L1): codifica a distinção entre infraestrutura do framework (`.kairos-core/`, rules, tasks, hooks) e artefatos do usuário (squads, agents, skills, integrações); proíbe que revisões futuras recategorizem conteúdo do usuário como conteúdo de framework
+
+### Modificado
+
+**Despersonalização dos docs de framework**
+- `README.md` — referências pessoais removidas; "Squad ativo: cold-prospecting" → "Como funciona" (exemplo genérico); "Como rodar um agente" generalizado (`{nome-do-agente}.ts`); "Pipeline completo" → "Pipeline de squad (exemplo)" com cold-prospecting rotulado explicitamente; estrutura do repositório sem filenames específicos de squad, `{squad}/` genérico, skills descritas como "configuradas pelo usuário/equipe"
+- `CLAUDE.md` — "Filipe Leal" removido; agentes de squad rotulados como "exemplo dos squads ativos neste projeto"; pipeline e diagrama de governança genéricos (`squads/*`); seção "Restrições Operacionais" agora espaço configurável pelo usuário com exemplos genéricos
+- `.claude/rules/external-integrations.md` — tabela de skills dividida em nativas (sempre disponíveis) vs. de projeto (configuradas pelo usuário/equipe); exemplos rotulados como "stack Supabase/GitHub — não específicos do Kairos"
+- `.kairos-core/constitution.md` — Seção I reescrita como princípio positivo sobre como usar ferramentas externas, sem menção a squads específicos
+- `.env.example` — reescrito com 7 categorias abrangentes (AI Providers, Automation, Database, Communication, Search, Version Control, Squad-specific); todos opcionais exceto `ANTHROPIC_API_KEY`; exemplo de squad-specific comentado no final
+
+---
+
 ## [1.3.0] — 2026-04-14
 
 ### Adicionado

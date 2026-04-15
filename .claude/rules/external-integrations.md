@@ -36,31 +36,38 @@ MCPs são preferíveis para **consultas que retornam dados estruturados**:
 
 ### Exemplos práticos
 
-| Tarefa | Preferir |
-|--------|----------|
-| `supabase migration new` / `db push` | CLI |
-| `supabase gen types` | CLI |
-| Consultar tabela / executar SQL | MCP (`execute_sql`) |
-| Inspecionar RLS policies | MCP |
-| `gh pr create` / `gh issue close` | CLI |
-| Listar PRs abertos com metadados | CLI (`gh pr list --json`) ou MCP |
-| Deploy de edge function | CLI (`supabase functions deploy`) |
-| Ver logs de edge function | MCP ou CLI (`supabase functions logs`) |
+Os exemplos abaixo usam Supabase e GitHub — ferramentas comuns, não específicas do Kairos. A lógica se aplica a qualquer serviço com CLI + MCP disponíveis.
+
+| Tarefa | Preferir | Exemplo |
+|--------|----------|---------|
+| Operação que muda estado | CLI | `supabase db push`, `gh pr create` |
+| Geração de artefatos | CLI | `supabase gen types`, `supabase migration new` |
+| Consulta / inspeção estruturada | MCP | `execute_sql`, `list_tables` |
+| Deploy | CLI | `supabase functions deploy`, `gh workflow run` |
+| Logs / métricas | MCP ou CLI com `--json` | `supabase functions logs` |
 
 ---
 
 ## Skills Disponíveis
 
-Skills ativas são listadas nos `system-reminder` do Claude Code. Exemplos relevantes para o Kairos:
+Skills ativas são listadas nos `system-reminder` do Claude Code — dependem da configuração do usuário/equipe.
+
+Antes de criar um script para uma tarefa, verificar se já existe uma skill que cobre o caso.
+
+**Skills nativas do Claude Code** (sempre disponíveis):
 
 | Skill | Quando usar |
 |-------|-------------|
 | `/schedule` | Agendar execuções periódicas de agentes (workers) |
 | `update-config` | Modificar `settings.json` — hooks, permissões, env vars |
-| `n8n-*` | Qualquer operação no n8n (workflows, nodes, validação) |
-| `claude-api` | Código que usa `@anthropic-ai/sdk` diretamente |
 
-Antes de criar um script para uma tarefa, verificar se já existe uma skill que cobre o caso.
+**Skills de projeto** variam conforme o que está configurado. Exemplos comuns:
+
+| Tipo de skill | Exemplos |
+|---------------|---------|
+| Automação/workflow | skills `n8n-*` se n8n-mcp estiver configurado |
+| AI/API | skill `claude-api` para código com Anthropic SDK |
+| UI/frontend | skills de componentes, design, etc. |
 
 ---
 
@@ -70,9 +77,9 @@ MCPs disponíveis dependem do projeto. No Kairos, verificar `.claude/settings.js
 
 **Diretrizes de uso:**
 
-1. **Ler a documentação antes de usar** — `mcp__n8n-mcp__tools_documentation`, `get_node`, etc. Não assumir parâmetros de operações desconhecidas.
+1. **Ler a documentação antes de usar** — MCPs geralmente expõem uma tool de documentação (ex: `tools_documentation`, `get_node`). Não assumir parâmetros de operações desconhecidas.
 2. **Operações de leitura primeiro** — listar antes de criar, verificar antes de modificar.
-3. **Validar antes de executar** — MCPs de workflow (n8n, etc.) geralmente têm tools de validação — usá-las.
+3. **Validar antes de executar** — MCPs de workflow geralmente têm tools de validação — usá-las.
 4. **Registrar integrações no manifesto do squad** — se um squad depende de um MCP, declarar em `squads/{squad}/squad.yaml`.
 
 ---

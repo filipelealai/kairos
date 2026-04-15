@@ -6,8 +6,7 @@ Kairos é um framework de orquestração de agentes de IA construído sobre o Cl
 
 Kairos organiza trabalho em **squads**: grupos de agentes especializados que operam um domínio. O framework fornece governança, memória persistente, handoffs, workers agendados e ferramentas para criar e evoluir squads ao longo do tempo.
 
-**Uso atual:** pessoal (Filipe Leal), squad único de prospecção B2B.
-**Arquitetura:** desenhada para múltiplos squads, múltiplas integrações, uso individual ou em equipe.
+**Arquitetura:** múltiplos squads, múltiplas integrações, uso individual ou em equipe.
 
 Este repo contém:
 - **Agentes TypeScript** — computação pura para tarefas específicas de cada squad
@@ -58,8 +57,8 @@ npx tsx src/agents/nome-do-agente.ts
 Este espaço é para restrições manuais sobre o que o Claude Code pode ou não fazer neste projeto — independente do que o framework permite.
 
 Exemplos do que colocar aqui:
-- "Não executar operações destrutivas no n8n (delete workflow, delete executions) sem confirmação explícita"
-- "Não modificar workflows n8n marcados como produção diretamente"
+- "Não executar operações destrutivas (delete, drop, reset) sem confirmação explícita"
+- "Não modificar workflows/pipelines marcados como produção diretamente"
 - "Não criar migrações de banco sem revisão manual"
 
 > As diretrizes de como usar skills, MCPs e APIs estão em `.claude/rules/external-integrations.md`.
@@ -72,7 +71,10 @@ Exemplos do que colocar aqui:
 **Governança (framework):**
 - `@kairos` — orquestrador e governador do Kairos. Versiona, cria squads, gerencia stories, tem autoridade sobre tudo.
 
-**Operacional (squads — fazem o trabalho de negócio de Filipe):**
+**Operacional (squads — definidos pelo usuário/equipe):**
+
+Os agentes de squad são criados com `@kairos *new-squad` e variam por projeto.
+Exemplo dos squads ativos neste projeto:
 
 | Agente | Persona | Escopo |
 |--------|---------|--------|
@@ -92,11 +94,13 @@ Use prefixo `*` dentro de um agente ativo:
 
 | Situação | Use |
 |----------|-----|
-| Gerar e-mails, analisar campanha, pontuar leads | Agente do squad correspondente |
+| Trabalho operacional de um squad | Agente do squad correspondente |
 | Evoluir o Kairos, versionar, criar novo squad | `@kairos` |
 | Construir/modificar o Kairos (código, arquivos) | Claude Code na conversa principal |
 
-### Pipeline Operacional (squad cold-prospecting)
+### Pipeline de Squad (exemplo)
+
+Cada squad define seu pipeline. Exemplo com os squads ativos:
 
 ```
 @campaign-analyst *analyze → @lead-scorer *score
@@ -113,8 +117,8 @@ O próximo agente detecta e sugere o próximo comando automaticamente na ativaç
 ```
 @kairos (governa o framework)
       ↓ autoridade sobre
-squads/cold-prospecting/ (trabalho operacional)
-      ↓ executado por
+squads/* (trabalho operacional — definido pelo usuário)
+      ↓ implementado por
 Claude Code na conversa principal (constrói e mantém o Kairos)
 ```
 
