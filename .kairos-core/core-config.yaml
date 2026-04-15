@@ -1,6 +1,6 @@
-version: 1.3.1
+version: 2.0.0
 installedAt: '2026-04-06T00:00:00.000Z'
-updatedAt: '2026-04-14T00:00:00.000Z'
+updatedAt: '2026-04-15T00:00:00.000Z'
 
 project:
   name: kairos
@@ -49,6 +49,6 @@ versioning:
   authority: kairos
 
 devLoadAlwaysFiles:
-  - docs/framework/agent-standards.md
-  - docs/framework/data-flow.md
+  - .kairos-core/docs/agent-standards.md
+  - .kairos-core/docs/data-flow.md
   - docs/scope.md

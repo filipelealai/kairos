@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # Agent Handoff Protocol
 
 ## Propósito
@@ -63,7 +68,7 @@ Ao ativar, o agente verifica `.kairos-core/runtime/handoffs/` pelo handoff não 
 ```
 1. Listar arquivos em .kairos-core/runtime/handoffs/ ordenados por timestamp (mais recente primeiro)
 2. Pegar o primeiro com consumed: false
-3. Se from_agent + last_command tem match em .kairos-core/data/workflow-chains.yaml:
+3. Se from_agent + last_command tem match em squads/{squad}/data/workflow-chains.yaml (definido por squad):
    → Exibir "💡 Sugerido: *{next_command}"
 4. Marcar handoff como consumed: true
 ```

@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 task: Kairos Architecture
 responsavel: "@kairos"
 responsavel_type: agent
@@ -9,14 +11,14 @@ Entrada: |
     Valores: "stack" | "data-flow" | "agents" | "tasks" | "decisions" | "all" (padrão: "all")
 Saida: |
   - relatório de estado arquitetural com checks ✅/⚠️/❌
-  - docs/framework/data-flow.md atualizado (se divergências encontradas)
+  - .kairos-core/docs/data-flow.md atualizado (se divergências encontradas)
   - sugestões de decisões a registrar (se ADRs ausentes)
 Checklist:
   - "[ ] Verificar consistência da stack (package.json vs docs)"
   - "[ ] Verificar consistência de agentes (core-config vs arquivos)"
   - "[ ] Verificar consistência de tasks (agentes vs arquivos de task)"
   - "[ ] Verificar data-flow: campos do webhook vs código TypeScript"
-  - "[ ] Verificar referências cruzadas em docs/framework/"
+  - "[ ] Verificar referências cruzadas em .kairos-core/docs/"
   - "[ ] Exibir relatório com checks marcados"
   - "[ ] Listar divergências e sugestões de atualização"
 ---
@@ -24,7 +26,7 @@ Checklist:
 # *architecture — Auditoria Arquitetural do Kairos
 
 Esta task inspeciona a consistência entre o que está documentado e o que está implementado.
-É a responsável por manter `docs/framework/data-flow.md` e `docs/framework/agent-standards.md` em dia.
+É a responsável por manter `.kairos-core/docs/data-flow.md` e `.kairos-core/docs/agent-standards.md` em dia.
 
 ---
 
@@ -93,30 +95,30 @@ Marcar: ✅ presente e válida / ⚠️ frontmatter incompleto / ❌ ausente
 
 ### Passo 4 — Verificar Data Flow
 
-Leia `docs/framework/data-flow.md` e compare com o código:
+Leia `.kairos-core/docs/data-flow.md` e compare com o código:
 
 **Campos do webhook:**
-- Ler `docs/framework/data-flow.md` seção "Campos do Lead"
+- Ler `.kairos-core/docs/data-flow.md` seção "Campos do Lead"
 - Ler `src/agents/campaign-analyst.ts` (ou equivalente) — quais campos são lidos?
 - Se campo usado no código mas não documentado → ⚠️ "Campo não documentado: {campo}"
 - Se campo documentado mas nunca usado no código → ⚠️ "Campo documentado mas sem uso encontrado: {campo}"
 
 **Outputs dos agentes:**
 - Verificar se os formatos de output documentados batem com o que o código gera
-- `data/outputs/cold-prospecting/reports/` — verificar padrão de nomenclatura
-- `data/outputs/cold-prospecting/emails/` — verificar schema do JSON
+- `data/outputs/{squad}/reports/` — verificar padrão de nomenclatura
+- `data/outputs/{squad}/emails/` (quando aplicável) — verificar schema do JSON
 
 **Handoff format:**
 - Verificar se `.kairos-core/runtime/handoffs/` existe (runtime, pode não ter arquivos)
-- Verificar se `.kairos-core/data/workflow-chains.yaml` existe e está consistente
+- Verificar se `squads/{squad}/data/workflow-chains.yaml` existe e está consistente (quando o squad define chains)
 
 Marcar cada item: ✅ consistente / ⚠️ possível divergência / ❌ divergência confirmada
 
 ---
 
-### Passo 5 — Verificar Referências em docs/framework/
+### Passo 5 — Verificar Referências em .kairos-core/docs/
 
-Para cada arquivo em `docs/framework/`:
+Para cada arquivo em `.kairos-core/docs/`:
 - Links internos (`[texto](../...)`) apontam para arquivos que existem?
 - Caminhos de arquivo mencionados no texto existem no repo?
 - Agentes mencionados existem em `.claude/commands/kairos/agents/`?
@@ -127,7 +129,7 @@ Marcar: ✅ OK / ⚠️ referência não verificável / ❌ referência quebrada
 
 ### Passo 6 — Verificar Decisões Arquiteturais (ADRs lightweight)
 
-Verificar se existe `docs/framework/decisions.md` (ADR log):
+Verificar se existe `.kairos-core/docs/decisions.md` (ADR log):
 - Se não existe → ⚠️ "Nenhum log de decisões arquiteturais encontrado"
 - Se existe → verificar se decisões-chave estão registradas
 
@@ -154,11 +156,9 @@ Data: {hoje}
   {✅/⚠️/❌} Consistência docs vs código: {nota}
 
 ━━━ AGENTES ━━━
-  {squad cold-prospecting}:
-    {✅/⚠️/❌} campaign-analyst: {nota}
-    {✅/⚠️/❌} lead-scorer: {nota}
-    {✅/⚠️/❌} niche-classifier: {nota}
-    {✅/⚠️/❌} email-writer: {nota}
+  {para cada squad ativo}:
+    {✅/⚠️/❌} {agente}: {nota}
+    ...
   {✅/⚠️/❌} kairos: {nota}
 
 ━━━ TASKS DE GOVERNANÇA ━━━
@@ -172,7 +172,7 @@ Data: {hoje}
   {✅/⚠️/❌} workflow-chains.yaml: {nota}
 
 ━━━ REFERÊNCIAS ━━━
-  {✅/⚠️/❌} docs/framework/: {nota}
+  {✅/⚠️/❌} .kairos-core/docs/: {nota}
   {✅/⚠️/❌} Links internos: {nota}
 
 ━━━ DECISÕES ━━━
@@ -201,8 +201,8 @@ Data: {hoje}
 Se divergências de data-flow forem encontradas (⚠️ ou ❌), `@kairos` pode:
 
 1. Exibir diff proposto ao usuário
-2. Aguardar confirmação: "Posso atualizar docs/framework/data-flow.md com estas correções?"
+2. Aguardar confirmação: "Posso atualizar .kairos-core/docs/data-flow.md com estas correções?"
 3. Após confirmação → atualizar o arquivo
 4. Registrar no Change Log do data-flow.md (se o arquivo tiver um)
 
-**Nunca atualizar automaticamente sem confirmação explícita** — mudanças em docs/framework/ são estruturais.
+**Nunca atualizar automaticamente sem confirmação explícita** — mudanças em .kairos-core/docs/ são estruturais.

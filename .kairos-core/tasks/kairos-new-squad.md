@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 task: Kairos New Squad
 responsavel: "@kairos"
 responsavel_type: agent
@@ -9,15 +11,15 @@ Entrada: |
 Saida: |
   - squads/{squad_name}/ com estrutura completa e conteúdo real (não stubs vazios)
   - .kairos-core/core-config.yaml atualizado (novo squad em agents.squads)
-  - docs/epics/epic-4-novos-escopos.md atualizado (candidato removido, se aplicável)
-  - handoff condicional para *new-story (epic 4)
+  - epic de candidatos do usuário atualizado (se existir e houver correspondência)
+  - handoff condicional para *new-story
 Checklist:
   - "[ ] Elicitar escopo, propósito e contexto do squad"
   - "[ ] Elicitar agentes: nome, persona, responsabilidade, comando principal"
   - "[ ] Elicitar fonte de dados e integrações externas"
   - "[ ] Elicitar outputs esperados por agente"
   - "[ ] Elicitar pipeline: ordem, execução parcial permitida"
-  - "[ ] Elicitar integrações com n8n ou sistemas externos"
+  - "[ ] Elicitar integrações com sistemas externos"
   - "[ ] Confirmar arquitetura completa antes de criar qualquer arquivo"
   - "[ ] Criar squads/{squad_name}/squad.yaml (com conteúdo real)"
   - "[ ] Criar squads/{squad_name}/README.md"
@@ -26,32 +28,21 @@ Checklist:
   - "[ ] Criar squads/{squad_name}/workflows/full-pipeline.md"
   - "[ ] Criar .kairos-core/agents/{id}/MEMORY.md por agente"
   - "[ ] Atualizar .kairos-core/core-config.yaml"
-  - "[ ] Atualizar docs/epics/epic-4-novos-escopos.md"
   - "[ ] Oferecer handoff condicional para *new-story"
 ---
 
 # *new-squad — Criação de Squad com Elicitação Guiada
 
-Um squad é um grupo de agentes especializados que colaboram para um fluxo de trabalho específico de Filipe.
+Um squad é um grupo de agentes especializados que colaboram para um fluxo de trabalho específico do usuário/equipe.
 Esta task elicita tudo o que é necessário para scaffoldar uma estrutura completa e útil — não stubs genéricos.
 
 ---
 
-## Pré-passo — Detectar candidatos no Epic 4
+## Pré-passo — Detectar candidatos em epic de planejamento (opcional)
 
-Antes de perguntar qualquer coisa, ler `docs/epics/epic-4-novos-escopos.md` e verificar se há candidatos listados.
+Se o usuário mantém um epic listando squads candidatos (ex: "Novos Escopos"), ler esse epic e apresentar os candidatos antes de elicitar do zero.
 
-Se houver candidatos:
-```
-Candidatos registrados no Epic 4:
-  1. lead-followup — acompanhamento de leads que responderam
-  2. content-scheduler — planejamento de conteúdo para redes sociais
-  3. client-onboarding — onboarding de novos clientes da Vendoteca
-  4. financial-tracker — análise de receita e projeções financeiras
-  5. Outro (descrever)
-
-Qual destes, ou é um novo escopo?
-```
+Se não houver epic de candidatos: pular este passo e ir direto para a elicitação completa.
 
 Se não houver candidatos (ou o nome já foi passado como argumento) → prosseguir para elicitação.
 
@@ -73,16 +64,13 @@ ex: lead-followup, content-scheduler, financial-tracker
 
 **Pergunta 1.2 — O que faz**
 ```
-Descreva em 2-3 frases: o que este squad faz, para qual fluxo de trabalho de Filipe,
+Descreva em 2-3 frases: o que este squad faz, para qual fluxo de trabalho,
 e qual problema resolve ou qual resultado entrega.
 ```
 
 **Pergunta 1.3 — Contexto de negócio**
 ```
-Este squad está ligado a qual contexto?
-  1. Agência Vendoteca (prospecção, clientes, operação da agência)
-  2. Filipe pessoalmente (finanças, agenda, conteúdo pessoal)
-  3. Outro (descrever)
+Este squad está ligado a qual contexto (domínio de trabalho, área de atuação)?
 ```
 
 ---
@@ -138,8 +126,8 @@ De onde vêm os dados que este squad processa?
 ```
 O que cada agente gera?
 Para cada agente, informe:
-  - Arquivo gerado (path e formato): ex: data/outputs/cold-prospecting/reports/followup-YYYY-MM-DD.md
-  - Destino final: apenas lido pelo próximo agente / enviado para n8n / exibido para Filipe / outro
+  - Arquivo gerado (path e formato): ex: data/outputs/{squad}/reports/followup-YYYY-MM-DD.md
+  - Destino final: apenas lido pelo próximo agente / enviado para integração externa / exibido ao usuário / outro
 
 (Liste um por linha: agente → path → destino)
 ```
@@ -168,9 +156,9 @@ Se não: o squad opera de forma autônoma com os dados disponíveis.
 **Pergunta 4.3 — Frequência de uso**
 ```
 Com que frequência este squad deve ser rodado?
-  1. Diariamente (parte da rotina de Filipe)
+  1. Diariamente (parte de uma rotina fixa)
   2. Semanalmente
-  3. Sob demanda (quando Filipe quiser)
+  3. Sob demanda
   4. Triggered por evento (qual?)
 ```
 
@@ -225,13 +213,13 @@ name: {squad_name}
 version: 0.1.0
 description: >
   {descrição completa — 2-3 linhas}
-author: Filipe Leal
+author: {autor do squad}
 
 kairos:
   minVersion: "{versão atual do core-config.yaml}"
   type: squad
   scope: {squad_name}
-  context: {vendoteca | pessoal | outro}
+  context: {contexto do usuário ou equipe}
 
 components:
   agents:
@@ -243,8 +231,8 @@ components:
 
 config:
   scope: ../../docs/scope.md
-  agent-standards: ../../docs/framework/agent-standards.md
-  data-flow: ../../docs/framework/data-flow.md
+  agent-standards: ../../.kairos-core/docs/agent-standards.md
+  data-flow: ../../.kairos-core/docs/data-flow.md
 
 pipeline:
   order:
@@ -461,16 +449,17 @@ Adicionar em `agents.squads`:
 
 ---
 
-## Atualizar Epic 4
+## Atualizar epic de candidatos (se existir)
 
-Abrir `docs/epics/epic-4-novos-escopos.md`:
+Se o usuário mantém um epic listando squads candidatos e o novo squad estava lá:
 
-1. Se o squad estava na tabela de candidatos → remover da tabela de candidatos
-2. Não há stories a adicionar ainda (epic 4 rastreia squads entregues — story será criada via *new-story)
-3. Adicionar no Change Log:
+1. Remover da tabela de candidatos
+2. Adicionar no Change Log do epic:
    ```
    | {data} | Squad `{squad_name}` scaffoldado — implementação pendente |
    ```
+
+Se não há epic de candidatos: pular este passo.
 
 ---
 

@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # Constituição do Kairos
 
 > Princípios não-negociáveis do framework. Nada aqui pode ser violado, contornado ou ignorado — por nenhum agente, em nenhum contexto.
@@ -18,7 +23,7 @@
 
 3. **Escopo de autoridade por squad** — cada squad define quais sistemas externos seus agentes têm autoridade para usar. Não existe autoridade implícita de um agente sobre sistemas de outro squad.
 
-4. **Restrições operacionais são de squad, não de framework** — "nunca enviar e-mail diretamente" é um contrato do squad cold-prospecting com o n8n, não uma limitação do Kairos como framework.
+4. **Restrições operacionais são de squad, não de framework** — regras como "nunca enviar e-mail diretamente" ou "nunca escrever em certa fonte de dados" são contratos de um squad específico com suas integrações, não limitações do Kairos como framework.
 
 ## II. Controle de Versão e Push
 
@@ -59,6 +64,12 @@
 
 23. **Regressão proibida** — nenhuma revisão futura de docs, stories ou changelog deve reclassificar conteúdo do usuário como conteúdo de framework.
 
+24. **O manifesto é autoritativo.** A fronteira framework/usuário é definida pelo arquivo `.kairos-core/manifest.yaml` — não por convenção de path, frontmatter ou localização de diretório. Um arquivo pertence ao framework **se e somente se** ele (ou uma seção declarada dele, no caso de arquivos mistos) está listado no manifesto. Frontmatter `kairos-owned: true` é marker visível, não fonte de verdade.
+
+25. **Contrato de update (default-deny).** Qualquer mecanismo de atualização do Kairos (CLI futuro, operação de `@kairos`, script de manutenção) **só pode criar, substituir ou remover arquivos/seções listados no manifesto**. Arquivos fora do manifesto, ou conteúdo fora de blocos `<!-- KAIROS-MANAGED-... -->` em arquivos mistos, são do usuário e **nunca** podem ser tocados por um update.
+
+26. **Origem de componentes reconhecida.** A arquitetura distingue três fluxos de origem para qualquer artefato: (a) **oficial shipped** — adicionado pelo instalador/updater do Kairos e listado no manifesto; (b) **user-criado** — adicionado pelo usuário após instalação, nunca listado; (c) **pré-existente (brownfield)** — presente antes da instalação, não listado no manifesto. Updates só tocam em (a). (b) e (c) são intocáveis por definição.
+
 ---
 
-*Versão inicial criada em 2026-04-14.*
+*Versão inicial criada em 2026-04-14. Princípios 24-26 adicionados em 2.0.0 (2026-04-15).*

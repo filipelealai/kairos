@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 task: Kairos Help
 responsavel: "@kairos"
 responsavel_type: agent
@@ -124,7 +126,7 @@ DOCUMENTAÇÃO
   *architecture         Auditoria de consistência: stack (package.json vs docs),
                         agentes (core-config vs arquivos), tasks (commands vs arquivos),
                         data-flow (campos do webhook vs código TS).
-                        Dono de docs/framework/data-flow.md — propõe atualizações
+                        Dono de .kairos-core/docs/data-flow.md — propõe atualizações
                         se encontrar divergências.
 
 META
@@ -192,18 +194,14 @@ FLUXOS COMUNS
 ```
 QUANDO NÃO USAR @kairos
 ─────────────────────────────────────────────────────────────
-Use os agentes de squad para trabalho operacional:
-
-  Gerar e-mails de prospecção    → @email-writer *write N
-  Analisar campanha              → @campaign-analyst *analyze
-  Pontuar leads                  → @lead-scorer *score
-  Classificar nichos             → @niche-classifier *classify
+Use os agentes de squad para trabalho operacional.
+Cada squad define seus próprios agentes e comandos — ver squads/{squad}/README.md.
 
 @kairos não faz trabalho de negócio — só governa como o Kairos evolui.
 
 Regra rápida:
-  "Estou tentando fazer algo para a Vendoteca/Filipe?" → squad
-  "Estou tentando evoluir o próprio Kairos?"          → @kairos
+  "Estou tentando executar trabalho operacional de um squad?" → squad
+  "Estou tentando evoluir o próprio Kairos?"                 → @kairos
 ```
 
 ---
@@ -231,7 +229,7 @@ REGRAS IMPORTANTES
 • *validate-story valida o DOCUMENTO; *review valida a IMPLEMENTAÇÃO.
   São duas coisas diferentes e complementares.
 
-• docs/scope.md e docs/framework/ são gerenciados por @kairos.
+• docs/scope.md e .kairos-core/docs/ são gerenciados por @kairos.
   Nenhum agente de squad modifica esses arquivos.
 ```
 
@@ -358,8 +356,8 @@ SQUADS — O que são e como criar
 ─────────────────────────────────────────────────────────────
 Squad = grupo de agentes especializados para um fluxo de trabalho específico.
 
-Squad ativo: cold-prospecting (Clio, Lex, Nix, Eva)
-  Pipeline: @campaign-analyst → @lead-scorer → @niche-classifier → @email-writer
+Squads ativos: listados em .kairos-core/core-config.yaml (campo agents.squads)
+  Cada squad define seu próprio pipeline em squads/{squad}/workflows/
 
 Criar novo squad:
   *new-squad

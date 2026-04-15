@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 id: kairos-doctor
 title: Health Check do Framework Kairos
 agent: kairos
@@ -30,9 +32,11 @@ Não verifica comportamento — verifica que o framework está fisicamente ínte
 
 **1. Fundação (L1)**
 - [ ] `.kairos-core/constitution.md` existe
+- [ ] `.kairos-core/manifest.yaml` existe
 - [ ] `.claude/rules/agent-authority.md` existe
 - [ ] `.claude/rules/framework-layers.md` existe
 - [ ] `.claude/rules/ids-principles.md` existe
+- [ ] `.claude/rules/ownership.md` existe
 
 **2. Configuração Central (L2)**
 - [ ] `.kairos-core/core-config.yaml` existe e tem campo `version`
@@ -73,6 +77,34 @@ Para cada `*.story.md` em `docs/stories/`:
 Para stories com Status ≠ Done: verificar se arquivos citados em backticks existem.
 - [ ] Arquivos `.md`, `.ts`, `.yaml` mencionados explicitamente nos ACs existem
   → ⚠️ WARN (não FAIL — pode ser um arquivo a criar)
+
+**9. Integridade de Ownership (manifesto)**
+
+Ler `.kairos-core/manifest.yaml` e validar cada entrada:
+
+- [ ] Para cada `owned_files[*].path`: arquivo existe no filesystem
+  → ❌ FAIL com "manifesto lista {path} mas arquivo não existe" se ausente
+- [ ] Para cada `owned_files[*]`: calcular sha256 do arquivo e comparar com `sha256` declarado
+  → ⚠️ WARN "drift de conteúdo em {path}" se divergir (pode ser edit legítimo do usuário
+     em arquivo framework — requer atenção mas não é fatal)
+- [ ] Para cada `owned_sections[*].path`: arquivo existe
+  → ❌ FAIL se ausente
+- [ ] Para arquivos `.md` com frontmatter `kairos-owned: true`: validar que path está em
+  `owned_files`
+  → ⚠️ WARN "arquivo marca-se como kairos-owned mas não está no manifesto: {path}"
+- [ ] Para arquivos em `owned_files` com extensão `.md`: validar que têm frontmatter
+  `kairos-owned: true`
+  → ⚠️ WARN "arquivo no manifesto sem frontmatter kairos-owned: {path}"
+
+**10. Validade de Marcadores em Arquivos Mistos**
+
+Para cada entrada em `owned_sections[*]` do tipo `markdown_blocks`:
+
+- [ ] Para cada `blocks[*]`: o arquivo contém exatamente um `start` e um `end` com o
+  mesmo `name`, e o `start` aparece antes do `end`
+  → ❌ FAIL "marker {name} ausente/desemparelhado em {path}" se inválido
+- [ ] Nenhum marker órfão (`KAIROS-MANAGED-START/END` sem par) existe no arquivo
+  → ❌ FAIL se houver
 
 ---
 

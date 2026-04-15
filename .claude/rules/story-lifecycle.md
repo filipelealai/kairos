@@ -1,9 +1,14 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # Story Lifecycle — Protocolo do Executor
 
 ## Quem é o Executor
 
 O executor é o **Claude Code na conversa principal** (sem persona de agente ativa).
-Quando Filipe pede para implementar o que uma story descreve, Claude Code está atuando como executor.
+Quando o usuário pede para implementar o que uma story descreve, Claude Code está atuando como executor.
 
 Este protocolo define o que o executor **deve fazer** ao longo do ciclo de vida de uma story.
 
@@ -20,7 +25,7 @@ Draft → In Progress → In Review → Done
 | `Draft` | Criada, aguardando execução | @kairos cria |
 | `In Progress` | Executor iniciou o trabalho | Executor seta ao começar |
 | `In Review` | Implementação concluída, aguarda @kairos *review | Executor seta ao terminar |
-| `Done` | @kairos *review retornou PASS/RESSALVA e Filipe aprovou | @kairos transita após gate |
+| `Done` | @kairos *review retornou PASS/RESSALVA e o usuário aprovou | @kairos transita após gate |
 
 ---
 

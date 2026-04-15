@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 task: Kairos New Epic
 responsavel: "@kairos"
 responsavel_type: agent
@@ -61,7 +63,7 @@ Quais são os critérios objetivos de conclusão?
 Liste pelo menos 3 itens verificáveis (eles virarão checkboxes).
 
 Exemplos de bons critérios:
-  - "Workflow n8n lê data/outputs/cold-prospecting/emails/ e dispara e-mails automaticamente"
+  - "Integração externa do squad lê data/outputs/{squad}/ e executa ação downstream"
   - "Task kairos-xyz.md implementada e funcional"
   - "Agente X documentado em .claude/commands/ e squads/"
 

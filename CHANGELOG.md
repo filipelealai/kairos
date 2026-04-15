@@ -6,6 +6,80 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [2.0.0] — 2026-04-15
+
+**Breaking:** segregação operacional framework × usuário via manifesto de ownership. Updates futuros seguem contrato default-deny. Requer atenção em instalações existentes que carreguem customizações em arquivos agora framework-owned.
+
+### Adicionado
+
+**Manifesto de ownership (L1)**
+- `.kairos-core/manifest.yaml` — fonte autoritativa do que é framework. Lista 37 `owned_files` com `layer` (L1/L2/L3) e `sha256`. Declara 4 `owned_sections` para arquivos mistos: blocos managed em `CLAUDE.md`, chaves `hooks` em `.claude/settings.json`, chaves `framework`/`runtime`/`versioning` em `.kairos-core/core-config.yaml`, categorias shipped em `.env.example`.
+- `.claude/rules/ownership.md` — rule L1 com contrato operacional: default-deny, três fluxos de origem (oficial shipped / user-criado / brownfield pré-existente), regras para @kairos e executor ao modificar/criar/remover arquivos, contrato de arquivos mistos, casos de HALT.
+
+**Constituição — Seção VI expandida**
+- Princípio 24 (manifesto autoritativo) — nenhuma convenção de path ou frontmatter sobrepuja o manifesto
+- Princípio 25 (contrato de update default-deny) — updates futuros não tocam em arquivos fora do manifesto
+- Princípio 26 (três fluxos de origem) — (a) oficial shipped, (b) user-criado, (c) brownfield pré-existente
+
+**Squad rules de cold-prospecting relocadas**
+- `squads/cold-prospecting/rules/campaign-lifecycle.md` (ex-`.claude/rules/`)
+- `squads/cold-prospecting/rules/memory-imports.md` (ex-`.claude/rules/agent-memory-imports.md`)
+- `squads/cold-prospecting/rules/agent-authority.md` — matrizes dos agentes Clio/Lex/Nix/Eva (extraídas do `.claude/rules/agent-authority.md` original)
+- `squads/cold-prospecting/data/workflow-chains.yaml` (ex-`.kairos-core/data/`)
+- `squads/cold-prospecting/docs/data-flow.md` — fields do webhook, paths cold-prospecting, handoff example (extraídos de `docs/framework/data-flow.md`)
+- `squads/cold-prospecting/docs/stories/1.1`, `1.2`, `2.1.story.md` (ex-`docs/stories/`)
+- `squads/cold-prospecting/docs/epics/epic-1`, `epic-2`, `epic-4*.md` (ex-`docs/epics/`)
+
+**Frontmatter `kairos-owned: true` + `kairos-version: 2.0.0`** em todos os 30+ markdown files do manifesto (marker de visibilidade — manifesto permanece autoritativo).
+
+**Doctor checks de ownership**
+- `.kairos-core/tasks/kairos-doctor.md` — novas checks 9 (integridade manifesto vs. filesystem + SHA drift + cross-check frontmatter) e 10 (validade de markers em arquivos mistos).
+
+**Documentação de transição (instância, não framework)**
+- `docs/public-repo-transition.md` — estratégia gitignore + branch para quando este repo virar o framework público `@kairos/core`. Não executa a transição, documenta o caminho. Classificado como **user/instance** (fora do manifesto): é metadado deste repo específico, não shipped em instalações futuras.
+
+**CLAUDE.md**
+- Novo bloco managed `<!-- KAIROS-MANAGED-START: framework-conventions -->` envolvendo o preamble (preamble + convenções). Seção "Restrições Operacionais" explicitamente user-owned.
+- Nova seção "Squads ativos" user-owned com imports de `squads/cold-prospecting/rules/*` via sintaxe `@path`.
+
+### Modificado
+
+**Framework rules**
+- `.claude/rules/agent-authority.md` — reduzido para conter apenas autoridade do @kairos + regras universais. Matrizes específicas de squad movidas para `squads/{squad}/rules/agent-authority.md`.
+- `.claude/rules/framework-layers.md` — adicionado parágrafo autoritativo: classificação L1-L3 é declarada no manifesto, não por path. `ownership.md` incluído na tabela L1.
+
+**Framework data despoluído**
+- `.kairos-core/data/kairos-kb.md` — split: parte instância (webhook, tiers R$, verticais) removida; parte framework (decisões arquiteturais genéricas, YAML personas, naming, output paths, pipeline versioning) permanece.
+- `.kairos-core/docs/data-flow.md` (ex-`docs/framework/data-flow.md`) — split: fields webhook + paths cold-prospecting removidos; shape de handoff + padrões de output permanecem.
+
+**Docs framework relocados para `.kairos-core/docs/`**
+- `docs/framework/agent-standards.md` → `.kairos-core/docs/agent-standards.md`
+- `docs/framework/data-flow.md` → `.kairos-core/docs/data-flow.md`
+- Diretório `docs/framework/` eliminado — regra operacional: **`docs/` é 100% user-owned, sem exceção**. Framework-owned markdown vive em `.kairos-core/`.
+- Referências atualizadas em: `README.md`, `.kairos-core/core-config.yaml` (`devLoadAlwaysFiles`), `.claude/hooks/kairos-code-intel.cjs`, `.kairos-core/tasks/kairos-architecture.md`, `.kairos-core/tasks/kairos-help.md`, `.kairos-core/tasks/kairos-new-squad.md` (template de squad), `squads/cold-prospecting/{squad.yaml,README.md,docs/data-flow.md}`.
+
+**Core config**
+- `version: 1.3.1 → 2.0.0`, `updatedAt: 2026-04-15`
+- `devLoadAlwaysFiles` aponta para `.kairos-core/docs/` (antes `docs/framework/`)
+
+### Removido
+
+- `.claude/rules/campaign-lifecycle.md` — movido para `squads/cold-prospecting/rules/`
+- `.claude/rules/agent-memory-imports.md` — movido para `squads/cold-prospecting/rules/memory-imports.md`
+- `.kairos-core/data/workflow-chains.yaml` — movido para `squads/cold-prospecting/data/`
+- `docs/stories/{1.1,1.2,2.1}.story.md` — movidos para `squads/cold-prospecting/docs/stories/`
+- `docs/epics/epic-{1,2,4}-*.md` — movidos para `squads/cold-prospecting/docs/epics/`
+
+### Migração para instalações existentes
+
+Este bump não tem migração automática — é breaking por design. Ao aplicar manualmente:
+
+1. Rodar `@kairos *doctor` para identificar arquivos framework com drift (modificações locais)
+2. Resolver drifts caso-a-caso: (a) é customização legítima do usuário → mover para arquivo user-owned; (b) é fix do framework → contribuir upstream via story
+3. Arquivos user-criados **nunca** precisam ação — manifesto default-deny já os protege
+
+---
+
 ## [1.3.1] — 2026-04-14
 
 ### Adicionado
@@ -16,7 +90,7 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 **Despersonalização dos docs de framework**
 - `README.md` — referências pessoais removidas; "Squad ativo: cold-prospecting" → "Como funciona" (exemplo genérico); "Como rodar um agente" generalizado (`{nome-do-agente}.ts`); "Pipeline completo" → "Pipeline de squad (exemplo)" com cold-prospecting rotulado explicitamente; estrutura do repositório sem filenames específicos de squad, `{squad}/` genérico, skills descritas como "configuradas pelo usuário/equipe"
-- `CLAUDE.md` — "Filipe Leal" removido; agentes de squad rotulados como "exemplo dos squads ativos neste projeto"; pipeline e diagrama de governança genéricos (`squads/*`); seção "Restrições Operacionais" agora espaço configurável pelo usuário com exemplos genéricos
+- `CLAUDE.md` — referências pessoais removidas; agentes de squad rotulados como "exemplo dos squads ativos neste projeto"; pipeline e diagrama de governança genéricos (`squads/*`); seção "Restrições Operacionais" agora espaço configurável pelo usuário com exemplos genéricos
 - `.claude/rules/external-integrations.md` — tabela de skills dividida em nativas (sempre disponíveis) vs. de projeto (configuradas pelo usuário/equipe); exemplos rotulados como "stack Supabase/GitHub — não específicos do Kairos"
 - `.kairos-core/constitution.md` — Seção I reescrita como princípio positivo sobre como usar ferramentas externas, sem menção a squads específicos
 - `.env.example` — reescrito com 7 categorias abrangentes (AI Providers, Automation, Database, Communication, Search, Version Control, Squad-specific); todos opcionais exceto `ANTHROPIC_API_KEY`; exemplo de squad-specific comentado no final

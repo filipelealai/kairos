@@ -1,6 +1,6 @@
-# Fluxo de Dados — Kairos
+# cold-prospecting — Fluxo de Dados
 
-> Referência para entender como os dados entram, transitam e saem do sistema.
+> Fluxo específico do squad cold-prospecting. Padrões genéricos do framework vivem em `.kairos-core/docs/data-flow.md`.
 
 ---
 
@@ -9,31 +9,33 @@
 ```
 ┌─────────────────────────────────────────────────────────┐
 │                    FONTES EXTERNAS                       │
-│  Google Sheets (leads) ←→ n8n ←→ Receita Federal CNPJ  │
+│  Google Sheets (leads) ←→ n8n ←→ Receita Federal CNPJ   │
 └─────────────────────────┬───────────────────────────────┘
                           │ GET /webhook/kairos-leads
                           ▼
 ┌─────────────────────────────────────────────────────────┐
 │                   KAIROS (Claude Code)                   │
 │                                                          │
-│  @campaign-analyst ──▶ data/outputs/cold-prospecting/reports/campaign-analyst_campaign-*.md       │
+│  @campaign-analyst ──▶ reports/campaign-analyst_*.md     │
 │          │                                               │
 │          ▼                                               │
-│  @lead-scorer ──────▶ data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-*.csv   │
+│  @lead-scorer ──────▶ reports/lead-scorer_*.csv          │
 │          │                                               │
 │          ▼                                               │
-│  @niche-classifier ─▶ data/outputs/cold-prospecting/reports/niche-classifier_niche-map-*.json     │
+│  @niche-classifier ─▶ reports/niche-classifier_*.json    │
 │          │                                               │
 │          ▼                                               │
-│  @email-writer ─────▶ data/outputs/cold-prospecting/emails/email-writer_emails-*.json         │
+│  @email-writer ─────▶ emails/email-writer_*.json         │
 └─────────────────────────┬───────────────────────────────┘
                           │ n8n lê data/outputs/cold-prospecting/emails/
                           ▼
 ┌─────────────────────────────────────────────────────────┐
 │                    DESTINOS EXTERNOS                     │
-│  Gmail/SMTP (disparo) ──▶ Google Sheets (status update)  │
+│  Gmail/SMTP (disparo) ──▶ Google Sheets (status update) │
 └─────────────────────────────────────────────────────────┘
 ```
+
+Todos os outputs ficam em `data/outputs/cold-prospecting/{tipo}/`.
 
 ---
 
@@ -63,22 +65,17 @@
 | `Capital Social` | string | Valor em reais (pode vir como número ou string) |
 | `Situação` | string | `"ATIVA"` ou outras |
 
-**Gotchas:**
-- `Capital Social` pode retornar como number ou string — sempre usar `parseFloat(String(v))`
-- `Nome Fantasia` frequentemente vazio — fallback para `Nome`
-- `Cidade` vem em uppercase — normalizar com `.toLowerCase()` + capitalize
+Gotchas de campos → ver `squads/cold-prospecting/data/kb.md` (seção Webhook de Leads).
 
 ---
 
-## Dados Gerados por Agente
+## Outputs por Agente
 
 ### @campaign-analyst
 
 **Output:** `data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md`
 
-Conteúdo: métricas agregadas — total de leads, pendentes, distribuição por nicho, por cidade, por capital social, taxa de cobertura.
-
-**Não persiste:** dados individuais de leads.
+Métricas agregadas — total de leads, pendentes, distribuição por nicho, por cidade, por capital social, taxa de cobertura. Não persiste dados individuais.
 
 ---
 
@@ -88,7 +85,7 @@ Conteúdo: métricas agregadas — total de leads, pendentes, distribuição por
 
 **Colunas:** `row_number, cnpj, nome, atividade, cidade, estado, capital_social, score, tier`
 
-**Algoritmo:** ver `.claude/commands/kairos/agents/lead-scorer.md` (seção `scoring-algorithm`)
+**Algoritmo:** ver `.claude/commands/kairos/agents/lead-scorer.md` (seção `scoring-algorithm`).
 
 ---
 
@@ -127,11 +124,7 @@ Conteúdo: métricas agregadas — total de leads, pendentes, distribuição por
 
 ---
 
-## Handoffs (Runtime)
-
-**Local:** `.kairos-core/runtime/handoffs/` (conteúdo gitignored)
-
-**Formato:** `handoff-{from}-to-{to}-{timestamp}.yaml`
+## Handoff Típico do Pipeline
 
 ```yaml
 handoff:
@@ -147,15 +140,23 @@ handoff:
   next_action: "Analisar métricas após o disparo com *analyze"
 ```
 
-**Lifecycle:** criado pelo agente que termina uma fase → lido e marcado `consumed: true` pelo próximo agente na ativação.
+Protocolo completo de handoff → `.claude/rules/agent-handoff.md`.
 
 ---
 
-## Limites e Restrições
+## Limites e Restrições do Squad
 
 | Restrição | Motivo |
 |-----------|--------|
-| Kairos nunca escreve na planilha | Risco de corrupção de dados — n8n tem controle exclusivo |
+| Kairos nunca escreve na planilha | n8n tem controle exclusivo — risco de corrupção |
 | Kairos nunca envia e-mails | n8n tem autenticação, rate limiting e controle de bounce |
-| Emails gerados são idempotentes por data | Regenar no mesmo dia sobrescreve — comportamento intencional |
-| Webhook é read-only para Kairos | Segurança — sem side effects no acesso aos dados |
+| Emails gerados são idempotentes por data | Regenerar no mesmo dia sobrescreve (intencional) |
+| Webhook é read-only para Kairos | Segurança — sem side effects no acesso |
+
+---
+
+## Referências
+
+- `squads/cold-prospecting/data/kb.md` — knowledge base do squad (gotchas, padrões validados)
+- `squads/cold-prospecting/rules/campaign-lifecycle.md` — pipeline e gates de qualidade
+- `.kairos-core/docs/data-flow.md` — padrões genéricos de fluxo (framework)

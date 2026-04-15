@@ -226,8 +226,8 @@ O Kairos usa um modelo de governança próprio para se auto-documentar e evoluir
 | Documento | Conteúdo |
 |-----------|----------|
 | [docs/scope.md](docs/scope.md) | PRD — escopo, arquitetura, objetivos, restrições, stack |
-| [docs/framework/agent-standards.md](docs/framework/agent-standards.md) | Como criar e estruturar novos agentes |
-| [docs/framework/data-flow.md](docs/framework/data-flow.md) | Fluxo completo de dados, campos do webhook, formatos de output |
+| [.kairos-core/docs/agent-standards.md](.kairos-core/docs/agent-standards.md) | Como criar e estruturar novos agentes |
+| [.kairos-core/docs/data-flow.md](.kairos-core/docs/data-flow.md) | Fluxo completo de dados, campos do webhook, formatos de output |
 | [docs/stories/README.md](docs/stories/README.md) | Epics e stories de desenvolvimento do Kairos |
 | [CHANGELOG.md](CHANGELOG.md) | Histórico de versões |
 | [CLAUDE.md](CLAUDE.md) | Instruções e contexto para o Claude Code |

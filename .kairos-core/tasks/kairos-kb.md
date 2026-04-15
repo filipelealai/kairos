@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 id: kairos-kb
 title: Knowledge Base do Kairos
 agent: kairos

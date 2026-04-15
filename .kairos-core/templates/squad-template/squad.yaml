@@ -1,12 +1,12 @@
 name: {squad-name}
 description: "{Descrição de uma linha do que o squad faz}"
-context: pessoal | vendoteca | {outro}
+context: {contexto-do-usuario-ou-equipe}
 status: active | planned
 version: 1.0.0
 
 # Contexto de negócio
 business_context: |
-  {Por que este squad existe e qual problema resolve para Filipe.}
+  {Por que este squad existe e qual problema resolve.}
 
 # Agentes do squad
 agents:

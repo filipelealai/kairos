@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 agent:
   id: {agent-id}
   name: {NomeDaPersona}

@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # Framework Layers — Camadas de Imutabilidade
 
 ## Visão Geral
@@ -11,6 +16,8 @@ L3 (Gerenciado) — Modificável via governança normal do @kairos
 L4 (Volátil)    — Efêmero, gitignored, recriado a cada execução
 ```
 
+**Fonte autoritativa:** a classificação de cada arquivo framework em L1-L3 é declarada em `.kairos-core/manifest.yaml` (campo `layer`). Path não determina camada — o manifesto sim. Arquivos não listados no manifesto são conteúdo do usuário e não têm camada atribuída. Ver `.claude/rules/ownership.md` para o contrato completo.
+
 ---
 
 ## L1 — Fundação (Imutável)
@@ -20,6 +27,7 @@ Artefatos que definem as regras do jogo. Mudanças exigem decisão consciente e 
 | Artefato | Local | Por que é L1 |
 |----------|-------|--------------|
 | Constituição | `.kairos-core/constitution.md` | Princípios não-negociáveis do framework |
+| Ownership | `.claude/rules/ownership.md` | Contrato de fronteira framework/usuário |
 | Matriz de autoridade | `.claude/rules/agent-authority.md` | Define quem pode fazer o quê |
 | Este arquivo | `.claude/rules/framework-layers.md` | Define as próprias regras de mudança |
 | IDS principles | `.claude/rules/ids-principles.md` | Princípio de criação de novos artefatos |

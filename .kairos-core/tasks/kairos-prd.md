@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 task: Kairos PRD
 responsavel: "@kairos"
 responsavel_type: agent
@@ -45,8 +47,7 @@ Faça as perguntas em ordem. Aguarde resposta de cada uma antes de prosseguir.
 
 **Pergunta 1 — O que é o Kairos?**
 ```
-Em uma ou duas frases: o que é o Kairos e para quem serve?
-(ex: "Agente pessoal de Filipe para automação de prospecção B2B da Vendoteca")
+Em uma ou duas frases: para quem esta instância do Kairos serve e qual é o foco dela?
 ```
 
 ---

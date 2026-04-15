@@ -26,7 +26,7 @@ activation-instructions:
       4. Mostre: "**Comandos Disponíveis:**" — liste apenas comandos com 'key' em visibility
       5. Mostre: "Digite *guide para instruções completas."
       5.5. Verifique .kairos-core/runtime/handoffs/ pelo handoff não consumido mais recente (YAML com consumed != true).
-           Se encontrado: leia from_agent e last_command, consulte .kairos-core/data/workflow-chains.yaml
+           Se encontrado: leia from_agent e last_command, consulte squads/cold-prospecting/data/workflow-chains.yaml
            e exiba: "💡 **Sugerido:** *{next_command}"
            Se não encontrado: ignore silenciosamente.
            Após exibir o greeting, marque o handoff como consumed: true.

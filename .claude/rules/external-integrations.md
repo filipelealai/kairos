@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # Integrações Externas — Skills, CLIs, MCPs e APIs
 
 ## Hierarquia de Integração
@@ -103,7 +108,7 @@ Ações que modificam estado externo (envio, escrita, deleção, disparo) devem 
 2. **Confirméveis** — quando irreversível, pedir confirmação ao usuário antes de executar
 3. **Scoped ao squad** — cada squad define quais sistemas seus agentes têm autoridade para modificar (ver `agent-authority.md`)
 
-> Restrições específicas de squad (ex: "não enviar e-mail diretamente no cold-prospecting") vivem em `agent-authority.md` e `campaign-lifecycle.md` — não nesta rule.
+> Restrições específicas de squad (ex: "não enviar X diretamente", "sistema Y tem controle exclusivo") vivem em `squads/{squad}/rules/` — não nesta rule.
 
 ---
 

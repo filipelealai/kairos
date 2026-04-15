@@ -1,58 +1,27 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # Agent Authority — Matriz de Autoridade
 
-## Matriz de Delegação
+Define quem pode fazer o quê no Kairos. A matriz dos agentes de squad vive em `squads/{squad}/rules/agent-authority.md` — esta rule cobre apenas o @kairos e as regras universais.
 
-### @campaign-analyst (Clio) — Análise Exclusiva
+---
 
-| Operação | Autoridade |
-|----------|-----------|
-| Executar `npx tsx src/agents/campaign-analyst.ts` | EXCLUSIVA |
-| Ler e interpretar relatórios de campanha | EXCLUSIVA |
-| Comparar relatórios entre períodos (`*trend`) | EXCLUSIVA |
-| Modificar dados de leads | BLOQUEADA |
-| Gerar e-mails | BLOQUEADA |
-
-### @lead-scorer (Lex) — Pontuação Exclusiva
-
-| Operação | Autoridade |
-|----------|-----------|
-| Executar `npx tsx src/agents/lead-scorer.ts` | EXCLUSIVA |
-| Interpretar e exibir scores e tiers | EXCLUSIVA |
-| Modificar o algoritmo de scoring | BLOQUEADA (requer mudança no TS) |
-| Modificar dados de leads | BLOQUEADA |
-| Gerar e-mails | BLOQUEADA |
-
-### @niche-classifier (Nix) — Classificação Exclusiva
-
-| Operação | Autoridade |
-|----------|-----------|
-| Executar `npx tsx src/agents/niche-classifier.ts` | EXCLUSIVA |
-| Recomendar keywords novas para o n8n | EXCLUSIVA |
-| Adicionar keywords diretamente ao workflow n8n | BLOQUEADA (requer @usuário confirmar) |
-| Modificar dados de leads | BLOQUEADA |
-
-### @email-writer (Eva) — Geração Exclusiva
-
-| Operação | Autoridade |
-|----------|-----------|
-| Gerar e-mails personalizados via Claude Code | EXCLUSIVA |
-| Salvar JSON em `data/outputs/cold-prospecting/emails/` | EXCLUSIVA |
-| Revisar e reescrever e-mails do batch (*review) | EXCLUSIVA |
-| Enviar e-mails | BLOQUEADA (responsabilidade do n8n) |
-| Marcar Status do Envio no Google Sheets | BLOQUEADA (responsabilidade do n8n) |
-| Modificar dados de leads | BLOQUEADA |
-
-### @kairos — Autoridade Total
+## @kairos — Autoridade Total (Framework)
 
 | Operação | Autoridade |
 |----------|-----------|
 | Versionar o Kairos (`*version`) | EXCLUSIVA |
 | Criar novos squads (`*new-squad`) | EXCLUSIVA |
 | Criar stories de desenvolvimento do Kairos (`*new-story`) | EXCLUSIVA |
-| Modificar `.claude/rules/agent-authority.md` | EXCLUSIVA |
-| Modificar seções KAIROS-MANAGED no `CLAUDE.md` | EXCLUSIVA |
+| Modificar arquivos listados no manifesto `.kairos-core/manifest.yaml` | EXCLUSIVA |
+| Modificar seções `<!-- KAIROS-MANAGED-... -->` em arquivos mistos | EXCLUSIVA |
 | Deprecar agentes | EXCLUSIVA |
 | Executar qualquer operação de qualquer squad | AUTORIZADO |
+
+---
 
 ## Quem Constrói o Kairos
 
@@ -60,19 +29,36 @@
 - **Claude Code (conversa principal)** — executa: escreve código, cria arquivos, modifica tasks/agents
 - **Não existe `@dev` no Kairos** — o executor é o próprio Claude Code em modo normal
 
-## Operações que Nenhum Agente Pode Fazer
+---
 
-- Enviar e-mails diretamente (SEMPRE via n8n)
-- Modificar a planilha do Google Sheets (SEMPRE via n8n)
-- Commitar ou fazer push no repositório
-- Modificar arquivos `.kairos-core/` (são artefatos do framework, não do projeto)
+## Operações Universalmente Proibidas
 
-## Escalação
+Nenhum agente (inclusive @kairos) pode:
+
+- Commitar ou fazer `git push` sem passar pelo protocolo `@kairos *push`
+- Modificar arquivos do usuário listados como user-owned (default-deny: tudo fora do manifesto)
+- Forçar operações destrutivas (delete, drop, reset) sem confirmação explícita
+
+---
+
+## Autoridade de Agentes de Squad
+
+Cada squad define a matriz de autoridade dos seus agentes em `squads/{squad}/rules/agent-authority.md`. Regras típicas que um squad declara:
+
+- Quais scripts TypeScript cada agente pode executar (exclusividade)
+- Quais sistemas externos o agente pode acionar e quais são delegados a integrações
+- Quais dados são read-only do ponto de vista do Kairos
+- Condições de HALT específicas do pipeline do squad
+
+---
+
+## Escalação Genérica
 
 | Situação | Ação |
 |----------|------|
-| Webhook indisponível | HALT em qualquer agente — informar usuário |
-| 0 leads pendentes | HALT em @lead-scorer e @email-writer |
-| Erro no script TS | HALT — exibir stderr e sugerir debug |
-| Dúvida sobre se enviar um e-mail | HALT — consultar o usuário antes |
-| Keyword nova que deve ir para o n8n | HALT — apresentar ao usuário para confirmar antes de editar workflow |
+| Fonte de dados externa indisponível | HALT — informar usuário |
+| Script TS falha | HALT — exibir stderr e sugerir debug |
+| Ação irreversível sem confirmação prévia do usuário | HALT — consultar antes |
+| Ambiguidade entre ownership framework/usuário | HALT — consultar manifesto e rule `ownership.md` |
+
+Escalações específicas de squad vivem em `squads/{squad}/rules/`.

@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 task: Kairos New Story
 responsavel: "@kairos"
 responsavel_type: agent

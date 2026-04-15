@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # Squad: {Squad Name}
 
 > {Descrição curta — o que o squad faz e para quem.}

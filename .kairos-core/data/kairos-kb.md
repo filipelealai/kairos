@@ -1,17 +1,22 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # Kairos Knowledge Base
 
-> Base de conhecimento curada do framework. Contém decisões arquiteturais, gotchas do sistema, padrões validados e referências rápidas.
+> Base de conhecimento curada do framework. Contém decisões arquiteturais, gotchas sistêmicos, convenções e referências rápidas genéricas ao Kairos.
 > Carregada sob demanda via `@kairos *kb` ou `@kairos *kb {tópico}`.
+
+> Este arquivo contém apenas conteúdo de framework (aplica-se a qualquer instância do Kairos). Conhecimento específico de squad vive em `squads/{squad}/data/kb.md`.
 
 ---
 
 ## Índice
 
 - [Decisões Arquiteturais](#decisoes-arquiteturais)
-- [Webhook de Leads](#webhook-de-leads)
 - [Convenções de Naming](#convencoes-de-naming)
 - [Erros Comuns](#erros-comuns)
-- [Padrões Validados](#padroes-validados)
 - [Referências Rápidas](#referencias-rapidas)
 
 ---
@@ -42,15 +47,13 @@
 
 **Motivo:** Permite que `data/` sirva para outros fins além de outputs (datasets, fixtures), separa por squad para quando houver múltiplos squads, e o prefixo de agente torna óbvio qual agente gerou cada arquivo ao listar o diretório.
 
-**Exemplo:** `data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-2026-04-14.csv`
-
 ---
 
-### Por que scripts TypeScript sem AI para campaign-analyst e lead-scorer?
+### Quando agents devem ser TypeScript puro sem AI?
 
-**Decisão:** `campaign-analyst.ts` e `lead-scorer.ts` são computação pura sem chamadas à Claude API.
+**Princípio:** Agentes cujo trabalho é computação determinística (métricas, scoring, agregação) devem ser implementados como scripts TypeScript puros, sem chamadas à Claude API. Agentes que precisam de interpretação semântica (classificação natural, geração de texto) usam AI.
 
-**Motivo:** Métricas e scores são determinísticos — não precisam de linguagem natural. Usar AI aqui seria mais lento, mais caro e menos auditável. Apenas `niche-classifier.ts` e `email-writer.ts` precisam de AI (classificação semântica e geração de texto).
+**Motivo:** Computação determinística com AI é mais lenta, mais cara e menos auditável. Reservar AI para o que realmente exige linguagem natural reduz custo e aumenta reprodutibilidade.
 
 ---
 
@@ -64,29 +67,13 @@
 
 ---
 
-## Webhook de Leads
+### Por que manifesto de ownership e não convenção por path?
 
-### Campos e Gotchas
+**Decisão:** A fronteira framework/usuário é definida por `.kairos-core/manifest.yaml`, não por localização de arquivo.
 
-**URL:** `https://n8n.vendoteca.com/webhook/kairos-leads`
-**Método:** GET | **Autenticação:** nenhuma | **Resposta:** `{ leads: Lead[] }`
+**Motivo:** Um arquivo pode estar em `.claude/rules/` e ser framework-shipped, user-criado ou pré-existente de um brownfield install — path sozinho não distingue origem. O manifesto é a fonte autoritativa; default-deny (arquivo fora do manifesto é do usuário) garante que updates nunca toquem conteúdo do usuário.
 
-| Campo | Gotcha | Solução |
-|-------|--------|---------|
-| `Capital Social` | Pode retornar como number ou string | `parseFloat(String(v))` |
-| `Nome Fantasia` | Frequentemente vazio | Fallback para `Nome` |
-| `Cidade` | Vem em UPPERCASE | `.toLowerCase()` + capitalize |
-| `Status do Envio` | Pode ser `""`, `"NÃO ENVIADO"` ou `"ENVIADO"` | Verificar explicitamente |
-| Qualquer campo string | Pode ser null ou number vindo do Sheets | `String(value || "")` |
-
-### Filtro de Elegibilidade
-
-Lead elegível para disparo:
-```
-Pode disparar === "SIM"
-AND (Status do Envio === "" OR Status do Envio === "NÃO ENVIADO")
-AND Situação === "ATIVA"
-```
+**Trade-off aceito:** Manifesto precisa ser mantido consistente com o filesystem — validado pelo `*doctor`.
 
 ---
 
@@ -98,19 +85,19 @@ AND Situação === "ATIVA"
 | Persona (nome) | `PascalCase` | `Eva` |
 | Task file | `kebab-case.md` | `write-emails.md` |
 | Output file | `{agent-id}_{tipo}-YYYY-MM-DD.{ext}` | `lead-scorer_scored-leads-2026-04-14.csv` |
-| Story file | `{epic}.{N}.story.md` | `4.1.story.md` |
-| Epic file | `epic-{N}-{slug}.md` | `epic-4-novos-escopos.md` |
-| Handoff file | `handoff-{from}-to-{to}-{ts}.yaml` | `handoff-lead-scorer-to-niche-classifier-20260414.yaml` |
-| Gate file | `{story-id}-YYYY-MM-DD.yaml` | `3.1-2026-04-06.yaml` |
+| Story file | `{epic}.{N}.story.md` | `5.1.story.md` |
+| Epic file | `epic-{N}-{slug}.md` | `epic-5-arquitetura-do-framework.md` |
+| Handoff file | `handoff-{from}-to-{to}-{ts}.yaml` | `handoff-agent-a-to-agent-b-20260414.yaml` |
+| Gate file | `{story-id}-YYYY-MM-DD.yaml` | `5.1-2026-04-14.yaml` |
 
 ---
 
 ## Erros Comuns
 
-### "Cannot read property of undefined" no script TS
+### "Cannot read property of undefined" em script TS de agent
 
-**Causa:** Campo do webhook retornado como null/undefined.
-**Solução:** Sempre fazer `String(lead.campo || "")` para strings, `parseFloat(String(lead.campo || 0))` para números.
+**Causa:** Campo de fonte externa (webhook, CSV, API) retornado como null/undefined.
+**Solução:** Sempre fazer `String(campo || "")` para strings e `parseFloat(String(campo || 0))` para números ao consumir dados externos.
 
 ---
 
@@ -128,48 +115,7 @@ AND Situação === "ATIVA"
 
 ---
 
-### Score 0 em muitos leads
-
-**Causa:** Atividade Principal não match com nenhum nicho do algoritmo.
-**Solução:** Rodar `@niche-classifier *classify` para atualizar o mapa de nichos, depois re-score.
-
----
-
-## Padrões Validados
-
-### Abertura de e-mail por nicho
-
-| Nicho | Abertura que funciona |
-|-------|----------------------|
-| Barbearia | Perspectiva do cliente que não volta |
-| Salão | Volume de perguntas no WhatsApp |
-| Clínica estética médica | Tempo perdido em triagem |
-| Odontologia | Paciente que marca e não comparece |
-
-*Preencher com padrões validados após feedback de campanha real.*
-
----
-
-### Tiers de leads e tom de e-mail
-
-| Tier | Score | Capital Social | Tom recomendado |
-|------|-------|----------------|-----------------|
-| A | ≥55 | Variado | Direto, foco em resultado |
-| B | 35–54 | R$10k–100k | Empático, foco em crescimento |
-| C | 15–34 | R$1k–10k | Simples, foco em economia de tempo |
-| D | <15 | MEI baixo | Muito breve, foco em praticidade |
-
----
-
 ## Referências Rápidas
-
-### Pipeline completo
-
-```
-@campaign-analyst *analyze → @lead-scorer *score
-→ @niche-classifier *classify → @email-writer *write 20
-→ n8n dispara → @campaign-analyst *analyze (novo ciclo)
-```
 
 ### Ciclo de desenvolvimento do Kairos
 
@@ -186,6 +132,15 @@ AND Situação === "ATIVA"
 | PATCH | Bug fix, ajuste de instrução, atualização de MEMORY | Não |
 | MINOR | Novo agente, task, rule ou squad | Sim |
 | MAJOR | Novo squad/escopo, breaking change | Sim |
+
+### Ownership
+
+| Localização | Propriedade |
+|-------------|-------------|
+| Listado em `manifest.yaml` | Framework (atualizável por update) |
+| Fora do manifesto | Usuário (nunca tocado por update) |
+| Dentro de bloco `<!-- KAIROS-MANAGED-START/END -->` | Framework dentro de arquivo misto |
+| Fora de blocos managed em arquivo misto | Usuário |
 
 ---
 

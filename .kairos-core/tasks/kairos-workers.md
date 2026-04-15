@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 id: kairos-workers
 title: Workers — Agentes Agendados
 agent: kairos

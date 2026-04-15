@@ -62,6 +62,6 @@ squads/cold-prospecting/
 ## Documentação de Referência
 
 - [Escopo do Kairos](../../docs/scope.md)
-- [Padrões de Agentes](../../docs/framework/agent-standards.md)
-- [Fluxo de Dados](../../docs/framework/data-flow.md)
+- [Padrões de Agentes](../../.kairos-core/docs/agent-standards.md)
+- [Fluxo de Dados](../../.kairos-core/docs/data-flow.md)
 - [Pipeline Lifecycle](.claude/rules/campaign-lifecycle.md)

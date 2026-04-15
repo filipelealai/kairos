@@ -1,3 +1,4 @@
+<!-- KAIROS-MANAGED-START: framework-conventions -->
 # Kairos — Orquestrador de Agentes
 
 Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. O nome vem do grego καιρός — o tempo certo, o momento oportuno. Cada agente age quando faz sentido, não em qualquer momento.
@@ -51,6 +52,7 @@ npx tsx src/agents/nome-do-agente.ts
 - Manter cada agente focado em uma responsabilidade
 - Não criar abstrações desnecessárias — clareza é melhor que elegância prematura
 - Responder em português (Brasil)
+<!-- KAIROS-MANAGED-END: framework-conventions -->
 
 ## Restrições Operacionais (configurável pelo usuário)
 
@@ -150,14 +152,15 @@ data/        # Outputs dos agentes (reports, emails)
 
 | Rule | Descrição |
 |------|-----------|
-| `campaign-lifecycle.md` | Pipeline completo e gates de qualidade |
 | `agent-handoff.md` | Protocolo de handoff compacto entre agentes |
 | `agent-authority.md` | Matriz de autoridade — o que cada agente pode e não pode fazer |
-| `agent-memory-imports.md` | Imports de MEMORY.md por agente |
 | `story-lifecycle.md` | Protocolo do executor: transições de status e Execution Log obrigatório |
 | `ids-principles.md` | REUTILIZAR > ADAPTAR > CRIAR — hierarquia de criação de artefatos |
 | `framework-layers.md` | Camadas L1–L4 de imutabilidade do framework |
+| `ownership.md` | Modelo de ownership framework/usuário e contrato de update |
 | `external-integrations.md` | Skills → MCPs → scripts — hierarquia e diretrizes de integração com sistemas externos |
+
+Rules específicas de squad vivem em `squads/{squad}/rules/` e são carregadas pelos imports abaixo (seção user-owned).
 
 ## Versionamento
 
@@ -171,3 +174,11 @@ Regras:
 
 Autoridade para versionar: `@kairos *version`
 <!-- KAIROS-MANAGED-END: kairos-core -->
+
+## Squads ativos
+
+Esta seção é user-owned. Cada squad importa suas rules específicas aqui.
+
+@squads/cold-prospecting/rules/campaign-lifecycle.md
+@squads/cold-prospecting/rules/memory-imports.md
+@squads/cold-prospecting/rules/agent-authority.md

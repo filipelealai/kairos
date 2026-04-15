@@ -107,7 +107,7 @@ async function main() {
 
     // --- .claude/commands/kairos/agents/ → activation-instructions format ---
     else if (rel.startsWith('.claude/commands/kairos/agents/')) {
-      const standardsPath = path.join(cwd, 'docs/framework/agent-standards.md');
+      const standardsPath = path.join(cwd, '.kairos-core/docs/agent-standards.md');
       const standards = safeRead(standardsPath);
       if (standards) {
         // Extrai o bloco YAML de formato da persona (entre primeiro ```yaml e ```)

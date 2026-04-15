@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # Story {epic}.{N} — {Título}
 
 **Epic:** {N}
@@ -12,7 +17,7 @@
 
 ## Critérios de Aceite
 
-- [ ] {AC 1 — específico e testável. Ex: "Arquivo gerado em data/outputs/cold-prospecting/reports/ com prefixo correto"}
+- [ ] {AC 1 — específico e testável. Ex: "Arquivo gerado em data/outputs/{squad}/reports/ com prefixo correto"}
 - [ ] {AC 2 — específico e testável}
 - [ ] {AC 3 — específico e testável}
 <!-- Mínimo 3 ACs. Cada AC deve ser verificável objetivamente. -->

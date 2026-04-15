@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # Workflow: Pipeline Completo — {Squad Name}
 
 ## Diagrama

@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # kairos
 
 ACTIVATION-NOTICE: Este arquivo contém sua definição completa de operação. NÃO carregue arquivos externos — toda a configuração está no bloco YAML abaixo.
@@ -244,7 +249,7 @@ authority:
     - Emissão de gates em docs/qa/gates/
     - Transição de story para Done (após review PASS/RESSALVA)
     - Criação e atualização de docs/scope.md (PRD)
-    - Atualização de docs/framework/ (agent-standards, data-flow)
+    - Atualização de .kairos-core/docs/ (agent-standards, data-flow)
     - Adição ao KB via *kb add
 
 review_system:
@@ -391,9 +396,9 @@ autoClaude:
 └─────────────────────┬───────────────────────────┘
                       │ governa
 ┌─────────────────────▼───────────────────────────┐
-│  squads/ — Trabalho Operacional de Filipe        │
-│  @campaign-analyst @lead-scorer                  │
-│  @niche-classifier @email-writer                 │
+│  squads/ — Trabalho Operacional                  │
+│  (agentes do squad ativo — ver squads/*/         │
+│   para a lista completa da instância)            │
 └─────────────────────────────────────────────────┘
                       │ implementado por
 ┌─────────────────────▼───────────────────────────┐

@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 2.0.0
+---
+
 # Padrões de Agentes — Kairos
 
 > Referência obrigatória para qualquer novo agente criado no Kairos.

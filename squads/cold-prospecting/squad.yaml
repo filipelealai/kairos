@@ -28,8 +28,8 @@ components:
 
 config:
   scope: ../../docs/scope.md
-  agent-standards: ../../docs/framework/agent-standards.md
-  data-flow: ../../docs/framework/data-flow.md
+  agent-standards: ../../.kairos-core/docs/agent-standards.md
+  data-flow: ../../.kairos-core/docs/data-flow.md
 
 pipeline:
   order:

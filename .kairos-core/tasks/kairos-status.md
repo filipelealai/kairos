@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 task: Kairos Status
 responsavel: "@kairos"
 responsavel_type: agent
@@ -57,7 +59,7 @@ Verifique `.kairos-core/runtime/handoffs/` por handoff com `consumed: false`. Se
 🌀 Kairos v{version}
 
 📦 Squads Ativos
-  cold-prospecting: campaign-analyst, lead-scorer, niche-classifier, email-writer
+  {squad-id}: {agente-1}, {agente-2}, ...
 
 📋 Stories
   Done (N): 1.1, 1.2

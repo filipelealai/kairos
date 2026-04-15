@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 2.0.0
 task: Kairos Version Bump
 responsavel: "@kairos"
 responsavel_type: agent
