@@ -70,12 +70,7 @@ Se `type: kairos-core`, exibir este aviso imediatamente antes de criar o arquivo
 ```
 ⚠️  ATENÇÃO — MODIFICAÇÃO DO NÚCLEO DO KAIROS
 ────────────────────────────────────────────────────────────
-Esta story modifica o núcleo do framework Kairos. Alterações
-são livres (Kairos é open-source), mas podem impedir futuras
-atualizações automáticas, e podem ser sobrescritas por
-eventuais atualizações. Ao prosseguir, você estará fazendo
-um fork local do Kairos. Continue com consciência — por conta
-e risco do usuário.
+Esta story modifica o núcleo do framework Kairos. Alterações são livres (Kairos é open-source), mas podem impedir futuras atualizações automáticas, e podem ser sobrescritas por eventuais atualizações. Ao prosseguir, você estará fazendo um fork local do Kairos. Continue com consciência — por conta e risco do usuário.
 ────────────────────────────────────────────────────────────
 ```
 

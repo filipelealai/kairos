@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.0.0
 task: Kairos Help
 responsavel: "@kairos"
 responsavel_type: agent
@@ -99,11 +99,19 @@ DESENVOLVIMENTO
                         → EXCLUSIVO para desenvolvimento do Kairos. Não para outputs
                            operacionais (emails gerados, leads pontuados).
 
+  *implement [{id}]     Implementa story type: instance — @kairos permanece ativo,
+                        executa os ACs inline, assina o Execution Log e move a story
+                        para In Review. Recusa explicitamente stories type: kairos-core
+                        (que são implementadas por Claude Code plain).
+                        → Sem argumento: lista stories instance em Draft/In Progress.
+                        → Acionado automaticamente ao final de *new-squad e *workers new
+                           quando há implementação pendente.
+
   *new-squad            Cria um novo squad via elicitação guiada (4 blocos: propósito,
                         agentes, dados, pipeline). Scaffolda toda a estrutura:
                         squad.yaml, agents/, tasks/ (stubs), workflows/, MEMORY.md.
-                        Ao final: auto-cria story de implementação (type: instance) —
-                        não é preciso rodar *new-story manualmente.
+                        Ao final: auto-cria story de implementação (type: instance) e
+                        oferece *implement inline — não é preciso rodar manualmente.
 
   *update-squad {squad} Rastreia edição de squad existente via story.
                         Elicita: qual aspecto (persona, task, pipeline, regra,
@@ -192,21 +200,23 @@ FLUXOS COMUNS
 
   Nota: *version disponível para uso avulso (ex: patch rápido sem story)
 
-④ Novo squad
+④ Novo squad (type: instance — executado por @kairos)
   *new-squad                   ← elicitação guiada (4 blocos)
-   └→ *new-story               (handoff automático — @kairos elicita o conteúdo)
-  (Claude Code implementa personas + scripts TS)
-  *review {story-id}
+   └→ story type: instance criada automaticamente
+   └→ "Implementar agora?" → s = *implement inline
+  *implement {story-id}        ← @kairos executa ACs, move para In Review
+  *review {story-id}           ← gate PASS/RESSALVA/BLOCK
   *pre-push                    ← detecta bump pendente e pergunta o tipo
   *push
 
-⑤ Revisar implementação que o executor acabou de entregar
+⑤ Ciclo de review para qualquer story entregue
   *review                      ← sem argumento: detecta In Review automaticamente
   → Se PASS/RESSALVA:
       *pre-push                ← inclui versionamento interativo + commit
       *push
   → Se BLOCK:
-      (Claude Code corrige os issues listados)
+      (para type: instance: *implement {id} corrige inline)
+      (para type: kairos-core: Claude Code plain corrige)
       *review {id}             ← rodar novamente
 
 ⑥ Manter a documentação em dia
@@ -222,17 +232,29 @@ FLUXOS COMUNS
 ```
 QUANDO NÃO USAR @kairos
 ─────────────────────────────────────────────────────────────
-Use os agentes de squad para trabalho operacional.
+Use os agentes de squad para trabalho OPERACIONAL.
 Cada squad define seus próprios agentes e comandos — ver squads/{squad}/README.md.
 
-@kairos não faz trabalho de negócio — só governa como o Kairos evolui.
+@kairos não faz trabalho de negócio dos squads (analisar leads, gerar e-mails,
+pontuar contatos). Esse é o domínio dos agentes operacionais.
+
+O que @kairos PODE fazer vs o que ele NÃO faz:
+
+  @kairos FAZ:
+    • Evoluir o framework (versionar, criar epics/stories, revisar implementações)
+    • Implementar squads, workers e scripts via *implement (type: instance)
+    • Push ao repositório remoto (exclusivo)
+
+  @kairos NÃO FAZ:
+    • Executar o pipeline operacional de um squad (@campaign-analyst, @email-writer…)
+    • Tomar decisões de negócio sobre os dados dos squads (quais leads priorizar, etc.)
 
 Regra rápida:
-  "Estou tentando executar trabalho operacional de um squad?" → squad
+  "Estou tentando executar trabalho operacional de um squad?" → squad correspondente
   "Estou tentando evoluir o próprio Kairos?"                 → @kairos
+  "Estou tentando criar/implementar um squad novo?"          → @kairos *new-squad + *implement
 
-Para validar a configuração de um squad instanciado (personas existem?
-tasks existem? pipeline documentado?):
+Para validar a configuração de um squad instanciado:
   *review-squad {squad}    ← diagnóstico de squad, não de framework
 
 Para verificar a integridade do framework em si:
@@ -259,6 +281,11 @@ REGRAS IMPORTANTES
   atualizações. *new-squad auto-cria story instance — não precisa rodar
   *new-story manualmente. Para evoluir squad existente: *update-squad {squad}.
 
+• Stories type: instance são implementadas por @kairos via *implement — não
+  por Claude Code plain. Stories type: kairos-core continuam sendo implementadas
+  por Claude Code plain (sem persona ativa). *implement recusa explicitamente
+  stories kairos-core e instrui a sair do modo @kairos para implementar.
+
 • *review sem argumento detecta automaticamente stories com
   Status: In Review. Se houver mais de uma, pede para escolher.
 
@@ -282,9 +309,10 @@ CHEAT SHEET
 ─────────────────────────────────────────────────────────────
 Ver estado          *status | *roadmap
 Novo planejamento   *new-epic → *new-story → *validate-story {id}
+Implementar squad   *new-squad → *implement [{id}]
+Implementar inst.   *implement [{id}]   (type: instance — @kairos executa)
 Revisar entrega     *review [{id}]
 Publicar            *pre-push → *push   (*version disponível para uso avulso)
-Novo squad          *new-squad
 Evoluir squad       *update-squad {squad}
 Validar squad       *review-squad {squad}
 Documentar          *prd | *architecture
@@ -319,12 +347,14 @@ STORIES — Como funcionam
 Stories em docs/stories/ rastreiam o desenvolvimento do KAIROS.
 NÃO são stories: emails gerados, leads pontuados, relatórios de campanha.
 
-Tipos de story (campo type):
+Tipos de story (campo type) e seus executores:
   kairos-core  → modifica o framework Kairos em si (tasks, rules, personas do
-                 framework, constituição). Pode impactar futuras atualizações.
-                 @kairos exibe aviso a cada resposta enquanto trabalha nessa story.
-  instance     → cria ou evolui squads, workers, agentes ou qualquer conteúdo
-                 instanciado pelo usuário. Não afeta atualizações do framework.
+                 framework, constituição). Executor: Claude Code plain (sem persona
+                 ativa). @kairos governa, exibe aviso e revisa. Pode impactar
+                 futuras atualizações automáticas do Kairos.
+  instance     → cria ou evolui squads, workers, agentes, scripts em src/.
+                 Executor: @kairos via *implement (permanece ativo durante toda
+                 a implementação). Não afeta atualizações do framework.
 
 No *status e *roadmap, as stories aparecem com prefixo [core] ou [instance].
 
@@ -342,14 +372,15 @@ Transições:
 
 Execution Log (obrigatório ao mover para In Review):
   ## Execution Log
+  - Executor: "Claude Code" (kairos-core) ou "@kairos via *implement" (instance)
   - O que foi feito (itens concretos)
   - Decisões tomadas (alternativas descartadas e por quê)
   - Arquivos criados/modificados (path + o que mudou)
   - Pendências / questões abertas
-  - Notas para @kairos
+  - Notas para @kairos (ou *review)
 
 Nomenclatura: {epic}.{N}.story.md  → ex: 3.1.story.md
-Criação: exclusivamente via *new-story
+Criação: exclusivamente via *new-story (ou auto por *new-squad / *update-squad)
 ```
 
 ### `*help versioning`

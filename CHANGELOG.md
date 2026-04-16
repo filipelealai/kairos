@@ -6,6 +6,28 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.0.1] — 2026-04-16
+
+### Corrigido
+
+- Aviso kairos-core: quebras de linha removidas do parágrafo na exibição em chat (`kairos.md` e `kairos-new-story.md`); templates de story intactos
+
+---
+
+## [3.0.0] — 2026-04-16
+
+### Fundação — Extensão do Modelo de Autoridade (story 3.6)
+
+- `agent-authority.md` (L1): nova seção "Quem Implementa Instâncias" — @kairos formalizado como executor exclusivo de stories `type: instance` via `*implement`; Claude Code plain reservado para `type: kairos-core`; todo `src/` (tools e agents) declarado domínio de @kairos
+- `story-lifecycle.md` (L3): nova seção "Executor por Tipo de Story" — clarifica os dois executores, seus modos de operação e assinatura do Execution Log
+- Nova task `kairos-implement.md`: executor de stories `type: instance` — elicitação interativa, recusa explícita de `kairos-core`, Execution Log assinado "@kairos via *implement", campo `self_reviewed` no gate de `*review`
+- `kairos-new-squad.md`: oferta inline de `*implement` após criação de story de scaffolding
+- `kairos-workers.md`: oferta inline de `*implement` quando worker new gera story `type: instance`
+- Persona `kairos.md`: comando `*implement [{story-id}]` adicionado (visibility: key); REQUEST-RESOLUTION, Guia e dependências atualizados
+- `kairos-help.md`: `*implement` na Seção 2 (comandos); fluxos ④ e ⑤ atualizados; Seção 4 revisada ("@kairos não faz trabalho operacional dos squads, mas implementa instâncias"); Seção 5 e cheat sheet atualizados
+
+---
+
 ## [2.3.0] — 2026-04-16
 
 ### Adicionado

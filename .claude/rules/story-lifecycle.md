@@ -1,14 +1,29 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.0.0
 ---
 
 # Story Lifecycle — Protocolo do Executor
 
-## Quem é o Executor
+## Executor por Tipo de Story
 
-O executor é o **Claude Code na conversa principal** (sem persona de agente ativa).
-Quando o usuário pede para implementar o que uma story descreve, Claude Code está atuando como executor.
+Stories do Kairos têm dois tipos com executores distintos:
+
+| Tipo | Executor | Modo de execução |
+|------|----------|-----------------|
+| `type: kairos-core` | Claude Code plain (sem persona ativa) | Implementação direta na conversa principal; @kairos governa, exibe aviso e revisa via `*review` |
+| `type: instance` | @kairos via `*implement` | @kairos permanece ativo durante toda a implementação; Execution Log assinado "@kairos via *implement" |
+
+**Regras de executor:**
+- Stories `type: kairos-core`: Claude Code plain é o executor. @kairos cria a story, exibe o aviso de modificação de núcleo a cada resposta, e move para Done após gate PASS/RESSALVA.
+- Stories `type: instance`: @kairos não delega ao Claude Code plain. Usa `*implement` para executar inline. O executor externo (Claude Code) não deve iniciar implementações de stories `type: instance`.
+
+---
+
+## Quem é o Executor (kairos-core)
+
+O executor de stories `type: kairos-core` é o **Claude Code na conversa principal** (sem persona de agente ativa).
+Quando o usuário pede para implementar o que uma story `type: kairos-core` descreve, Claude Code está atuando como executor.
 
 Este protocolo define o que o executor **deve fazer** ao longo do ciclo de vida de uma story.
 

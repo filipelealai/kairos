@@ -1,0 +1,71 @@
+schema: 2
+story: "3.6"
+story_title: "Executor @kairos para Instâncias: *implement, src/ e Modelo de Autoridade"
+epic: 3
+verdict: "RESSALVA"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-16T00:00:00.000Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ agent-authority.md — seção 'Quem Implementa Instâncias' adicionada: tabela executor por tipo, domínio src/, proibição de Claude Code plain em src/"
+    - "✅ agent-authority.md — 'Implementar stories type: instance (*implement)' declarada EXCLUSIVA na tabela do @kairos"
+    - "✅ agent-authority.md — seção 'Quem Constrói o Kairos' atualizada para refletir os dois executores"
+    - "✅ story-lifecycle.md — seção 'Executor por Tipo de Story' adicionada no topo com tabela e regras para kairos-core e instance"
+    - "✅ kairos-implement.md criada em .kairos-core/tasks/ com 7 passos: elicitação interativa, recusa explícita kairos-core, Draft→In Progress, lê ACs, implementa arquivo por arquivo, Execution Log '@kairos via *implement', move para In Review"
+    - "✅ kairos-implement.md — mensagem final 'Rode *review {id}' presente"
+    - "✅ kairos-implement.md — seção 'Gate de *review para stories type: instance' documenta campo self_reviewed: true e nota explicativa"
+    - "✅ kairos-new-squad.md — oferta interativa 's = *implement {id}, n = fazer depois' ao final do scaffolding, com execução inline se s"
+    - "✅ kairos-workers.md — passo 7 expandido com detecção de implementação pendente e oferta de *implement inline quando story type: instance criada"
+    - "✅ kairos.md (persona) — comando *implement adicionado com visibility: [full, quick, key], description correta, recusa para kairos-core"
+    - "✅ kairos.md — REQUEST-RESOLUTION com 3 novas entradas para *implement"
+    - "✅ kairos.md — kairos-implement.md adicionado em dependencies.tasks"
+    - "✅ kairos.md — Comandos Rápidos e Guia (*guide) atualizados com dois ciclos distintos"
+    - "✅ kairos-help.md — *implement adicionado na Seção 2 com descrição completa"
+    - "✅ kairos-help.md — fluxo ④ atualizado: *new-squad → story → *implement → *review → *pre-push → *push"
+    - "✅ kairos-help.md — fluxo ⑤ atualizado: distingue kairos-core (Claude Code corrige) de instance (*implement corrige)"
+    - "✅ kairos-help.md — Seção 4 reescrita: @kairos não faz trabalho operacional dos squads, mas implementa instâncias"
+    - "✅ kairos-help.md — Seção 5 com regra sobre os dois executores; cheat sheet e *help stories atualizados"
+    - "✅ core-config.yaml — version 3.0.0 (bump MAJOR de 2.3.0)"
+    - "✅ CHANGELOG.md — entrada [3.0.0] com seção 'Fundação — Extensão do Modelo de Autoridade' e justificativa completa"
+
+  manual: []
+
+  gaps: []
+
+  ressalvas:
+    - "⚠️ self_reviewed em kairos-implement.md (linha ~210) é instrução passiva para o revisor — kairos-review.md não foi modificado para emitir o campo automaticamente no template YAML do gate. O AC diz 'Gate de *review ... inclui campo self_reviewed: true', o que pode implicar comportamento automático. A implementação satisfaz o espírito (o campo é documentado e o executor rastreou a decisão), mas a garantia de execução depende do revisor ativo, não do template. Não bloqueante: o 'fora de escopo' da story cobre 'Modificar *review além do campo self_reviewed', e o executor levantou esta questão nas notas — trade-off conscientemente aceito."
+
+files:
+  present:
+    - "✅ .claude/rules/agent-authority.md"
+    - "✅ .claude/rules/story-lifecycle.md"
+    - "✅ .kairos-core/tasks/kairos-implement.md"
+    - "✅ .kairos-core/tasks/kairos-new-squad.md"
+    - "✅ .kairos-core/tasks/kairos-workers.md"
+    - "✅ .claude/commands/kairos/agents/kairos.md"
+    - "✅ .kairos-core/tasks/kairos-help.md"
+    - "✅ .kairos-core/core-config.yaml"
+    - "✅ CHANGELOG.md"
+  missing: []
+
+checks:
+  version_bumped: "✅ PASS — core-config.yaml: 3.0.0; bump MAJOR correto (2.3.0 → 3.0.0)"
+  changelog_updated: "✅ PASS — [3.0.0] com seção 'Fundação — Extensão do Modelo de Autoridade' e lista completa de mudanças"
+  story_file_consistent: "✅ PASS — Status In Review, Epic 3, todos os ACs [x], Execution Log presente"
+  files_exist: "✅ PASS — todos os 9 arquivos declarados existem"
+  no_broken_references: "✅ PASS — kairos-implement.md referenciado em persona e help; agent-authority.md e story-lifecycle.md sem referências quebradas"
+  execution_log_present: "✅ PASS — log detalhado com decisões, arquivos e notas para @kairos"
+
+issues:
+  - severity: "medium"
+    description: "self_reviewed: true documentado em kairos-implement.md como instrução passiva para o revisor, mas kairos-review.md não emite o campo automaticamente no template YAML do gate."
+    recommendation: "Em story futura (PATCH): adicionar lógica em kairos-review.md para detectar stories com Executor '@kairos via *implement' no Execution Log e incluir self_reviewed automaticamente no template. Não requer correção agora — o campo está documentado e a decisão foi rastreada."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Considerar story PATCH para integrar self_reviewed na lógica de kairos-review.md — atualmente a garantia é por instrução, não por automação."
+  - "O bump correto foi de 2.3.0 → 3.0.0 (não 2.0.0 como indicado no AC original). AC atualizado para 2.3.0 pelo executor — comportamento correto."

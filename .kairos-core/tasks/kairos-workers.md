@@ -52,7 +52,23 @@ daily-email-batch         @email-writer      *write 20       0 8 * * 1-5      �
 **Confirmação**
 5. Mostrar preview do worker e pedir confirmação
 6. Adicionar em `.kairos-core/data/workers.yaml` com `enabled: false`
-7. Informar: "Worker criado como desativado. Use `*workers {id} schedule` para ativar o agendamento no Claude Code."
+7. Se o worker requerer script novo em `src/agents/` ou persona nova → auto-criar story via `*new-story` com `type: instance` e oferecer implementação imediata:
+   ```
+   ✅ Worker '{id}' registrado.
+   
+   Este worker precisa de implementação (script/persona não existe ainda).
+   Story {epic}.{N} criada em Draft.
+   
+   Implementar agora?
+     s → *implement {epic}.{N}  (executa inline nesta sessão)
+     n → fazer depois
+   ```
+   Se **s**: executar `*implement {epic}.{N}` inline (carregar kairos-implement.md).
+8. Se não houver implementação pendente (worker usa agente/script já existente):
+   ```
+   ✅ Worker '{id}' registrado como desativado.
+   Use `*workers {id} schedule` para ativar o agendamento no Claude Code.
+   ```
 
 ---
 

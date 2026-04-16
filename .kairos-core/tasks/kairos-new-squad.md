@@ -494,13 +494,19 @@ Em seguida, **auto-executar `*new-story`** sem perguntar ao usuário (a story é
   3. Scripts `src/agents/{id}.ts` por agente com script TS (apenas se elicitado na pergunta 2.3)
 - Demais campos (fora de escopo, complexidade, dependências): elicitar normalmente
 
-Após a story ser criada, exibir:
+Após a story ser criada, exibir a oferta de implementação imediata:
 
 ```
 ✅ Story {epic}.{N} criada em Draft.
 
-Próximos passos:
-  1. Claude Code implementa as personas e tasks do squad {squad_name}
-  2. Ao concluir: *review {epic}.{N}
-  3. *version minor 'Novo squad {squad_name}'
+Implementar o squad agora?
+  s → *implement {epic}.{N}  (executa inline nesta sessão)
+  n → fazer depois           (retomar com *implement {epic}.{N} ou *roadmap)
 ```
+
+Aguardar resposta do usuário:
+- Se **s**: executar `*implement {epic}.{N}` inline na mesma sessão (carregar a task kairos-implement.md)
+- Se **n** (ou qualquer resposta negativa):
+  ```
+  Ok. Quando quiser implementar: *implement {epic}.{N}
+  ```
