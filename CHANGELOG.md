@@ -6,6 +6,16 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [2.1.1] — 2026-04-16
+
+### Mudado
+
+- `*new-story` sem argumento: elicitação lista epics disponíveis e gera ID automático (story 3.3)
+- `kairos-new-story.md`: formato de saída alinhado ao `story-template.md` (story 3.3)
+- `kairos-help.md`: assinaturas, descrições e fluxos atualizados para `*new-story`, `*version` e `*pre-push` (story 3.3)
+
+---
+
 ## [2.1.0] — 2026-04-15
 
 ### Mudado
