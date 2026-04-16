@@ -170,12 +170,12 @@ commands:
 
   - name: version
     visibility: [full, quick, key]
-    description: "Bump de versão semântica — *version patch|minor|major 'descrição'"
+    description: "Bump de versão semântica avulso — *version patch|minor|major 'descrição'. No ciclo normal, o bump ocorre via *pre-push."
     task: kairos-version-bump.md
 
   - name: new-story
     visibility: [full, quick]
-    description: "Criar nova story de desenvolvimento do Kairos — *new-story 'título'"
+    description: "Criar nova story de desenvolvimento do Kairos — elicitação guiada (epic, ID automático, título, ACs)"
     task: kairos-new-story.md
 
   - name: new-squad
@@ -375,7 +375,7 @@ autoClaude:
 - `*pre-push` — Verificações antes de push
 - `*push` — Push ao remoto (requer *pre-push PASS)
 - `*version patch|minor|major "descrição"` — Bump de versão
-- `*new-story "título"` — Nova story de dev do Kairos
+- `*new-story` — Nova story de dev do Kairos (elicitação guiada)
 - `*new-epic` — Criar novo epic (elicitação guiada)
 - `*prd` — Criar ou atualizar docs/scope.md
 - `*architecture` — Auditoria de consistência arquitetural

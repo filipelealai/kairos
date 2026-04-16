@@ -92,9 +92,10 @@ DESENVOLVIMENTO
                         Ao final: handoff condicional para *new-story.
                         → Quando há um novo conjunto de trabalho a planejar.
 
-  *new-story ["título"] Cria uma nova story de desenvolvimento do Kairos via elicitação
-                        guiada: qual epic, o que fazer, ACs (≥3), fora de escopo,
-                        complexidade, dependências.
+  *new-story            Cria uma nova story de desenvolvimento do Kairos via elicitação
+                        guiada: lista epics disponíveis, gera ID automático, elicita
+                        título, o que fazer, ACs (≥3), fora de escopo, complexidade,
+                        dependências.
                         → EXCLUSIVO para desenvolvimento do Kairos. Não para outputs
                            operacionais (emails gerados, leads pontuados).
 
@@ -105,16 +106,17 @@ DESENVOLVIMENTO
 
 VERSIONAMENTO E PUSH
   *version {tipo} "{desc}"
-                        Bump de versão semântica. Tipos: patch | minor | major.
+                        Bump de versão semântica avulso. Tipos: patch | minor | major.
                         Valida que existe story justificando MINOR e MAJOR.
                         Atualiza core-config.yaml e CHANGELOG.md.
-                        → Uso avulso (ex: patch rápido sem story). No ciclo normal,
-                          o bump acontece dentro do *pre-push.
+                        → Uso avulso (ex: patch rápido sem story associada).
+                          No ciclo normal, o bump ocorre dentro do *pre-push.
 
-  *pre-push             Pré-voo completo: gate de review (MINOR/MAJOR), bump de versão
-                        interativo se necessário, commit de changes relevantes, spot check
-                        de referências, consistência final. Seta pre_push_passed=true na sessão.
-                        → Obrigatório antes de *push.
+  *pre-push             Pré-voo completo: verifica gate de review (MINOR/MAJOR), executa
+                        bump de versão interativo (pergunta tipo e aplica), realiza commit
+                        dos changes relevantes, spot check de referências, consistência
+                        final (core-config vs CHANGELOG). Seta pre_push_passed=true na sessão.
+                        → Obrigatório antes de *push. Substitui *version no ciclo normal.
 
   *push                 git push ao remoto. EXCLUSIVO do @kairos.
                         RECUSA se *pre-push não passou na sessão atual.
@@ -156,18 +158,18 @@ FLUXOS COMUNS
    └→ *validate-story {id}  ← checar se a story está bem escrita antes de executar
 
 ③ Ciclo de desenvolvimento (do planejamento ao push)
-  *new-story "título"          ← @kairos cria a story
+  *new-story                   ← @kairos elicita e cria a story (sem argumento)
   (Claude Code implementa)     ← executor move Draft → In Progress → In Review
                                   e adiciona Execution Log na story
   *review                      ← auto-detecta "In Review"; gate PASS/RESSALVA/BLOCK
   *pre-push                    ← pré-voo: versão + commit + verificações finais
   *push                        ← push ao remoto
 
-  Nota: *version continua disponível para uso avulso (ex: patch rápido sem story)
+  Nota: *version disponível para uso avulso (ex: patch rápido sem story)
 
 ④ Novo squad
   *new-squad                   ← elicitação guiada (4 blocos)
-   └→ *new-story "Implementar personas do squad X"  (handoff automático)
+   └→ *new-story               (handoff automático — @kairos elicita o conteúdo)
   (Claude Code implementa personas + scripts TS)
   *review {story-id}
   *pre-push                    ← detecta bump pendente e pergunta o tipo

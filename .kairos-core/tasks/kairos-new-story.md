@@ -1,20 +1,20 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 2.1.0
 task: Kairos New Story
 responsavel: "@kairos"
 responsavel_type: agent
 atomic_layer: planning
 elicit: true
 Entrada: |
-  - title: Título da story (string)
-  - epic: Número do epic (1-4) — perguntar se não informado
+  - epic: Número do epic — perguntar sempre; listar epics disponíveis
   - description: Descrição do que precisa ser feito — elicitar interativamente
 Saida: |
   - story_file: docs/stories/{epic}.{N}.story.md
 Checklist:
-  - "[ ] Confirmar epic de destino (perguntar se ambíguo)"
-  - "[ ] Determinar próximo número de story dentro do epic"
+  - "[ ] Listar epics disponíveis (lendo docs/epics/) e confirmar epic de destino"
+  - "[ ] Determinar próximo número de story dentro do epic (lendo docs/stories/)"
+  - "[ ] Elicitar: título da story"
   - "[ ] Elicitar: o que precisa ser feito (tarefas)"
   - "[ ] Elicitar: critérios de aceite (pelo menos 3)"
   - "[ ] Elicitar: fora de escopo (o que explicitamente NÃO inclui)"
@@ -33,72 +33,63 @@ Esta task tem `elicit: true` — colete as informações abaixo antes de criar o
 
 Pergunte sequencialmente, aguardando resposta a cada passo:
 
-1. **Epic**: "Qual epic? (1=Infra Dados, 2=Disparo, 3=Governança, 4=Novos Escopos)"
-2. **O que precisa ser feito**: "Descreva o que precisa acontecer — pode ser em tópicos"
-3. **Critérios de aceite**: "Quais são os critérios de aceite? (pelo menos 3, testáveis)"
-4. **Fora de escopo**: "O que explicitamente NÃO está incluído nesta story?"
-5. **Complexidade**: "Estimativa: P (pequena) / M (média) / G (grande)?"
-6. **Dependências**: "Depende de alguma story existente? (ex: 1.2 deve estar Done)"
+1. **Epic**: Listar os epics disponíveis lendo `docs/epics/` e perguntar:
+   "Qual epic? Epics disponíveis: {lista dos epics encontrados em docs/epics/}"
+   → Ler os arquivos `docs/epics/epic-*.md` para extrair o número e nome de cada epic.
+
+2. **ID automático**: Após o usuário escolher o epic, determinar o próximo número da story:
+   → Listar `docs/stories/` e filtrar arquivos com prefixo `{epic}.`.
+   → Contar quantas stories existem no epic escolhido e usar `N = count + 1`.
+   → Informar ao usuário: "ID gerado: {epic}.{N}"
+
+3. **Título**: "Qual o título da story? (resumo em uma linha do que será feito)"
+
+4. **O que precisa ser feito**: "Descreva o que precisa acontecer — pode ser em tópicos"
+
+5. **Critérios de aceite**: "Quais são os critérios de aceite? (pelo menos 3, testáveis)"
+
+6. **Fora de escopo**: "O que explicitamente NÃO está incluído nesta story?"
+
+7. **Complexidade**: "Estimativa: P (pequena) / M (média) / G (grande)?"
+
+8. **Dependências**: "Depende de alguma story existente? (ex: 1.2 deve estar Done)"
 
 ## Formato do Arquivo
 
 ```markdown
-# Story {epic}.{N}: {Título}
+# Story {epic}.{N} — {Título}
 
+**Epic:** {N}
 **Status:** Draft
-**Escopo:** {squad ou "framework"}
-**Epic:** {N} — {nome do epic}
+**Complexidade:** {P|M|G}
+**Criada por:** @kairos
+**Data:** {YYYY-MM-DD}
 
 ---
 
-## Contexto
+## Objetivo
 
-{Descrição do porquê esta story existe — problema ou necessidade que resolve}
-
----
-
-## O que precisa ser feito
-
-{Tarefas numeradas com subtarefas}
-
----
+{Uma frase clara do que esta story entrega e por quê.}
 
 ## Critérios de Aceite
 
-- [ ] AC1: ...
-- [ ] AC2: ...
-- [ ] AC3: ...
-
----
+- [ ] {AC 1 — específico e testável}
+- [ ] {AC 2 — específico e testável}
+- [ ] {AC 3 — específico e testável}
 
 ## Fora de Escopo
 
-{O que explicitamente não está incluído}
-
----
-
-## Estimativa de Complexidade
-
-**{P/M/G}** — {justificativa}
-
----
+- {O que esta story explicitamente NÃO cobre}
 
 ## Dependências
 
-{Stories que precisam estar Done antes desta}
+- {Story ou sistema necessário, ou "Nenhuma"}
 
----
+## Change Log
 
-## Dev Agent Record
-
-### Arquivos Esperados
-{Lista de arquivos que serão criados/modificados — preencher antes de implementar}
-
-### Completion Notes
-{Preencher após implementação}
-
-### Change Log
-- {data}: Story criada por @kairos
+| Data | Evento |
+|------|--------|
+| {data} | Story criada por @kairos |
 ```
 
 ## Após Criar

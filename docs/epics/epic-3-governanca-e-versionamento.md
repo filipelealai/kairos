@@ -31,7 +31,7 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 |-------|--------|--------|
 | [3.1](../stories/3.1.story.md) | Tasks de Governança do @kairos | Done |
 | [3.2](../stories/3.2.story.md) | Commit Integrado ao Fluxo de Review e Pre-Push | Done |
-| [3.3](../stories/3.3.story.md) | Refinamentos de UX: *new-story, *version no Pre-Push e *help | Draft |
+| [3.3](../stories/3.3.story.md) | Refinamentos de UX: *new-story, *version no Pre-Push e *help | Done |
 | [3.4](../stories/3.4.story.md) | *review-squad: Validação de Coerência de Squad | Draft |
 | [3.5](../stories/3.5.story.md) | Modelo de Stories para Instâncias: type, *update-squad, Framing e Avisos | Draft |
 | [3.6](../stories/3.6.story.md) | Executor @kairos para Instâncias: *implement, src/ e Modelo de Autoridade | Draft |
