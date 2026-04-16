@@ -24,7 +24,7 @@ Checklist:
 
 # *prd — Criação e Atualização do Product Requirements Document
 
-O PRD do Kairos vive em `docs/scope.md`. Esta task é a única responsável por criar e atualizar esse documento.
+`docs/scope.md` é o escopo desta instância do Kairos — descreve os squads, objetivos e restrições específicos deste projeto. Esta task é a única responsável por criar e atualizar esse documento.
 
 ---
 
@@ -45,9 +45,9 @@ Faça as perguntas em ordem. Aguarde resposta de cada uma antes de prosseguir.
 
 ---
 
-**Pergunta 1 — O que é o Kairos?**
+**Pergunta 1 — Foco desta instância**
 ```
-Em uma ou duas frases: para quem esta instância do Kairos serve e qual é o foco dela?
+Para quem esta instância do Kairos serve e qual é o foco dela?
 ```
 
 ---
@@ -182,7 +182,7 @@ Após escrever o arquivo:
 O arquivo deve sempre seguir esta estrutura:
 
 ```markdown
-# Kairos — Escopo e Objetivos
+# Instância Kairos — Escopo e Objetivos da Instância
 
 **Versão:** {X.Y}
 **Atualizado em:** {YYYY-MM-DD}

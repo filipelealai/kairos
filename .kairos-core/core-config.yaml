@@ -1,4 +1,4 @@
-version: 3.0.1
+version: 3.1.0
 installedAt: '2026-04-06T00:00:00.000Z'
 updatedAt: '2026-04-16T00:00:00.000Z'
 
@@ -28,7 +28,8 @@ framework:
   squadsLocation: squads/
   storiesLocation: docs/stories/
   changelogFile: CHANGELOG.md
-  scopeFile: docs/scope.md
+  frameworkScopeFile: .kairos-core/docs/scope.md
+  instanceScopeFile: docs/scope.md
   constitutionFile: .kairos-core/constitution.md
   kbFile: .kairos-core/data/kairos-kb.md
   workersFile: .kairos-core/data/workers.yaml

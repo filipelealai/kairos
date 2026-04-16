@@ -141,11 +141,14 @@ DOCUMENTAÇÃO
                         Detecta se já existe e adapta o modo (create vs update).
                         Elicita escopo, arquitetura, objetivos, restrições, stack.
 
-  *architecture         Auditoria de consistência: stack (package.json vs docs),
-                        agentes (core-config vs arquivos), tasks (commands vs arquivos),
-                        data-flow (campos do webhook vs código TS).
-                        Dono de .kairos-core/docs/data-flow.md — propõe atualizações
-                        se encontrar divergências.
+  *architecture [{squad}]
+                        Sem argumento: auditoria de consistência do framework —
+                        stack (package.json vs .kairos-core/docs/scope.md),
+                        agentes (core-config vs arquivos), tasks, data-flow.
+                        Lê agentes dinamicamente de core-config.yaml.
+                        Com {squad}: cria ou atualiza squads/{squad}/workflows/data-flow.md
+                        descrevendo inputs, pipeline, outputs e integrações do squad.
+                        Valida consistência: CONSISTENTE / DRIFT / INCOMPLETO.
 
 DIAGNÓSTICO
   *update-squad {squad} Rastreia edição de squad existente via story (type: instance).
@@ -315,7 +318,7 @@ Revisar entrega     *review [{id}]
 Publicar            *pre-push → *push   (*version disponível para uso avulso)
 Evoluir squad       *update-squad {squad}
 Validar squad       *review-squad {squad}
-Documentar          *prd | *architecture
+Documentar          *prd | *architecture [{squad}]
 Diagnóstico         *review-squad {squad} | *doctor
 Ajuda               *help [{topic}] | *guide
 Sair                *exit

@@ -39,6 +39,8 @@ REQUEST-RESOLUTION: |
   "atualiza o scope" → *prd
   "como está a arquitetura" → *architecture
   "verifica a consistência do sistema" → *architecture
+  "data flow do squad X" → *architecture X
+  "valida o pipeline do squad X" → *architecture X
   "documentação do Kairos" → *guide
   "como uso X" → *help {topic relevante}
   "o que o @kairos faz" → *help
@@ -221,7 +223,7 @@ commands:
 
   - name: architecture
     visibility: [full, quick]
-    description: "Auditar consistência arquitetural: stack, agentes, tasks, data-flow"
+    description: "Auditar consistência arquitetural: stack, agentes, tasks, data-flow — *architecture [{squad}]. Com {squad}: gera data-flow do squad (CONSISTENTE/DRIFT/INCOMPLETO)"
     task: kairos-architecture.md
 
   - name: kb
@@ -408,7 +410,7 @@ autoClaude:
 - `*new-story` — Nova story de dev do Kairos (elicitação guiada)
 - `*new-epic` — Criar novo epic (elicitação guiada)
 - `*prd` — Criar ou atualizar docs/scope.md
-- `*architecture` — Auditoria de consistência arquitetural
+- `*architecture [{squad}]` — Auditoria arquitetural (framework) ou data-flow do squad
 - `*kb [{tópico}]` — Base de conhecimento: decisões, gotchas, padrões
 - `*update-squad {squad}` — Rastrear edição de squad via story
 - `*review-squad {squad}` — Validar coerência de squad instanciado
@@ -489,7 +491,7 @@ O executor (Claude Code) deve:
 ### Documentação do Sistema
 
 - **`*prd`** — cria ou atualiza `docs/scope.md` (escopo, arquitetura, objetivos, restrições, stack)
-- **`*architecture`** — audita consistência entre docs e implementação (stack, agentes, tasks, data-flow)
+- **`*architecture [{squad}]`** — audita consistência entre docs e implementação (stack, agentes, tasks, data-flow); com `{squad}`: gera/atualiza `squads/{squad}/workflows/data-flow.md`
 
 ### Push Exclusivo
 

@@ -134,6 +134,9 @@ owned_files:
   - path: .kairos-core/docs/data-flow.md
     layer: L3
     sha256: 4a98b1d3105b9d6b07ea605252f688c4d8b97861deca3c9a24ce2ea5d00742ed
+  - path: .kairos-core/docs/scope.md
+    layer: L3
+    sha256: 475fd6445c0b67096168d3c6455dad02457d2708d072a5b5355e32129f968b0b
 
 # -----------------------------------------------------------------------------
 # Arquivos mistos — apenas seções/chaves declaradas são framework-owned

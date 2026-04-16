@@ -6,6 +6,23 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.1.0] — 2026-04-16
+
+### Adicionado
+
+- `.kairos-core/docs/scope.md` — escopo e arquitetura do Kairos como framework (genérico, kairos-owned, L3); registrado no manifest (story 3.7)
+- `*architecture {squad}` — novo modo da task kairos-architecture.md: gera/atualiza `squads/{squad}/workflows/data-flow.md`, valida consistência (CONSISTENTE/DRIFT/INCOMPLETO) (story 3.7)
+
+### Alterado
+
+- `kairos-architecture.md` — Passo 1 lê `.kairos-core/docs/scope.md` para stack do framework; Passo 4 usa descoberta dinâmica de agentes via `core-config.yaml` (sem hardcodes) (story 3.7)
+- `core-config.yaml` — `scopeFile` renomeado para `frameworkScopeFile`; nova chave `instanceScopeFile: docs/scope.md` (story 3.7)
+- `kairos-prd.md` — clarificado como gestão do escopo da instância; Pergunta 1 reframeada (story 3.7)
+- `docs/scope.md` — título atualizado para "Instância Kairos — Escopo e Objetivos da Instância" (story 3.7)
+- `kairos-help.md` e `kairos.md` — assinatura `*architecture [{squad}]` atualizada (story 3.7)
+
+---
+
 ## [3.0.1] — 2026-04-16
 
 ### Corrigido

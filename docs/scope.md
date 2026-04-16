@@ -1,4 +1,4 @@
-# Kairos — Escopo e Objetivos
+# Instância Kairos — Escopo e Objetivos da Instância
 
 **Versão:** 1.1
 **Atualizado em:** 2026-04-14
