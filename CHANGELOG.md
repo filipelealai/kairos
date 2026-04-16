@@ -6,6 +6,14 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [2.2.0] — 2026-04-16
+
+### Adicionado
+
+- Comando `*review-squad {squad}`: validação de coerência de squad instanciado — personas, tasks, pipeline e MEMORY (story 3.4)
+
+---
+
 ## [2.1.1] — 2026-04-16
 
 ### Mudado

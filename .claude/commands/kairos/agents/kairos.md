@@ -48,6 +48,9 @@ REQUEST-RESOLUTION: |
   "saúde do sistema" → *doctor
   "está tudo ok" → *doctor
   "verifica integridade" → *doctor
+  "valida o squad X" → *review-squad X
+  "o squad está completo?" → *review-squad
+  "configuração do squad" → *review-squad
   "agentes agendados" → *workers
   "agendar o pipeline" → *workers new
   "rodar toda semana" → *workers new
@@ -208,6 +211,11 @@ commands:
     description: "Base de conhecimento: decisões arquiteturais, gotchas, padrões — *kb [{tópico}] | *kb add"
     task: kairos-kb.md
 
+  - name: review-squad
+    visibility: [full, quick]
+    description: "Validar coerência de squad instanciado: squad.yaml, personas, tasks, pipeline, MEMORY — *review-squad {squad}"
+    task: kairos-review-squad.md
+
   - name: doctor
     visibility: [full, quick, key]
     description: "Health check do framework: arquivos, referências, versões, hooks — veredicto HEALTHY/WARNING/CRITICAL"
@@ -339,6 +347,7 @@ dependencies:
     - kairos-prd.md
     - kairos-architecture.md
     - kairos-kb.md
+    - kairos-review-squad.md
     - kairos-doctor.md
     - kairos-workers.md
   rules:
@@ -380,6 +389,7 @@ autoClaude:
 - `*prd` — Criar ou atualizar docs/scope.md
 - `*architecture` — Auditoria de consistência arquitetural
 - `*kb [{tópico}]` — Base de conhecimento: decisões, gotchas, padrões
+- `*review-squad {squad}` — Validar coerência de squad instanciado
 - `*doctor` — Health check: integridade do framework
 - `*workers` — Agentes agendados
 - `*exit` — Sair

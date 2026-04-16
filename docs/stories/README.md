@@ -40,3 +40,4 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [1.2](1.2.story.md) | Pipeline de Agentes | Done |
 | [2.1](2.1.story.md) | Loop de Disparo — n8n Lê JSON e Dispara E-mails | Draft |
 | [3.1](3.1.story.md) | Tasks de Governança do @kairos | Done |
+| [3.10](3.10.story.md) | Pre-Push: Atualizar `kairos-version` nos Arquivos Modificados | Draft |

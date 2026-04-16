@@ -132,6 +132,19 @@ DOCUMENTAÇÃO
                         Dono de .kairos-core/docs/data-flow.md — propõe atualizações
                         se encontrar divergências.
 
+DIAGNÓSTICO
+  *review-squad {squad} Valida coerência de um squad instanciado pelo usuário:
+                        squad.yaml (campos obrigatórios), personas, tasks,
+                        pipeline documentado, MEMORY.md por agente.
+                        Resultado: VÁLIDO / INCOMPLETO / QUEBRADO.
+                        → Diferente de *doctor: esse é para o framework.
+                           *review-squad é para o conteúdo do squad.
+                        → Se omitir {squad}: lista squads disponíveis.
+
+  *doctor               Health check do framework Kairos: arquivos L1-L3,
+                        agentes registrados, tasks, hooks, stories, ownership.
+                        Resultado: HEALTHY / WARNING / CRITICAL.
+
 META
   *help [{topic}]       Esta ajuda. Topics: flows | commands | stories |
                         versioning | push | squads | review
@@ -205,6 +218,13 @@ Cada squad define seus próprios agentes e comandos — ver squads/{squad}/READM
 Regra rápida:
   "Estou tentando executar trabalho operacional de um squad?" → squad
   "Estou tentando evoluir o próprio Kairos?"                 → @kairos
+
+Para validar a configuração de um squad instanciado (personas existem?
+tasks existem? pipeline documentado?):
+  *review-squad {squad}    ← diagnóstico de squad, não de framework
+
+Para verificar a integridade do framework em si:
+  *doctor                  ← verifica L1/L2/L3, hooks, ownership
 ```
 
 ---
@@ -248,7 +268,9 @@ Novo planejamento   *new-epic → *new-story → *validate-story {id}
 Revisar entrega     *review [{id}]
 Publicar            *pre-push → *push   (*version disponível para uso avulso)
 Novo squad          *new-squad
+Validar squad       *review-squad {squad}
 Documentar          *prd | *architecture
+Diagnóstico         *review-squad {squad} | *doctor
 Ajuda               *help [{topic}] | *guide
 Sair                *exit
 

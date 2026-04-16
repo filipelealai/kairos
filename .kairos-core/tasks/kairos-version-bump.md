@@ -12,6 +12,7 @@ Entrada: |
 Saida: |
   - .kairos-core/core-config.yaml atualizado (version + updatedAt)
   - CHANGELOG.md com nova entrada
+  - README.md atualizado (linha "Versão atual")
 Checklist:
   - "[ ] Validar que bump_type e description foram fornecidos"
   - "[ ] Ler versão atual de .kairos-core/core-config.yaml"
@@ -19,6 +20,7 @@ Checklist:
   - "[ ] Verificar se story é obrigatória (MAJOR/MINOR) e se existe"
   - "[ ] Atualizar version e updatedAt em .kairos-core/core-config.yaml"
   - "[ ] Adicionar entrada no CHANGELOG.md"
+  - "[ ] Atualizar linha 'Versão atual' no README.md"
   - "[ ] Confirmar mudanças ao usuário"
 ---
 
@@ -63,13 +65,22 @@ Adicione no topo (após o cabeçalho), antes da entrada mais recente:
 
 Categorias: `Adicionado`, `Mudado`, `Corrigido`, `Removido`, `Segurança`
 
+## Atualização do README.md
+
+Localize a linha que começa com `**Versão atual:**` e substitua a versão:
+
+```
+**Versão atual:** `{nova versão}` — ver [CHANGELOG.md](CHANGELOG.md)
+```
+
 ## Confirmação
 
 Exiba:
 ```
 ✓ Versão bumped: {antiga} → {nova}
-✓ CHANGELOG.md atualizado
 ✓ core-config.yaml atualizado
+✓ CHANGELOG.md atualizado
+✓ README.md atualizado
 
 Próximo passo: *pre-push → *push
 ```
