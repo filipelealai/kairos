@@ -38,7 +38,9 @@ daily-email-batch         @email-writer      *write 20       0 8 * * 1-5      �
 ### `*workers new` — Criar novo worker (elicitação guiada)
 
 **Bloco 1 — Identidade**
-1. "Qual agente deve executar? (@campaign-analyst / @lead-scorer / @niche-classifier / @email-writer)"
+1. Ler `.kairos-core/core-config.yaml → agents.squads`. Para cada squad registrado, listar seus agentes no formato `@{agent-id} (squad: {squad-name})`. Se nenhum squad com agentes estiver registrado: exibir "Nenhum agente registrado. Adicione squads via `*new-squad` antes de criar workers." e HALT.
+   Perguntar: "Qual agente deve executar? Sugestão com base nos squads registrados: {lista dinâmica}
+   (Você pode informar qualquer agente, inclusive os ainda não registrados no config.)"
 2. "Qual comando? (ex: analyze, score, write 20)"
 3. "Descrição em uma frase — o que este worker faz?"
 

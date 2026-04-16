@@ -1,39 +1,27 @@
 # Instância Kairos — Escopo e Objetivos da Instância
 
-**Versão:** 1.1
-**Atualizado em:** 2026-04-14
+**Versão:** 1.2
+**Atualizado em:** 2026-04-16
 
 ---
 
-## O que é o Kairos
+## O que é esta instância
 
-Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura para criar, operar e evoluir esses squads ao longo do tempo.
-
-**Arquitetura:** desenhada para múltiplos squads, múltiplas integrações externas, uso individual ou em equipe.
-
-O Kairos não é um agente único, nem é dependente de uma ferramenta específica. n8n é a integração do squad atual — não uma parte estrutural do framework.
+Esta instância do Kairos é de uso pessoal e de agência, projetada para suportar múltiplas funções ao longo do tempo. O foco inicial é **prospecção B2B de empresas no Brasil** — identificar, qualificar e abordar leads via e-mail personalizado.
 
 ---
 
-## Arquitetura do Framework
+## Arquitetura desta instância
 
 ```
-┌─────────────────────────────────────────────────────────┐
-│  Kairos Framework                                        │
-│                                                          │
-│  @kairos — governança, versionamento, criação de squads  │
-│                                                          │
-│  squads/                                                 │
-│    cold-prospecting/    → integra com n8n, Sheets        │
-│    {próximo-squad}/     → integra com {outra ferramenta} │
-│    {squad-N}/           → integra com {outra ferramenta} │
-│                                                          │
-│  .kairos-core/ — memória, tasks, KB, workers, templates  │
-│  .claude/      — personas, hooks, rules                  │
-└─────────────────────────────────────────────────────────┘
+Google Sheets (dados)  ←→  n8n (operacional)  ←→  Kairos (inteligência)
 ```
 
-Cada squad define suas próprias fontes de dados, integrações externas e pipeline. O framework fornece a infraestrutura comum.
+- **Google Sheets** — fonte de leads (CNPJs, dados da Receita Federal) e destino de status pós-envio
+- **n8n** — raspa dados, aciona o Kairos via webhook, dispara os e-mails gerados, atualiza a planilha
+- **Kairos** — analisa, pontua, classifica leads e gera e-mails personalizados
+
+Comunicação: webhooks (por enquanto).
 
 ---
 
@@ -44,10 +32,6 @@ Cada squad define suas próprias fontes de dados, integrações externas e pipel
 Prospecção fria de pequenas e médias empresas brasileiras via e-mail.
 
 **Integração externa:** n8n + Google Sheets
-
-```
-n8n (operacional)  ↔  Kairos/cold-prospecting  ↔  Google Sheets (dados)
-```
 
 **Fluxo:**
 1. n8n raspa CNPJs da Receita Federal e popula Google Sheets
@@ -68,21 +52,21 @@ n8n (operacional)  ↔  Kairos/cold-prospecting  ↔  Google Sheets (dados)
 | E-mails que pareçam escritos por pessoa | Taxa de resposta > baseline de templates genéricos |
 | Priorizar leads com maior chance de conversão | Score tier A/B nos primeiros disparos |
 | Manter cobertura de nichos atualizada | < 10% leads sem classificação |
-| Detectar emails suspeitos antes do disparo | 0 disparos para endereços suspeitos |
+| Detectar e-mails suspeitos antes do disparo | 0 disparos para endereços suspeitos |
 
 ---
 
-### Squad 2+ — (planejados)
+### Squads futuros
 
-Novos squads são criados via `@kairos *new-squad`. Cada um define suas próprias integrações, agentes e pipeline. Ver `docs/epics/epic-4-novos-escopos.md` para candidatos planejados.
+Novos escopos serão criados via `@kairos *new-squad` conforme a agência expande para novas funções. Ver `docs/epics/epic-4-novos-escopos.md` para candidatos planejados.
 
 ---
 
-## Restrições do Framework
+## Restrições desta instância
 
-- **Kairos não age sobre sistemas externos** — envio, escrita, disparo são delegados a sistemas especializados de cada squad
-- **Kairos não assume operacional** — scraping, autenticação, rate limiting pertencem às integrações externas
-- **Novos squads precisam de validação** — criados via `@kairos *new-squad` com elicitação guiada
+- **Kairos não envia e-mails** — envio é responsabilidade do n8n
+- **Kairos não escreve na planilha** — atualizações de status são feitas pelo n8n após o disparo
+- **Kairos não faz scraping** — coleta de CNPJs e dados da Receita Federal é responsabilidade do n8n
 
 ---
 
@@ -91,7 +75,7 @@ Novos squads são criados via `@kairos *new-squad`. Cada um define suas própria
 - **Runtime:** Node.js (ESM), TypeScript
 - **AI:** `@anthropic-ai/sdk`, modelo `claude-sonnet-4-6`
 - **Runner:** `tsx` (sem compilação)
-- **Integrações externas:** definidas por squad (atualmente: n8n webhook → Google Sheets)
+- **Integrações externas:** n8n webhook → Google Sheets
 
 ---
 
@@ -101,3 +85,4 @@ Novos squads são criados via `@kairos *new-squad`. Cada um define suas própria
 |--------|------|---------|
 | 1.0 | 2026-04-06 | Escopo inicial — cold prospecting com 4 agentes |
 | 1.1 | 2026-04-14 | Reframing: Kairos como framework de orquestração, não sistema pessoal n8n-driven |
+| 1.2 | 2026-04-16 | Revisão completa: foco na instância (uso pessoal/agência), não no framework genérico |

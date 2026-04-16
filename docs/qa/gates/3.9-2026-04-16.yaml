@@ -1,0 +1,46 @@
+schema: 2
+story: "3.9"
+story_title: "Pre-Push: Prompt Opcional de Bump para Stories PATCH"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-16T00:00:00Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-pre-push.md — Passo 2 expandido com step 4 após o processamento MINOR/MAJOR (step 3); lista docs/qa/gates/*.yaml, filtra PASS/RESSALVA, identifica stories PATCH"
+    - "✅ AC2: Prompt não-bloqueante presente — texto conforme especificado; lógica s/n implementada: 'n' continua sem BLOCK, 's' executa bump PATCH inline via sub-passos a–e do passo 2"
+    - "✅ AC3: Skip por data presente — 'Se data do CHANGELOG >= data do gate → bump já realizado → skip (nenhum prompt)'"
+    - "✅ AC4: Guard explícito contra stories sem gate — step 4 itera apenas sobre gates com verdict: PASS ou RESSALVA; nota final reforça 'Stories PATCH sem gate algum não disparam o prompt'"
+    - "✅ AC5: Comportamento MINOR/MAJOR inalterado — steps 1–3 do Passo 2 intactos; step 4 é puramente aditivo e não altera a lógica bloqueante"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md — step 4 presente nas linhas 115–133; Resultado Final atualizado na linha 228"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS — Status: In Review, Epic 3, Complexidade P, Tipo kairos-core; tudo consistente"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS — referências a docs/qa/gates/, CHANGELOG.md e core-config.yaml válidas; referência informal 'passos 2.a–2.e' rastreável no contexto"
+  execution_log_present: "✅ PASS — Execution Log completo: o que foi feito, decisões, arquivos, pendências e notas para @kairos"
+
+issues:
+  - severity: "low"
+    description: "Referência 'passos 2.a–2.e acima' no step 4 é informal — funciona em contexto mas poderia ser mais precisa ('sub-passos a–e do bloco de bump inline acima')"
+    recommendation: "Opcional: renomear para 'sub-passos a–e do bloco de bump inline (passo 2)' para eliminar ambiguidade se o Passo 2 for reestruturado no futuro"
+  - severity: "low"
+    description: "Dependência implícita: a heurística de identificação de PATCH no step 4 (não MINOR/MAJOR) é cópia da heurística do Passo 1 — se o Passo 1 evoluir, o step 4 pode ficar desatualizado"
+    recommendation: "Documentado no Execution Log; considerar consolidar a heurística em uma seção única quando o Passo 1 for revisado"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ (low) Renomear referência 'passos 2.a–2.e' para algo mais explícito em revisão futura"
+  - "⚠️ (low) Se Passo 1 vier a mudar a definição de PATCH/MINOR/MAJOR, revisar step 4 em conjunto"

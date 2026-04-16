@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.1.0
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -112,6 +112,26 @@ Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ati
 
 3. Se nenhum bump pendente → confirme: `✓ Versão atual: {version} — sem bump pendente`
 
+4. **Stories PATCH com gate (prompt opcional — não bloqueante):**
+
+   a. Liste todos os arquivos `docs/qa/gates/*.yaml`
+   b. Para cada gate com `verdict: PASS` ou `verdict: RESSALVA`, identifique a story correspondente pelo prefixo do nome do arquivo (`{story-id}-{YYYY-MM-DD}.yaml`)
+   c. Determine se a story implica bump **PATCH** (não é MINOR nem MAJOR — correção, ajuste de instrução, atualização de memória)
+   d. Para cada story PATCH com gate PASS/RESSALVA:
+      - Obtenha data do gate: extraia `{YYYY-MM-DD}` do nome do arquivo do gate
+      - Leia `CHANGELOG.md` → data da entrada mais recente (formato `## [versão] — YYYY-MM-DD`)
+      - Se data do CHANGELOG >= data do gate → bump já realizado → **skip** (nenhum prompt)
+      - Se data do CHANGELOG < data do gate (ou CHANGELOG sem entradas):
+        - Exiba prompt **não-bloqueante**:
+          ```
+          ⚠️  Story {id} é PATCH — sem bump desde o último release.
+          Deseja bumpar agora? (s/n):
+          ```
+        - Se `s` (ou `sim`): execute bump PATCH inline seguindo os mesmos passos 2.a–2.e acima (com tipo `patch`); confirme: `✓ Versão bumped: {antiga} → {nova} (PATCH)`
+        - Se `n` (ou `não`): registre aviso internamente e **continue normalmente — sem BLOCK**
+
+   > Stories PATCH sem gate algum (não passaram por `*review`) não disparam o prompt.
+
 ---
 
 ### Passo 2.5 — Transição da story para Done
@@ -205,7 +225,7 @@ Resumo:
 
 Checks:
   ✅ Passo 1 — Gate de review (stories MINOR/MAJOR com gate PASS/RESSALVA)
-  ✅ Passo 2 — Versionamento ({bump feito: antiga → nova | sem bump pendente})
+  ✅ Passo 2 — Versionamento ({bump feito: antiga → nova | sem bump pendente | PATCH: bump aplicado/ignorado pelo usuário})
   ✅ Passo 3 — Commit ({mensagem do commit | sem changes pendentes})
   ✅ Passo 4 — Referências verificadas
   ✅ Passo 5 — Versão consistente ({version})

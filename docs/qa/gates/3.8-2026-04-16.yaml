@@ -1,0 +1,38 @@
+schema: 2
+story: "3.8"
+story_title: "Workers: Listagem Dinâmica de Agentes na Elicitação"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-16T00:00:00.000Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-workers.md Bloco 1, Pergunta 1 reescrita com leitura dinâmica de core-config.yaml → agents.squads no formato @{agent-id} (squad: {squad-name})"
+    - "✅ AC2: HALT com mensagem canônica 'Nenhum agente registrado. Adicione squads via *new-squad antes de criar workers.' quando nenhum squad com agentes estiver registrado"
+    - "✅ AC3: Lista dinâmica apresentada como sugestão; usuário pode informar agente não listado ('Você pode informar qualquer agente, inclusive os ainda não registrados no config.')"
+    - "✅ AC4: Nenhuma outra parte da task foi alterada — Bloco 2, confirmação, enable/disable, schedule, run, delete e Blocking intactos"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-workers.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ (não bloqueante) O formato @{agent-id} (squad: {squad-name}) é claro. Para consistência visual futura, considerar bullet list ao exibir vários agentes — mas não é obrigatório nesta story."
