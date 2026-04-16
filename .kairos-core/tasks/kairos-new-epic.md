@@ -45,6 +45,9 @@ Não pule nem junte perguntas.
 ```
 Qual é o tema do epic em uma frase curta?
 (ex: "Automação de Disparo de E-mails", "Integração com CRM")
+
+Nota: O uso padrão do Kairos é criar e gerenciar squads, workers e agentes.
+Se este epic não for sobre o núcleo do framework, considere começar com *new-squad.
 ```
 
 ---
@@ -63,9 +66,14 @@ Quais são os critérios objetivos de conclusão?
 Liste pelo menos 3 itens verificáveis (eles virarão checkboxes).
 
 Exemplos de bons critérios:
-  - "Integração externa do squad lê data/outputs/{squad}/ e executa ação downstream"
-  - "Task kairos-xyz.md implementada e funcional"
-  - "Agente X documentado em .claude/commands/ e squads/"
+  — Para squads / workers / agentes (uso mais comum):
+    - "Squad {nome} scaffoldado com persona, tasks e pipeline documentados"
+    - "Agente {id} com persona .claude/commands/kairos/agents/{id}.md funcional"
+    - "Worker agendado rodando pipeline completo semanalmente"
+    - "Integração com {sistema} configurada e testada end-to-end"
+  — Para núcleo do framework (kairos-core):
+    - "Task kairos-xyz.md implementada e funcional"
+    - "Rule {nome}.md em .claude/rules/ documentada e referenciada"
 
 (Liste um por linha)
 ```

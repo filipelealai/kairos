@@ -33,12 +33,13 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | [3.2](../stories/3.2.story.md) | Commit Integrado ao Fluxo de Review e Pre-Push | Done |
 | [3.3](../stories/3.3.story.md) | Refinamentos de UX: *new-story, *version no Pre-Push e *help | Done |
 | [3.4](../stories/3.4.story.md) | *review-squad: Validação de Coerência de Squad | Done |
-| [3.5](../stories/3.5.story.md) | Modelo de Stories para Instâncias: type, *update-squad, Framing e Avisos | Draft |
+| [3.5](../stories/3.5.story.md) | Modelo de Stories para Instâncias: type, *update-squad, Framing e Avisos | Done |
 | [3.6](../stories/3.6.story.md) | Executor @kairos para Instâncias: *implement, src/ e Modelo de Autoridade | Draft |
 | [3.7](../stories/3.7.story.md) | scope.md do Framework em .kairos-core/docs/ e *architecture {squad} | Draft |
 | [3.8](../stories/3.8.story.md) | Workers: Listagem Dinâmica de Agentes na Elicitação | Draft |
 | [3.9](../stories/3.9.story.md) | Pre-Push: Prompt Opcional de Bump para Stories PATCH | Draft |
 | [3.10](../stories/3.10.story.md) | Pre-Push: Atualizar `kairos-version` nos Arquivos Modificados | Draft |
+| [3.11](../stories/3.11.story.md) | Renomear `*review-squad` → `*validate-squad` | Draft |
 
 ---
 
@@ -58,3 +59,5 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | 2026-04-15 | Stories 3.7 e 3.8 criadas |
 | 2026-04-16 | Story 3.9 criada |
 | 2026-04-16 | Story 3.10 criada |
+| 2026-04-16 | Story 3.11 criada — rename *review-squad → *validate-squad |
+| 2026-04-16 | Story 3.5 implementada — status → In Review |

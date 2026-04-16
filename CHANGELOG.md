@@ -6,6 +6,20 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [2.3.0] — 2026-04-16
+
+### Adicionado
+
+- Campo `type: kairos-core | instance` no template de stories e em todas as stories existentes (story 3.5)
+- Comando `*update-squad {squad}`: rastreia edições de squad via story com `type: instance` e prefixo `update:` (story 3.5)
+- `*new-squad` auto-cria story de implementação (`type: instance`) ao final do scaffolding — sem necessidade de `*new-story` manual (story 3.5)
+- Aviso canônico para stories `type: kairos-core` em `@kairos`, `*new-story` e template (story 3.5)
+- `*new-story` elicita `type` com default `instance`; framing orientado a instâncias (story 3.5)
+- `*new-epic` com nota orientadora para instâncias e exemplos atualizados (story 3.5)
+- `*status` exibe prefixos `[core]` / `[instance]` nas stories (story 3.5)
+
+---
+
 ## [2.2.0] — 2026-04-16
 
 ### Adicionado

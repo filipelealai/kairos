@@ -102,7 +102,14 @@ DESENVOLVIMENTO
   *new-squad            Cria um novo squad via elicitação guiada (4 blocos: propósito,
                         agentes, dados, pipeline). Scaffolda toda a estrutura:
                         squad.yaml, agents/, tasks/ (stubs), workflows/, MEMORY.md.
-                        Ao final: handoff para *new-story de implementação.
+                        Ao final: auto-cria story de implementação (type: instance) —
+                        não é preciso rodar *new-story manualmente.
+
+  *update-squad {squad} Rastreia edição de squad existente via story.
+                        Elicita: qual aspecto (persona, task, pipeline, regra,
+                        integração), descrição da mudança e ACs.
+                        Cria story com type: instance e prefixo update: no título.
+                        → *update-squad sem argumento: lista squads disponíveis.
 
 VERSIONAMENTO E PUSH
   *version {tipo} "{desc}"
@@ -133,6 +140,11 @@ DOCUMENTAÇÃO
                         se encontrar divergências.
 
 DIAGNÓSTICO
+  *update-squad {squad} Rastreia edição de squad existente via story (type: instance).
+                        Elicita aspecto modificado (persona, task, pipeline, regra,
+                        integração), descrição e ACs. Gera story com prefixo update:.
+                        → Omitir {squad}: lista squads disponíveis.
+
   *review-squad {squad} Valida coerência de um squad instanciado pelo usuário:
                         squad.yaml (campos obrigatórios), personas, tasks,
                         pipeline documentado, MEMORY.md por agente.
@@ -242,6 +254,11 @@ REGRAS IMPORTANTES
 • Stories em docs/stories/ = desenvolvimento do KAIROS.
   Outputs operacionais (emails, relatórios, scores) vão para data/.
 
+• Stories podem ser kairos-core (modificam o framework) ou instance (criam
+  ou evoluem squads, workers ou agentes). Apenas kairos-core impacta futuras
+  atualizações. *new-squad auto-cria story instance — não precisa rodar
+  *new-story manualmente. Para evoluir squad existente: *update-squad {squad}.
+
 • *review sem argumento detecta automaticamente stories com
   Status: In Review. Se houver mais de uma, pede para escolher.
 
@@ -268,6 +285,7 @@ Novo planejamento   *new-epic → *new-story → *validate-story {id}
 Revisar entrega     *review [{id}]
 Publicar            *pre-push → *push   (*version disponível para uso avulso)
 Novo squad          *new-squad
+Evoluir squad       *update-squad {squad}
 Validar squad       *review-squad {squad}
 Documentar          *prd | *architecture
 Diagnóstico         *review-squad {squad} | *doctor
@@ -280,7 +298,7 @@ Topics de *help:
   stories     Como stories funcionam (estados, executor, Execution Log)
   versioning  Regras de versionamento semântico
   push        Fluxo de push e guards
-  squads      O que são squads e como criar
+  squads      O que são squads, como criar (*new-squad), evoluir (*update-squad) e o campo type
   review      Diferença entre *validate-story e *review, gates
 ```
 
@@ -300,6 +318,15 @@ STORIES — Como funcionam
 ─────────────────────────────────────────────────────────────
 Stories em docs/stories/ rastreiam o desenvolvimento do KAIROS.
 NÃO são stories: emails gerados, leads pontuados, relatórios de campanha.
+
+Tipos de story (campo type):
+  kairos-core  → modifica o framework Kairos em si (tasks, rules, personas do
+                 framework, constituição). Pode impactar futuras atualizações.
+                 @kairos exibe aviso a cada resposta enquanto trabalha nessa story.
+  instance     → cria ou evolui squads, workers, agentes ou qualquer conteúdo
+                 instanciado pelo usuário. Não afeta atualizações do framework.
+
+No *status e *roadmap, as stories aparecem com prefixo [core] ou [instance].
 
 Estados:
   Draft       → criada por @kairos, aguardando executor
@@ -390,7 +417,15 @@ Criar novo squad:
   → Elicitação em 4 blocos: propósito, agentes, dados, pipeline
   → Confirmação antes de criar qualquer arquivo
   → Scaffolda: squad.yaml, README, agents/, tasks/ (stubs), workflows/, MEMORY.md
-  → Handoff para *new-story de implementação
+  → Auto-cria story de implementação com type: instance (não precisa rodar
+    *new-story manualmente — é feito automaticamente ao final do scaffolding)
+
+Evoluir squad existente:
+  *update-squad {squad}
+  → Elicita: qual aspecto (persona, task, pipeline, regra, integração)
+  → Elicita: descrição da mudança e ACs
+  → Cria story com type: instance e prefixo update: no título
+  Ex: "update: cold-prospecting — nova regra de scoring"
 
 Estrutura de um squad:
   squads/{nome}/
@@ -405,6 +440,11 @@ Personas completas ficam em:
 
 Scripts de computação ficam em:
   src/agents/{id}.ts
+
+Campo type nas stories:
+  Stories podem ser kairos-core (modificam o framework) ou instance (criam
+  ou evoluem squads, workers ou agentes). Apenas kairos-core pode impactar
+  futuras atualizações automáticas do Kairos.
 ```
 
 ### `*help review`

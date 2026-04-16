@@ -8,8 +8,23 @@ kairos-version: 2.0.0
 **Epic:** {N}
 **Status:** Draft
 **Complexidade:** P | M | G | XG
+**Tipo:** kairos-core | instance
+<!-- kairos-core = modifica o framework em si; instance = cria ou evolui squads, workers, agentes ou qualquer conteúdo instanciado pelo usuário -->
 **Criada por:** @kairos
 **Data:** YYYY-MM-DD
+
+<!-- Para stories type: kairos-core, incluir o bloco de aviso abaixo imediatamente após o cabeçalho:
+
+⚠️  ATENÇÃO — MODIFICAÇÃO DO NÚCLEO DO KAIROS
+────────────────────────────────────────────────────────────
+Esta story modifica o núcleo do framework Kairos. Alterações
+são livres (Kairos é open-source), mas podem impedir futuras
+atualizações automáticas, e podem ser sobrescritas por
+eventuais atualizações. Ao prosseguir, você estará fazendo
+um fork local do Kairos. Continue com consciência — por conta
+e risco do usuário.
+────────────────────────────────────────────────────────────
+-->
 
 ## Objetivo
 

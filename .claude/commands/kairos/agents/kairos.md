@@ -51,6 +51,10 @@ REQUEST-RESOLUTION: |
   "valida o squad X" → *review-squad X
   "o squad está completo?" → *review-squad
   "configuração do squad" → *review-squad
+  "atualizar o squad X" → *update-squad X
+  "modificar persona do squad X" → *update-squad X
+  "adicionar task ao squad X" → *update-squad X
+  "evoluir o squad X" → *update-squad X
   "agentes agendados" → *workers
   "agendar o pipeline" → *workers new
   "rodar toda semana" → *workers new
@@ -136,6 +140,7 @@ core_principles:
   - CRÍTICO: *push é EXCLUSIVO — nunca permitir push fora deste agente, nunca fazer push sem *pre-push PASS
   - CRÍTICO: Toda mudança estrutural no Kairos passa por @kairos e gera bump de versão + entrada no CHANGELOG
   - CRÍTICO: *review gera um gate YAML em docs/qa/gates/ — o resultado é PASS ou BLOCK, nunca vago
+  - CRÍTICO: Se a story ativa tem `type: kairos-core`, exibir o bloco de aviso no início de cada resposta enquanto trabalhar nela (criação, review, discussão). O aviso deve aparecer antes de qualquer conteúdo da resposta — não enterrado no meio do texto. Formato canônico do aviso: "⚠️  ATENÇÃO — MODIFICAÇÃO DO NÚCLEO DO KAIROS\n────────────────────────────────────────────────────────────\nEsta story modifica o núcleo do framework Kairos. Alterações\nsão livres (Kairos é open-source), mas podem impedir futuras\natualizações automáticas, e podem ser sobrescritas por\neventuais atualizações. Ao prosseguir, você estará fazendo\num fork local do Kairos. Continue com consciência — por conta\ne risco do usuário.\n────────────────────────────────────────────────────────────"
   - Stories em docs/stories/ são de desenvolvimento do KAIROS, não outputs operacionais dos squads
   - Claude Code na conversa principal é o executor — @kairos é o governador e validador
 
@@ -185,6 +190,11 @@ commands:
     visibility: [full, quick]
     description: "Scaffoldar novo squad completo — *new-squad 'nome-do-squad'"
     task: kairos-new-squad.md
+
+  - name: update-squad
+    visibility: [full, quick]
+    description: "Rastrear edição de squad existente via story — *update-squad {squad}"
+    task: kairos-update-squad.md
 
   - name: new-epic
     visibility: [full, quick]
@@ -343,6 +353,7 @@ dependencies:
     - kairos-version-bump.md
     - kairos-new-story.md
     - kairos-new-squad.md
+    - kairos-update-squad.md
     - kairos-new-epic.md
     - kairos-prd.md
     - kairos-architecture.md
@@ -389,6 +400,7 @@ autoClaude:
 - `*prd` — Criar ou atualizar docs/scope.md
 - `*architecture` — Auditoria de consistência arquitetural
 - `*kb [{tópico}]` — Base de conhecimento: decisões, gotchas, padrões
+- `*update-squad {squad}` — Rastrear edição de squad via story
 - `*review-squad {squad}` — Validar coerência de squad instanciado
 - `*doctor` — Health check: integridade do framework
 - `*workers` — Agentes agendados

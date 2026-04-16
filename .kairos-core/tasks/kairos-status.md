@@ -41,6 +41,11 @@ Liste todos os arquivos em `docs/stories/*.story.md` e agrupe por status:
 - **In Progress** — em andamento
 - **Draft** — pendentes
 
+Para cada story, leia o campo `**Tipo:**` no cabeçalho e prefixe:
+- `[core]` para stories com `type: kairos-core`
+- `[instance]` para stories com `type: instance`
+- sem prefixo para stories sem campo type (compatibilidade retroativa)
+
 ### Passo 4 — Epics
 
 Liste `docs/epics/*.md` e o status de cada um.
@@ -62,9 +67,9 @@ Verifique `.kairos-core/runtime/handoffs/` por handoff com `consumed: false`. Se
   {squad-id}: {agente-1}, {agente-2}, ...
 
 📋 Stories
-  Done (N): 1.1, 1.2
+  Done (N): [core] 1.1, [core] 1.2
   In Progress (N): —
-  Draft (N): 2.1, 3.1
+  Draft (N): [core] 2.1, [instance] 3.1
 
 🗂️ Epics
   1 — Infraestrutura de Dados: Done

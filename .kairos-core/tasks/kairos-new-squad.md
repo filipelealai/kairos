@@ -12,7 +12,7 @@ Saida: |
   - squads/{squad_name}/ com estrutura completa e conteúdo real (não stubs vazios)
   - .kairos-core/core-config.yaml atualizado (novo squad em agents.squads)
   - epic de candidatos do usuário atualizado (se existir e houver correspondência)
-  - handoff condicional para *new-story
+  - story de implementação auto-criada via *new-story (type: instance)
 Checklist:
   - "[ ] Elicitar escopo, propósito e contexto do squad"
   - "[ ] Elicitar agentes: nome, persona, responsabilidade, comando principal"
@@ -28,7 +28,7 @@ Checklist:
   - "[ ] Criar squads/{squad_name}/workflows/full-pipeline.md"
   - "[ ] Criar .kairos-core/agents/{id}/MEMORY.md por agente"
   - "[ ] Atualizar .kairos-core/core-config.yaml"
-  - "[ ] Oferecer handoff condicional para *new-story"
+  - "[ ] Auto-executar *new-story com type: instance ao final do scaffolding"
 ---
 
 # *new-squad — Criação de Squad com Elicitação Guiada
@@ -456,16 +456,16 @@ Se o usuário mantém um epic listando squads candidatos e o novo squad estava l
 1. Remover da tabela de candidatos
 2. Adicionar no Change Log do epic:
    ```
-   | {data} | Squad `{squad_name}` scaffoldado — implementação pendente |
+   | {data} | Squad `{squad_name}` scaffoldado — story de implementação criada |
    ```
 
 Se não há epic de candidatos: pular este passo.
 
 ---
 
-## Notas pós-scaffolding
+## Notas pós-scaffolding e auto-criação de story
 
-Após criar tudo, exibir:
+Após criar tudo, exibir o resumo e em seguida auto-executar `*new-story`:
 
 ```
 ✅ Squad '{squad_name}' scaffoldado em squads/{squad_name}/
@@ -478,17 +478,29 @@ Criado:
   ✅ workflows/full-pipeline.md
   ✅ .kairos-core/agents/{id}/MEMORY.md  (× N)
   ✅ core-config.yaml atualizado
-  ✅ Epic 4 atualizado
+  ✅ Epic {N} atualizado
 
-Próximos passos obrigatórios:
-  1. *new-story 'Implementar personas dos agentes do squad {squad_name}' (epic 4)
-     → Claude Code cria .claude/commands/kairos/agents/{id}.md para cada agente
-  {se scripts TS:}
-  2. *new-story 'Implementar scripts TypeScript do squad {squad_name}' (epic 4)
-     → Claude Code cria src/agents/{id}.ts para cada agente com script
+Criando story de implementação para o squad {squad_name}…
+```
+
+Em seguida, **auto-executar `*new-story`** sem perguntar ao usuário (a story é parte obrigatória do scaffolding):
+
+- `type`: `instance` (fixo — nunca kairos-core para squads de usuário)
+- `epic`: selecionar o epic existente que mais se encaixa (ler `docs/epics/` e escolher o que tiver maior afinidade temática com o squad); se nenhum bater ou não existir nenhum, criar um novo epic antes com `*new-epic`
+- `title`: `"Implementar squad {squad_name}"` (pré-preenchido)
+- ACs pré-preenchidos derivados do elicitado:
+  1. Persona `.claude/commands/kairos/agents/{id}.md` criada para cada agente
+  2. Tasks em `squads/{squad_name}/tasks/` implementadas com conteúdo real (não stubs)
+  3. Scripts `src/agents/{id}.ts` por agente com script TS (apenas se elicitado na pergunta 2.3)
+- Demais campos (fora de escopo, complexidade, dependências): elicitar normalmente
+
+Após a story ser criada, exibir:
+
+```
+✅ Story {epic}.{N} criada em Draft.
+
+Próximos passos:
+  1. Claude Code implementa as personas e tasks do squad {squad_name}
+  2. Ao concluir: *review {epic}.{N}
   3. *version minor 'Novo squad {squad_name}'
-
-Deseja criar a story de implementação agora?
-  s — iniciar *new-story 'Implementar squad {squad_name}' (epic 4)
-  n — criar depois manualmente
 ```
