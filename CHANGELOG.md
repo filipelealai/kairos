@@ -6,6 +6,15 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.1.1] — 2026-04-16
+
+### Alterado
+
+- Workers: listagem dinâmica de agentes na elicitação (story 3.8)
+- Pre-Push: prompt opcional de bump para stories PATCH (story 3.9)
+
+---
+
 ## [3.1.0] — 2026-04-16
 
 ### Adicionado
