@@ -1,6 +1,6 @@
 # Epic 3 — Governança e Versionamento
 
-**Status:** Done
+**Status:** In Progress
 **Objetivo:** Garantir que o Kairos evolui de forma controlada, rastreável e reversível — com versão semântica, changelog, histórico de decisões e modelo claro de quem governa o quê.
 
 ---
@@ -30,13 +30,19 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | Story | Título | Status |
 |-------|--------|--------|
 | [3.1](../stories/3.1.story.md) | Tasks de Governança do @kairos | Done |
+| [3.2](../stories/3.2.story.md) | Commit Integrado ao Fluxo de Review e Pre-Push | Done |
+| [3.3](../stories/3.3.story.md) | Refinamentos de UX: *new-story, *version no Pre-Push e *help | Draft |
+| [3.4](../stories/3.4.story.md) | *review-squad: Validação de Coerência de Squad | Draft |
+| [3.5](../stories/3.5.story.md) | Modelo de Stories para Instâncias: type, *update-squad, Framing e Avisos | Draft |
+| [3.6](../stories/3.6.story.md) | Executor @kairos para Instâncias: *implement, src/ e Modelo de Autoridade | Draft |
+| [3.7](../stories/3.7.story.md) | scope.md do Framework em .kairos-core/docs/ e *architecture {squad} | Draft |
+| [3.8](../stories/3.8.story.md) | Workers: Listagem Dinâmica de Agentes na Elicitação | Draft |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
 
-- **3.2** — Hook de Pré-Commit: valida que mudanças estruturais têm story e bump de versão
-- **3.3** — `*status` Completo: comando que agrega versão, squads ativos, stories abertas, último disparo
+- **3.x** — `*status` Completo: agrega versão, squads ativos, stories abertas, último disparo
 
 ---
 
@@ -45,3 +51,6 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | Data | Mudança |
 |------|---------|
 | 2026-04-06 | Epic criado — governança parcialmente implementada (v1.1.0) |
+| 2026-04-15 | Stories 3.2, 3.3, 3.4 criadas — epic reaberto (In Progress) |
+| 2026-04-15 | Stories 3.5 e 3.6 criadas; 3.5 revisada (type: squad → type: instance) |
+| 2026-04-15 | Stories 3.7 e 3.8 criadas |

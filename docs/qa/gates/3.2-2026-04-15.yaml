@@ -1,0 +1,52 @@
+schema: 2
+story: "3.2"
+story_title: "Pre-Push como Pré-Voo Completo: Versionamento, Commit e Verificação"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-15T00:00:00.000Z"
+quality_score: 90
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ kairos-pre-push.md Passo 1 — BLOCK para stories MINOR/MAJOR sem gate PASS/RESSALVA em docs/qa/gates/"
+    - "✅ kairos-pre-push.md Passo 2 — detecta bump pendente via comparação de datas gate/CHANGELOG; pergunta tipo; executa bump inline (core-config.yaml + CHANGELOG.md)"
+    - "✅ kairos-pre-push.md Passo 3 — verifica uncommitted changes relevantes; sugere mensagem; BLOCK se usuário recusar commit"
+    - "✅ Mensagem de commit no formato: feat: {story-title-em-kebab-case} (story {id}) v{version}"
+    - "✅ kairos-pre-push.md Passo 4 — spot check referências quebradas em arquivos .md modificados"
+    - "✅ kairos-pre-push.md Passo 5 — verifica consistência final core-config.yaml vs CHANGELOG.md"
+    - "✅ kairos-review.md NÃO modificado — mantém foco exclusivo em validação de implementação"
+    - "✅ kairos-help.md: fluxo ③ atualizado (remove *version, adiciona nota de uso avulso), fluxo ⑤ atualizado, *help push atualizado (5 passos), cheat sheet atualizado"
+    - "✅ kairos.md: descrição *pre-push atualizada, ciclo de desenvolvimento atualizado, push_system.pre_push_checks atualizado"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+    - "✅ .kairos-core/tasks/kairos-help.md"
+    - "✅ .claude/commands/kairos/agents/kairos.md"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — story 3.2 é MINOR; bump ainda não feito. Por design da própria story, o bump ocorre no *pre-push subsequente. Bootstrapping aceitável; documentado no Execution Log."
+  changelog_updated: "⚠️ RESSALVA — mesma situação do version_bumped"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS — detalhado, com decisões e trade-offs documentados"
+
+issues:
+  - severity: "medium"
+    description: "Desvio da dependência declarada: story diz 'lógica de bump invocada, não duplicada'; executor duplicou inline em kairos-pre-push.md Passo 2."
+    recommendation: "Aceitável dado o trade-off documentado (coesão de fluxo > DRY). Atenção futura: se kairos-version-bump.md evoluir, Passo 2 do pre-push deve ser atualizado em sincronia."
+  - severity: "low"
+    description: "Inconsistência residual em kairos-help.md: descrição do *version ainda diz '→ Rodar após *review PASS, antes de *pre-push.' e fluxo ④ ainda mostra *version antes de *pre-push. Fora do escopo de AC 8."
+    recommendation: "Corrigir em story futura (3.3 ou PATCH avulso) para consistência plena da documentação."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Em story futura, atualizar descrição do *version em kairos-help.md e fluxo ④ para refletir que *version é para uso avulso, não passo obrigatório do ciclo"
+  - "⚠️ Avaliar se a lógica de bump inline no Passo 2 deve ser mantida em sincronia com kairos-version-bump.md via nota explícita em ambos os arquivos"

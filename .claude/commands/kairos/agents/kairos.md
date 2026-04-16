@@ -159,7 +159,7 @@ commands:
 
   - name: pre-push
     visibility: [full, quick, key]
-    description: "Verificações pré-push: git status, diff, gate de story, lint — deve PASSAR antes de *push"
+    description: "Pré-voo: gate de review, versionamento interativo, commit, referências — deve PASSAR antes de *push"
     task: kairos-pre-push.md
 
   - name: push
@@ -283,10 +283,11 @@ review_system:
 
 push_system:
   pre_push_checks:
-    - git_status_clean_or_staged: "Sem arquivos modificados não staged (exceto .kairos/)"
-    - active_story_review: "Story ativa tem gate PASS ou é PATCH sem story obrigatória"
-    - no_broken_references: "Arquivos referenciados em stories/tasks existem"
-    - version_consistency: "core-config.yaml e CHANGELOG.md têm a mesma versão como mais recente"
+    - gate_review: "Story MINOR/MAJOR ativa tem gate PASS ou RESSALVA"
+    - version_bump: "Detecta e executa bump pendente para stories MINOR/MAJOR com gate"
+    - commit_changes: "Propõe e executa commit de changes relevantes (excl. runtime/, data/, node_modules/)"
+    - no_broken_references: "Arquivos .md modificados sem links quebrados"
+    - version_consistency: "core-config.yaml e CHANGELOG.md têm a mesma versão"
   pre_push_state: "Salvo em sessão como pre_push_passed=true|false"
   push_guard: "Se pre_push_passed != true na sessão: RECUSAR *push, instruir a rodar *pre-push"
 
@@ -314,7 +315,7 @@ story_model:
   status_transitions:
     Draft → In Progress: "Executor ao iniciar implementação"
     In Progress → In Review: "Executor ao concluir — obrigatório adicionar Execution Log"
-    In Review → Done: "@kairos após *review PASS ou RESSALVA"
+    In Review → Done: "*pre-push após confirmar gate PASS/RESSALVA e executar commit"
     In Review → In Progress: "@kairos após *review BLOCK — executor precisa corrigir"
   what_is_a_story: |
     Stories rastreiam desenvolvimento do KAIROS — mudanças no framework, novos agentes,
@@ -412,8 +413,10 @@ autoClaude:
 ```
 *new-epic → *new-story → *validate-story
     → (Claude Code implementa, move para In Review)
-        → *review → *version → *pre-push → *push
+        → *review → *pre-push → *push
 ```
+
+> `*pre-push` trata versionamento + commit interativamente. `*version` permanece disponível para uso avulso.
 
 ### Validação em Dois Níveis
 
@@ -435,7 +438,7 @@ autoClaude:
 O executor (Claude Code) deve:
 - Ao iniciar: mover story `Draft → In Progress`
 - Ao concluir: mover story `In Progress → In Review` + adicionar `## Execution Log` com o que foi feito, decisões, arquivos e pendências
-- Apenas `@kairos *review` move para `Done`
+- `*pre-push` move para `Done` (após confirmar gate e executar commit) — `*review` nunca faz isso
 
 ### Documentação do Sistema
 

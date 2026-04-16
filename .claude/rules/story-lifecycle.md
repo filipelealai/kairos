@@ -25,7 +25,7 @@ Draft → In Progress → In Review → Done
 | `Draft` | Criada, aguardando execução | @kairos cria |
 | `In Progress` | Executor iniciou o trabalho | Executor seta ao começar |
 | `In Review` | Implementação concluída, aguarda @kairos *review | Executor seta ao terminar |
-| `Done` | @kairos *review retornou PASS/RESSALVA e o usuário aprovou | @kairos transita após gate |
+| `Done` | *pre-push confirmou gate PASS/RESSALVA e executou commit | *pre-push transita antes do commit |
 
 ---
 
@@ -191,13 +191,17 @@ Ao escrever a seção `### Decisões tomadas`, seja específico sobre alternativ
 
 ---
 
-## Responsabilidade do @kairos na transição In Review → Done
+## Responsabilidade do *pre-push na transição In Review → Done
 
-Quando `@kairos *review {story_id}` retorna:
-- **PASS** ou **RESSALVA**: @kairos atualiza a story para `Done` e marca a story no epic como Done
-- **BLOCK**: story permanece em `In Review` até o executor resolver os issues
+`*review` emite o gate (PASS/RESSALVA/BLOCK) mas **não** move a story para Done.
 
-`@kairos` também adiciona entrada no Change Log da story ao mover para Done:
+Quando `*pre-push` confirma gate PASS ou RESSALVA (Passo 1) e executa o commit (Passo 3):
+- Atualiza a story para `Done` e adiciona entrada no Change Log antes do commit
+- Marca a story no epic como Done
+
+**BLOCK**: story permanece em `In Review` até o executor corrigir e `*review` reemitir gate PASS.
+
+Entrada adicionada pelo *pre-push ao mover para Done:
 ```markdown
-| {data} | @kairos *review: {PASS/RESSALVA} (score: {N}) — status → Done |
+| {data} | *pre-push: gate confirmado — status → Done |
 ```

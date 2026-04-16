@@ -108,11 +108,12 @@ VERSIONAMENTO E PUSH
                         Bump de versão semântica. Tipos: patch | minor | major.
                         Valida que existe story justificando MINOR e MAJOR.
                         Atualiza core-config.yaml e CHANGELOG.md.
-                        → Rodar após *review PASS, antes de *pre-push.
+                        → Uso avulso (ex: patch rápido sem story). No ciclo normal,
+                          o bump acontece dentro do *pre-push.
 
-  *pre-push             Verificações antes de push: git status/diff, consistência de
-                        versão (core-config vs CHANGELOG), gates de stories ativas,
-                        referências quebradas. Seta pre_push_passed=true na sessão.
+  *pre-push             Pré-voo completo: gate de review (MINOR/MAJOR), bump de versão
+                        interativo se necessário, commit de changes relevantes, spot check
+                        de referências, consistência final. Seta pre_push_passed=true na sessão.
                         → Obrigatório antes de *push.
 
   *push                 git push ao remoto. EXCLUSIVO do @kairos.
@@ -159,23 +160,23 @@ FLUXOS COMUNS
   (Claude Code implementa)     ← executor move Draft → In Progress → In Review
                                   e adiciona Execution Log na story
   *review                      ← auto-detecta "In Review"; gate PASS/RESSALVA/BLOCK
-  *version minor "descrição"   ← bump de versão (obrigatório para MINOR/MAJOR)
-  *pre-push                    ← verificações finais
+  *pre-push                    ← pré-voo: versão + commit + verificações finais
   *push                        ← push ao remoto
+
+  Nota: *version continua disponível para uso avulso (ex: patch rápido sem story)
 
 ④ Novo squad
   *new-squad                   ← elicitação guiada (4 blocos)
    └→ *new-story "Implementar personas do squad X"  (handoff automático)
   (Claude Code implementa personas + scripts TS)
   *review {story-id}
-  *version minor "Novo squad X"
-  *pre-push → *push
+  *pre-push                    ← detecta bump pendente e pergunta o tipo
+  *push
 
 ⑤ Revisar implementação que o executor acabou de entregar
   *review                      ← sem argumento: detecta In Review automaticamente
   → Se PASS/RESSALVA:
-      *version {tipo} "…"
-      *pre-push
+      *pre-push                ← inclui versionamento interativo + commit
       *push
   → Se BLOCK:
       (Claude Code corrige os issues listados)
@@ -243,7 +244,7 @@ CHEAT SHEET
 Ver estado          *status | *roadmap
 Novo planejamento   *new-epic → *new-story → *validate-story {id}
 Revisar entrega     *review [{id}]
-Publicar            *version {tipo} "…" → *pre-push → *push
+Publicar            *pre-push → *push   (*version disponível para uso avulso)
 Novo squad          *new-squad
 Documentar          *prd | *architecture
 Ajuda               *help [{topic}] | *guide
@@ -280,12 +281,12 @@ Estados:
   Draft       → criada por @kairos, aguardando executor
   In Progress → executor iniciou o trabalho
   In Review   → executor terminou + adicionou Execution Log
-  Done        → @kairos *review retornou PASS ou RESSALVA
+  Done        → *pre-push confirmou gate e executou commit
 
 Transições:
   Draft → In Progress      executor ao começar
   In Progress → In Review  executor ao terminar (+ Execution Log obrigatório)
-  In Review → Done         @kairos após *review PASS/RESSALVA
+  In Review → Done         *pre-push (após gate PASS/RESSALVA + commit)
   In Review → In Progress  @kairos após *review BLOCK (executor corrige)
 
 Execution Log (obrigatório ao mover para In Review):
@@ -334,11 +335,12 @@ PUSH — Fluxo e Guards
 Fluxo obrigatório:
   *pre-push → (deve retornar PASS) → *push
 
-*pre-push verifica:
-  1. git status — arquivos staged e modificados
-  2. Consistência de versão — core-config.yaml vs CHANGELOG.md
-  3. Stories ativas — MINOR/MAJOR têm gate PASS ou RESSALVA?
-  4. Referências quebradas — arquivos declarados em stories existem?
+*pre-push executa:
+  1. Gate de review — MINOR/MAJOR têm gate PASS ou RESSALVA? Se não → BLOCK
+  2. Versionamento — detecta bump pendente; pergunta tipo e executa se necessário
+  3. Commit — sugere mensagem e executa commit dos changes relevantes
+  4. Referências quebradas — spot check em arquivos .md modificados
+  5. Consistência final — core-config.yaml vs CHANGELOG.md mesma versão?
 
 Se *pre-push retornar BLOCK:
   → Resolver os issues listados

@@ -12,19 +12,23 @@ Saida: |
   - verdict: PASS | BLOCK exibido em tela
   - pre_push_passed: true|false (guardado em sessão para *push verificar)
 Checklist:
-  - "[ ] Rodar git status"
-  - "[ ] Rodar git diff --stat HEAD"
-  - "[ ] Verificar consistência de versão (core-config vs CHANGELOG)"
-  - "[ ] Verificar stories In Progress — existe gate PASS para elas?"
-  - "[ ] Verificar referências quebradas nos arquivos modificados"
-  - "[ ] Exibir sumário de mudanças e verdict"
+  - "[ ] Passo 1: Gate de review para stories MINOR/MAJOR ativas"
+  - "[ ] Passo 2: Detectar e executar bump de versão pendente"
+  - "[ ] Passo 3: Propor e executar commit dos changes relevantes"
+  - "[ ] Passo 4: Spot check de referências quebradas"
+  - "[ ] Passo 5: Consistência final de versão (core-config vs CHANGELOG)"
+  - "[ ] Exibir sumário e verdict"
 ---
 
-# *pre-push — Verificações Pré-Push
+# *pre-push — Pré-Voo Completo
+
+O `*pre-push` é o centro do pré-voo: trata o gate de review, o bump de versão interativo, o commit e as verificações finais. Deve ser executado antes de cada `*push`.
 
 ## Execução
 
-### Passo 1 — Estado do repositório
+### Pré-check — Ler estado do repositório
+
+Execute e guarde em memória de sessão:
 
 ```bash
 git status
@@ -33,55 +37,178 @@ git log --oneline -5
 ```
 
 Identifique:
-- Arquivos staged (prontos para commit)
-- Arquivos modificados não staged
-- Arquivos untracked relevantes (excluir `.kairos-core/runtime/`, `data/`, `node_modules/`)
+- Branch atual, último commit (hash + mensagem)
+- Arquivos com mudanças relevantes: staged + modificados não staged + untracked
+- **Excluir de "relevantes":** `.kairos-core/runtime/`, `data/`, `node_modules/`
 
-**BLOCK se:** há arquivos modificados não staged que parecem parte da mudança intencional (não são `.kairos-core/runtime/handoffs/` ou `data/`).
+---
 
-### Passo 2 — Consistência de versão
+### Passo 1 — Gate de review
 
-Leia `.kairos-core/core-config.yaml` → campo `version`.
-Leia `CHANGELOG.md` → versão da primeira entrada (mais recente).
+**Objetivo:** garantir que stories MINOR/MAJOR têm gate aprovado.
 
-**BLOCK se:** as versões não coincidem.
+1. Liste todos os arquivos `docs/stories/*.story.md`
+2. Identifique os que têm Status `In Progress` ou `In Review`
+3. Para cada story identificada, determine se o conteúdo implica bump MINOR ou MAJOR:
+   - **MINOR:** novo agente, nova task, nova rule, nova capacidade
+   - **MAJOR:** novo squad/escopo, breaking change em agente existente
+   - **PATCH:** correção, ajuste de instrução, atualização de memória → gate não obrigatório
+4. Para stories MINOR ou MAJOR:
+   - Procure gate em `docs/qa/gates/{story-id}-*.yaml` (qualquer data)
+   - Leia o campo `verdict` do gate mais recente
+   - Se `verdict: PASS` ou `verdict: RESSALVA` → registrar: `gate_ok[story-id] = true`
+   - Se não existe gate, ou `verdict: BLOCK` → **BLOCK:**
+     ```
+     🚫 BLOCK — Story {id} ({título}) é MINOR/MAJOR e não tem gate PASS.
+     Rode: *review {id}
+     ```
 
-### Passo 3 — Gate de story ativa
+**BLOCK se:** qualquer story MINOR/MAJOR ativa sem gate PASS ou RESSALVA.
 
-Liste `docs/stories/*.story.md` com status `In Progress` ou `Draft` com arquivos modificados.
+---
 
-Para cada story In Progress:
-- Verificar se existe gate em `docs/qa/gates/{story-id}-*.yaml` com `verdict: PASS`
-- Se não existe gate PASS → **aviso** (não BLOCK — pode ser PATCH sem story obrigatória)
-- Se a mudança é MAJOR ou MINOR e não há gate PASS → **BLOCK**
+### Passo 2 — Versionamento
+
+**Objetivo:** detectar bump pendente e executar se necessário.
+
+Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ativas).
+
+1. Para cada story MINOR/MAJOR com `gate_ok = true`:
+   a. Identifique a data do gate mais recente (nome do arquivo: `{story-id}-{YYYY-MM-DD}.yaml`)
+   b. Leia `CHANGELOG.md` → data da entrada mais recente (formato `## [versão] — YYYY-MM-DD`)
+   c. Se data do CHANGELOG >= data do gate → bump provavelmente feito → OK
+   d. Se data do CHANGELOG < data do gate, ou CHANGELOG sem entradas → **bump pendente**
+
+2. Se bump pendente detectado, pergunte:
+   ```
+   Story {id} é MINOR/MAJOR — sem bump. Qual tipo? (patch/minor/major):
+   ```
+   Aguarde resposta do usuário. Então execute bump inline:
+
+   > Nota de manutenção: a lógica abaixo deve permanecer em sincronia com `kairos-version-bump.md`. Se essa task for atualizada, revisar este passo.
+
+   **a.** Leia versão atual de `.kairos-core/core-config.yaml` → campo `version`
+
+   **b.** Calcule nova versão:
+   - `patch` → incrementa PATCH
+   - `minor` → incrementa MINOR, zera PATCH
+   - `major` → incrementa MAJOR, zera MINOR e PATCH
+
+   **c.** Atualize `.kairos-core/core-config.yaml`:
+   ```yaml
+   version: {nova versão}
+   updatedAt: '{ISO 8601 timestamp}'
+   ```
+
+   **d.** Adicione entrada no topo do `CHANGELOG.md` (após cabeçalho, antes da entrada mais recente):
+   ```markdown
+   ## [{nova versão}] — {YYYY-MM-DD}
+
+   ### Adicionado
+   - {título da story} (story {id})
+   ```
+
+   **e.** Confirme: `✓ Versão bumped: {antiga} → {nova}`
+
+3. Se nenhum bump pendente → confirme: `✓ Versão atual: {version} — sem bump pendente`
+
+---
+
+### Passo 2.5 — Transição da story para Done
+
+**Objetivo:** marcar a story como Done antes de commitar, para que o commit inclua o status final.
+
+Pré-condição: Passo 2 concluído (versão confirmada).
+
+Para cada story com `gate_ok = true` (gate PASS ou RESSALVA confirmado no Passo 1):
+1. Atualize `**Status:** In Review` → `**Status:** Done` no arquivo da story
+2. Atualize a entrada da story no epic (`docs/epics/epic-{N}-*.md`): `In Review` → `Done`
+3. Adicione entrada no Change Log da story:
+   ```markdown
+   | {data} | *pre-push: gate confirmado — status → Done |
+   ```
+
+> `*review` nunca move para Done — essa transição é exclusiva do `*pre-push`.
+
+---
+
+### Passo 3 — Commit
+
+**Objetivo:** garantir que as mudanças relevantes estão commitadas antes do push.
+
+Pré-condição: Passo 2.5 concluído (story atualizada para Done).
+
+1. Execute `git status` para listar arquivos com changes relevantes (excluindo `.kairos-core/runtime/`, `data/`, `node_modules/`)
+
+2. Se existem arquivos relevantes não commitados:
+   a. Identifique a story ativa (a que teve gate confirmado no Passo 1)
+   b. Converta o título da story para kebab-case: minúsculas, espaços → hífens, remover acentos e caracteres especiais
+   c. Leia a versão atual de `.kairos-core/core-config.yaml`
+   d. Exiba:
+      ```
+      Mudanças não commitadas encontradas.
+      Mensagem sugerida: "feat: {story-title-em-kebab-case} (story {id}) v{version}"
+      Deseja fazer commit agora? (s/n):
+      ```
+   e. Se `s` (ou `sim`):
+      - Execute `git add` nos arquivos relevantes (excluindo `.kairos-core/runtime/`, `data/`, `node_modules/`)
+      - Execute `git commit -m "feat: {story-title-em-kebab-case} (story {id}) v{version}"`
+      - Confirme: `✓ Commit realizado`
+   f. Se `n` (ou `não`):
+      **BLOCK:**
+      ```
+      🚫 BLOCK — Mudanças não commitadas. Faça o commit manualmente e rode *pre-push novamente.
+      ```
+
+3. Se não há mudanças relevantes não commitadas → confirme: `✓ Sem changes pendentes`
+
+---
 
 ### Passo 4 — Referências quebradas (spot check)
 
-Para arquivos `.md` modificados recentemente:
-- Verificar links internos `[texto](caminho)` — o path existe?
+Para arquivos `.md` modificados recentemente (identificados no pré-check):
+- Verificar links internos `[texto](caminho)` — o path existe no repo?
 - Verificar referências a tasks em YAML — o arquivo da task existe?
 
-Limite: verificar até 10 arquivos, não é revisão exaustiva.
+Limite: verificar até 10 arquivos. Não é revisão exaustiva.
 
 **BLOCK se:** referência crítica quebrada (agente referencia task inexistente, story aponta para epic inexistente).
 
-### Passo 5 — Exibir resultado
+---
 
-**Se PASS:**
+### Passo 5 — Consistência final
+
+**Objetivo:** garantir que core-config e CHANGELOG estão sincronizados.
+
+1. Leia `.kairos-core/core-config.yaml` → campo `version`
+2. Leia `CHANGELOG.md` → versão da primeira entrada (formato `## [versão] — data`)
+3. Se versões coincidem → `✓ Versão consistente: {version}`
+4. Se não coincidem → **BLOCK:**
+   ```
+   🚫 BLOCK — Inconsistência de versão:
+     core-config.yaml: {v1}
+     CHANGELOG.md:     {v2}
+   ```
+
+---
+
+### Resultado Final
+
+**Se todos os passos PASS:**
 ```
 ✅ PRE-PUSH PASS
 
-Resumo das mudanças:
-  Arquivos modificados: N
+Resumo:
   Branch: {branch}
   Último commit: {hash} {mensagem}
   Versão: {version}
 
 Checks:
-  ✅ git status — sem conflitos
-  ✅ Versão consistente (core-config = CHANGELOG = {version})
-  ✅ Stories com gate PASS (ou PATCH sem story obrigatória)
-  ✅ Referências verificadas
+  ✅ Passo 1 — Gate de review (stories MINOR/MAJOR com gate PASS/RESSALVA)
+  ✅ Passo 2 — Versionamento ({bump feito: antiga → nova | sem bump pendente})
+  ✅ Passo 3 — Commit ({mensagem do commit | sem changes pendentes})
+  ✅ Passo 4 — Referências verificadas
+  ✅ Passo 5 — Versão consistente ({version})
 
 Pronto para push. Execute: *push
 ```
@@ -99,6 +226,8 @@ Avisos (não bloqueantes):
 
 Resolva os issues e rode *pre-push novamente.
 ```
+
+---
 
 ## Estado de Sessão
 

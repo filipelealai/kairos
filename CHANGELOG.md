@@ -6,6 +6,14 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [2.1.0] — 2026-04-15
+
+### Mudado
+
+- `*pre-push` expandido como pré-voo completo: gate de review, versionamento interativo, commit e transição de story para Done (story 3.2)
+
+---
+
 ## [2.0.0] — 2026-04-15
 
 **Breaking:** segregação operacional framework × usuário via manifesto de ownership. Updates futuros seguem contrato default-deny. Requer atenção em instalações existentes que carreguem customizações em arquivos agora framework-owned.
