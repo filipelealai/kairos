@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.3
+kairos-version: 3.1.4
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent

@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.1.4] — 2026-04-17
+
+### Corrigido
+- Pre-push step 4: comparação por timestamp de commit (epoch unix) para bump PATCH — substitui comparação por data-dia que causava falso positivo (story 3.14)
+
+---
+
 ## [3.1.3] — 2026-04-17
 
 ### Alterado
