@@ -31,14 +31,16 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | Story | Título | Status |
 |-------|--------|--------|
 | [5.1](../stories/5.1.story.md) | Segregação Framework × Usuário via Manifesto de Ownership | Done |
+| [5.2](../stories/5.2.story.md) | Transição para Repo Público + Squad ops | Done |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
 
-- **5.2** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.3** — Publicação de `@kairos/core` no npm
-- **5.4** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
+- **5.3** — Refresh de SHAs no manifesto (post story 5.2)
+- **5.4** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.5** — Publicação de `@kairos/core` no npm
+- **5.6** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
 
 ---
 
@@ -48,3 +50,4 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 |------|---------|
 | 2026-04-14 | Epic criado — story 5.1 em progresso |
 | 2026-04-15 | Story 5.1 Done (@kairos *review PASS, score: 90) — todos os critérios de conclusão do epic marcados |
+| 2026-04-16 | Story 5.2 Done (@kairos *review PASS, score: 82) — repo público separado, squad ops, push-dual |

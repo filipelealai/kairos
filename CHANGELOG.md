@@ -6,6 +6,14 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.1.2] — 2026-04-16
+
+### Adicionado
+
+- Transição para repo público + squad ops com push-dual dual-remote (story 5.2)
+
+---
+
 ## [3.1.1] — 2026-04-16
 
 ### Alterado
