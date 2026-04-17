@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.0
+kairos-version: 3.1.3
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -14,6 +14,9 @@ Saida: |
 Checklist:
   - "[ ] Passo 1: Gate de review para stories MINOR/MAJOR ativas"
   - "[ ] Passo 2: Detectar e executar bump de versão pendente"
+  - "[ ] Passo 2.5: Transição da story para Done"
+  - "[ ] Passo 2.6: SHA sync do manifest.yaml"
+  - "[ ] Passo 2.7: Atualizar kairos-version nos arquivos modificados"
   - "[ ] Passo 3: Propor e executar commit dos changes relevantes"
   - "[ ] Passo 4: Spot check de referências quebradas"
   - "[ ] Passo 5: Consistência final de versão (core-config vs CHANGELOG)"
@@ -152,11 +155,48 @@ Para cada story com `gate_ok = true` (gate PASS ou RESSALVA confirmado no Passo 
 
 ---
 
+### Passo 2.6 — SHA Sync
+
+**Objetivo:** manter o `manifest.yaml` sincronizado com o estado atual dos arquivos framework.
+
+Pré-condição: Passo 2.5 concluído.
+
+1. Leia `.kairos-core/manifest.yaml` → lista `owned_files`
+2. Para cada entrada em `owned_files`:
+   - Execute `sha256sum {path}` para calcular o SHA atual
+   - Compare com o campo `sha256` registrado
+   - Se divergir → atualize o campo `sha256` no manifesto
+3. Se algum SHA foi atualizado → confirme: `✓ SHA sync: {N} arquivo(s) atualizado(s) em manifest.yaml`
+4. Se nenhum SHA divergiu → confirme: `✓ SHA sync: manifest.yaml já está atualizado`
+
+> Os arquivos modificados pelo SHA sync serão incluídos no commit do Passo 3.
+
+---
+
+### Passo 2.7 — Atualizar `kairos-version` nos arquivos modificados
+
+**Objetivo:** manter o campo `kairos-version` no frontmatter sincronizado com a versão em que cada arquivo foi tocado pela última vez.
+
+Pré-condição: Passo 2.6 concluído (versão confirmada, SHA sync realizado).
+
+1. Execute `git status --porcelain` para listar arquivos modificados ou adicionados. Filtre linhas cujo código de duas letras (XY) contém `M` na posição X ou Y, ou `A` na posição X — padrões relevantes: `M `, ` M`, `MM`, `A `, `AM`. Ignorar `??` (untracked não staged) e `D`/` D` (deletados)
+2. Para cada arquivo listado:
+   - Leia o conteúdo e verifique se tem frontmatter YAML delimitado por `---`
+   - Verifique se o frontmatter contém o campo `kairos-version:`
+   - Se **sim**: atualize o valor para a versão atual (obtida de `.kairos-core/core-config.yaml`)
+   - Se **não**: ignore — **não** criar o campo em arquivos que não o têm
+3. Se algum arquivo foi atualizado → confirme: `✓ kairos-version: {N} arquivo(s) atualizado(s) para v{version}`
+4. Se nenhum arquivo tinha o campo → confirme: `✓ kairos-version: sem frontmatter para atualizar`
+
+> Os arquivos com `kairos-version` atualizado serão incluídos no commit do Passo 3.
+
+---
+
 ### Passo 3 — Commit
 
 **Objetivo:** garantir que as mudanças relevantes estão commitadas antes do push.
 
-Pré-condição: Passo 2.5 concluído (story atualizada para Done).
+Pré-condição: Passo 2.7 concluído (kairos-version atualizado nos arquivos modificados).
 
 1. Execute `git status` para listar arquivos com changes relevantes (excluindo `.kairos-core/runtime/`, `data/`, `node_modules/`)
 
@@ -226,6 +266,8 @@ Resumo:
 Checks:
   ✅ Passo 1 — Gate de review (stories MINOR/MAJOR com gate PASS/RESSALVA)
   ✅ Passo 2 — Versionamento ({bump feito: antiga → nova | sem bump pendente | PATCH: bump aplicado/ignorado pelo usuário})
+  ✅ Passo 2.6 — SHA sync ({N} atualizado(s) | já atualizado)
+  ✅ Passo 2.7 — kairos-version ({N} atualizado(s) | sem frontmatter)
   ✅ Passo 3 — Commit ({mensagem do commit | sem changes pendentes})
   ✅ Passo 4 — Referências verificadas
   ✅ Passo 5 — Versão consistente ({version})

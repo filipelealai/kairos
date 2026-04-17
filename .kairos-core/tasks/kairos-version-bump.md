@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.1.3
 task: Kairos Version Bump
 responsavel: "@kairos"
 responsavel_type: agent
@@ -21,6 +21,7 @@ Checklist:
   - "[ ] Atualizar version e updatedAt em .kairos-core/core-config.yaml"
   - "[ ] Adicionar entrada no CHANGELOG.md"
   - "[ ] Atualizar linha 'Versão atual' no README.md"
+  - "[ ] SHA sync: atualizar sha256 em manifest.yaml para arquivos com drift"
   - "[ ] Confirmar mudanças ao usuário"
 ---
 
@@ -73,6 +74,17 @@ Localize a linha que começa com `**Versão atual:**` e substitua a versão:
 **Versão atual:** `{nova versão}` — ver [CHANGELOG.md](CHANGELOG.md)
 ```
 
+## SHA Sync
+
+Após atualizar o `core-config.yaml`, sincronize os SHAs do manifesto:
+
+1. Leia `.kairos-core/manifest.yaml` → lista `owned_files`
+2. Para cada entrada em `owned_files`:
+   - Execute `sha256sum {path}` para calcular o SHA atual
+   - Compare com o campo `sha256` registrado
+   - Se divergir → atualize o campo `sha256` no manifesto
+3. Confirme: `✓ SHA sync: {N} arquivo(s) atualizado(s)` (ou `já atualizado` se nenhum divergiu)
+
 ## Confirmação
 
 Exiba:
@@ -81,6 +93,7 @@ Exiba:
 ✓ core-config.yaml atualizado
 ✓ CHANGELOG.md atualizado
 ✓ README.md atualizado
+✓ SHA sync: {N} arquivo(s) atualizado(s) em manifest.yaml
 
 Próximo passo: *pre-push → *push
 ```

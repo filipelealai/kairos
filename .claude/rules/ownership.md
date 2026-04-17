@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.1.3
 ---
 
 # Ownership — Fronteira Framework / Usuário
@@ -97,6 +97,8 @@ kairos-version: {versão em que foi shipped}
 Esse marker existe para:
 - **Visibilidade** — um humano lendo o arquivo sabe imediatamente que é framework
 - **Auditoria** — `@kairos *doctor` valida consistência entre frontmatter e manifesto
+
+**Semântica de `kairos-version`:** registra a versão do framework em que o arquivo foi **criado ou modificado pela última vez** — não a versão atual do framework. O campo é atualizado automaticamente pelo `*pre-push` (Passo 2.7) nos arquivos efetivamente modificados no ciclo, após o bump de versão e antes do commit. Arquivos não tocados no ciclo preservam sua `kairos-version` anterior. O `*doctor` **não** deve comparar `kairos-version` com a versão atual — a divergência é esperada por design.
 
 Frontmatter **não** sobrepuja o manifesto. Se um arquivo tem `kairos-owned: true` mas **não** está no manifesto, o `*doctor` reporta drift e o manifesto vence (arquivo é considerado user-owned).
 
