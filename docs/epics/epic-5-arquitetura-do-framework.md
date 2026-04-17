@@ -38,9 +38,10 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 ## Stories Candidatas (não criadas ainda)
 
 - **5.3** — Refresh de SHAs no manifesto (post story 5.2)
-- **5.4** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.5** — Publicação de `@kairos/core` no npm
-- **5.6** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
+- **5.4** — Configuração de branch protection no repo público
+- **5.5** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.6** — Publicação de `@kairos/core` no npm
+- **5.7** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
 
 ---
 

@@ -74,7 +74,6 @@ git checkout filipe-instance -- .claude/rules/ids-principles.md
 git checkout filipe-instance -- .claude/commands/kairos/agents/kairos.md
 git checkout filipe-instance -- .claude/hooks/kairos-code-intel.cjs
 git checkout filipe-instance -- .claude/hooks/kairos-precompact.cjs
-git checkout filipe-instance -- src/tools/claude.ts
 git checkout filipe-instance -- .kairos-core/data/workers.yaml
 
 # L2 — Governance tasks

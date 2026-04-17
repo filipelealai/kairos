@@ -41,9 +41,6 @@ owned_files:
   - path: .claude/hooks/kairos-precompact.cjs
     layer: L2
     sha256: 41e1ef7c965c6cee85dbb6d70232890f96a3f25e4227ffe7b536ca673c0fd79f
-  - path: src/tools/claude.ts
-    layer: L2
-    sha256: 0125e38ae152e9df2fbef557e57731b39cf7f5dd61f1fafccaf218bb65c934d5
   - path: .kairos-core/data/workers.yaml
     layer: L2
     sha256: 9add36be14b4d1b81dfbf23d858e4ae7dcbaf2600be5a23ae3bc8a9a79842deb
