@@ -41,9 +41,10 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | [3.10](../stories/3.10.story.md) | Pre-Push: Atualizar `kairos-version` nos Arquivos Modificados | Done |
 | [3.11](../stories/3.11.story.md) | Renomear `*review-squad` → `*validate-squad` | Done |
 | [3.12](../stories/3.12.story.md) | self_reviewed Automático em *review para Stories Implementadas via *implement | Done |
-| [3.13](../stories/3.13.story.md) | *prd: Elicitação Conversacional para o Escopo da Instância | Draft |
+| [3.13](../stories/3.13.story.md) | *prd: Elicitação Conversacional para o Escopo da Instância | Done |
 | [3.14](../stories/3.14.story.md) | Pre-Push Step 4: Comparação por Timestamp de Commit para Bump PATCH | Draft |
 | [3.15](../stories/3.15.story.md) | CHANGELOG: Entradas Neutras sem Referências de Instância | Draft |
+| [3.16](../stories/3.16.story.md) | *validate-story: Verificar Ordem do Cabeçalho e Estrutura dos ACs | Draft |
 
 ---
 
@@ -69,3 +70,4 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | 2026-04-16 | Story 3.12 criada — self_reviewed automático em *review |
 | 2026-04-16 | Story 3.7 implementada — status → Done (gate PASS, v3.1.0) |
 | 2026-04-16 | Story 3.13 criada — *prd elicitação conversacional |
+| 2026-04-17 | Story 3.16 criada — gap em *validate-story identificado na revisão de 3.13 |

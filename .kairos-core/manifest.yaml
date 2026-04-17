@@ -69,7 +69,7 @@ owned_files:
     sha256: 14025232a01c693ff3ba5a9dc2c3ff2180038c9945e1ef3604c1a75137cbbb2d
   - path: .kairos-core/tasks/kairos-prd.md
     layer: L2
-    sha256: cc7666ac33a52274c778c8f2aee4652c59406932913f03bf85f45ce734766644
+    sha256: 358cf1ba99998c21ecd144eae69f6edabf1f226c747104c9ee156c03898ffe56
   - path: .kairos-core/tasks/kairos-pre-push.md
     layer: L2
     sha256: 95d5564774da0345d6c003371d83a4804d6f7975baa5d85781f36b4a5e762a16

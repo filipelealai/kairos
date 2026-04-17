@@ -52,4 +52,6 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [3.10](3.10.story.md) | Pre-Push: Atualizar `kairos-version` nos Arquivos Modificados | Draft |
 | [3.11](3.11.story.md) | Renomear `*review-squad` → `*validate-squad` | Draft |
 | [3.12](3.12.story.md) | self_reviewed Automático em *review para Stories Implementadas via *implement | Draft |
+| [3.13](3.13.story.md) | *prd: Elicitação Conversacional para o Escopo da Instância | Draft |
+| [3.16](3.16.story.md) | *validate-story: Verificar Ordem do Cabeçalho e Estrutura dos ACs | Draft |
 | [5.1](5.1.story.md) | Segregação Framework × Usuário via Manifesto de Ownership | Done |

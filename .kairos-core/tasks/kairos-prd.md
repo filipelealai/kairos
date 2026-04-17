@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.1.3
 task: Kairos PRD
 responsavel: "@kairos"
 responsavel_type: agent
@@ -9,15 +9,16 @@ elicit: true
 Entrada: |
   - action: "create" | "update" — inferido pela existência de docs/scope.md
   - section: seção específica a atualizar (opcional — para updates cirúrgicos)
+  - context: o que o usuário descreveu ao chamar *prd (opcional)
 Saida: |
   - docs/scope.md criado ou atualizado
   - versão do scope.md incrementada
   - Change Log do scope.md atualizado
 Checklist:
   - "[ ] Verificar se docs/scope.md já existe"
-  - "[ ] Modo create: elicitar todas as seções via perguntas guiadas"
-  - "[ ] Modo update: mostrar estado atual, elicitar mudanças específicas"
-  - "[ ] Confirmar conteúdo com usuário antes de escrever"
+  - "[ ] Modo create: fluxo conversacional para elicitar escopo"
+  - "[ ] Modo update: mostrar estado atual ou ir direto à elicitação se contexto fornecido"
+  - "[ ] Confirmar rascunho com usuário antes de escrever"
   - "[ ] Escrever/atualizar docs/scope.md"
   - "[ ] Incrementar versão do scope e registrar no Change Log interno"
 ---
@@ -39,74 +40,81 @@ Se docs/scope.md existe     → modo: UPDATE
 
 ## Modo CREATE — Novo PRD
 
-### Sequência de elicitação
+### Passo 0 — Coletar contexto antes de perguntar
 
-Faça as perguntas em ordem. Aguarde resposta de cada uma antes de prosseguir.
+Antes de fazer qualquer pergunta ao usuário, ler:
 
----
+1. `package.json` → extrair `name`, runtime, principais dependências
+2. `.kairos-core/core-config.yaml` → extrair `agents.squads` (squads ativos e seus agentes)
 
-**Pergunta 1 — Foco desta instância**
-```
-Para quem esta instância do Kairos serve e qual é o foco dela?
-```
+Com esse contexto em mãos, formular a abertura.
 
 ---
 
-**Pergunta 2 — Arquitetura geral**
+### Passo 1 — Abertura conversacional
+
+Faça **uma única pergunta aberta**:
+
 ```
-Quais são os sistemas que o Kairos conecta?
-Liste os componentes principais e como eles se comunicam.
-(ex: n8n ↔ Kairos ↔ Google Sheets, via webhook)
+Me conta: o que você está construindo com o Kairos aqui, e para quê?
+(pode ser informal — objetivo, problema que resolve, contexto de uso)
 ```
+
+Aguarde a resposta antes de continuar.
 
 ---
 
-**Pergunta 3 — Escopos ativos**
+### Passo 2 — Processar resposta e inferir
+
+A partir da resposta do usuário:
+
+**Inferência de domínio:** se o usuário menciona termos como "prospecção", "leads", "e-mails", "clientes", "vendas" → inferir domínio de cold outreach. Se menciona "dados", "relatórios", "análise" → inferir analytics. Confirmar a inferência em vez de perguntar do zero.
+
+**Squads ativos:** os squads lidos de `core-config.yaml` → `agents.squads` são apresentados como confirmação:
 ```
-Quais escopos (squads) estão ativos hoje?
-Para cada um: nome, descrição em uma frase, fluxo de trabalho resumido.
+Vi que você tem o squad X ativo (agentes: A, B, C). Quer incluir no escopo?
 ```
+Não perguntar quais squads existem — confirmá-los.
+
+**Stack:** inferida de `package.json` e `core-config.yaml`. Não perguntar ao usuário, a menos que o `package.json` não exista ou indique stack divergente do padrão Kairos (Node.js/tsx/Anthropic SDK).
 
 ---
 
-**Pergunta 4 — Objetivos e métricas**
-```
-Para cada escopo ativo, quais são os objetivos mensuráveis?
-(ex: "Taxa de resposta > baseline de templates genéricos")
-```
+### Passo 3 — Perguntas de follow-up (máximo 2-3)
+
+Faça perguntas de follow-up **apenas para o que ainda está faltando** após a resposta inicial. Se o usuário já respondeu voluntariamente algo, não pergunte de novo.
+
+Informações que precisam ser cobertas antes do rascunho:
+- Arquitetura geral (sistemas que o Kairos conecta) — se não mencionada
+- Objetivos mensuráveis por escopo — se não mencionados
+- Restrições principais (o que o Kairos nunca faz) — se não mencionadas
+
+Se o usuário for vago, faça no máximo 2-3 perguntas adicionais e depois prossiga com um rascunho para ajuste.
 
 ---
 
-**Pergunta 5 — Restrições**
-```
-O que o Kairos NUNCA faz (por design)?
-(ex: não envia e-mails, não modifica planilha diretamente)
-```
+### Passo 4 — Apresentar rascunho para confirmação
 
----
+Antes de escrever o arquivo, apresentar o rascunho completo do `docs/scope.md` e perguntar:
 
-**Pergunta 6 — Stack**
 ```
-Qual é a stack técnica atual?
-(Runtime, linguagem, AI SDK, banco de dados, integrações externas)
+Ficou bom ou quer ajustar alguma coisa?
 ```
 
----
-
-**Confirmação final:**
-```
-Vou criar docs/scope.md com estas informações:
-
-[resumo das respostas]
-
-Posso prosseguir? (s/n — ou diga o que ajustar)
-```
-
-Após confirmação → escrever o arquivo.
+Aguarde confirmação ou ajustes. Só após aprovação → escrever o arquivo.
 
 ---
 
 ## Modo UPDATE — Atualizar PRD existente
+
+### Pré-passo — Verificar se contexto foi fornecido
+
+Se o usuário descreveu o que quer mudar ao chamar `*prd` (ex: `*prd adicionar novo squad`, `*prd atualizar objetivos`):
+→ **pular o menu** e ir direto à elicitação da mudança descrita.
+
+Se nenhum contexto foi fornecido → mostrar menu abaixo.
+
+---
 
 ### Passo 1 — Mostrar estado atual
 
@@ -126,18 +134,18 @@ Seções presentes:
 
 O que deseja atualizar?
   1. Adicionar/atualizar escopo
-  2. Atualizar objetivos/métricas
-  3. Atualizar restrições
-  4. Atualizar stack
-  5. Atualizar arquitetura
-  6. Atualizar "O que é o Kairos"
+  2. Objetivos e métricas
+  3. Restrições
+  4. Stack
+  5. Arquitetura
+  6. Identidade da instância
   7. Revisão completa
   8. Outra coisa (descreva)
 ```
 
 ### Passo 2 — Elicitação cirúrgica
 
-Com base na seleção do usuário, faça apenas as perguntas relevantes para a seção escolhida.
+Com base na seleção do usuário (ou no contexto fornecido), faça apenas as perguntas relevantes para a seção escolhida.
 
 **Se novo escopo (opção 1):**
 ```
@@ -158,7 +166,7 @@ Vou fazer as seguintes mudanças em docs/scope.md:
 
 [lista de mudanças]
 
-Posso prosseguir? (s/n — ou diga o que ajustar)
+Ficou bom ou quer ajustar alguma coisa?
 ```
 
 ---

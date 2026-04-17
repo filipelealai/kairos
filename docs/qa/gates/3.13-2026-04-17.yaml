@@ -1,0 +1,45 @@
+schema: 2
+story: "3.13"
+story_title: "*prd: Elicitação Conversacional para o Escopo da Instância"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-17T00:00:00.000Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: modo CREATE substituído por abertura com única pergunta aberta — Passo 1 implementado com 'Me conta: o que você está construindo com o Kairos aqui, e para quê?'"
+    - "✅ AC2: follow-up apenas para o que está faltando — Passo 3 instrui explicitamente 'se o usuário já respondeu voluntariamente algo, não pergunte de novo'"
+    - "✅ AC3: inferência de domínio por termos — Passo 2 lista 'prospecção', 'leads', 'e-mails', 'clientes', 'vendas' → inferir cold outreach e confirmar"
+    - "✅ AC4: máximo 2-3 perguntas para usuário vago — Passo 3: 'faça no máximo 2-3 perguntas adicionais e depois prossiga com um rascunho para ajuste'"
+    - "✅ AC5: stack inferida de package.json e core-config.yaml — Passo 2 instrui não perguntar, exceto divergência"
+    - "✅ AC6: squads confirmados (não perguntados) — Passo 2 usa template 'Vi que você tem o squad X ativo (agentes: A, B, C). Quer incluir no escopo?'"
+    - "✅ AC7: rascunho completo antes de escrever com 'Ficou bom ou quer ajustar alguma coisa?' — Passo 4 implementado"
+    - "✅ AC8: modo UPDATE sem prefixos 'Pergunta N —' — menu usa '1. Adicionar/atualizar escopo', '2. Objetivos e métricas', etc."
+    - "✅ AC9: bypass de menu quando contexto fornecido — pré-passo do UPDATE detecta contexto e pula o menu"
+    - "✅ AC10: estrutura canônica do docs/scope.md preservada — seção 'Formato do docs/scope.md' inalterada com todas as seções"
+    - "✅ AC11: versão e Change Log do scope.md atualizados normalmente — seção 'Pós-escrita' inalterada"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-prd.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ (nota do executor) Lógica de inferência de domínio pode precisar de expansão quando outros squads de domínios diferentes forem adicionados — acompanhar em futuras stories"
