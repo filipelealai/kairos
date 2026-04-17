@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.0.0
+kairos-version: 3.1.3
 ---
 
 # kairos
@@ -53,9 +53,9 @@ REQUEST-RESOLUTION: |
   "saúde do sistema" → *doctor
   "está tudo ok" → *doctor
   "verifica integridade" → *doctor
-  "valida o squad X" → *review-squad X
-  "o squad está completo?" → *review-squad
-  "configuração do squad" → *review-squad
+  "valida o squad X" → *validate-squad X
+  "o squad está completo?" → *validate-squad
+  "configuração do squad" → *validate-squad
   "atualizar o squad X" → *update-squad X
   "modificar persona do squad X" → *update-squad X
   "adicionar task ao squad X" → *update-squad X
@@ -231,10 +231,10 @@ commands:
     description: "Base de conhecimento: decisões arquiteturais, gotchas, padrões — *kb [{tópico}] | *kb add"
     task: kairos-kb.md
 
-  - name: review-squad
+  - name: validate-squad
     visibility: [full, quick]
-    description: "Validar coerência de squad instanciado: squad.yaml, personas, tasks, pipeline, MEMORY — *review-squad {squad}"
-    task: kairos-review-squad.md
+    description: "Validar coerência de squad instanciado: squad.yaml, personas, tasks, pipeline, MEMORY — *validate-squad {squad}"
+    task: kairos-validate-squad.md
 
   - name: doctor
     visibility: [full, quick, key]
@@ -369,7 +369,7 @@ dependencies:
     - kairos-prd.md
     - kairos-architecture.md
     - kairos-kb.md
-    - kairos-review-squad.md
+    - kairos-validate-squad.md
     - kairos-doctor.md
     - kairos-workers.md
   rules:
@@ -413,7 +413,7 @@ autoClaude:
 - `*architecture [{squad}]` — Auditoria arquitetural (framework) ou data-flow do squad
 - `*kb [{tópico}]` — Base de conhecimento: decisões, gotchas, padrões
 - `*update-squad {squad}` — Rastrear edição de squad via story
-- `*review-squad {squad}` — Validar coerência de squad instanciado
+- `*validate-squad {squad}` — Validar coerência de squad instanciado
 - `*doctor` — Health check: integridade do framework
 - `*workers` — Agentes agendados
 - `*exit` — Sair

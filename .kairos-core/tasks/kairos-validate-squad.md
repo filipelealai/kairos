@@ -1,20 +1,20 @@
 ---
 kairos-owned: true
 kairos-version: 2.1.1
-id: kairos-review-squad
+id: kairos-validate-squad
 title: Validação de Coerência de Squad
 agent: kairos
-command: "*review-squad {squad}"
+command: "*validate-squad {squad}"
 version: 1
 ---
 
-# Task: kairos-review-squad
+# Task: kairos-validate-squad
 
 ## Propósito
 
 Validar se a configuração de um squad instanciado é coerente e completa: personas declaradas existem, tasks referenciadas existem, squad.yaml tem campos obrigatórios e o pipeline está documentado.
 
-Distinto do `*doctor` (que diagnostica a integridade do framework) — `*review-squad` é diagnóstico de conteúdo instanciado pelo usuário.
+Distinto do `*doctor` (que diagnostica a integridade do framework) — `*validate-squad` é diagnóstico de conteúdo instanciado pelo usuário.
 
 ---
 
@@ -116,7 +116,7 @@ Após todos os checks:
 
 ```
 ┌─────────────────────────────────────────────────┐
-│  REVIEW-SQUAD: {squad} — {data}                 │
+│  VALIDATE-SQUAD: {squad} — {data}               │
 │                                                 │
 │  ✅ VÁLIDO      — todos os checks PASS/WARN     │
 │  ⚠️  INCOMPLETO  — há WARNs, sem FAILs          │
@@ -139,7 +139,7 @@ Após todos os checks:
 ## Exemplo de Output
 
 ```
-🌀 @kairos *review-squad cold-prospecting
+🌀 @kairos *validate-squad cold-prospecting
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Check 1 — squad.yaml válido
@@ -171,7 +171,7 @@ Check 5 — MEMORY.md dos agentes
   ✅ PASS   — .kairos-core/agents/email-writer/MEMORY.md
 
 ┌─────────────────────────────────────────────────┐
-│  REVIEW-SQUAD: cold-prospecting — 2026-04-16    │
+│  VALIDATE-SQUAD: cold-prospecting — 2026-04-17  │
 │  ⚠️  INCOMPLETO — 3 WARNs, 0 FAILs              │
 └─────────────────────────────────────────────────┘
 

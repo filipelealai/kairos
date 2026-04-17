@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.0.0
+kairos-version: 3.1.3
 task: Kairos Help
 responsavel: "@kairos"
 responsavel_type: agent
@@ -156,12 +156,12 @@ DIAGNÓSTICO
                         integração), descrição e ACs. Gera story com prefixo update:.
                         → Omitir {squad}: lista squads disponíveis.
 
-  *review-squad {squad} Valida coerência de um squad instanciado pelo usuário:
+  *validate-squad {squad} Valida coerência de um squad instanciado pelo usuário:
                         squad.yaml (campos obrigatórios), personas, tasks,
                         pipeline documentado, MEMORY.md por agente.
                         Resultado: VÁLIDO / INCOMPLETO / QUEBRADO.
                         → Diferente de *doctor: esse é para o framework.
-                           *review-squad é para o conteúdo do squad.
+                           *validate-squad é para o conteúdo do squad.
                         → Se omitir {squad}: lista squads disponíveis.
 
   *doctor               Health check do framework Kairos: arquivos L1-L3,
@@ -258,7 +258,7 @@ Regra rápida:
   "Estou tentando criar/implementar um squad novo?"          → @kairos *new-squad + *implement
 
 Para validar a configuração de um squad instanciado:
-  *review-squad {squad}    ← diagnóstico de squad, não de framework
+  *validate-squad {squad}  ← diagnóstico de squad, não de framework
 
 Para verificar a integridade do framework em si:
   *doctor                  ← verifica L1/L2/L3, hooks, ownership
@@ -317,9 +317,9 @@ Implementar inst.   *implement [{id}]   (type: instance — @kairos executa)
 Revisar entrega     *review [{id}]
 Publicar            *pre-push → *push   (*version disponível para uso avulso)
 Evoluir squad       *update-squad {squad}
-Validar squad       *review-squad {squad}
+Validar squad       *validate-squad {squad}
 Documentar          *prd | *architecture [{squad}]
-Diagnóstico         *review-squad {squad} | *doctor
+Diagnóstico         *validate-squad {squad} | *doctor
 Ajuda               *help [{topic}] | *guide
 Sair                *exit
 

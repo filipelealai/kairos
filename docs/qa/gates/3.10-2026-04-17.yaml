@@ -1,0 +1,43 @@
+schema: 2
+story: "3.10"
+story_title: "Pre-Push: Atualizar kairos-version nos Arquivos Modificados"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-17T00:00:00Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-pre-push.md expandido com Passo 2.7 que lê git status --porcelain, filtra M/A e atualiza kairos-version: nos arquivos que têm o campo"
+    - "✅ AC2: Passo 2.7 posicionado após 2.6 (bump confirmado) e antes do Passo 3 (Commit); pré-condição do Passo 3 atualizada de 'Passo 2.5' para 'Passo 2.7'"
+    - "✅ AC3: instrução explícita 'Se não: ignore — não criar o campo em arquivos que não o têm'"
+    - "✅ AC4: filtragem exclusiva por status M ou A em git status --porcelain — arquivos não tocados não são processados"
+    - "✅ AC5: ownership.md § Frontmatter kairos-owned documenta semântica completa de kairos-version, incluindo nota de que *doctor não deve comparar com versão atual"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+    - "✅ .claude/rules/ownership.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "git status --porcelain retorna códigos de dois caracteres (XY) e a instrução diz 'status M ou A' sem especificar posição X, Y ou ambos. Em prática funciona, mas é ambíguo."
+    recommendation: "Refinar a instrução para mencionar explicitamente os padrões ' M', 'M ', 'MM', 'A ' do formato porcelain, ou usar 'git diff --name-only' como alternativa mais direta."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Considerar refinar instrução de git status --porcelain para ser explícito sobre os padrões XY relevantes em versão futura (PATCH)"

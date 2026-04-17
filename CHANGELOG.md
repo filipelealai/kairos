@@ -6,6 +6,14 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.1.3] — 2026-04-17
+
+### Alterado
+
+- Comando `*review-squad` renomeado para `*validate-squad` — alinha nomenclatura com `*validate-story`; prefixo `validate` é semanticamente correto para validação de artefato estático (story 3.11)
+
+---
+
 ## [3.1.2] — 2026-04-16
 
 ### Adicionado

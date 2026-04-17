@@ -1,0 +1,52 @@
+schema: 2
+story: "3.11"
+story_title: "Renomear *review-squad → *validate-squad"
+epic: 3
+verdict: "RESSALVA"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-17T00:00:00.000Z"
+quality_score: 91
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-review-squad.md removido; kairos-validate-squad.md criado em .kairos-core/tasks/"
+    - "✅ AC2: command: '*validate-squad {squad}' — campo correto no frontmatter da task"
+    - "✅ AC3: kairos.md atualizado em todos os blocos declarados: commands, dependencies.tasks, REQUEST-RESOLUTION (3 mapeamentos), Comandos Rápidos"
+    - "✅ AC5: CHANGELOG.md tem entrada [3.1.3] com descrição do rename"
+    - "✅ AC6: core-config.yaml version: 3.1.3"
+  manual:
+    - "⚠️ AC4: Zero referências em .kairos-core/ e .claude/ (verificado). Em docs/ permanecem referências em 3 categorias: (a) a própria story 3.11 — meta, inevitável; (b) registros históricos de story 3.4 Done e gate congelado 3.4 — correto não alterar; (c) títulos de story em README e epic — cobertos por 'Fora de Escopo: READMEs'. Decisão documentada no Execution Log. Operacionalmente limpo."
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-validate-squad.md"
+    - "✅ .claude/commands/kairos/agents/kairos.md (atualizado)"
+    - "✅ .kairos-core/tasks/kairos-help.md (atualizado)"
+    - "✅ CHANGELOG.md (entrada 3.1.3)"
+    - "✅ .kairos-core/core-config.yaml (v3.1.3)"
+  missing:
+    - "✅ .kairos-core/tasks/kairos-review-squad.md — ausência confirmada (removido corretamente)"
+
+checks:
+  version_bumped: "✅ PASS — 3.1.2 → 3.1.3 (ACs da story exigiam explicitamente)"
+  changelog_updated: "✅ PASS — entrada [3.1.3] presente e descritiva"
+  story_file_consistent: "✅ PASS — status In Review, epic 3, todos os ACs marcados [x]"
+  files_exist: "✅ PASS — todos os arquivos declarados presentes"
+  no_broken_references: "✅ PASS — kairos-validate-squad.md referenciado em kairos.md e kairos-help.md; arquivo existe"
+  execution_log_present: "✅ PASS — seção completa com decisões, arquivos, nota para @kairos"
+
+issues:
+  - severity: "medium"
+    description: "AC4 literal não satisfeito: docs/ contém referências ao nome antigo. Porém são todas não-operacionais: (a) a própria story 3.11 (meta), (b) registros históricos frozen de story 3.4 e gate 3.4, (c) entradas de título em README/epic cobertos por 'Fora de Escopo'. Zero referências operacionais."
+    recommendation: "Nenhuma ação necessária. Se desejado esteticamente: atualizar os títulos nas tabelas de README e epic para refletir o nome atual do comando (fora do escopo desta story)."
+  - severity: "low"
+    description: "kairos-validate-squad.md não adicionado ao manifest.yaml. Situação herdada: kairos-review-squad.md também não estava no manifest antes desta story."
+    recommendation: "Criar story de inventory do manifest para adicionar todas as tasks kairos-*.md ausentes de uma vez."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Story futura: adicionar tasks kairos-*.md ausentes ao manifest.yaml (kairos-validate-squad.md, kairos-implement.md, kairos-update-squad.md)"
+  - "⚠️ Opcionalmente: atualizar títulos de story 3.4 nas tabelas de README e epic para refletir o nome atual do comando"

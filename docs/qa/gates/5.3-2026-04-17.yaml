@@ -1,0 +1,50 @@
+schema: 2
+story: "5.3"
+story_title: "SHA Sync Automático no *pre-push e *version"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-17T00:00:00Z"
+quality_score: 90
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-pre-push.md atualizado com Passo 2.6 — SHA Sync no checklist e no corpo, posicionado entre Passo 2.5 e Passo 3 (antes do commit)"
+    - "✅ AC2: kairos-version-bump.md atualizado com seção 'SHA Sync' após core-config.yaml, checklist e template de confirmação atualizados"
+    - "✅ AC3: One-time refresh executado — verificação estática Python confirmou 14 arquivos corrigidos, kairos_version → 3.1.2, zero drift em 37 owned_files"
+    - "✅ AC4: Zero drift estático equivale a zero WARNs no check de SHA do *doctor (⚠️ WARN emitido por drift — sem drift, sem WARNs)"
+  manual:
+    - "⚠️ AC5: manifest.yaml atualizado com SHAs corretos; commit ocorrerá no *pre-push (fluxo padrão — arquivos modificados, não commitados ainda)"
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md — Passo 2.6 + checklist atualizados"
+    - "✅ .kairos-core/tasks/kairos-version-bump.md — seção SHA Sync adicionada"
+    - "✅ .kairos-core/manifest.yaml — 14 SHAs corrigidos, kairos_version: 3.1.2"
+    - "✅ docs/stories/5.3.story.md — In Review, ACs marcados, Execution Log presente"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "⚠️ RESSALVA — epic 5 ainda lista 5.3 em 'Stories Candidatas' em vez da tabela de Stories ativas"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "medium"
+    description: "Epic 5 (docs/epics/epic-5-arquitetura-do-framework.md) lista 5.3 em 'Stories Candidatas (não criadas ainda)' em vez da tabela de Stories com status In Review."
+    recommendation: "Mover 5.3 da seção 'Stories Candidatas' para a tabela '## Stories' com status In Review; atualizar para Done quando *pre-push executar."
+  - severity: "low"
+    description: "kairos-version-bump.md tem kairos-version: 2.0.0 no frontmatter — desatualizado (não impacta funcionamento, apenas metadata de rastreabilidade)."
+    recommendation: "Atualizar kairos-version no frontmatter para 3.1.2 em próxima oportunidade."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Atualizar epic 5 — mover story 5.3 para tabela de Stories ativas antes do *pre-push"
+  - "⚠️ Validar *doctor em execução real (não apenas estática) para confirmar zero WARNs de SHA drift"
+  - "⚠️ Nota de portabilidade: Passo 2.6 depende de sha256sum — não disponível nativamente no Windows sem WSL (registrado no Execution Log do executor)"
