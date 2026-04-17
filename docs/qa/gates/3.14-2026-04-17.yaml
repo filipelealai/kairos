@@ -1,0 +1,40 @@
+schema: 2
+story: "3.14"
+story_title: "Pre-Push Step 4: Comparação por Timestamp de Commit para Bump PATCH"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-17T00:00:00.000Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Step 4 do Passo 2 em kairos-pre-push.md usa timestamp epoch unix — `git log -1 --format=\"%ct\"` substitui comparação por YYYY-MM-DD"
+    - "✅ AC2: Comando para epoch do gate presente com fallback 0 — `git log -1 --format=\"%ct\" -- docs/qa/gates/{story-id}-{date}.yaml`"
+    - "✅ AC3: Comando para epoch do CHANGELOG presente com fallback 0 — `git log -1 --format=\"%ct\" -- CHANGELOG.md`"
+    - "✅ AC4: Condição de skip atualizada — `epoch_changelog > epoch_gate` → skip; `epoch_changelog <= epoch_gate` → exibir prompt"
+    - "✅ AC5: Nota explicativa adicionada no step 4 descrevendo por que timestamp é necessário e proibindo regressão para data-dia"
+    - "✅ AC6: Comportamento MINOR/MAJOR (steps 1–3 do Passo 2) permanece inalterado — apenas step 4 modificado"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ O Execution Log menciona corretamente o comportamento do fallback duplo-zero (0 > 0 = false → prompt aparece). Decisão sólida e bem documentada."

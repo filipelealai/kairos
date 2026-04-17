@@ -117,14 +117,24 @@ Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ati
 
 4. **Stories PATCH com gate (prompt opcional — não bloqueante):**
 
+   > **Por que timestamp de commit e não data-dia:** comparar `YYYY-MM-DD` causa falso positivo quando o bump anterior e o gate ocorrem no mesmo dia de calendário — o sistema suprime o prompt mesmo sem bump novo. Timestamps epoch unix distinguem a ordem real dos eventos independente do dia. Não reverter para comparação por data.
+
    a. Liste todos os arquivos `docs/qa/gates/*.yaml`
    b. Para cada gate com `verdict: PASS` ou `verdict: RESSALVA`, identifique a story correspondente pelo prefixo do nome do arquivo (`{story-id}-{YYYY-MM-DD}.yaml`)
    c. Determine se a story implica bump **PATCH** (não é MINOR nem MAJOR — correção, ajuste de instrução, atualização de memória)
    d. Para cada story PATCH com gate PASS/RESSALVA:
-      - Obtenha data do gate: extraia `{YYYY-MM-DD}` do nome do arquivo do gate
-      - Leia `CHANGELOG.md` → data da entrada mais recente (formato `## [versão] — YYYY-MM-DD`)
-      - Se data do CHANGELOG >= data do gate → bump já realizado → **skip** (nenhum prompt)
-      - Se data do CHANGELOG < data do gate (ou CHANGELOG sem entradas):
+      - Obtenha o timestamp epoch do gate:
+        ```bash
+        git log -1 --format="%ct" -- docs/qa/gates/{story-id}-{date}.yaml
+        ```
+        Se o comando retornar vazio (gate ainda não commitado) → usar `epoch_gate = 0`
+      - Obtenha o timestamp epoch do último commit do CHANGELOG:
+        ```bash
+        git log -1 --format="%ct" -- CHANGELOG.md
+        ```
+        Se o comando retornar vazio (CHANGELOG ainda não commitado) → usar `epoch_changelog = 0`
+      - Se `epoch_changelog > epoch_gate` → bump realizado após o gate → **skip** (nenhum prompt)
+      - Se `epoch_changelog <= epoch_gate` (inclui ambos em 0):
         - Exiba prompt **não-bloqueante**:
           ```
           ⚠️  Story {id} é PATCH — sem bump desde o último release.
