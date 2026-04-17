@@ -12,7 +12,8 @@ squads/
 src/
 
 .kairos-core/agents/
-!.kairos-core/agents/.gitkeep
+
+skills-lock.json
 
 data/
 !data/.gitkeep
