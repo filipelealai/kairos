@@ -191,3 +191,5 @@ Ver `squads/ops/README.md` para arquitetura e `squads/ops/tasks/push-dual.md` pa
 Remotes:
 - `origin` → `filipelealweb/kairos` (público — framework puro, branch `main`)
 - `private` → `filipelealweb/kairos-pessoal` (privado — instância completa, branch `filipe-instance`)
+
+**Override de `*push` nesta instância:** quando o @kairos executa `*push` a partir da branch `filipe-instance`, usar `squads/ops/tasks/push-dual.md` no lugar de `kairos-push.md`. O push-dual preserva todas as regras do `*push` original (guard de `pre_push_passed`, pós-push de story) e adiciona o fluxo dual-remote. O `kairos-push.md` do framework permanece inalterado.

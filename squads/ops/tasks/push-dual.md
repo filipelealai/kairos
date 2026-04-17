@@ -6,9 +6,25 @@
 
 ---
 
+## Guard Obrigatório
+
+**ANTES de qualquer coisa**, verificar o estado de sessão (herdado de `kairos-push.md`):
+
+```
+SE pre_push_passed != true na sessão atual:
+  RECUSAR com:
+  "🚫 Push recusado. *pre-push não foi executado ou retornou BLOCK nesta sessão.
+   Execute *pre-push primeiro e certifique-se de que retorna PASS."
+  HALT — não continuar
+```
+
+Se `*pre-push` foi rodado em outra sessão (não a atual), tratar como não executado.
+
+---
+
 ## Pré-condições
 
-Antes de executar, verificar:
+Após o guard passar, verificar:
 
 1. Branch atual é `filipe-instance` — se não, HALT e informar o usuário
 2. `git status` está limpo (sem uncommitted changes) — se não, HALT
@@ -129,6 +145,16 @@ git push origin main
 ```bash
 git checkout filipe-instance
 ```
+
+---
+
+### Passo 5 — Pós-push (herdado de `kairos-push.md`)
+
+Se havia story com status `In Review` cujo gate está PASS/RESSALVA:
+- Informar: "Story {id} tem gate PASS. Deseja atualizar o status para Done? (s/n)"
+- Se confirmado: atualizar `**Status:**` para `Done` e adicionar entrada no Change Log
+
+Resetar `pre_push_passed = false` em sessão (força novo `*pre-push` no próximo ciclo).
 
 ---
 
