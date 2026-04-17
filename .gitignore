@@ -14,6 +14,9 @@ src/
 .kairos-core/agents/
 
 skills-lock.json
+.claude/skills/
+
+CLAUDE.md
 
 data/
 !data/.gitkeep
