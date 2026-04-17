@@ -5,3 +5,28 @@ data/cache/
 *.log
 /.env
 .mcp.json
+
+# Instance-specific content — not shipped as framework
+squads/
+!squads/.gitkeep
+
+src/agents/*.ts
+!src/agents/.gitkeep
+
+.kairos-core/agents/
+!.kairos-core/agents/.gitkeep
+
+data/outputs/
+!data/outputs/.gitkeep
+
+.claude/settings.local.json
+
+# Squad personas (user-created, not shipped)
+.claude/commands/kairos/agents/*.md
+!.claude/commands/kairos/agents/kairos.md
+
+# Project metadata (instance-owned)
+docs/stories/
+docs/epics/
+docs/qa/
+docs/scope.md
