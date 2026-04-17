@@ -1,7 +1,6 @@
 node_modules/
 dist/
 .env
-data/cache/
 *.log
 /.env
 .mcp.json
@@ -10,14 +9,13 @@ data/cache/
 squads/
 !squads/.gitkeep
 
-src/agents/*.ts
-!src/agents/.gitkeep
+src/
 
 .kairos-core/agents/
 !.kairos-core/agents/.gitkeep
 
-data/outputs/
-!data/outputs/.gitkeep
+data/
+!data/.gitkeep
 
 .claude/settings.local.json
 
