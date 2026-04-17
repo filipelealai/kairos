@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.1.5] — 2026-04-17
+
+### Corrigido
+- Pre-push step 4: fallback de epoch_gate corrigido de 0 para 99999999999 — sentinel alto garante que prompt PATCH sempre aparece quando gate não foi commitado (story 3.17)
+
+---
+
 ## [3.1.4] — 2026-04-17
 
 ### Corrigido

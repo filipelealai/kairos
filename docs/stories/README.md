@@ -54,4 +54,5 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [3.12](3.12.story.md) | self_reviewed Automático em *review para Stories Implementadas via *implement | Draft |
 | [3.13](3.13.story.md) | *prd: Elicitação Conversacional para o Escopo da Instância | Draft |
 | [3.16](3.16.story.md) | *validate-story: Verificar Ordem do Cabeçalho e Estrutura dos ACs | Draft |
+| [3.17](3.17.story.md) | Pre-Push Step 4: Corrigir Fallback de Epoch para Gate Não Commitado | Draft |
 | [5.1](5.1.story.md) | Segregação Framework × Usuário via Manifesto de Ownership | Done |

@@ -1,0 +1,38 @@
+schema: 2
+story: "3.17"
+story_title: "Pre-Push Step 4: Corrigir Fallback de Epoch para Gate Não Commitado"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-17T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Fallback de epoch_gate alterado de 0 para 99999999999 em kairos-pre-push.md (linha 132)"
+    - "✅ AC2: Comentário inline presente imediatamente após a linha do sentinel (linha 133) — confirma que sentinel alto garante epoch_changelog > epoch_gate sempre falso"
+    - "✅ AC3: Fallback de epoch_changelog permanece 0 (linha 138); comentário inline na linha 139 confirma lógica correta"
+    - "✅ AC4: Nota explicativa do step 4 expandida com parágrafo '**Fallbacks de epoch:**' (linhas 121-122) cobrindo lógica dos dois fallbacks e antipadrão a evitar"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "A condição else (linha 141) ainda menciona 'inclui ambos em 0' no comentário — com o novo sentinel, o caso 'ambos em 0' só ocorre se epoch_changelog = 0 e epoch_gate = 99999999999 (gate não commitado) ou valores reais. O comentário é tecnicamente impreciso mas não causa dano. Pode ser removido em oportunidade futura."
