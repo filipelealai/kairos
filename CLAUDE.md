@@ -182,3 +182,12 @@ Esta seção é user-owned. Cada squad importa suas rules específicas aqui.
 @squads/cold-prospecting/rules/campaign-lifecycle.md
 @squads/cold-prospecting/rules/memory-imports.md
 @squads/cold-prospecting/rules/agent-authority.md
+
+### Squad ops (governança de repo)
+
+Squad sem persona. Tasks executadas pelo @kairos via `*push`.
+Ver `squads/ops/README.md` para arquitetura e `squads/ops/tasks/push-dual.md` para o fluxo completo.
+
+Remotes:
+- `origin` → `filipelealweb/kairos` (público — framework puro, branch `main`)
+- `private` → `filipelealweb/kairos-pessoal` (privado — instância completa, branch `filipe-instance`)

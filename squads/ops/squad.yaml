@@ -1,0 +1,23 @@
+id: ops
+name: Ops
+description: |
+  Squad operacional de governança de repositório desta instância.
+  Gerencia o fluxo dual de push (framework público + instância privada)
+  via a task push-dual.
+
+owner: filipe
+created_at: "2026-04-16"
+created_by: story-5.2
+
+agents: []  # sem persona obrigatória — tasks executadas pelo @kairos
+
+tasks:
+  - tasks/push-dual.md
+
+integrations:
+  - github-origin   # filipelealweb/kairos (público — framework puro)
+  - github-private  # filipelealweb/kairos-pessoal (privado — instância completa)
+
+notes: |
+  Este squad não tem agent persona — push-dual é uma operação de governança
+  de repo executada diretamente pelo @kairos (sem intermediário).
