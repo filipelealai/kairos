@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.1.3
 task: Kairos Review
 responsavel: "@kairos"
 responsavel_type: agent
@@ -92,6 +92,7 @@ Se a story tem seção `## Execution Log`:
 - Leia as anotações, decisões tomadas e pendências declaradas pelo executor
 - Se há "Pendências / questões abertas" → são candidatas a ⚠️ ou issues no gate
 - Se há "Notas para @kairos" → incorporar na análise do gate
+- Se o campo `**Executor:**` contém a string `@kairos via *implement` → registrar internamente `implemented_via_implement: true`
 
 Se a story **não tem** Execution Log mas o Status é "In Review":
 - Adicionar ao gate: `⚠️ Execution Log ausente — executor não documentou o que foi feito`
@@ -170,6 +171,8 @@ PASS se:
 
 Crie `docs/qa/gates/{story_id}-{YYYY-MM-DD}.yaml`:
 
+Se `implemented_via_implement = true` (detectado no Passo 3), incluir os campos `self_reviewed` e `self_review_note` imediatamente após `execution_log_found`. Se `implemented_via_implement = false` ou indeterminado, omitir ambos os campos — não incluir `self_reviewed: false`.
+
 ```yaml
 schema: 2
 story: "{story_id}"
@@ -180,6 +183,9 @@ reviewer: "Kairos (@kairos)"
 reviewed_at: "{ISO timestamp}"
 quality_score: {N}
 execution_log_found: true | false
+# — campos abaixo presentes apenas quando implemented_via_implement = true —
+self_reviewed: true
+self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
 
 ac_coverage:
   covered:

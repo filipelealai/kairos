@@ -1,0 +1,41 @@
+schema: 2
+story: "3.12"
+story_title: "self_reviewed Automático em *review para Stories Implementadas via *implement"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-17T00:00:00Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-review.md Passo 3 atualizado — detecção de '**Executor:** @kairos via *implement' registra implemented_via_implement: true"
+    - "✅ AC2: kairos-review.md Passo 8 atualizado — prosa condicional + campos self_reviewed/self_review_note no template imediatamente após execution_log_found; omissão quando false/indeterminado declarada explicitamente"
+    - "✅ AC3: kairos-implement.md — seção 'Gate de *review para stories type: instance' removida (grep confirmado)"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-review.md"
+    - "✅ .kairos-core/tasks/kairos-implement.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "Template YAML no Passo 8 exibe self_reviewed e self_review_note incondicionalmente dentro do bloco de código (após um comentário). Um leitor que ignore a prosa antes do bloco pode incluir os campos sempre."
+    recommendation: "Considerar mostrar o template em dois fragmentos (com e sem os campos) ou usar placeholder sintático como '# [se implemented_via_implement: true]' mais visível. Não bloqueia — a instrução prose é inequívoca."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Refinar apresentação visual do template YAML no Passo 8 para deixar a condicionalidade dos campos self_reviewed/self_review_note ainda mais explícita (baixa prioridade — PATCH futuro)"

@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.0.0
+kairos-version: 3.1.3
 task: Kairos Implement
 responsavel: "@kairos"
 responsavel_type: agent
@@ -198,21 +198,6 @@ Arquivos criados/modificados: {lista resumida}
 Story movida para In Review.
 Rode `*review {id}` para validar e gerar o gate.
 ```
-
----
-
-## Gate de *review para stories type: instance
-
-Quando `*review` for executado em uma story implementada via `*implement`, o gate YAML
-deve incluir o campo adicional:
-
-```yaml
-self_reviewed: true
-self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
-```
-
-Este campo não altera o cálculo de quality_score nem os critérios de PASS/BLOCK — serve
-como marcador de auditoria para rastrear stories onde executor e revisor são o mesmo agente.
 
 ---
 
