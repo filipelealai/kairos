@@ -6,19 +6,22 @@ dist/
 .mcp.json
 
 # Instance-specific content — not shipped as framework
-squads/
+squads/*
 !squads/.gitkeep
 
 src/
 
 .kairos-core/agents/
+.kairos-core/tasks/*
+!.kairos-core/tasks/kairos-*.md
 
 skills-lock.json
 .claude/skills/
+.agents/
 
 CLAUDE.md
 
-data/
+data/*
 !data/.gitkeep
 
 .claude/settings.local.json
@@ -28,5 +31,5 @@ data/
 !.claude/commands/kairos/agents/kairos.md
 
 # Project metadata (instance-owned — entire docs/ is instance content)
-docs/
+docs/*
 !docs/.gitkeep
