@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.0.0
+kairos-version: 3.2.1
 task: Kairos Implement
 responsavel: "@kairos"
 responsavel_type: agent
@@ -9,19 +9,23 @@ elicit: false
 Entrada: |
   - story_id: ID da story a implementar (ex: "3.7", "4.1") — opcional
     Se omitido: listar stories type: instance com status Draft ou In Progress
+  - "all": implementar em massa todas as stories type: instance em Draft ou In Progress
 Saida: |
-  - story movida para In Review
-  - Execution Log adicionado na story (assinado "@kairos via *implement")
+  - story(s) movida(s) para In Review
+  - Execution Log adicionado em cada story (assinado "@kairos via *implement")
   - arquivos declarados nos ACs criados/modificados
+  - [modo all] relatório consolidado + gate de cada story salvo em docs/qa/gates/
 Checklist:
-  - "[ ] Resolver story_id: argumento explícito ou seleção interativa"
+  - "[ ] Resolver argumento: 'all', story_id explícito ou seleção interativa"
+  - "[ ] [modo all] Listar elegíveis, confirmar com usuário, iterar sequencialmente"
   - "[ ] Verificar que story é type: instance — recusar se kairos-core"
   - "[ ] Mover story Draft → In Progress (se ainda em Draft)"
   - "[ ] Ler Objetivo, ACs e contexto da story"
   - "[ ] Implementar arquivo por arquivo conforme os ACs"
   - "[ ] Adicionar seção ## Execution Log na story"
   - "[ ] Mover story In Progress → In Review"
-  - "[ ] Exibir confirmação com próximo passo (*review)"
+  - "[ ] [modo all] Executar *review automaticamente após cada story"
+  - "[ ] [modo all] Exibir relatório consolidado e aguardar confirmação antes de *pre-push"
 ---
 
 # *implement — Executor de Stories type: instance
@@ -29,6 +33,115 @@ Checklist:
 Esta task formaliza @kairos como executor de stories que criam ou evoluem squads,
 workers, agentes e scripts associados (`type: instance`). Para stories `type: kairos-core`,
 a implementação é responsabilidade do Claude Code plain — @kairos recusa explicitamente.
+
+---
+
+## Despacho de argumento
+
+Se o argumento recebido for `all` → ir para **[Modo All]** abaixo.
+Caso contrário → seguir o **Pré-passo** normal.
+
+---
+
+## [Modo All] — Implementação em Massa
+
+> Ativado por `*implement all`. Implementa sequencialmente todas as stories `type: instance`
+> em Draft ou In Progress, executa `*review` em cada uma e exibe relatório consolidado.
+
+### All-Passo 1 — Varrer o backlog
+
+1. Listar todos os arquivos em `docs/stories/` com extensão `.story.md`
+2. Para cada um, ler os campos `**Status:**` e `**Tipo:**`
+3. Separar em três grupos:
+   - **Elegíveis:** `type: instance` E status `Draft` ou `In Progress`
+   - **Ignoradas:** `type: kairos-core` (qualquer status)
+   - **Puladas:** qualquer outro tipo ou status diferente de Draft/In Progress
+4. Se **nenhuma elegível** encontrada → exibir e HALT:
+   ```
+   Nenhuma story type: instance em Draft ou In Progress encontrada.
+   
+   Para criar uma nova story: *new-story
+   Para implementar uma story específica: *implement {id}
+   ```
+
+### All-Passo 2 — Confirmação única do usuário
+
+Exibir lista e aguardar confirmação antes de iniciar:
+
+```
+*implement all — Stories que serão implementadas:
+
+  Elegíveis ({N} stories):
+    {id}: {título} [{status}]
+    ...
+
+  Ignoradas — type: kairos-core ({M} stories):
+    {id}: {título} → usar *yolo para implementação autônoma de framework
+    ...
+
+Implementar sequencialmente? (s = continuar, n = cancelar)
+```
+
+Aguardar resposta. Se `n` → HALT.
+
+### All-Passo 3 — Iterar sequencialmente
+
+Para cada story elegível, **na ordem em que aparecem** (numeric sort por id):
+
+```
+━━━ Implementando story {id}/{total}: {título} ━━━
+```
+
+Executar os Passos 1–6 do fluxo normal (seções abaixo) para a story atual:
+- Verificar tipo (Passo 1)
+- Iniciar implementação, mover Draft→In Progress (Passo 2)
+- Ler a story (Passo 3)
+- Implementar ACs (Passo 4)
+- Adicionar Execution Log (Passo 5)
+- Mover para In Review (Passo 6)
+
+Após concluir cada story → executar `*review {id}` automaticamente (carregar `kairos-review.md`):
+- Gate salvo em `docs/qa/gates/{id}-{YYYY-MM-DD}.yaml`
+- Resultado registrado internamente para o relatório
+
+**Se gate = BLOCK:** NÃO interromper — registrar story como `BLOCK` no relatório e continuar com a próxima.
+**Se gate = PASS ou RESSALVA:** registrar story como `OK` no relatório e continuar.
+**Se implementação falhar com erro inesperado:** registrar story como `ERRO` e continuar.
+
+### All-Passo 4 — Relatório consolidado
+
+Após processar todas as stories, exibir:
+
+```
+━━━ RELATÓRIO *implement all ━━━
+Processadas: {N} stories   OK: {X}   BLOCK: {Y}   ERRO: {Z}
+
+Stories implementadas:
+  ✅ {id}: {título}
+     Gate: PASS (quality_score: {N}) | Arquivos: {lista resumida}
+
+  ⚠️ {id}: {título}
+     Gate: RESSALVA (quality_score: {N}) | Arquivos: {lista resumida}
+
+  🚫 {id}: {título}
+     Gate: BLOCK (quality_score: {N})
+     Issues: {lista de issues bloqueantes}
+     → Corrigir manualmente e rodar *review {id} após correção
+
+  ❌ {id}: {título}
+     ERRO durante implementação: {motivo}
+     → Verificar manualmente
+
+Stories ignoradas (type: kairos-core):
+  ⬜ {id}: {título} — usar *yolo para implementação autônoma
+
+━━━ PRÉ-PUSH ━━━
+{N_ok} stories prontas para commit. {N_block} com gate BLOCK (serão incluídas no commit mas precisam de correção posterior).
+
+Prosseguir com *pre-push? (s = continuar, n = cancelar)
+```
+
+Aguardar confirmação. Se `s` → executar `*pre-push`. Se `n` → HALT.
 
 ---
 
@@ -198,21 +311,6 @@ Arquivos criados/modificados: {lista resumida}
 Story movida para In Review.
 Rode `*review {id}` para validar e gerar o gate.
 ```
-
----
-
-## Gate de *review para stories type: instance
-
-Quando `*review` for executado em uma story implementada via `*implement`, o gate YAML
-deve incluir o campo adicional:
-
-```yaml
-self_reviewed: true
-self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
-```
-
-Este campo não altera o cálculo de quality_score nem os critérios de PASS/BLOCK — serve
-como marcador de auditoria para rastrear stories onde executor e revisor são o mesmo agente.
 
 ---
 
