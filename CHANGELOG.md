@@ -6,12 +6,84 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.3.0] — 2026-04-18
+
+### Adicionado
+- manifest.yaml: adicionados CHANGELOG.md e README.md em owned_files; kairos-new-squad.md: new-squad cria rules/ e faz wiring no CLAUDE.md
+
+---
+
+## [3.2.1] — 2026-04-18
+
+### Corrigido
+- investigado o git log para rastrear o patch anterior relacionado ao README.md no bump de versão
+
+---
+
+## [3.2.0] — 2026-04-18
+
+### Adicionado
+- *yolo (modo autônomo de sessão) adicionado à persona kairos.md; Modo All adicionado a kairos-implement.md; kairos-validate-story.md estendido com modo all
+
+---
+
+## [3.1.8] — 2026-04-17
+
+### Corrigido
+- Passo 2 de kairos-validate-story.md: adicionado bloco — se ⚠️ ATENÇÃO estiver presente, verifica que **Criada por:** e **Data:** aparecem antes dele; caso contrário, ❌ FALHA; Invertida a prioridade de derivação de descrição no step 2.d: Execution Log agora é prioridade 1, git diff × manifest passou para prioridade 2
+
+---
+
+## [3.1.7] — 2026-04-17
+
+### Corrigido
+- kairos-pre-push.md, CHANGELOG.md, core-config.yaml: atualizado
+
+---
+
+## [3.1.6] — 2026-04-17
+
+### Corrigido
+- kairos-pre-push.md, CHANGELOG.md: atualizado
+
+---
+
+## [3.1.5] — 2026-04-17
+
+### Corrigido
+- Pre-push step 4: fallback de epoch_gate corrigido de 0 para 99999999999 — sentinel alto garante que prompt PATCH sempre aparece quando gate não foi commitado
+
+---
+
+## [3.1.4] — 2026-04-17
+
+### Corrigido
+- Pre-push step 4: comparação por timestamp de commit (epoch unix) para bump PATCH — substitui comparação por data-dia que causava falso positivo
+
+---
+
+## [3.1.3] — 2026-04-17
+
+### Alterado
+
+- Comando `*review-squad` renomeado para `*validate-squad` — alinha nomenclatura com `*validate-story`; prefixo `validate` é semanticamente correto para validação de artefato estático
+
+---
+
+## [3.1.2] — 2026-04-16
+
+### Adicionado
+
+- Transição para repo público + squad ops com push-dual dual-remote
+
+---
+
 ## [3.1.1] — 2026-04-16
 
 ### Alterado
 
-- Workers: listagem dinâmica de agentes na elicitação (story 3.8)
-- Pre-Push: prompt opcional de bump para stories PATCH (story 3.9)
+- Workers: listagem dinâmica de agentes na elicitação
+- Pre-Push: prompt opcional de bump para stories PATCH
 
 ---
 
@@ -19,16 +91,16 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ### Adicionado
 
-- `.kairos-core/docs/scope.md` — escopo e arquitetura do Kairos como framework (genérico, kairos-owned, L3); registrado no manifest (story 3.7)
-- `*architecture {squad}` — novo modo da task kairos-architecture.md: gera/atualiza `squads/{squad}/workflows/data-flow.md`, valida consistência (CONSISTENTE/DRIFT/INCOMPLETO) (story 3.7)
+- `.kairos-core/docs/scope.md` — escopo e arquitetura do Kairos como framework (genérico, kairos-owned, L3); registrado no manifest
+- `*architecture {squad}` — novo modo da task kairos-architecture.md: gera/atualiza `squads/{squad}/workflows/data-flow.md`, valida consistência (CONSISTENTE/DRIFT/INCOMPLETO)
 
 ### Alterado
 
-- `kairos-architecture.md` — Passo 1 lê `.kairos-core/docs/scope.md` para stack do framework; Passo 4 usa descoberta dinâmica de agentes via `core-config.yaml` (sem hardcodes) (story 3.7)
-- `core-config.yaml` — `scopeFile` renomeado para `frameworkScopeFile`; nova chave `instanceScopeFile: docs/scope.md` (story 3.7)
-- `kairos-prd.md` — clarificado como gestão do escopo da instância; Pergunta 1 reframeada (story 3.7)
-- `docs/scope.md` — título atualizado para "Instância Kairos — Escopo e Objetivos da Instância" (story 3.7)
-- `kairos-help.md` e `kairos.md` — assinatura `*architecture [{squad}]` atualizada (story 3.7)
+- `kairos-architecture.md` — Passo 1 lê `.kairos-core/docs/scope.md` para stack do framework; Passo 4 usa descoberta dinâmica de agentes via `core-config.yaml` (sem hardcodes)
+- `core-config.yaml` — `scopeFile` renomeado para `frameworkScopeFile`; nova chave `instanceScopeFile: docs/scope.md`
+- `kairos-prd.md` — clarificado como gestão do escopo da instância; Pergunta 1 reframeada
+- `docs/scope.md` — título atualizado para "Instância Kairos — Escopo e Objetivos da Instância"
+- `kairos-help.md` e `kairos.md` — assinatura `*architecture [{squad}]` atualizada
 
 ---
 
@@ -42,7 +114,7 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ## [3.0.0] — 2026-04-16
 
-### Fundação — Extensão do Modelo de Autoridade (story 3.6)
+### Fundação — Extensão do Modelo de Autoridade
 
 - `agent-authority.md` (L1): nova seção "Quem Implementa Instâncias" — @kairos formalizado como executor exclusivo de stories `type: instance` via `*implement`; Claude Code plain reservado para `type: kairos-core`; todo `src/` (tools e agents) declarado domínio de @kairos
 - `story-lifecycle.md` (L3): nova seção "Executor por Tipo de Story" — clarifica os dois executores, seus modos de operação e assinatura do Execution Log
@@ -58,13 +130,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ### Adicionado
 
-- Campo `type: kairos-core | instance` no template de stories e em todas as stories existentes (story 3.5)
-- Comando `*update-squad {squad}`: rastreia edições de squad via story com `type: instance` e prefixo `update:` (story 3.5)
-- `*new-squad` auto-cria story de implementação (`type: instance`) ao final do scaffolding — sem necessidade de `*new-story` manual (story 3.5)
-- Aviso canônico para stories `type: kairos-core` em `@kairos`, `*new-story` e template (story 3.5)
-- `*new-story` elicita `type` com default `instance`; framing orientado a instâncias (story 3.5)
-- `*new-epic` com nota orientadora para instâncias e exemplos atualizados (story 3.5)
-- `*status` exibe prefixos `[core]` / `[instance]` nas stories (story 3.5)
+- Campo `type: kairos-core | instance` no template de stories e em todas as stories existentes
+- Comando `*update-squad {squad}`: rastreia edições de squad via story com `type: instance` e prefixo `update:`
+- `*new-squad` auto-cria story de implementação (`type: instance`) ao final do scaffolding — sem necessidade de `*new-story` manual
+- Aviso canônico para stories `type: kairos-core` em `@kairos`, `*new-story` e template
+- `*new-story` elicita `type` com default `instance`; framing orientado a instâncias
+- `*new-epic` com nota orientadora para instâncias e exemplos atualizados
+- `*status` exibe prefixos `[core]` / `[instance]` nas stories
 
 ---
 
@@ -72,7 +144,7 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ### Adicionado
 
-- Comando `*review-squad {squad}`: validação de coerência de squad instanciado — personas, tasks, pipeline e MEMORY (story 3.4)
+- Comando `*review-squad {squad}`: validação de coerência de squad instanciado — personas, tasks, pipeline e MEMORY
 
 ---
 
@@ -80,9 +152,9 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ### Mudado
 
-- `*new-story` sem argumento: elicitação lista epics disponíveis e gera ID automático (story 3.3)
-- `kairos-new-story.md`: formato de saída alinhado ao `story-template.md` (story 3.3)
-- `kairos-help.md`: assinaturas, descrições e fluxos atualizados para `*new-story`, `*version` e `*pre-push` (story 3.3)
+- `*new-story` sem argumento: elicitação lista epics disponíveis e gera ID automático
+- `kairos-new-story.md`: formato de saída alinhado ao `story-template.md`
+- `kairos-help.md`: assinaturas, descrições e fluxos atualizados para `*new-story`, `*version` e `*pre-push`
 
 ---
 
@@ -90,7 +162,7 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ### Mudado
 
-- `*pre-push` expandido como pré-voo completo: gate de review, versionamento interativo, commit e transição de story para Done (story 3.2)
+- `*pre-push` expandido como pré-voo completo: gate de review, versionamento interativo, commit e transição de story para Done
 
 ---
 

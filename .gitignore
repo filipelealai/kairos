@@ -19,8 +19,6 @@ skills-lock.json
 .claude/skills/
 .agents/
 
-CLAUDE.md
-
 data/*
 !data/.gitkeep
 
