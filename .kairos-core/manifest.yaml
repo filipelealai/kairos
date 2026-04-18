@@ -70,6 +70,12 @@ owned_files:
   - path: .kairos-core/tasks/kairos-update-squad.md
     layer: L2
     sha256: ebbc5d0d0dbfa6416693d61689e543e8cae6b30514d6f11a804775210af4c3e9
+  - path: .kairos-core/tasks/kairos-implement.md
+    layer: L2
+    sha256: cd52051ccc652822661915294c3e3ff6e3f133c144910562495403cc11d64e55
+  - path: .kairos-core/tasks/kairos-validate-squad.md
+    layer: L2
+    sha256: 2c1393daca0256308f97a87caa34a8fe85304c6c24c5c2a898bc9d4af9014422
   - path: .kairos-core/tasks/kairos-new-story.md
     layer: L2
     sha256: 14025232a01c693ff3ba5a9dc2c3ff2180038c9945e1ef3604c1a75137cbbb2d

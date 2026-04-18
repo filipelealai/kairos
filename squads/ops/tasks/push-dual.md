@@ -85,6 +85,8 @@ git checkout filipe-instance -- .kairos-core/tasks/kairos-kb.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-new-epic.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-new-squad.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-update-squad.md
+git checkout filipe-instance -- .kairos-core/tasks/kairos-implement.md
+git checkout filipe-instance -- .kairos-core/tasks/kairos-validate-squad.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-new-story.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-prd.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-pre-push.md
