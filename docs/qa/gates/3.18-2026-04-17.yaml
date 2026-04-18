@@ -1,0 +1,41 @@
+schema: 2
+story: "3.18"
+story_title: "CHANGELOG: Descrição Derivada do Git, Sem Prompt ao Usuário"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-17T00:00:00.000Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Prompt `Descreva a mudança para o CHANGELOG` removido do step 2.d (MINOR/MAJOR) e da nota da seção PATCH — verificado: grep não encontrou a string em kairos-pre-push.md"
+    - "✅ AC2: Step 2.d reescrito com algoritmo de 5 etapas de derivação automática (git diff × manifest → Execution Log sanitizado → fallback fixo) — verificado nas linhas 106-127 de kairos-pre-push.md"
+    - "✅ AC3: Exibição `→ Descrição para CHANGELOG: \"{descrição derivada}\"` presente antes da gravação do CHANGELOG — verificado nas linhas 129-132 de kairos-pre-push.md"
+    - "✅ AC4: Nenhum caminho no step 2.d ou PATCH produz `(story {id})` — step 2.d deriva de arquivos/Execution Log sanitizado; referência PATCH atualizada para 'derivação automática'; nota problemática removida"
+    - "✅ AC5: kairos-version-bump.md não alterado — confirmado via git diff HEAD (sem modificações)"
+    - "✅ AC6: CHANGELOG.md limpo retroativamente — padrão `(story X.Y)` removido de todas as entradas incluindo header `### Fundação — Extensão do Modelo de Autoridade (story 3.6)` → `### Fundação — Extensão do Modelo de Autoridade`"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+    - "✅ CHANGELOG.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS — Status In Review, Epic 3, tipo kairos-core, Execution Log presente"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ O fallback do step 2.d para Execution Log depende de sanitização em runtime — instrução clara, mas apenas verificável na próxima execução do *pre-push. Sem impacto no PASS."

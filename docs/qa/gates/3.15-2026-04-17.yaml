@@ -1,0 +1,40 @@
+schema: 2
+story: "3.15"
+story_title: "CHANGELOG: Entradas Neutras sem Referências de Instância"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-17T00:00:00-03:00"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-pre-push.md step 2.d substituído — prompt ao usuário com wording 'Descreva a mudança para o CHANGELOG (ex: ...)' antes de escrever a entrada"
+    - "✅ AC2: fallback para título da story sem sufixo (story {id}) quando usuário não fornece descrição — explícito na linha do step 2.d"
+    - "✅ AC3: (story {id}) removido de MINOR/MAJOR (step 2.d) e de PATCH (step 2 item 4 referencia os mesmos passos 2.a–2.e, incluindo o novo step 2.d)"
+    - "✅ AC4: kairos-version-bump.md verificado — usa {description} livre como parâmetro de entrada, sem referência hardcoded a story; nenhuma alteração necessária"
+    - "✅ AC5: nota sobre CHANGELOG público adicionada em step 2.d e na seção PATCH (step 2 item 4)"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+    - "✅ docs/stories/3.15.story.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ O exemplo inline do prompt ('kairos-pre-push.md: prompt de descrição antes de escrever entrada') é autorreferencial — em contexto de produção pode confundir o usuário. Considerar substituir por um exemplo mais genérico na próxima oportunidade, ex: 'kairos-pre-push.md: solicitar descrição ao usuário antes de gerar entrada no CHANGELOG'"

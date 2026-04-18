@@ -43,9 +43,10 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | [3.12](../stories/3.12.story.md) | self_reviewed Automático em *review para Stories Implementadas via *implement | Done |
 | [3.13](../stories/3.13.story.md) | *prd: Elicitação Conversacional para o Escopo da Instância | Done |
 | [3.14](../stories/3.14.story.md) | Pre-Push Step 4: Comparação por Timestamp de Commit para Bump PATCH | Done |
-| [3.15](../stories/3.15.story.md) | CHANGELOG: Entradas Neutras sem Referências de Instância | Draft |
+| [3.15](../stories/3.15.story.md) | CHANGELOG: Entradas Neutras sem Referências de Instância | Done |
 | [3.16](../stories/3.16.story.md) | *validate-story: Verificar Ordem do Cabeçalho e Estrutura dos ACs | Draft |
 | [3.17](../stories/3.17.story.md) | Pre-Push Step 4: Corrigir Fallback de Epoch para Gate Não Commitado | Done |
+| [3.18](../stories/3.18.story.md) | CHANGELOG: Descrição Derivada do Git, Sem Prompt ao Usuário | Done |
 
 ---
 
@@ -72,3 +73,5 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | 2026-04-16 | Story 3.7 implementada — status → Done (gate PASS, v3.1.0) |
 | 2026-04-16 | Story 3.13 criada — *prd elicitação conversacional |
 | 2026-04-17 | Story 3.16 criada — gap em *validate-story identificado na revisão de 3.13 |
+| 2026-04-17 | Story 3.18 criada — correção da abordagem da 3.15 (prompt manual → derivação automática do git) |
+| 2026-04-17 | Story 3.18 implementada — status → In Review |

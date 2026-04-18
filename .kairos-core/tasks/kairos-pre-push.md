@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.5
+kairos-version: 3.1.7
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -103,12 +103,40 @@ Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ati
    updatedAt: '{ISO 8601 timestamp}'
    ```
 
-   **d.** Adicione entrada no topo do `CHANGELOG.md` (após cabeçalho, antes da entrada mais recente):
+   **d.** Derive a descrição automaticamente para o CHANGELOG (sem prompt ao usuário):
+
+   ```
+   1. Execute git diff HEAD --name-only e git diff --cached --name-only
+      → union dos dois conjuntos de arquivos modificados/adicionados
+
+   2. Leia .kairos-core/manifest.yaml → owned_files (campo path de cada entrada)
+      → mantenha apenas os arquivos que constam no manifesto
+      → separe em: novos (status A no git) vs modificados (status M no git)
+
+   3. Se lista não vazia:
+      → descrição = "{basename1}, {basename2}: adicionado|atualizado"
+        (todos novos → "adicionado"; qualquer modificado → "atualizado")
+        usar basename sem path completo quando autoexplicativo
+
+   4. Se lista vazia E story ativa tem "## Execution Log" → "### O que foi feito":
+      → pegar o primeiro bullet
+      → sanitizar: remover "(story X.Y)", "story X.Y", títulos entre aspas
+      → usar como descrição
+
+   5. Fallback final: "ajuste de instrução no framework"
+   ```
+
+   Exiba para ciência (não para edição):
+   ```
+   → Descrição para CHANGELOG: "{descrição derivada}"
+   ```
+
+   Adicione entrada no topo do `CHANGELOG.md` (após cabeçalho, antes da entrada mais recente):
    ```markdown
    ## [{nova versão}] — {YYYY-MM-DD}
 
    ### Adicionado
-   - {título da story} (story {id})
+   - {descrição derivada}
    ```
 
    **e.** Confirme: `✓ Versão bumped: {antiga} → {nova}`
@@ -144,7 +172,8 @@ Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ati
           ⚠️  Story {id} é PATCH — sem bump desde o último release.
           Deseja bumpar agora? (s/n):
           ```
-        - Se `s` (ou `sim`): execute bump PATCH inline seguindo os mesmos passos 2.a–2.e acima (com tipo `patch`); confirme: `✓ Versão bumped: {antiga} → {nova} (PATCH)`
+        - Se `s` (ou `sim`): execute bump PATCH inline seguindo os mesmos passos 2.a–2.e acima (com tipo `patch`), incluindo a derivação automática de descrição do step 2.d; confirme: `✓ Versão bumped: {antiga} → {nova} (PATCH)`
+
         - Se `n` (ou `não`): registre aviso internamente e **continue normalmente — sem BLOCK**
 
    > Stories PATCH sem gate algum (não passaram por `*review`) não disparam o prompt.
