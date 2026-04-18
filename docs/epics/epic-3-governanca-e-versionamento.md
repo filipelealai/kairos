@@ -48,6 +48,7 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | [3.17](../stories/3.17.story.md) | Pre-Push Step 4: Corrigir Fallback de Epoch para Gate Não Commitado | Done |
 | [3.18](../stories/3.18.story.md) | CHANGELOG: Descrição Derivada do Git, Sem Prompt ao Usuário | Done |
 | [3.19](../stories/3.19.story.md) | Pre-Push PATCH: Bump Consolidado e Descrição Semântica no CHANGELOG | Done |
+| [3.20](../stories/3.20.story.md) | fix: README.md não atualizado no bump de versão do *pre-push | Draft |
 
 ---
 
@@ -77,3 +78,4 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | 2026-04-17 | Story 3.18 criada — correção da abordagem da 3.15 (prompt manual → derivação automática do git) |
 | 2026-04-17 | Story 3.18 implementada — status → In Review |
 | 2026-04-17 | Story 3.19 criada — bump consolidado e descrição semântica no CHANGELOG |
+| 2026-04-17 | Story 3.20 criada — investigação de README.md ausente no bump de versão |
