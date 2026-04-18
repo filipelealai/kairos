@@ -44,10 +44,10 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | [3.13](../stories/3.13.story.md) | *prd: Elicitação Conversacional para o Escopo da Instância | Done |
 | [3.14](../stories/3.14.story.md) | Pre-Push Step 4: Comparação por Timestamp de Commit para Bump PATCH | Done |
 | [3.15](../stories/3.15.story.md) | CHANGELOG: Entradas Neutras sem Referências de Instância | Done |
-| [3.16](../stories/3.16.story.md) | *validate-story: Verificar Ordem do Cabeçalho e Estrutura dos ACs | Draft |
+| [3.16](../stories/3.16.story.md) | *validate-story: Verificar Ordem do Cabeçalho e Estrutura dos ACs | Done |
 | [3.17](../stories/3.17.story.md) | Pre-Push Step 4: Corrigir Fallback de Epoch para Gate Não Commitado | Done |
 | [3.18](../stories/3.18.story.md) | CHANGELOG: Descrição Derivada do Git, Sem Prompt ao Usuário | Done |
-| [3.19](../stories/3.19.story.md) | Pre-Push PATCH: Bump Consolidado e Descrição Semântica no CHANGELOG | Draft |
+| [3.19](../stories/3.19.story.md) | Pre-Push PATCH: Bump Consolidado e Descrição Semântica no CHANGELOG | Done |
 
 ---
 

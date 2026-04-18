@@ -180,7 +180,7 @@ Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ati
         ```
         ⚠️  Stories PATCH pendentes de bump: {id1}, {id2} — deseja bumpar agora? (s/n):
         ```
-      - Se `s` (ou `sim`): execute **UM único bump PATCH** inline seguindo os passos 2.a–2.e (com tipo `patch`), usando todas as stories de `patch_stories_pendentes` como "stories ativas" ao derivar a descrição no step 2.d; confirme: `✓ Versão bumped: {antiga} → {nova} (PATCH)`
+      - Se `s` (ou `sim`): execute **UM único bump PATCH** inline seguindo os passos 2.a–2.e (com tipo `patch`), usando todas as stories de `patch_stories_pendentes` como "stories ativas" ao derivar a descrição no step 2.d; confirme: `✓ Versão bumped: {antiga} → {nova} (PATCH)`; em seguida, para cada story em `patch_stories_pendentes`, execute a transição Done (igual ao Passo 2.5): atualize status `In Review → Done`, atualize o epic, adicione entrada no Change Log da story
       - Se `n` (ou `não`): registre aviso internamente e **continue normalmente — sem BLOCK**
 
    > Stories PATCH sem gate algum (não passaram por `*review`) não disparam o prompt.
@@ -193,7 +193,7 @@ Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ati
 
 Pré-condição: Passo 2 concluído (versão confirmada).
 
-Para cada story com `gate_ok = true` (gate PASS ou RESSALVA confirmado no Passo 1):
+Para cada story com `gate_ok = true` (gate PASS ou RESSALVA confirmado no Passo 1 — stories MINOR/MAJOR). Stories PATCH são tratadas no Passo 4.
 1. Atualize `**Status:** In Review` → `**Status:** Done` no arquivo da story
 2. Atualize a entrada da story no epic (`docs/epics/epic-{N}-*.md`): `In Review` → `Done`
 3. Adicione entrada no Change Log da story:
@@ -257,12 +257,12 @@ Pré-condição: Passo 2.7 concluído (kairos-version atualizado nos arquivos mo
    d. Exiba:
       ```
       Mudanças não commitadas encontradas.
-      Mensagem sugerida: "feat: {story-title-em-kebab-case} (story {id}) v{version}"
+      Mensagem sugerida: "feat: {story-title-em-kebab-case} v{version}"
       Deseja fazer commit agora? (s/n):
       ```
    e. Se `s` (ou `sim`):
       - Execute `git add` nos arquivos relevantes (excluindo `.kairos-core/runtime/`, `data/`, `node_modules/`)
-      - Execute `git commit -m "feat: {story-title-em-kebab-case} (story {id}) v{version}"`
+      - Execute `git commit -m "feat: {story-title-em-kebab-case} v{version}"`
       - Confirme: `✓ Commit realizado`
    f. Se `n` (ou `não`):
       **BLOCK:**
