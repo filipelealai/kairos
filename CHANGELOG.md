@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.1.8] — 2026-04-17
+
+### Corrigido
+- Passo 2 de kairos-validate-story.md: adicionado bloco — se ⚠️ ATENÇÃO estiver presente, verifica que **Criada por:** e **Data:** aparecem antes dele; caso contrário, ❌ FALHA; Invertida a prioridade de derivação de descrição no step 2.d: Execution Log agora é prioridade 1, git diff × manifest passou para prioridade 2
+
+---
+
 ## [3.1.7] — 2026-04-17
 
 ### Corrigido

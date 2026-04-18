@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.7
+kairos-version: 3.1.8
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -106,24 +106,26 @@ Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ati
    **d.** Derive a descrição automaticamente para o CHANGELOG (sem prompt ao usuário):
 
    ```
-   1. Execute git diff HEAD --name-only e git diff --cached --name-only
-      → union dos dois conjuntos de arquivos modificados/adicionados
+   1. Para cada story ativa (que disparou o bump):
+      - Leia docs/stories/{story-id}.story.md
+      - Localize "## Execution Log" → "### O que foi feito"
+      - Se encontrado, pegue o primeiro item de lista (linha iniciada com "- ")
+      - Sanitize: remover "(story X.Y)", "story X.Y", backticks de paths, texto entre aspas duplas
+      → Se múltiplas stories: concatenar os bullets sanitizados separados por "; "
+      → Se ao menos uma story tem o bullet: usar como descrição (prioridade 1)
 
-   2. Leia .kairos-core/manifest.yaml → owned_files (campo path de cada entrada)
-      → mantenha apenas os arquivos que constam no manifesto
-      → separe em: novos (status A no git) vs modificados (status M no git)
+   2. Se nenhuma story tem "## Execution Log" → "### O que foi feito":
+      - Execute git diff HEAD --name-only e git diff --cached --name-only
+        → union dos dois conjuntos de arquivos modificados/adicionados
+      - Leia .kairos-core/manifest.yaml → owned_files (campo path de cada entrada)
+        → mantenha apenas os arquivos que constam no manifesto
+        → separe em: novos (status A no git) vs modificados (status M no git)
+      - Se lista não vazia:
+        → descrição = "{basename1}, {basename2}: adicionado|atualizado"
+          (todos novos → "adicionado"; qualquer modificado → "atualizado")
+          usar basename sem path completo quando autoexplicativo
 
-   3. Se lista não vazia:
-      → descrição = "{basename1}, {basename2}: adicionado|atualizado"
-        (todos novos → "adicionado"; qualquer modificado → "atualizado")
-        usar basename sem path completo quando autoexplicativo
-
-   4. Se lista vazia E story ativa tem "## Execution Log" → "### O que foi feito":
-      → pegar o primeiro bullet
-      → sanitizar: remover "(story X.Y)", "story X.Y", títulos entre aspas
-      → usar como descrição
-
-   5. Fallback final: "ajuste de instrução no framework"
+   3. Fallback final: "ajuste de instrução no framework"
    ```
 
    Exiba para ciência (não para edição):
@@ -152,7 +154,7 @@ Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ati
    a. Liste todos os arquivos `docs/qa/gates/*.yaml`
    b. Para cada gate com `verdict: PASS` ou `verdict: RESSALVA`, identifique a story correspondente pelo prefixo do nome do arquivo (`{story-id}-{YYYY-MM-DD}.yaml`)
    c. Determine se a story implica bump **PATCH** (não é MINOR nem MAJOR — correção, ajuste de instrução, atualização de memória)
-   d. Para cada story PATCH com gate PASS/RESSALVA:
+   d. Para cada story PATCH com gate PASS/RESSALVA, calcule os epochs:
       - Obtenha o timestamp epoch do gate:
         ```bash
         git log -1 --format="%ct" -- docs/qa/gates/{story-id}-{date}.yaml
@@ -165,16 +167,21 @@ Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ati
         ```
         Se o comando retornar vazio (CHANGELOG ainda não commitado) → usar `epoch_changelog = 0`
         *(`0 <= epoch_gate` → condição de skip não satisfeita → prompt aparece — comportamento correto)*
-      - Se `epoch_changelog > epoch_gate` → bump realizado após o gate → **skip** (nenhum prompt)
-      - Se `epoch_changelog <= epoch_gate` (inclui ambos em 0):
-        - Exiba prompt **não-bloqueante**:
-          ```
-          ⚠️  Story {id} é PATCH — sem bump desde o último release.
-          Deseja bumpar agora? (s/n):
-          ```
-        - Se `s` (ou `sim`): execute bump PATCH inline seguindo os mesmos passos 2.a–2.e acima (com tipo `patch`), incluindo a derivação automática de descrição do step 2.d; confirme: `✓ Versão bumped: {antiga} → {nova} (PATCH)`
-
-        - Se `n` (ou `não`): registre aviso internamente e **continue normalmente — sem BLOCK**
+      - Se `epoch_changelog > epoch_gate` → bump realizado após o gate → **skip** (não adicionar à lista)
+      - Caso contrário: adicionar à lista `patch_stories_pendentes`
+   e. Após processar todas as stories PATCH:
+      - Se `patch_stories_pendentes` estiver vazia → continuar sem prompt
+      - Se `patch_stories_pendentes` tem **1 story** → exiba prompt **não-bloqueante**:
+        ```
+        ⚠️  Story {id} é PATCH — sem bump desde o último release.
+        Deseja bumpar agora? (s/n):
+        ```
+      - Se `patch_stories_pendentes` tem **> 1 story** → exiba prompt consolidado **não-bloqueante**:
+        ```
+        ⚠️  Stories PATCH pendentes de bump: {id1}, {id2} — deseja bumpar agora? (s/n):
+        ```
+      - Se `s` (ou `sim`): execute **UM único bump PATCH** inline seguindo os passos 2.a–2.e (com tipo `patch`), usando todas as stories de `patch_stories_pendentes` como "stories ativas" ao derivar a descrição no step 2.d; confirme: `✓ Versão bumped: {antiga} → {nova} (PATCH)`
+      - Se `n` (ou `não`): registre aviso internamente e **continue normalmente — sem BLOCK**
 
    > Stories PATCH sem gate algum (não passaram por `*review`) não disparam o prompt.
 

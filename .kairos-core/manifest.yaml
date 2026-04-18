@@ -72,7 +72,7 @@ owned_files:
     sha256: 358cf1ba99998c21ecd144eae69f6edabf1f226c747104c9ee156c03898ffe56
   - path: .kairos-core/tasks/kairos-pre-push.md
     layer: L2
-    sha256: 602820a40576fdef934726d79cf9ffb21d85f2348bbc31813e9ba01d8d9871b5
+    sha256: 92190f0429c2a604d0c612c93d7cad0fdf825dc7014e6f3dd9fe00cf1bb5f6d8
   - path: .kairos-core/tasks/kairos-push.md
     layer: L2
     sha256: c342c228049396420b286675e65f4d30e8fbb08a49d4416d2dcc3eafb0e45093
@@ -84,7 +84,7 @@ owned_files:
     sha256: 4a39555e779ae9ca5fd879acc44f2383d50f7cdaca1993e9fd66b6438da731b1
   - path: .kairos-core/tasks/kairos-validate-story.md
     layer: L2
-    sha256: 223c4317574412ff8f804704c98c31c5c0bb2afd08a458607efc7bf8750f8903
+    sha256: 2de9cba602c2b1e956cb854c8d634810bba9dc7bb0f7270a61c3f67e4f066e43
   - path: .kairos-core/tasks/kairos-version-bump.md
     layer: L2
     sha256: 87f4a31659e87aeeb4a5dd13fb7f53f7e9c49a2bcd00c725e0c6bdb4c92b78a1

@@ -1,0 +1,38 @@
+schema: 2
+story: "3.16"
+story_title: "*validate-story: Verificar Ordem do Cabeçalho e Estrutura dos ACs"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-17T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-validate-story.md Passo 2 atualizado com verificação de ordem do cabeçalho — bloco presente em linhas 58-60, usa exatamente a mensagem especificada"
+    - "✅ AC2: kairos-validate-story.md Passo 3 atualizado com verificação de estrutura dos ACs — bloco presente em linhas 77-78, usa exatamente a mensagem especificada"
+    - "✅ AC3: Passo 7 atualizado — deduções 'Cabeçalho fora de ordem: -15' e 'Subseções ### em Critérios de Aceite: -20' adicionadas à tabela; ambas as condições adicionadas ao bloco INVÁLIDA"
+    - "✅ AC4: Passo 8 atualizado — linha 'Ordem dos campos' adicionada em ━━━ CABEÇALHO ━━━ e linha 'Estrutura dos ACs' adicionada em ━━━ SEÇÕES ━━━"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-validate-story.md"
+    - "✅ docs/stories/3.16.story.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations: []

@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.1.8
 task: Kairos Validate Story
 responsavel: "@kairos"
 responsavel_type: agent
@@ -55,6 +55,9 @@ Cada campo: ✅ OK / ⚠️ RESSALVA / ❌ FALHA
 Campos ausentes ou com valor inválido → ❌ FALHA.
 Campo presente mas valor sem padrão claro (ex: data em formato livre) → ⚠️ RESSALVA.
 
+**Verificação de ordem do cabeçalho:**
+Se o bloco `⚠️ ATENÇÃO` estiver presente no arquivo, verificar se `**Criada por:**` e `**Data:**` aparecem **antes** dele. Se qualquer um desses campos aparecer após o bloco `⚠️ ATENÇÃO` → ❌ FALHA com mensagem: "Campos do cabeçalho deslocados para após o bloco ⚠️ ATENÇÃO".
+
 ---
 
 ### Passo 3 — Verificar seções obrigatórias
@@ -70,6 +73,9 @@ Campo presente mas valor sem padrão claro (ex: data em formato livre) → ⚠�
 Seção obrigatória ausente → ❌ FALHA.
 Seção recomendada ausente → ⚠️ RESSALVA.
 Seção presente mas vazia sem justificativa → ⚠️ RESSALVA.
+
+**Verificação de estrutura dos ACs:**
+Verificar se `## Critérios de Aceite` contém subseções `###`. Se contiver → ❌ FALHA com mensagem: "ACs organizados em subseções — formato deve ser lista plana de checkboxes".
 
 ---
 
@@ -131,7 +137,9 @@ Menção informal que não pode ser verificada estaticamente → ignorar.
 
 ```
 Para cada campo obrigatório de cabeçalho ausente/inválido: -15
+Cabeçalho fora de ordem (Criada por/Data após bloco ⚠️ ATENÇÃO): -15
 Para cada seção obrigatória ausente: -20
+Subseções ### em Critérios de Aceite: -20
 Para cada seção recomendada ausente: -5
 Para cada AC ❌ inválido: -10
 Se total de ACs < 3: -25
@@ -146,7 +154,9 @@ score = max(0, score)
 ```
 INVÁLIDA se qualquer:
   - Campo obrigatório de cabeçalho ausente ou inválido
+  - Campos do cabeçalho (Criada por/Data) deslocados para após o bloco ⚠️ ATENÇÃO
   - Seção obrigatória ausente
+  - Critérios de Aceite contém subseções ###
   - < 3 ACs
   - > 50% ACs são ❌ inválidos
   - Inconsistência de ID entre nome do arquivo e campo Epic
@@ -176,10 +186,12 @@ VÁLIDA se:
   {✅/⚠️/❌} Complexidade: {valor}
   {✅/⚠️/❌} Criada por: {valor}
   {✅/⚠️/❌} Data: {valor}
+  {✅/❌} Ordem dos campos: {nota — "campos antes do bloco ⚠️ ATENÇÃO" ou "Criada por/Data deslocados para após o bloco ⚠️ ATENÇÃO"}
 
 ━━━ SEÇÕES ━━━
   {✅/⚠️/❌} Objetivo: {nota}
   {✅/⚠️/❌} Critérios de Aceite: {N} ACs — {nota}
+  {✅/❌} Estrutura dos ACs: {nota — "lista plana de checkboxes" ou "contém subseções ### — formato inválido"}
   {✅/⚠️/❌} Fora de Escopo: {nota}
   {✅/⚠️/❌} Dependências: {nota}
   {✅/⚠️/❌} Change Log: {nota}

@@ -1,0 +1,42 @@
+schema: 2
+story: "3.19"
+story_title: "Pre-Push PATCH: Bump Consolidado e Descrição Semântica no CHANGELOG"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-17T00:00:00-03:00"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: step 4 refatorado com lista patch_stories_pendentes — prompt consolidado para > 1 story, um único bump"
+    - "✅ AC2: step 2.d com prioridade invertida — Execution Log primeiro, git diff × manifest segundo, fallback terceiro"
+    - "✅ AC3: descrição semântica habilitada pelo AC2 — Execution Log produz 'o que mudou' funcionalmente, não lista de arquivos"
+    - "✅ AC4: step 2.d é shared entre MINOR/MAJOR e PATCH — comportamento de prioridade idêntico nos dois caminhos"
+    - "✅ AC5: step 4 executa UM único bump após coletar todos os pendentes — nenhum caminho produz múltiplos bumps"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "step 2.d template usa '### Adicionado' tanto para MINOR/MAJOR quanto para PATCH, mas a story menciona '### Corrigido' como default para PATCH. A categoria pode estar incorreta para bumps PATCH."
+    recommendation: "Verificar se kairos-version-bump.md ou a lógica de bump define a categoria corretamente para PATCH. Issue pré-existente, fora do escopo da 3.19."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Verificar em story futura se o template de step 2.d precisa distinguir categoria Adicionado vs Corrigido por tipo de bump (MINOR/MAJOR vs PATCH)"
