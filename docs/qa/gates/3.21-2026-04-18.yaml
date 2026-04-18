@@ -1,0 +1,48 @@
+schema: 2
+story: "3.21"
+story_title: "*yolo: Modo Autônomo de Sessão para Conteúdo Instanciado"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T00:00:00-03:00"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Três variantes de *yolo definidas em yolo_mode.commands — '*yolo on' (seta yolo_active=true), '*yolo off' (seta false), '*yolo' sem arg (exibe estado ON/OFF)"
+    - "✅ AC2: state_var=yolo_active, initial_value=false, persistence=session_only declarados em yolo_mode; STEP 5 em activation-instructions inicializa explicitamente yolo_active=false na ativação — nunca escrito em arquivo"
+    - "✅ AC3: Instrução CRÍTICO em activation-instructions: 'Se yolo_active=true, exibir ⚡ YOLO ON — modo autônomo ativo. *yolo off para desativar. no início de CADA resposta, antes de qualquer conteúdo'; reforçado em yolo_mode.response_indicator"
+    - "✅ AC4: yolo_mode.autonomous_behavior passos 1-3: não elicitar guiado, não pedir confirmações, não aguardar handoffs; yolo_mode.affected_commands lista todos os 5 comandos (new-squad, workers, new-story, implement, update-squad)"
+    - "✅ AC5: yolo_mode.autonomous_behavior passos 4-6: ao concluir → encadear *review automaticamente; se PASS/RESSALVA → encadear *pre-push; se BLOCK → corrigir e re-executar *review uma vez; se segundo BLOCK → HALT e reportar"
+    - "✅ AC6: yolo_mode.autonomous_behavior passo 7: '*push NUNCA é executado automaticamente — mesmo com yolo ON'; reforçado pelo core_principle '*push é EXCLUSIVO — nunca fazer push sem *pre-push PASS'"
+    - "✅ AC7: yolo_mode.framework_protection declara imunidade de comandos type: kairos-core com mensagem de aviso ao usuário; new-story com type: kairos-core está explicitamente excluído de affected_commands (comentário inline na lista)"
+    - "✅ AC8: '*yolo on' exibe aviso único de ativação com: lista dos 5 comandos afetados, o que muda (elicitação suprimida, confirmações suprimidas, auto *review+*pre-push), o que NÃO muda (*push manual, kairos-core interativo)"
+    - "✅ AC9: Comando *yolo adicionado com visibility: [full, quick, key]; seção completa yolo_mode com lógica de estado de sessão yolo_active adicionada ao YAML da persona; REQUEST-RESOLUTION atualizado com mapeamentos; Comandos Rápidos atualizado"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .claude/commands/kairos/agents/kairos.md (modificado — comando *yolo + seção yolo_mode)"
+    - "✅ docs/stories/3.21.story.md (In Review, todos ACs marcados, Execution Log presente)"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "AC5: a lógica de recovery (tentar corrigir + re-executar *review uma vez) é definida como instrução comportamental em YAML — sem mecanismo programático de enforcement. O cumprimento depende do modelo seguir a instrução na sessão. Em sessões com contexto muito longo, o comportamento pode degradar."
+    recommendation: "Aceitar como limitação inerente de personas baseadas em LLM. Monitorar em uso real; se recovery falhar, considerar task kairos-yolo-recovery.md em versão futura."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Esta story adiciona capacidade significativa nova ao @kairos — qualifica como MINOR (3.1.8 → 3.2.0). Confirmar tipo de bump no *pre-push."
+  - "⚠️ O comando *yolo não tem campo 'task:' — isso é intencional (estado de sessão puro). A ausência é consistente com 'Dependências: Nenhuma' na story; não é omissão."

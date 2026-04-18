@@ -1,0 +1,43 @@
+schema: 2
+story: "3.20"
+story_title: "fix: README.md não atualizado no bump de versão do *pre-push"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T00:00:00-03:00"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Causa raiz identificada e documentada — bump inline do Passo 2 em kairos-pre-push.md estava desincronizado com kairos-version-bump.md desde commit 406003f; investigação via git log documentada no Execution Log"
+    - "✅ AC2: kairos-pre-push.md corrigido — passo **e.** adicionado para atualizar README.md (após CHANGELOG, antes da confirmação); passo antigo **e.** renomeado para **f.**; referência em step 4.e atualizada de 2.a–2.e para 2.a–2.f"
+  manual:
+    - "⚠️ AC3: README.md foi atualizado manualmente de 3.1.1 para 3.1.8 (drift corrigido) — executou verificação estática do formato e da linha alvo; teste end-to-end completo (rodar *pre-push com bump e confirmar atualização automática) não foi executado"
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+    - "✅ README.md (versão 3.1.8 confirmada)"
+    - "✅ docs/stories/3.20.story.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "AC3 verificado estaticamente (formato e linha alvo confirmados) mas sem execução end-to-end de *pre-push com bump PATCH"
+    recommendation: "No próximo *pre-push com bump, confirmar que README é atualizado automaticamente pelo novo passo **e.**"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Monitorar o primeiro *pre-push com bump para confirmar que o passo **e.** executa corretamente na prática"
+  - "⚠️ A nota de manutenção existente em kairos-pre-push.md ('deve permanecer em sincronia com kairos-version-bump.md') deveria ter evitado esta dessincronização — considerar mecanismo mais explícito de sincronia no futuro (escopo fora desta story)"

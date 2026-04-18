@@ -1,0 +1,51 @@
+schema: 2
+story: "3.22"
+story_title: "*implement all: Implementação em Massa de Stories type: instance"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T00:00:00Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: *implement all detecta todas as stories type: instance com status Draft ou In Progress em docs/stories/ — All-Passo 1 varre, lê Status+Tipo e separa em três grupos"
+    - "✅ AC2: Antes de iniciar, exibe lista das stories (elegíveis + ignoradas) e aguarda confirmação única do usuário (s/n) — All-Passo 2"
+    - "✅ AC3: Implementa cada story sequencialmente usando Passos 1–6 do fluxo single — inclui Passo 5 (Execution Log) — All-Passo 3"
+    - "✅ AC4: Após cada story executa *review {id} automaticamente carregando kairos-review.md; gate salvo em docs/qa/gates/ — All-Passo 3"
+    - "✅ AC5: Gate BLOCK não interrompe — registra como BLOCK no relatório e continua para a próxima story — All-Passo 3"
+    - "✅ AC6: Relatório consolidado com ✅/⚠️/🚫/❌ por story, gate verdict + quality_score + arquivos modificados — All-Passo 4"
+    - "✅ AC7: Para antes de *pre-push e aguarda confirmação explícita do usuário (s/n) — All-Passo 4"
+    - "✅ AC8: Stories type: kairos-core listadas separadamente como ignoradas com instrução 'usar *yolo' — All-Passos 1, 2 e 4"
+    - "✅ AC9: Se nenhuma story elegível, HALT com mensagem 'Nenhuma story type: instance em Draft ou In Progress encontrada' — All-Passo 1"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-implement.md — seção [Modo All] com All-Passos 1–4, bloco de despacho, frontmatter atualizado"
+    - "✅ .claude/commands/kairos/agents/kairos.md — 3 entradas REQUEST-RESOLUTION + descrição do comando implement atualizada"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — bump ainda não aplicado; será feito interativamente no *pre-push (fluxo Kairos esperado)"
+  changelog_updated: "⚠️ RESSALVA — entrada ainda não criada; será feita no *pre-push"
+  story_file_consistent: "✅ PASS — Status=In Review, Epic=3, Tipo=kairos-core, Execution Log presente"
+  files_exist: "✅ PASS — ambos os arquivos declarados existem e contêm as mudanças"
+  no_broken_references: "✅ PASS — kairos-review.md referenciada no All-Passo 3 existe em .kairos-core/tasks/"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "Dependência Story 3.21 (*yolo) está em 'In Review', não Done"
+    recommendation: "Referência no AC8 é conceitual ('usar *yolo'), sem impacto técnico na implementação. Resolver no ciclo normal."
+  - severity: "low"
+    description: "version_bumped e changelog_updated pendentes — aguardam *pre-push"
+    recommendation: "Fluxo esperado. Executar *pre-push para bump MINOR + entrada CHANGELOG."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Executar *pre-push com bump MINOR — esta story adiciona nova capacidade ao *implement"
+  - "⚠️ Verificar se o relatório do All-Passo 4 deixa suficientemente claro que stories BLOCK precisarão de *review novamente após correção manual (nota do executor aceita)"

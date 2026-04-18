@@ -48,7 +48,14 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | [3.17](../stories/3.17.story.md) | Pre-Push Step 4: Corrigir Fallback de Epoch para Gate Não Commitado | Done |
 | [3.18](../stories/3.18.story.md) | CHANGELOG: Descrição Derivada do Git, Sem Prompt ao Usuário | Done |
 | [3.19](../stories/3.19.story.md) | Pre-Push PATCH: Bump Consolidado e Descrição Semântica no CHANGELOG | Done |
-| [3.20](../stories/3.20.story.md) | fix: README.md não atualizado no bump de versão do *pre-push | Draft |
+| [3.20](../stories/3.20.story.md) | fix: README.md não atualizado no bump de versão do *pre-push | Done |
+| [3.21](../stories/3.21.story.md) | *yolo: Sessão Autônoma Ponta-a-Ponta para kairos-core | Done |
+| [3.22](../stories/3.22.story.md) | *implement all: Implementação em Massa de Stories type: instance | Done |
+| [3.23](../stories/3.23.story.md) | *validate-story all: Validação em Massa de Stories | Done |
+| [3.24](../stories/3.24.story.md) | Pre-Push: Mensagem de Commit sem Referência a Story | Draft |
+| [3.25](../stories/3.25.story.md) | Executor e *review: Sincronizar Status no Epic em Cada Transição | Draft |
+| [3.26](../stories/3.26.story.md) | *validate-story: Remover Check de README em docs/stories/ | Draft |
+| [3.27](../stories/3.27.story.md) | *review: Remover Autoridade de Transição para Done | Draft |
 
 ---
 
@@ -79,3 +86,7 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | 2026-04-17 | Story 3.18 implementada — status → In Review |
 | 2026-04-17 | Story 3.19 criada — bump consolidado e descrição semântica no CHANGELOG |
 | 2026-04-17 | Story 3.20 criada — investigação de README.md ausente no bump de versão |
+| 2026-04-18 | Stories 3.21, 3.22, 3.23 criadas — *yolo, *implement all, *validate-story all |
+| 2026-04-18 | Story 3.21 reescrita — *yolo redesenhado como estado de sessão (liga/desliga), escopo restrito a instanciado |
+| 2026-04-18 | Stories 3.24, 3.25 criadas — commit sem referência a story, sincronização de status no epic |
+| 2026-04-18 | Story 3.26 criada — remover check de README em *validate-story (falso positivo) |

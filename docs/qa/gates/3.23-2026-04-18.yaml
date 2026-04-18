@@ -1,0 +1,46 @@
+schema: 2
+story: "3.23"
+story_title: "*validate-story all: Validação em Massa de Stories"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T00:00:00.000Z"
+quality_score: 93
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Passo A1 lista *.story.md em docs/stories/, filtra por status Draft/In Progress/In Review e ordena numericamente"
+    - "✅ AC2: Passo A2 executa os Passos 1–8 do fluxo individual para cada story coletada, sequencialmente"
+    - "✅ AC3: Passo A2 declara explicitamente 'Não interromper ao encontrar INVÁLIDA — continuar para a próxima story'"
+    - "✅ AC4: Passo A5 exibe tabela consolidada com resultado (VÁLIDA/RESSALVA/INVÁLIDA) e lista compacta de problemas por story"
+    - "✅ AC5: Passo A4 exibe sumário executivo com totais (validadas, VÁLIDA, RESSALVA, INVÁLIDA) — posição após validações individuais é necessária e razoável"
+    - "✅ AC6: Passo A1 trata o caso nenhuma story aberta com mensagem ℹ️ clara e encerra"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-validate-story.md — modificado com seção 'Modo de execução', Passos A1–A6 e renomeação da seção individual"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "Checklist no frontmatter da task (8 itens) não foi atualizado para incluir os steps A1–A6 do modo 'all'"
+    recommendation: "Opcional: adicionar entradas ao Checklist do frontmatter para o fluxo *validate-story all em ciclo futuro"
+  - severity: "low"
+    description: "Nota de implementação da story menciona 'sinaliza stories que já passaram por validação anterior se visível no Change Log' — não implementada"
+    recommendation: "Era nota informativa, não AC formal — não bloqueia. Pode ser adicionada como melhoria futura"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Considerar atualizar o Checklist do frontmatter da task para incluir itens do modo 'all' em ciclo PATCH futuro"

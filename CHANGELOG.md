@@ -6,6 +6,20 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.2.1] — 2026-04-18
+
+### Corrigido
+- investigado o git log para rastrear o patch anterior relacionado ao README.md no bump de versão
+
+---
+
+## [3.2.0] — 2026-04-18
+
+### Adicionado
+- *yolo (modo autônomo de sessão) adicionado à persona kairos.md; Modo All adicionado a kairos-implement.md; kairos-validate-story.md estendido com modo all
+
+---
+
 ## [3.1.8] — 2026-04-17
 
 ### Corrigido

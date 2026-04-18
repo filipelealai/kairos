@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.8
+kairos-version: 3.2.1
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -141,7 +141,14 @@ Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ati
    - {descrição derivada}
    ```
 
-   **e.** Confirme: `✓ Versão bumped: {antiga} → {nova}`
+   **e.** Atualize o `README.md`:
+
+   Localize a linha que começa com `**Versão atual:**` e substitua a versão:
+   ```
+   **Versão atual:** `{nova versão}` — ver [CHANGELOG.md](CHANGELOG.md)
+   ```
+
+   **f.** Confirme: `✓ Versão bumped: {antiga} → {nova}`
 
 3. Se nenhum bump pendente → confirme: `✓ Versão atual: {version} — sem bump pendente`
 
@@ -180,7 +187,7 @@ Pré-condição: Passo 1 passou (gate_ok confirmado para stories MINOR/MAJOR ati
         ```
         ⚠️  Stories PATCH pendentes de bump: {id1}, {id2} — deseja bumpar agora? (s/n):
         ```
-      - Se `s` (ou `sim`): execute **UM único bump PATCH** inline seguindo os passos 2.a–2.e (com tipo `patch`), usando todas as stories de `patch_stories_pendentes` como "stories ativas" ao derivar a descrição no step 2.d; confirme: `✓ Versão bumped: {antiga} → {nova} (PATCH)`; em seguida, para cada story em `patch_stories_pendentes`, execute a transição Done (igual ao Passo 2.5): atualize status `In Review → Done`, atualize o epic, adicione entrada no Change Log da story
+      - Se `s` (ou `sim`): execute **UM único bump PATCH** inline seguindo os passos 2.a–2.f (com tipo `patch`), usando todas as stories de `patch_stories_pendentes` como "stories ativas" ao derivar a descrição no step 2.d; confirme: `✓ Versão bumped: {antiga} → {nova} (PATCH)`; em seguida, para cada story em `patch_stories_pendentes`, execute a transição Done (igual ao Passo 2.5): atualize status `In Review → Done`, atualize o epic, adicione entrada no Change Log da story
       - Se `n` (ou `não`): registre aviso internamente e **continue normalmente — sem BLOCK**
 
    > Stories PATCH sem gate algum (não passaram por `*review`) não disparam o prompt.
