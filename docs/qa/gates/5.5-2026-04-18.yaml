@@ -1,0 +1,50 @@
+schema: 2
+story: "5.5"
+story_title: "*new-squad cria rules/ e faz wiring no CLAUDE.md"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T00:00:00.000Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1 (rules/ scaffold): checklist do frontmatter inclui item explícito para criar rules/ com os três arquivos"
+    - "✅ AC2 (memory-imports.md): template gerado com @import .kairos-core/agents/{id}/MEMORY.md, uma linha por agente"
+    - "✅ AC3 (agent-authority.md stub): template com seções EXCLUSIVA/BLOQUEADA por agente e placeholders 'preencher na story de implementação'"
+    - "✅ AC4 ({name}-lifecycle.md stub): template com fluxo, fases, handoffs, execução parcial, frequência — todos com placeholders"
+    - "✅ AC5 (CLAUDE.md seção inexistente): instrução explícita de adicionar '## Squads ativos' ao final se não existir"
+    - "✅ AC6 (@imports inseridos): instrução de inserir três linhas @squads/{squad_name}/rules/*.md sob a seção"
+    - "✅ AC7 (sem duplicatas): instrução explícita 'Verificar duplicatas: não adicionar se a linha já existir'"
+    - "✅ AC8 (não modificar KAIROS-MANAGED): instrução explícita 'Não modificar nenhum bloco KAIROS-MANAGED nem outras seções user-owned'"
+    - "✅ AC9 (confirmação pré-scaffolding): seção 'Arquivos a criar' lista os três rules/ e a linha do CLAUDE.md"
+    - "✅ AC10 (resumo pós-scaffolding): lista ✅ rules/memory-imports.md, ✅ rules/agent-authority.md (stub), ✅ rules/{squad_name}-lifecycle.md (stub) e ✅ CLAUDE.md atualizado"
+    - "✅ AC11 (update-squad nota opção 5): nota ⚠️ inline em kairos-update-squad.md opção 5 com instrução de AC explícito de @import"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-new-squad.md (modificado — templates rules/ + wiring CLAUDE.md)"
+    - "✅ .kairos-core/tasks/kairos-update-squad.md (modificado — nota opção 5)"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — MINOR pendente (handled by *pre-push)"
+  changelog_updated: "⚠️ RESSALVA — entrada pendente (handled by *pre-push)"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "version_bumped e changelog_updated pendentes — esperado para este ponto do ciclo (pre-push não rodou ainda)"
+    recommendation: "Executar *pre-push com bump MINOR antes de *push"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ bump MINOR ao fazer *pre-push: kairos-new-squad.md ganhou comportamento novo (rules/ + CLAUDE.md wiring)"
+  - "⚠️ Considerar futuramente: a instrução de deduplicação de @imports no CLAUDE.md depende do executor — candidato a validação em *doctor"

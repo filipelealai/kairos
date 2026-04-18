@@ -1,0 +1,59 @@
+schema: 2
+story: "5.4"
+story_title: "Sync Completo de Arquivos Mistos no push-dual"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T01:00:00.000Z"
+quality_score: 85
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ Track 1 — CHANGELOG.md adicionado a manifest.yaml owned_files (L3, sha256)"
+    - "✅ Track 1 — README.md adicionado a manifest.yaml owned_files (L3, sha256)"
+    - "✅ Track 1 — push-dual Passo 2a inclui git checkout para CHANGELOG.md e README.md"
+    - "✅ Track 2a — push-dual Passo 2b documenta extração de blocos KAIROS-MANAGED-* do CLAUDE.md"
+    - "✅ Track 2a — conteúdo user-owned excluído explicitamente nas instruções do Passo 2b"
+    - "✅ Track 2b — settings.json promovido para owned_files L2 (100% framework-owned)"
+    - "✅ Track 2b — push-dual Passo 2a inclui git checkout para .claude/settings.json"
+    - "✅ Track 2b — separação via settings.local.json documentada (sem risco de vazamento)"
+    - "✅ Track 2b — versão de main de settings.json contém apenas conteúdo Kairos"
+    - "✅ Track 2c — push-dual Passo 2b instrui geração de core-config.yaml com framework/runtime/versioning intactos"
+    - "✅ Track 2c — seção project com placeholders owner/name documentada"
+    - "✅ Track 2c — seção agents com squads: {} documentada"
+    - "✅ Track 2c — manifesto mantém owned_keys: [framework, runtime, versioning]"
+    - "✅ Track 3 — push-dual Passo 2a e 2b com sub-passos explícitos"
+    - "✅ Track 3 — manifesto referenciado como fonte autoritativa"
+  manual:
+    - "⚠️ Track 2a — CLAUDE.md restaurado em main: instrução implementada no push-dual, execução efetiva ocorre na próxima execução de *push"
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/manifest.yaml — CHANGELOG.md, README.md, settings.json em owned_files; settings.json removido de owned_sections"
+    - "✅ squads/ops/tasks/push-dual.md — Passo 2a e 2b implementados"
+    - "✅ docs/stories/5.4.story.md — Execution Log presente, ACs atualizados"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — story MINOR, bump pendente (esperado em *pre-push)"
+  changelog_updated: "⚠️ RESSALVA — entrada pendente (esperada em *pre-push)"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "CLAUDE.md não restaurado em main neste ciclo — mecanismo no push-dual, execução deferred ao próximo *push."
+    recommendation: "Será resolvido automaticamente na próxima execução de *push via Passo 2b."
+  - severity: "low"
+    description: "Version bump (MINOR) e CHANGELOG pendentes."
+    recommendation: "Executar *pre-push para fechar o ciclo."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ SHA256 de CHANGELOG.md ficará desatualizado após o bump de versão — considerar refresh via *doctor ou *pre-push"
+  - "⚠️ settings.local.json não existe no repo — considerar adicionar ao .gitignore como lembrete explícito para novos instaladores"

@@ -41,6 +41,9 @@ owned_files:
   - path: .claude/hooks/kairos-precompact.cjs
     layer: L2
     sha256: 41e1ef7c965c6cee85dbb6d70232890f96a3f25e4227ffe7b536ca673c0fd79f
+  - path: .claude/settings.json
+    layer: L2
+    sha256: a335ad246714c2101798b58527c66c8f63f91d582a59660cdc410ee808a7bf01
   - path: .kairos-core/data/workers.yaml
     layer: L2
     sha256: 9add36be14b4d1b81dfbf23d858e4ae7dcbaf2600be5a23ae3bc8a9a79842deb
@@ -63,7 +66,10 @@ owned_files:
     sha256: 6d2739f485b0ffe0a0277a88cd94c988fc4ebd9a2183a2301aa07e54659dd2a1
   - path: .kairos-core/tasks/kairos-new-squad.md
     layer: L2
-    sha256: 069617f2fe7280146b481022a92c9908d94b83b99fff4e7a57ba9b1c0698c85c
+    sha256: da76d81739695914190e982a7e06c16bf7479641df02f715abf335c9cbbd0a1b
+  - path: .kairos-core/tasks/kairos-update-squad.md
+    layer: L2
+    sha256: ebbc5d0d0dbfa6416693d61689e543e8cae6b30514d6f11a804775210af4c3e9
   - path: .kairos-core/tasks/kairos-new-story.md
     layer: L2
     sha256: 14025232a01c693ff3ba5a9dc2c3ff2180038c9945e1ef3604c1a75137cbbb2d
@@ -134,6 +140,12 @@ owned_files:
   - path: .kairos-core/docs/scope.md
     layer: L3
     sha256: 475fd6445c0b67096168d3c6455dad02457d2708d072a5b5355e32129f968b0b
+  - path: CHANGELOG.md
+    layer: L3
+    sha256: 8e5d2c93d69bc43323c84b7c290c617d1bf87ab802283f095c4f193bd482c583
+  - path: README.md
+    layer: L3
+    sha256: 076c90cba619cd5103f3daa0a6aa72a2132c9bbd4e3e0ae72d5effc818fe3b34
 
 # -----------------------------------------------------------------------------
 # Arquivos mistos — apenas seções/chaves declaradas são framework-owned
@@ -152,10 +164,6 @@ owned_sections:
       - name: kairos-core
         start: "<!-- KAIROS-MANAGED-START: kairos-core -->"
         end: "<!-- KAIROS-MANAGED-END: kairos-core -->"
-
-  - path: .claude/settings.json
-    type: json_keys
-    owned_keys: [hooks]
 
   - path: .kairos-core/core-config.yaml
     type: yaml_keys
@@ -193,6 +201,9 @@ notes: |
     (histórico de desenvolvimento do Kairos neste repo) — não são shipped para
     instâncias instaladas, logo não entram no manifesto.
 
-  - package.json, tsconfig.json, README.md, CHANGELOG.md, docs/scope.md,
+  - package.json, tsconfig.json, docs/scope.md,
     .gitignore, .mcp.json são metadados da instância — não são gerenciados por
     updates de framework, logo não entram no manifesto.
+
+  - README.md e CHANGELOG.md são framework-owned (L3): documentação pública
+    e histórico de versões fazem parte do artefato entregue pelo framework.

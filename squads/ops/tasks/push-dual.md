@@ -47,20 +47,20 @@ Resultado esperado: todos os arquivos da instância (framework + conteúdo do us
 ### Passo 2 — Sincronizar arquivos framework para main
 
 ```bash
-# Ir para a branch limpa de framework
 git checkout main
-
-# Para cada arquivo em manifest.yaml → owned_files:
-# git checkout filipe-instance -- {path}
 ```
 
-**Implementação:** ler `.kairos-core/manifest.yaml` e extrair todos os `path` dentro de `owned_files`. Para cada path:
+---
+
+#### Passo 2a — Arquivos inteiros (`owned_files`)
+
+**Fonte autoritativa:** `.kairos-core/manifest.yaml → owned_files`. Para cada `path` listado:
 
 ```bash
 git checkout filipe-instance -- <path>
 ```
 
-Lista atual de owned_files (atualizar conforme manifest evolui):
+Lista atual (atualizar conforme manifest evolui):
 
 ```bash
 # L1 — Fundação
@@ -74,6 +74,7 @@ git checkout filipe-instance -- .claude/rules/ids-principles.md
 git checkout filipe-instance -- .claude/commands/kairos/agents/kairos.md
 git checkout filipe-instance -- .claude/hooks/kairos-code-intel.cjs
 git checkout filipe-instance -- .claude/hooks/kairos-precompact.cjs
+git checkout filipe-instance -- .claude/settings.json
 git checkout filipe-instance -- .kairos-core/data/workers.yaml
 
 # L2 — Governance tasks
@@ -109,11 +110,75 @@ git checkout filipe-instance -- .kairos-core/data/kairos-kb.md
 git checkout filipe-instance -- .kairos-core/docs/agent-standards.md
 git checkout filipe-instance -- .kairos-core/docs/data-flow.md
 git checkout filipe-instance -- .kairos-core/docs/scope.md
+
+# L3 — Documentação pública
+git checkout filipe-instance -- CHANGELOG.md
+git checkout filipe-instance -- README.md
 ```
 
-**Também sincronizar arquivos mistos — seções framework:**
-Os arquivos em `owned_sections` (CLAUDE.md, `.claude/settings.json`, `.kairos-core/core-config.yaml`) são mistos.
-O push-dual NÃO sobrescreve esses arquivos — eles são gerenciados manualmente pelo @kairos quando há mudanças de framework.
+---
+
+#### Passo 2b — Arquivos mistos (`owned_sections`)
+
+**Fonte autoritativa:** `.kairos-core/manifest.yaml → owned_sections`. Cada arquivo é reconstruído para `main` contendo apenas as seções/chaves framework-owned. Conteúdo user-owned não chega ao `main`.
+
+##### CLAUDE.md (markdown_blocks)
+
+Extrair todos os blocos delimitados por `<!-- KAIROS-MANAGED-START: {nome} -->` ... `<!-- KAIROS-MANAGED-END: {nome} -->` do `CLAUDE.md` de `filipe-instance` e escrever em `main/CLAUDE.md` **apenas** esses blocos (na mesma ordem que aparecem no arquivo fonte), sem conteúdo user-owned entre eles.
+
+Blocos atuais declarados no manifesto: `framework-conventions`, `agent-system`, `kairos-core`.
+
+Formato esperado do `CLAUDE.md` em `main`:
+
+```
+<!-- KAIROS-MANAGED-START: framework-conventions -->
+{conteúdo do bloco}
+<!-- KAIROS-MANAGED-END: framework-conventions -->
+
+<!-- KAIROS-MANAGED-START: agent-system -->
+{conteúdo do bloco}
+<!-- KAIROS-MANAGED-END: agent-system -->
+
+<!-- KAIROS-MANAGED-START: kairos-core -->
+{conteúdo do bloco}
+<!-- KAIROS-MANAGED-END: kairos-core -->
+```
+
+##### .kairos-core/core-config.yaml (yaml_keys)
+
+Ler o `core-config.yaml` de `filipe-instance` e escrever em `main/.kairos-core/core-config.yaml` uma versão com:
+- Campos top-level (`version`, `installedAt`, `updatedAt`) — copiados integralmente
+- Seções `framework`, `runtime`, `versioning` (`owned_keys` no manifesto) — copiadas integralmente
+- Seção `project` — substituída por placeholders: `owner: "{owner}"`, `name: "{project-name}"`, `scope: personal`
+- Seção `agents` — substituída por placeholder: `squads: {}`
+- Demais campos fora das seções acima — omitidos
+
+Formato esperado do `core-config.yaml` em `main`:
+
+```yaml
+version: {atual}
+installedAt: {atual}
+updatedAt: {atual}
+
+project:
+  name: "{project-name}"
+  type: claude-code-orchestrator
+  owner: "{owner}"
+  scope: personal
+
+agents:
+  master: kairos
+  squads: {}
+
+framework:
+  ... (copiado integralmente)
+
+runtime:
+  ... (copiado integralmente)
+
+versioning:
+  ... (copiado integralmente)
+```
 
 ---
 

@@ -33,16 +33,17 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.1](../stories/5.1.story.md) | Segregação Framework × Usuário via Manifesto de Ownership | Done |
 | [5.2](../stories/5.2.story.md) | Transição para Repo Público + Squad ops | Done |
 | [5.3](../stories/5.3.story.md) | SHA Sync Automático no `*pre-push` e `*version` | Done |
-| [5.4](../stories/5.4.story.md) | Sync Completo de Arquivos Mistos no push-dual | Draft |
+| [5.4](../stories/5.4.story.md) | Sync Completo de Arquivos Mistos no push-dual | Done |
+| [5.5](../stories/5.5.story.md) | *new-squad cria rules/ e faz wiring no CLAUDE.md | Done |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
 
-- **5.5** — Configuração de branch protection no repo público
-- **5.6** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.7** — Publicação de `@kairos/core` no npm
-- **5.8** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
+- **5.6** — Configuração de branch protection no repo público
+- **5.7** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.8** — Publicação de `@kairos/core` no npm
+- **5.9** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
 
 ---
 
@@ -55,3 +56,5 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-16 | Story 5.2 Done (@kairos *review PASS, score: 82) — repo público separado, squad ops, push-dual |
 | 2026-04-17 | Story 5.3 Done — SHA sync automático no *pre-push e *version |
 | 2026-04-18 | Story 5.4 criada — sync completo de arquivos mistos no push-dual (Draft) |
+| 2026-04-18 | Story 5.5 criada — *new-squad cria rules/ e faz wiring no CLAUDE.md (Draft) |
+| 2026-04-18 | Stories 5.4 e 5.5 Done — bump MINOR 3.2.1 → 3.3.0 |

@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.3.0] — 2026-04-18
+
+### Adicionado
+- manifest.yaml: adicionados CHANGELOG.md e README.md em owned_files; kairos-new-squad.md: new-squad cria rules/ e faz wiring no CLAUDE.md
+
+---
+
 ## [3.2.1] — 2026-04-18
 
 ### Corrigido

@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.3.0
 task: Kairos New Squad
 responsavel: "@kairos"
 responsavel_type: agent
@@ -27,6 +27,8 @@ Checklist:
   - "[ ] Criar squads/{squad_name}/tasks/ com stubs de tasks"
   - "[ ] Criar squads/{squad_name}/workflows/full-pipeline.md"
   - "[ ] Criar .kairos-core/agents/{id}/MEMORY.md por agente"
+  - "[ ] Criar squads/{squad_name}/rules/ com memory-imports.md, agent-authority.md e {squad_name}-lifecycle.md"
+  - "[ ] Adicionar @imports dos três arquivos rules/ na seção Squads ativos do CLAUDE.md"
   - "[ ] Atualizar .kairos-core/core-config.yaml"
   - "[ ] Auto-executar *new-story com type: instance ao final do scaffolding"
 ---
@@ -195,7 +197,11 @@ Arquivos a criar:
   squads/{squad_name}/agents/{id}.md  (× N)
   squads/{squad_name}/tasks/{task}.md  (× N — stubs)
   squads/{squad_name}/workflows/full-pipeline.md
+  squads/{squad_name}/rules/memory-imports.md
+  squads/{squad_name}/rules/agent-authority.md
+  squads/{squad_name}/rules/{squad_name}-lifecycle.md
   .kairos-core/agents/{id}/MEMORY.md  (× N)
+  CLAUDE.md — seção "Squads ativos" com @imports dos três arquivos acima
 
 Posso criar? (s/n — ou diga o que ajustar)
 ```
@@ -436,6 +442,122 @@ Checklist:
 
 ---
 
+### rules/memory-imports.md
+
+```markdown
+# Agent Memory Imports
+
+Cada agente Kairos tem um MEMORY.md com padrões persistentes aprendidos entre sessões.
+Estes são os locais canônicos — os agentes devem ler sua memória na ativação.
+
+@import .kairos-core/agents/{id1}/MEMORY.md
+{@import .kairos-core/agents/{id2}/MEMORY.md — uma linha por agente}
+```
+
+---
+
+### rules/agent-authority.md (stub)
+
+```markdown
+# {squad_name} — Matriz de Autoridade
+
+Matriz de autoridade dos agentes do squad {squad_name}. Autoridade do @kairos e regras universais vivem em `.claude/rules/agent-authority.md`.
+
+---
+
+## @{id1} ({Nome1}) — {Papel}
+
+| Operação | Autoridade |
+|----------|-----------|
+| {operação exclusiva — preencher na story de implementação} | EXCLUSIVA |
+| {operação bloqueada — preencher na story de implementação} | BLOQUEADA |
+
+---
+
+{repetir bloco por agente}
+
+---
+
+## Operações Universalmente Proibidas no Squad
+
+- {preencher na story de implementação}
+
+---
+
+## Escalação Específica do Squad
+
+| Situação | Ação |
+|----------|------|
+| Fonte de dados externa indisponível | HALT — informar usuário |
+| {condição específica — preencher na story de implementação} | HALT |
+```
+
+---
+
+### rules/{squad_name}-lifecycle.md (stub)
+
+```markdown
+# {Squad NomeHumanReadable} Lifecycle — Fluxo do Pipeline
+
+## Fluxo Principal
+
+```
+{agente1} *{cmd1}
+        ↓
+{agente2} *{cmd2}
+        ↓
+{agente3} *{cmd3}
+```
+
+## Fases e Responsáveis
+
+| Fase | Agente | Comando | Output |
+|------|--------|---------|--------|
+{linha por agente — preencher na story de implementação}
+
+## Handoff Chain
+
+{lista de handoffs: agente-a → agente-b — preencher na story de implementação}
+
+## Execução Parcial
+
+{preencher na story de implementação}
+
+## Frequência Recomendada
+
+{preencher na story de implementação}
+```
+
+---
+
+## Atualizar CLAUDE.md — seção "Squads ativos"
+
+Após criar os arquivos em `rules/`:
+
+1. Verificar se a seção `## Squads ativos` existe no CLAUDE.md.
+   - Se **não existir**: adicionar ao final do arquivo com a estrutura abaixo.
+   - Se **existir**: ir para o passo 2.
+
+2. Para cada arquivo criado em `rules/`, adicionar uma linha `@squads/{squad_name}/rules/{arquivo}.md` sob a seção "Squads ativos".
+   - Verificar duplicatas: não adicionar se a linha já existir.
+   - Não modificar nenhum bloco `KAIROS-MANAGED` nem outras seções user-owned.
+
+Formato quando a seção não existe (adicionar ao final do arquivo):
+
+```markdown
+## Squads ativos
+
+Esta seção é user-owned. Cada squad importa suas rules específicas aqui.
+
+@squads/{squad_name}/rules/{squad_name}-lifecycle.md
+@squads/{squad_name}/rules/memory-imports.md
+@squads/{squad_name}/rules/agent-authority.md
+```
+
+Se a seção já existir, inserir apenas as três linhas de `@squads/` (sem o cabeçalho nem a descrição), verificando duplicatas.
+
+---
+
 ## Atualizar core-config.yaml
 
 Adicionar em `agents.squads`:
@@ -476,8 +598,12 @@ Criado:
   ✅ agents/ ({N} agentes)
   ✅ tasks/ ({N} stubs)
   ✅ workflows/full-pipeline.md
+  ✅ rules/memory-imports.md
+  ✅ rules/agent-authority.md (stub)
+  ✅ rules/{squad_name}-lifecycle.md (stub)
   ✅ .kairos-core/agents/{id}/MEMORY.md  (× N)
   ✅ core-config.yaml atualizado
+  ✅ CLAUDE.md atualizado (seção Squads ativos — 3 @imports adicionados)
   ✅ Epic {N} atualizado
 
 Criando story de implementação para o squad {squad_name}…

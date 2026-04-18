@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.2.0
+kairos-version: 3.3.0
 task: Kairos Update Squad
 responsavel: "@kairos"
 responsavel_type: agent
@@ -54,6 +54,8 @@ Qual aspecto do squad '{squad_name}' está sendo modificado?
   3. Nova task / novo comando
   4. Pipeline ou ordem de execução
   5. Regra específica do squad (arquivo em squads/{squad}/rules/)
+     ⚠️  Se a atualização adicionar um novo arquivo em `rules/`, o AC da story gerada deve incluir explicitamente:
+         "Adicionar `@squads/{squad}/rules/{novo-arquivo}.md` na seção Squads ativos do CLAUDE.md"
   6. Integração externa (n8n, API, webhook)
   7. Script TypeScript (src/agents/)
   8. Outro — descreva
