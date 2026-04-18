@@ -1,16 +1,17 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.8
+kairos-version: 3.2.1
 task: Kairos Validate Story
 responsavel: "@kairos"
 responsavel_type: agent
 atomic_layer: validation
 elicit: false
 Entrada: |
-  - story_id: ID da story a validar (ex: "2.1", "3.1") — obrigatório
+  - story_id: ID da story a validar (ex: "2.1", "3.1") OU "all" para validar todas as stories abertas
 Saida: |
   - relatório de validação exibido em tela com cada check marcado
-  - verdict: VÁLIDA | RESSALVA | INVÁLIDA
+  - verdict: VÁLIDA | RESSALVA | INVÁLIDA (por story)
+  - relatório consolidado quando argumento é "all"
 Checklist:
   - "[ ] Localizar docs/stories/{epic}.{N}.story.md"
   - "[ ] Verificar campos de cabeçalho obrigatórios"
@@ -29,7 +30,115 @@ Não verifica implementação (isso é *review). É o passo anterior: garantir q
 
 ---
 
-## Execução
+## Modo de execução
+
+O argumento determina o fluxo:
+
+- **`*validate-story {id}`** → valida uma única story (fluxo padrão, Passos 1–8)
+- **`*validate-story all`** → valida em massa todas as stories abertas (Passos A1–A6 abaixo, depois cada story passa pelos Passos 1–8)
+
+---
+
+## Execução em Massa — *validate-story all
+
+### Passo A1 — Coletar stories abertas
+
+1. Listar todos os arquivos em `docs/stories/` com padrão `*.story.md`
+2. Para cada arquivo, ler o campo `**Status:**` do cabeçalho
+3. Filtrar apenas as stories com status `Draft`, `In Progress` ou `In Review`
+4. Ordenar por nome de arquivo (ordem numérica: 1.1, 2.1, 3.1, 3.2, etc.)
+
+Se **nenhuma story aberta** for encontrada:
+```
+ℹ️ Nenhuma story aberta encontrada em docs/stories/.
+Todas as stories estão com status Done ou o diretório está vazio.
+```
+→ encerrar.
+
+---
+
+### Passo A2 — Validar cada story sequencialmente
+
+Para cada story da lista coletada no Passo A1:
+- Executar os **Passos 1–8** do fluxo padrão (validação individual)
+- Registrar o resultado (VÁLIDA / RESSALVA / INVÁLIDA) e a lista de problemas encontrados
+- **Não interromper** ao encontrar INVÁLIDA — continuar para a próxima story
+- Exibir separador visual entre stories para facilitar leitura:
+
+```
+────────────────────────────────────────────────────────────
+```
+
+---
+
+### Passo A3 — Compilar resultados
+
+Ao final de todas as validações, compilar:
+
+```
+resultados = [
+  { story_id, titulo, verdict, problemas: [...] },
+  ...
+]
+
+total_validadas = len(resultados)
+total_validas   = resultados com verdict == "VÁLIDA"
+total_ressalvas = resultados com verdict == "RESSALVA"
+total_invalidas = resultados com verdict == "INVÁLIDA"
+```
+
+---
+
+### Passo A4 — Exibir sumário executivo
+
+```
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+📊 SUMÁRIO — *validate-story all
+
+Stories validadas : {total_validadas}
+✅ VÁLIDA          : {total_validas}
+⚠️  RESSALVA        : {total_ressalvas}
+❌ INVÁLIDA        : {total_invalidas}
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+```
+
+---
+
+### Passo A5 — Exibir tabela consolidada
+
+```
+| Story | Título | Resultado | Problemas |
+|-------|--------|-----------|-----------|
+| {id}  | {título curto} | ✅ VÁLIDA / ⚠️ RESSALVA / ❌ INVÁLIDA | {lista compacta ou "—"} |
+```
+
+Para cada story RESSALVA ou INVÁLIDA, listar os problemas na coluna "Problemas" em formato compacto:
+- Usar `;` como separador se houver múltiplos problemas
+- Máximo 80 caracteres por célula — truncar com `...` se necessário
+
+---
+
+### Passo A6 — Recomendação final
+
+**Se há stories INVÁLIDA:**
+```
+❌ {total_invalidas} stor(y/ies) precisam correção antes de *implement all.
+   Corrija cada INVÁLIDA e rode *validate-story {id} individualmente para confirmar.
+```
+
+**Se há apenas RESSALVA (sem INVÁLIDA):**
+```
+⚠️  {total_ressalvas} stor(y/ies) têm ressalvas. Podem ser executadas — revise antes de *implement all.
+```
+
+**Se todas são VÁLIDA:**
+```
+✅ Todas as stories estão válidas. Backlog pronto para *implement all.
+```
+
+---
+
+## Execução Individual — *validate-story {id}
 
 ### Passo 1 — Localizar a story
 
