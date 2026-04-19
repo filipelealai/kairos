@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.5.0] — 2026-04-19
+
+### Adicionado
+- manifest: sha256 por bloco em owned_sections, sha_method canônico em yaml_keys, categoria sync_files
+
+---
+
 ## [3.4.1] — 2026-04-19
 
 ### Corrigido
