@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.4.1] — 2026-04-19
+
+### Corrigido
+- sha256 sentinel `self-referential` no manifest.yaml: *pre-push e *doctor ignoram entrada auto-referencial sem calcular hash; skip do push-dual Passo 2b por comparação de conteúdo managed (em vez de git log)
+
+---
+
 ## [3.4.0] — 2026-04-18
 
 ### Adicionado
