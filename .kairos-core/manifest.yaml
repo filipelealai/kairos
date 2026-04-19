@@ -34,7 +34,7 @@ owned_files:
   # --- L2 — Controlado (apenas @kairos) ---------------------------------------
   - path: .kairos-core/manifest.yaml
     layer: L2
-    sha256: 32456f047330dd6efc5b01c208b9bc2ede331cdfce51aa8207c07992db1c5867
+    sha256: be8b95a9acc462be32972b5620533352ee4b5514206d51cb2fe3c05ee582ba09
   - path: .claude/commands/kairos/agents/kairos.md
     layer: L2
     sha256: 060cec72e9b2ebe74f0f6df923baf85f37250c592281c4bfadef1d43792ce21b
@@ -87,7 +87,7 @@ owned_files:
     sha256: 358cf1ba99998c21ecd144eae69f6edabf1f226c747104c9ee156c03898ffe56
   - path: .kairos-core/tasks/kairos-pre-push.md
     layer: L2
-    sha256: 5a89495de019d2cde4988c052bc848e012981e16b8d13f9d742bf61c6a73c635
+    sha256: a6a3560dfaf59f949d8df41464a0ee8d316b8ae0b37d988798f3480ad37d0349
   - path: .kairos-core/tasks/kairos-push.md
     layer: L2
     sha256: c342c228049396420b286675e65f4d30e8fbb08a49d4416d2dcc3eafb0e45093
