@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.3
+kairos-version: 3.3.1
 task: Kairos Review
 responsavel: "@kairos"
 responsavel_type: agent
@@ -225,6 +225,10 @@ recommendations:
 
 ### Passo 9 — Exibir resultado
 
+> ⛔ **PROIBIDO:** `*review` **nunca** transita a story para Done.
+> A transição `In Review → Done` é responsabilidade **exclusiva** do `*pre-push`.
+> Após PASS ou RESSALVA, aguardar `*version` + `*pre-push` + `*push` — não mover a story.
+
 **Cabeçalho sempre exibido:**
 ```
 {✅/⚠️/🚫} GATE {PASS/RESSALVA/BLOCK} — Story {story_id}: {título}
@@ -286,3 +290,11 @@ ACs com gap:
 Resolva os issues e rode *review {story_id} novamente.
 Gate salvo em: docs/qa/gates/{story_id}-{data}.yaml
 ```
+
+Após exibir o resultado BLOCK, executar as transições de status:
+1. Atualizar campo de status na story: `**Status:** In Review` → `**Status:** In Progress`
+2. Abrir `docs/epics/epic-{N}-*.md` — localizar a linha da story na tabela de Stories e atualizar a célula de status de `In Review → In Progress`
+3. Adicionar entrada no Change Log do epic:
+   ```markdown
+   | {data} | Story {id}: gate BLOCK — retornou para In Progress |
+   ```

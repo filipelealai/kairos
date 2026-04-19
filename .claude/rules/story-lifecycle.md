@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.0.0
+kairos-version: 3.3.1
 ---
 
 # Story Lifecycle — Protocolo do Executor
@@ -54,6 +54,11 @@ Draft → In Progress → In Review → Done
    ```markdown
    | {data} | Implementação iniciada |
    ```
+4. Abrir `docs/epics/epic-{N}-*.md` — localizar a linha da story na tabela de Stories e atualizar a célula de status de `Draft → In Progress`
+5. Adicionar entrada no Change Log do epic:
+   ```markdown
+   | {data} | Story {id} iniciada — In Progress |
+   ```
 
 ### Ao CONCLUIR implementação de uma story
 
@@ -63,6 +68,11 @@ Draft → In Progress → In Review → Done
 4. Adicionar entrada no Change Log interno da story:
    ```markdown
    | {data} | Implementação concluída — status → In Review |
+   ```
+5. Abrir `docs/epics/epic-{N}-*.md` — localizar a linha da story na tabela de Stories e atualizar a célula de status de `In Progress → In Review`
+6. Adicionar entrada no Change Log do epic:
+   ```markdown
+   | {data} | Story {id} concluída — In Review |
    ```
 
 ---
@@ -214,7 +224,7 @@ Quando `*pre-push` confirma gate PASS ou RESSALVA (Passo 1) e executa o commit (
 - Atualiza a story para `Done` e adiciona entrada no Change Log antes do commit
 - Marca a story no epic como Done
 
-**BLOCK**: story permanece em `In Review` até o executor corrigir e `*review` reemitir gate PASS.
+**BLOCK**: `*review` move a story de volta para `In Progress`, atualiza o epic e aguarda nova rodada de implementação pelo executor. O executor deve corrigir os issues e mover para `In Review` novamente antes de rodar `*review` de novo.
 
 Entrada adicionada pelo *pre-push ao mover para Done:
 ```markdown
