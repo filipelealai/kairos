@@ -126,26 +126,17 @@ git checkout filipe-instance -- README.md
 
 **Fonte autoritativa:** `.kairos-core/manifest.yaml → owned_sections`. Cada arquivo é reconstruído para `main` contendo apenas as seções/chaves framework-owned. Conteúdo user-owned não chega ao `main`.
 
-**Skip por arquivo:** antes de reprocessar cada arquivo misto, verificar se houve mudança desde o último commit de sync em `origin/main`:
-
-```bash
-git log origin/main..filipe-instance -- <path>
-```
-
-- Se retornar vazio → arquivo não foi tocado desde o último sync → `→ skip: sem mudança desde último sync` — não reprocessar
-- Se retornar commits → reprocessar normalmente (extrair seções / reconstruir com placeholders)
-
-O skip se aplica **independentemente** a cada arquivo misto.
+**Skip por conteúdo:** antes de reprocessar cada arquivo misto, construir mentalmente a versão que seria escrita em `main` e compará-la com o que já está em `main`. Se o conteúdo managed que seria escrito for idêntico ao que já existe → `→ skip: conteúdo managed sem mudança` — não reprocessar. O skip se aplica **independentemente** a cada arquivo misto.
 
 ##### CLAUDE.md (markdown_blocks)
 
-**Verificar mudança:**
-```bash
-git log origin/main..filipe-instance -- CLAUDE.md
-```
-Se vazio → skip.
+**Verificar skip:**
+1. Extrair todos os blocos `<!-- KAIROS-MANAGED-START: {nome} -->` ... `<!-- KAIROS-MANAGED-END: {nome} -->` do `CLAUDE.md` de `filipe-instance` (na ordem em que aparecem).
+2. Montar a string resultante (apenas os blocos, sem conteúdo user-owned entre eles).
+3. Comparar com o conteúdo atual de `main:CLAUDE.md`.
+4. Se idêntico → `→ skip: conteúdo managed sem mudança` — não reprocessar.
 
-Caso contrário, extrair todos os blocos delimitados por `<!-- KAIROS-MANAGED-START: {nome} -->` ... `<!-- KAIROS-MANAGED-END: {nome} -->` do `CLAUDE.md` de `filipe-instance` e escrever em `main/CLAUDE.md` **apenas** esses blocos (na mesma ordem que aparecem no arquivo fonte), sem conteúdo user-owned entre eles.
+Caso contrário, escrever em `main/CLAUDE.md` **apenas** esses blocos (na mesma ordem que aparecem no arquivo fonte), sem conteúdo user-owned entre eles.
 
 Blocos atuais declarados no manifesto: `framework-conventions`, `agent-system`, `kairos-core`.
 
@@ -167,11 +158,10 @@ Formato esperado do `CLAUDE.md` em `main`:
 
 ##### .kairos-core/core-config.yaml (yaml_keys)
 
-**Verificar mudança:**
-```bash
-git log origin/main..filipe-instance -- .kairos-core/core-config.yaml
-```
-Se vazio → skip.
+**Verificar skip:**
+1. Construir a versão que seria escrita em `main` a partir do `core-config.yaml` de `filipe-instance` (campos top-level + seções owned + placeholders para `project` e `agents`).
+2. Comparar com o conteúdo atual de `main:.kairos-core/core-config.yaml`.
+3. Se idêntico → `→ skip: conteúdo managed sem mudança` — não reprocessar.
 
 Caso contrário, ler o `core-config.yaml` de `filipe-instance` e escrever em `main/.kairos-core/core-config.yaml` uma versão com:
 - Campos top-level (`version`, `installedAt`, `updatedAt`) — copiados integralmente

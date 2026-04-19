@@ -56,3 +56,5 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [3.16](3.16.story.md) | *validate-story: Verificar Ordem do Cabeçalho e Estrutura dos ACs | Draft |
 | [3.17](3.17.story.md) | Pre-Push Step 4: Corrigir Fallback de Epoch para Gate Não Commitado | Draft |
 | [5.1](5.1.story.md) | Segregação Framework × Usuário via Manifesto de Ownership | Done |
+| [5.8](5.8.story.md) | SHA Auto-referencial do manifest.yaml: usar sentinel em vez de hash real | Draft |
+| [5.9](5.9.story.md) | push-dual Passo 2b: skip real por conteúdo managed, não por commits | Draft |

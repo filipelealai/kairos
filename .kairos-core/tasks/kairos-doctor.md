@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.4.1
 id: kairos-doctor
 title: Health Check do Framework Kairos
 agent: kairos
@@ -84,7 +84,7 @@ Ler `.kairos-core/manifest.yaml` e validar cada entrada:
 
 - [ ] Para cada `owned_files[*].path`: arquivo existe no filesystem
   → ❌ FAIL com "manifesto lista {path} mas arquivo não existe" se ausente
-- [ ] Para cada `owned_files[*]`: calcular sha256 do arquivo e comparar com `sha256` declarado
+- [ ] Para cada `owned_files[*]`: se `sha256 == "self-referential"` → ignorar (valor válido, sem comparação); caso contrário calcular sha256 do arquivo e comparar com `sha256` declarado
   → ⚠️ WARN "drift de conteúdo em {path}" se divergir (pode ser edit legítimo do usuário
      em arquivo framework — requer atenção mas não é fatal)
 - [ ] Para cada `owned_sections[*].path`: arquivo existe

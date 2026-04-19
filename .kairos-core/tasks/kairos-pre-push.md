@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.4.0
+kairos-version: 3.4.1
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -247,7 +247,8 @@ Pré-condição: Passo 2.5 concluído.
 
 1. Leia `.kairos-core/manifest.yaml` → lista `owned_files`
 2. Para cada entrada em `owned_files`:
-   - Execute `sha256sum {path}` para calcular o SHA atual
+   - Se `sha256 == "self-referential"` → pular esta entrada (sem calcular ou comparar)
+   - Caso contrário: execute `sha256sum {path}` para calcular o SHA atual
    - Compare com o campo `sha256` registrado
    - Se divergir → atualize o campo `sha256` no manifesto
 3. Se algum SHA foi atualizado → confirme: `✓ SHA sync: {N} arquivo(s) atualizado(s) em manifest.yaml`

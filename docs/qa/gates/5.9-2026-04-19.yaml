@@ -1,0 +1,39 @@
+schema: 2
+story: "5.9"
+story_title: "push-dual Passo 2b: skip real por conteúdo managed, não por commits"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-19T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: CLAUDE.md — protocolo de 4 passos implementado: extrair blocos managed → montar string → comparar com main:CLAUDE.md → skip com '→ skip: conteúdo managed sem mudança' se idêntico (linhas 133-137)"
+    - "✅ AC2: core-config.yaml — protocolo de 3 passos implementado: construir versão com placeholders → comparar com main:.kairos-core/core-config.yaml → skip com '→ skip: conteúdo managed sem mudança' se idêntico (linhas 161-164)"
+    - "✅ AC3: 'git log origin/main..filipe-instance' removido integralmente do Passo 2b — zero ocorrências no arquivo; critérios não coexistem"
+    - "✅ AC4: ramo 'Caso contrário' presente em ambos os arquivos — reprocessamento ocorre normalmente quando conteúdo diverge (linhas 139, 166)"
+    - "✅ AC5: bloco de resumo 'Passo 2b concluído' preservado e inalterado (linhas 200-206)"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ squads/ops/tasks/push-dual.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ A mensagem de skip mudou de '→ skip: sem mudança desde último sync' (story 5.7) para '→ skip: conteúdo managed sem mudança'. Ocorrências da mensagem antiga existem apenas em artefatos históricos (gate 5.7 e story 5.7) — sem impacto operacional."

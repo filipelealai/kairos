@@ -1,0 +1,40 @@
+schema: 2
+story: "5.8"
+story_title: "SHA Auto-referencial do manifest.yaml: usar sentinel em vez de hash real"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-19T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: manifest.yaml tem sha256: self-referential na entrada do próprio manifest (linha 37)"
+    - "✅ AC2: kairos-pre-push.md Passo 2.6 detecta sha256 == 'self-referential' e pula o cálculo (linha 250)"
+    - "✅ AC3: kairos-doctor.md Check 9 reconhece self-referential como valor válido — não reporta como drift (linha 87)"
+    - "✅ AC4: após fix, *pre-push não gera mudanças no manifest.yaml — skip é no-op (coberto pelo AC2: sem cálculo, sem comparação, sem escrita)"
+    - "✅ AC5: lógica de skip é condicional a sha256 == 'self-referential' — não afeta outros arquivos"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/manifest.yaml"
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+    - "✅ .kairos-core/tasks/kairos-doctor.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations: []

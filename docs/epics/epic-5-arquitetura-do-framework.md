@@ -37,15 +37,17 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.5](../stories/5.5.story.md) | *new-squad cria rules/ e faz wiring no CLAUDE.md | Done |
 | [5.6](../stories/5.6.story.md) | Manifest Guard: novos arquivos kairos-owned devem entrar no manifest | Done |
 | [5.7](../stories/5.7.story.md) | push-dual Passo 2b: skip de arquivos mistos sem mudança desde o último sync | Done |
+| [5.8](../stories/5.8.story.md) | SHA Auto-referencial do manifest.yaml: usar sentinel em vez de hash real | Done |
+| [5.9](../stories/5.9.story.md) | push-dual Passo 2b: skip real por conteúdo managed, não por commits | Done |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
 
-- **5.8** — Configuração de branch protection no repo público
-- **5.9** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.10** — Publicação de `@kairos/core` no npm
-- **5.11** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
+- **5.10** — Configuração de branch protection no repo público
+- **5.11** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.12** — Publicação de `@kairos/core` no npm
+- **5.13** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
 
 ---
 
@@ -64,3 +66,8 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-18 | Story 5.6 concluída — In Review |
 | 2026-04-18 | Story 5.7 concluída — In Review |
 | 2026-04-18 | Stories 5.6 e 5.7 Done — bump MINOR 3.3.1 → 3.4.0 |
+| 2026-04-19 | Stories 5.8 e 5.9 criadas — SHA sentinel e skip por conteúdo managed (Draft) |
+| 2026-04-19 | Story 5.8 concluída — In Review |
+| 2026-04-19 | Story 5.9 iniciada — In Progress |
+| 2026-04-19 | Story 5.9 concluída — In Review |
+| 2026-04-19 | Stories 5.8 e 5.9 Done — bump PATCH 3.4.0 → 3.4.1 |
