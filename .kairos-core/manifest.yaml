@@ -32,6 +32,9 @@ owned_files:
     sha256: 483aee002cdeae8b3fa97389c1124f484ec844b550bcfa1d6769c3e2a5b0d60f
 
   # --- L2 — Controlado (apenas @kairos) ---------------------------------------
+  - path: .kairos-core/manifest.yaml
+    layer: L2
+    sha256: be8b95a9acc462be32972b5620533352ee4b5514206d51cb2fe3c05ee582ba09
   - path: .claude/commands/kairos/agents/kairos.md
     layer: L2
     sha256: 060cec72e9b2ebe74f0f6df923baf85f37250c592281c4bfadef1d43792ce21b
@@ -84,19 +87,19 @@ owned_files:
     sha256: 358cf1ba99998c21ecd144eae69f6edabf1f226c747104c9ee156c03898ffe56
   - path: .kairos-core/tasks/kairos-pre-push.md
     layer: L2
-    sha256: 31c389161b341b7c4b91fd6c7f4b1dac0eca04758b55f107e2db07cc56fd5f70
+    sha256: a6a3560dfaf59f949d8df41464a0ee8d316b8ae0b37d988798f3480ad37d0349
   - path: .kairos-core/tasks/kairos-push.md
     layer: L2
     sha256: c342c228049396420b286675e65f4d30e8fbb08a49d4416d2dcc3eafb0e45093
   - path: .kairos-core/tasks/kairos-review.md
     layer: L2
-    sha256: 897cf4b989b1c8c664e8fd69643e1b14e522cb3f71235147ed46f9a14736b2d5
+    sha256: 10e87096e79125552e8bd6bc95d5d328b6d5a7271558a12ecb3a3212f7b48a59
   - path: .kairos-core/tasks/kairos-status.md
     layer: L2
     sha256: 4a39555e779ae9ca5fd879acc44f2383d50f7cdaca1993e9fd66b6438da731b1
   - path: .kairos-core/tasks/kairos-validate-story.md
     layer: L2
-    sha256: 33c78bc2805bae9ed898d86e3977bca729ce7bc8e78a3d23336d848c4a4bea10
+    sha256: 99398d070c9c927bb44ffe7d32a2885263732c823ce97dfcb5c03df2996e1088
   - path: .kairos-core/tasks/kairos-version-bump.md
     layer: L2
     sha256: 87f4a31659e87aeeb4a5dd13fb7f53f7e9c49a2bcd00c725e0c6bdb4c92b78a1
@@ -130,7 +133,7 @@ owned_files:
     sha256: 6fa7e77e6cdd80a07554ab6ade34fff3d6b542908b919d44a8fc4b2653653bdf
   - path: .claude/rules/story-lifecycle.md
     layer: L3
-    sha256: 3ee4788e5e774167ebc31966b0e04927addb1508ba4bd3f67ba34ac9ed95f1cc
+    sha256: 79060f120fcb3b118d8bfd6f829f569250c199fe6d2ce868702c6a8fd7664e7a
   - path: .claude/rules/external-integrations.md
     layer: L3
     sha256: e1505c45309fdc5e35ae3cf0407bedde104c33a233ebf0d26ab143ccba25e662
@@ -148,10 +151,10 @@ owned_files:
     sha256: 475fd6445c0b67096168d3c6455dad02457d2708d072a5b5355e32129f968b0b
   - path: CHANGELOG.md
     layer: L3
-    sha256: 8e5d2c93d69bc43323c84b7c290c617d1bf87ab802283f095c4f193bd482c583
+    sha256: f5d60596b0e6f7c42a84a1b5e042c0884d1a92b030e67249234abd78adb7015b
   - path: README.md
     layer: L3
-    sha256: 076c90cba619cd5103f3daa0a6aa72a2132c9bbd4e3e0ae72d5effc818fe3b34
+    sha256: d26d232868ae989b57c915dd5fbac1ed8933bb1cc3761596564d92d99990b68e
 
 # -----------------------------------------------------------------------------
 # Arquivos mistos — apenas seções/chaves declaradas são framework-owned
