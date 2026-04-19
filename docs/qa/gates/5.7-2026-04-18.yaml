@@ -1,0 +1,44 @@
+schema: 2
+story: "5.7"
+story_title: "push-dual Passo 2b: skip de arquivos mistos sem mudança desde o último sync"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T00:00:00Z"
+quality_score: 97
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: push-dual.md Passo 2b inclui verificação 'git log origin/main..filipe-instance -- <path>' antes de cada arquivo misto"
+    - "✅ AC2: Retorno vazio → skip com '→ skip: sem mudança desde último sync' (linhas 135, 146, 174)"
+    - "✅ AC3: Retorno com commits → reprocessar normalmente via fluxo 'Caso contrário' em cada sub-seção"
+    - "✅ AC4: Skip aplicado independentemente: cabeçalho geral + verificação individual por arquivo (CLAUDE.md e core-config.yaml)"
+    - "✅ AC5: Resumo ao final do Passo 2b com contagem de reprocessados vs pulados"
+    - "✅ AC6: Passo 2a permanece inalterado — apenas Passo 2b foi modificado"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ squads/ops/tasks/push-dual.md (Passo 2b reestruturado com skip logic + resumo)"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — bump MINOR pendente; a ser feito em *pre-push junto com 5.6"
+  changelog_updated: "⚠️ RESSALVA — mesma razão que version_bumped"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: ".env.example (terceiro item em owned_sections) não ganha skip logic — correto: não tem processamento de extração no Passo 2b atualmente."
+    recommendation: "Executor identificou corretamente como fora de escopo. Notar para futuras evoluções do push-dual."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Documentar comportamento esperado quando 'origin/main' não existe localmente (ex: primeiro push após clone fresco). O comando 'git log origin/main..filipe-instance' falharia se origin/main não estiver fetched. Considerar fallback: 'git fetch origin main --dry-run' antes do Passo 2b."
+  - "⚠️ O .env.example pode ser adicionado ao skip em story futura se ganhar processamento de extração no Passo 2b."

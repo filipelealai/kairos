@@ -1,0 +1,49 @@
+schema: 2
+story: "5.6"
+story_title: "Manifest Guard: novos arquivos kairos-owned devem entrar no manifest"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T00:00:00Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-pre-push.md inclui Passo 0 que escaneia as 5 pastas de framework (.kairos-core/tasks/, .kairos-core/templates/, .claude/rules/, .claude/commands/kairos/agents/, .kairos-core/docs/) em busca de kairos-owned: true fora do manifesto"
+    - "✅ AC2: BLOCK emitido com formato '🚫 BLOCK — Manifest Guard' + instrução 'Adicione ao manifest.yaml e ao push-dual antes de continuar'"
+    - "✅ AC3: Confirmação '✓ Manifest Guard: sem drift detectado' quando limpo (linha 53 do Passo 0)"
+    - "✅ AC4: push-dual.md Passo 2a inclui 'git checkout filipe-instance -- .kairos-core/manifest.yaml' como primeiro item do bloco L2"
+    - "✅ AC5: .kairos-core/manifest.yaml adicionado a owned_files com layer: L2 e sha256 calculado"
+    - "✅ AC6: Passo 0 posicionado antes do Pré-check e Passo 1 — primeiro passo executado (fail fast)"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md (Passo 0 + frontmatter + Resultado Final atualizados)"
+    - "✅ squads/ops/tasks/push-dual.md (manifest.yaml no Passo 2a)"
+    - "✅ .kairos-core/manifest.yaml (entrada manifest.yaml em owned_files L2)"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — bump MINOR pendente; a ser feito em *pre-push (comportamento esperado do fluxo)"
+  changelog_updated: "⚠️ RESSALVA — mesma razão que version_bumped"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "SHA do manifest.yaml no próprio manifesto está tecnicamente desatualizado (self-referential — o SHA foi calculado antes da inserção do campo, alterando o arquivo)"
+    recommendation: "Nenhuma ação adicional — Passo 2.6 do *pre-push sincroniza o SHA automaticamente. Executor documentou corretamente no Execution Log."
+  - severity: "low"
+    description: "Passo 0 escaneia .cjs e .yaml além de .md (extensão além da story). Nenhum arquivo .cjs nas 5 pastas de scan — comportamento idêntico ao especificado."
+    recommendation: "Considerar documentar a cobertura de extensões na task se o escopo crescer."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ SHA auto-referencial: design correto — documentado. Monitorar se cria confusão futura ao comparar SHAs no *doctor."
+  - "⚠️ Avaliar em story futura se .claude/hooks/ deve entrar no scan do Passo 0 (hooks têm kairos-owned: true mas estão fora das 5 pastas atuais)."

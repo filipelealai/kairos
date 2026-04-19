@@ -6,6 +6,14 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.4.0] — 2026-04-18
+
+### Adicionado
+- Manifest Guard no *pre-push (Passo 0): detecta arquivos `kairos-owned: true` fora do manifesto antes de qualquer outro check; manifest.yaml adicionado a owned_files e ao push-dual Passo 2a
+- Skip de arquivos mistos no push-dual Passo 2b: `git log origin/main..filipe-instance` detecta ausência de mudança e pula reprocessamento; resumo ao final do passo
+
+---
+
 ## [3.3.1] — 2026-04-18
 
 ### Corrigido

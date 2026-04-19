@@ -32,6 +32,9 @@ owned_files:
     sha256: 483aee002cdeae8b3fa97389c1124f484ec844b550bcfa1d6769c3e2a5b0d60f
 
   # --- L2 — Controlado (apenas @kairos) ---------------------------------------
+  - path: .kairos-core/manifest.yaml
+    layer: L2
+    sha256: 32456f047330dd6efc5b01c208b9bc2ede331cdfce51aa8207c07992db1c5867
   - path: .claude/commands/kairos/agents/kairos.md
     layer: L2
     sha256: 060cec72e9b2ebe74f0f6df923baf85f37250c592281c4bfadef1d43792ce21b
@@ -84,7 +87,7 @@ owned_files:
     sha256: 358cf1ba99998c21ecd144eae69f6edabf1f226c747104c9ee156c03898ffe56
   - path: .kairos-core/tasks/kairos-pre-push.md
     layer: L2
-    sha256: c7a708e553414afa8b5a644bd26e119becff989bf357e2988ac0ec40d67ff185
+    sha256: 5a89495de019d2cde4988c052bc848e012981e16b8d13f9d742bf61c6a73c635
   - path: .kairos-core/tasks/kairos-push.md
     layer: L2
     sha256: c342c228049396420b286675e65f4d30e8fbb08a49d4416d2dcc3eafb0e45093
@@ -148,10 +151,10 @@ owned_files:
     sha256: 475fd6445c0b67096168d3c6455dad02457d2708d072a5b5355e32129f968b0b
   - path: CHANGELOG.md
     layer: L3
-    sha256: bf33f26eb145d99954b7c738a00b9ee47303be6c8d80537d66577badfe36c11c
+    sha256: f5d60596b0e6f7c42a84a1b5e042c0884d1a92b030e67249234abd78adb7015b
   - path: README.md
     layer: L3
-    sha256: 6973eec58dec79d598f016204fa27269068c4444c70af55d175abee0f4be212b
+    sha256: d26d232868ae989b57c915dd5fbac1ed8933bb1cc3761596564d92d99990b68e
 
 # -----------------------------------------------------------------------------
 # Arquivos mistos — apenas seções/chaves declaradas são framework-owned

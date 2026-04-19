@@ -35,8 +35,8 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.3](../stories/5.3.story.md) | SHA Sync Automático no `*pre-push` e `*version` | Done |
 | [5.4](../stories/5.4.story.md) | Sync Completo de Arquivos Mistos no push-dual | Done |
 | [5.5](../stories/5.5.story.md) | *new-squad cria rules/ e faz wiring no CLAUDE.md | Done |
-| [5.6](../stories/5.6.story.md) | Manifest Guard: novos arquivos kairos-owned devem entrar no manifest | Draft |
-| [5.7](../stories/5.7.story.md) | push-dual Passo 2b: skip de arquivos mistos sem mudança desde o último sync | Draft |
+| [5.6](../stories/5.6.story.md) | Manifest Guard: novos arquivos kairos-owned devem entrar no manifest | Done |
+| [5.7](../stories/5.7.story.md) | push-dual Passo 2b: skip de arquivos mistos sem mudança desde o último sync | Done |
 
 ---
 
@@ -61,3 +61,6 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-18 | Story 5.5 criada — *new-squad cria rules/ e faz wiring no CLAUDE.md (Draft) |
 | 2026-04-18 | Stories 5.4 e 5.5 Done — bump MINOR 3.2.1 → 3.3.0 |
 | 2026-04-18 | Stories 5.6 e 5.7 criadas — manifest guard e skip de arquivos mistos no push-dual |
+| 2026-04-18 | Story 5.6 concluída — In Review |
+| 2026-04-18 | Story 5.7 concluída — In Review |
+| 2026-04-18 | Stories 5.6 e 5.7 Done — bump MINOR 3.3.1 → 3.4.0 |

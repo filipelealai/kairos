@@ -71,6 +71,7 @@ git checkout filipe-instance -- .claude/rules/framework-layers.md
 git checkout filipe-instance -- .claude/rules/ids-principles.md
 
 # L2 — Controlado
+git checkout filipe-instance -- .kairos-core/manifest.yaml
 git checkout filipe-instance -- .claude/commands/kairos/agents/kairos.md
 git checkout filipe-instance -- .claude/hooks/kairos-code-intel.cjs
 git checkout filipe-instance -- .claude/hooks/kairos-precompact.cjs
@@ -125,9 +126,26 @@ git checkout filipe-instance -- README.md
 
 **Fonte autoritativa:** `.kairos-core/manifest.yaml → owned_sections`. Cada arquivo é reconstruído para `main` contendo apenas as seções/chaves framework-owned. Conteúdo user-owned não chega ao `main`.
 
+**Skip por arquivo:** antes de reprocessar cada arquivo misto, verificar se houve mudança desde o último commit de sync em `origin/main`:
+
+```bash
+git log origin/main..filipe-instance -- <path>
+```
+
+- Se retornar vazio → arquivo não foi tocado desde o último sync → `→ skip: sem mudança desde último sync` — não reprocessar
+- Se retornar commits → reprocessar normalmente (extrair seções / reconstruir com placeholders)
+
+O skip se aplica **independentemente** a cada arquivo misto.
+
 ##### CLAUDE.md (markdown_blocks)
 
-Extrair todos os blocos delimitados por `<!-- KAIROS-MANAGED-START: {nome} -->` ... `<!-- KAIROS-MANAGED-END: {nome} -->` do `CLAUDE.md` de `filipe-instance` e escrever em `main/CLAUDE.md` **apenas** esses blocos (na mesma ordem que aparecem no arquivo fonte), sem conteúdo user-owned entre eles.
+**Verificar mudança:**
+```bash
+git log origin/main..filipe-instance -- CLAUDE.md
+```
+Se vazio → skip.
+
+Caso contrário, extrair todos os blocos delimitados por `<!-- KAIROS-MANAGED-START: {nome} -->` ... `<!-- KAIROS-MANAGED-END: {nome} -->` do `CLAUDE.md` de `filipe-instance` e escrever em `main/CLAUDE.md` **apenas** esses blocos (na mesma ordem que aparecem no arquivo fonte), sem conteúdo user-owned entre eles.
 
 Blocos atuais declarados no manifesto: `framework-conventions`, `agent-system`, `kairos-core`.
 
@@ -149,7 +167,13 @@ Formato esperado do `CLAUDE.md` em `main`:
 
 ##### .kairos-core/core-config.yaml (yaml_keys)
 
-Ler o `core-config.yaml` de `filipe-instance` e escrever em `main/.kairos-core/core-config.yaml` uma versão com:
+**Verificar mudança:**
+```bash
+git log origin/main..filipe-instance -- .kairos-core/core-config.yaml
+```
+Se vazio → skip.
+
+Caso contrário, ler o `core-config.yaml` de `filipe-instance` e escrever em `main/.kairos-core/core-config.yaml` uma versão com:
 - Campos top-level (`version`, `installedAt`, `updatedAt`) — copiados integralmente
 - Seções `framework`, `runtime`, `versioning` (`owned_keys` no manifesto) — copiadas integralmente
 - Seção `project` — substituída por placeholders: `owner: "{owner}"`, `name: "{project-name}"`, `scope: personal`
@@ -181,6 +205,14 @@ runtime:
 
 versioning:
   ... (copiado integralmente)
+```
+
+##### Resumo ao final do Passo 2b
+
+```
+Passo 2b concluído:
+  → {N} arquivo(s) reprocessado(s): {lista ou "nenhum"}
+  → {M} arquivo(s) pulado(s) (sem mudança): {lista ou "nenhum"}
 ```
 
 ---

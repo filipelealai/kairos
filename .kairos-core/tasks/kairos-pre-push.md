@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.3.1
+kairos-version: 3.4.0
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -12,6 +12,7 @@ Saida: |
   - verdict: PASS | BLOCK exibido em tela
   - pre_push_passed: true|false (guardado em sessão para *push verificar)
 Checklist:
+  - "[ ] Passo 0: Manifest Guard — arquivos kairos-owned sem entrada no manifest"
   - "[ ] Passo 1: Gate de review para stories MINOR/MAJOR ativas"
   - "[ ] Passo 2: Detectar e executar bump de versão pendente"
   - "[ ] Passo 2.5: Transição da story para Done"
@@ -28,6 +29,32 @@ Checklist:
 O `*pre-push` é o centro do pré-voo: trata o gate de review, o bump de versão interativo, o commit e as verificações finais. Deve ser executado antes de cada `*push`.
 
 ## Execução
+
+### Passo 0 — Manifest Guard
+
+**Objetivo:** detectar arquivos `kairos-owned: true` que não estão listados no manifesto — fail fast antes de qualquer outro check.
+
+1. Leia `.kairos-core/manifest.yaml` → extraia a lista de paths em `owned_files`
+2. Escaneie os seguintes diretórios em busca de arquivos `.md`, `.cjs` e `.yaml`:
+   - `.kairos-core/tasks/`
+   - `.kairos-core/templates/`
+   - `.claude/rules/`
+   - `.claude/commands/kairos/agents/`
+   - `.kairos-core/docs/`
+3. Para cada arquivo encontrado, leia o frontmatter YAML (delimitado por `---`) e verifique se contém `kairos-owned: true`
+4. Para cada arquivo com `kairos-owned: true`, verifique se seu path aparece em `owned_files`
+5. Se algum arquivo com `kairos-owned: true` **não** está listado no manifesto → **BLOCK:**
+   ```
+   🚫 BLOCK — Manifest Guard: arquivos kairos-owned fora do manifesto:
+     - {path1}
+     - {path2}
+   Adicione ao manifest.yaml e ao push-dual antes de continuar.
+   ```
+6. Se todos os arquivos estão listados → confirme: `✓ Manifest Guard: sem drift detectado`
+
+**BLOCK se:** qualquer arquivo com `kairos-owned: true` não está em `manifest.yaml → owned_files`.
+
+---
 
 ### Pré-check — Ler estado do repositório
 
@@ -356,6 +383,7 @@ Resumo:
   Versão: {version}
 
 Checks:
+  ✅ Passo 0 — Manifest Guard (sem drift | N arquivos verificados)
   ✅ Passo 1 — Gate de review (stories MINOR/MAJOR com gate PASS/RESSALVA)
   ✅ Passo 2 — Versionamento ({bump feito: antiga → nova | sem bump pendente | PATCH: bump aplicado/ignorado pelo usuário})
   ✅ Passo 2.6 — SHA sync ({N} atualizado(s) | já atualizado)
