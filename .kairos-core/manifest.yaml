@@ -57,7 +57,7 @@ owned_files:
     sha256: 937cdef5f6a77d8ad989c4cbcafc6d19b367cd716179274a409b85e57d3c8139
   - path: .kairos-core/tasks/kairos-doctor.md
     layer: L2
-    sha256: ef730b5c61c2b03c4b6c4c1d9f81463b9a2ab6b920a8879414f8a9efb523a3a8
+    sha256: 5942f3c333231e1a2828162ad703934efcde7d2a8c46ea783714e8cfb7f5ca77
   - path: .kairos-core/tasks/kairos-help.md
     layer: L2
     sha256: a9fb902bed3377a9af5bc3ccfd76ba123f401d664e9557b5047e3df464e78344
@@ -87,7 +87,7 @@ owned_files:
     sha256: 358cf1ba99998c21ecd144eae69f6edabf1f226c747104c9ee156c03898ffe56
   - path: .kairos-core/tasks/kairos-pre-push.md
     layer: L2
-    sha256: 2af760774cf7efd27ede50211959598eab05275e26e2bb2099d15aac6e52bc8e
+    sha256: 0a028669c8208a4afee41372b9722da1321094da0f7501af1c62246188996c4c
   - path: .kairos-core/tasks/kairos-push.md
     layer: L2
     sha256: c342c228049396420b286675e65f4d30e8fbb08a49d4416d2dcc3eafb0e45093
@@ -139,7 +139,7 @@ owned_files:
     sha256: e1505c45309fdc5e35ae3cf0407bedde104c33a233ebf0d26ab143ccba25e662
   - path: .kairos-core/data/kairos-kb.md
     layer: L3
-    sha256: f1123dc01673bfbdaa9a875f1272da7adff830274b51e2640b5ac120536269d9
+    sha256: 0e7d91c67533cb6e92bacff5d16e690f06c9540d302fb3b89577ffc45646fa7b
   - path: .kairos-core/docs/agent-standards.md
     layer: L3
     sha256: 1f4e71ed9111e9931adbcf7e624a516779ab791961b25d398e76d9185c52ea2e
@@ -151,10 +151,17 @@ owned_files:
     sha256: 475fd6445c0b67096168d3c6455dad02457d2708d072a5b5355e32129f968b0b
   - path: CHANGELOG.md
     layer: L3
-    sha256: 96cb9ca39d6b9253ce829621089eb4a79762c1bfb9ea58e4d25a90570fbed6de
+    sha256: d459726003dca998f22b9bce3ce86c541c45eab43e58df1b2ae922f723d82524
+
+# -----------------------------------------------------------------------------
+# Arquivos sincronizados para origin/main, mas não framework-owned para update
+# O usuário customiza livremente; um `kairos update` futuro nunca sobrescreve.
+# Sem sha256 — não há drift a detectar, apenas existência.
+# -----------------------------------------------------------------------------
+sync_files:
+
   - path: README.md
     layer: L3
-    sha256: 081ad110a8d68d1ed111191759bb48de129108cde703e997689eb09281d72874
 
 # -----------------------------------------------------------------------------
 # Arquivos mistos — apenas seções/chaves declaradas são framework-owned
@@ -167,16 +174,24 @@ owned_sections:
       - name: framework-conventions
         start: "<!-- KAIROS-MANAGED-START: framework-conventions -->"
         end: "<!-- KAIROS-MANAGED-END: framework-conventions -->"
+        sha256: c477c4d2ad2adc57e299ba88b1c302e6b5e64709d2162251e0b85e5d5f23d35b
       - name: agent-system
         start: "<!-- KAIROS-MANAGED-START: agent-system -->"
         end: "<!-- KAIROS-MANAGED-END: agent-system -->"
+        sha256: 3bb7a80286efba071d4a61cee7eb3daef69af99a9b042277e9aadb466051dd8c
       - name: kairos-core
         start: "<!-- KAIROS-MANAGED-START: kairos-core -->"
         end: "<!-- KAIROS-MANAGED-END: kairos-core -->"
+        sha256: 83cac07c34480780ccac51a316c2807a6b49658b27e2f907200ba7b86c81a974
 
   - path: .kairos-core/core-config.yaml
     type: yaml_keys
     owned_keys: [framework, runtime, versioning]
+    sha_method: "yaml.dump({key: value}, sort_keys=False)"
+    sha256_by_key:
+      framework: ad6c0f935b1e9b995d9b919bf51f55259193950ad0bb0ce2723ddea64ff8172f
+      runtime: 4a64e1643f6dd390011f11fe48682442da1f6db1fb9b96c4b78444c4b215162f
+      versioning: 3386e3031f8de7e2c71c0368fb7fb48f6281cd073ba11500f01eac5d133e0aa1
 
   - path: .env.example
     type: env_sections
@@ -185,12 +200,18 @@ owned_sections:
       communication, search, version-control) são templates de integrações
       comuns. Variáveis específicas do usuário são user-owned.
     owned_sections:
-      - ai-providers
-      - automation
-      - database
-      - communication
-      - search
-      - version-control
+      - name: ai-providers
+        sha256: 69215ba19d13c9120549d5ac085c67c8451513a639e64e0742ebefaf6e655536
+      - name: automation
+        sha256: 327f953d13784e0c40f8c1ce84ce3d17f3527295bf8cee168b332527b0108c99
+      - name: database
+        sha256: 8347f452e754090fe60103b063e3117bd5b1e9254e66e9cca2380e3b713cd786
+      - name: communication
+        sha256: 6ceeabe1b271477503233638ca272d7f54c320f31c7a10f11b029be58f9e8f63
+      - name: search
+        sha256: 5ab9981d41238a17d4bc848cf2e57ebe302650894ee56e5e189c3206e08bf48f
+      - name: version-control
+        sha256: b93593b10b38caa15216e02e1fed9689f76dbaf678796530c1bcdb97192f8d71
 
 # -----------------------------------------------------------------------------
 # Notas operacionais
@@ -214,5 +235,9 @@ notes: |
     .gitignore, .mcp.json são metadados da instância — não são gerenciados por
     updates de framework, logo não entram no manifesto.
 
-  - README.md e CHANGELOG.md são framework-owned (L3): documentação pública
-    e histórico de versões fazem parte do artefato entregue pelo framework.
+  - CHANGELOG.md é framework-owned (L3): histórico de versões faz parte do artefato
+    entregue pelo framework.
+
+  - README.md é sync_files (L3): sincronizado para origin/main como documentação pública,
+    mas não gerenciado por updates — conteúdo instância-específico, nunca sobrescrito
+    por `kairos update`.

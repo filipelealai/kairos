@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.5.0
 ---
 
 # Kairos Knowledge Base
@@ -64,6 +64,16 @@ kairos-version: 2.0.0
 **Motivo:** Se fosse um arquivo, uma sessão poderia fazer `*pre-push`, encerrar, abrir nova sessão e fazer `*push` sem re-verificar. O estado de sessão força re-execução do `*pre-push` a cada nova sessão — mais seguro.
 
 **Trade-off aceito:** Não persiste entre sessões (comportamento intencional).
+
+---
+
+### Por que sync_files é separado de owned_files?
+
+**Decisão:** Arquivos sincronizados para `origin/main` mas não gerenciados por updates vivem em `sync_files`, não em `owned_files`.
+
+**Motivo:** `README.md` precisa ir para o repositório público do GitHub (documentação visível), mas seu conteúdo é instância-específico (nome do projeto, squads ativos, owner). Em `owned_files`, um `kairos update` futuro poderia sobrescrevê-lo. `sync_files` separa os dois concerns: "vai para main" e "é atualizado pelo framework" — um arquivo pode satisfazer o primeiro sem o segundo.
+
+**Trade-off aceito:** Arquivos em `sync_files` não têm SHA tracking — não há "drift" a detectar. O `*doctor` valida existência, não conteúdo.
 
 ---
 

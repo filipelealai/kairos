@@ -1,0 +1,43 @@
+schema: 2
+story: "5.12"
+story_title: "Manifest sync_files: categoria para arquivos sincronizados sem ownership de update"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-19T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: manifest.yaml tem categoria top-level `sync_files` com campos `path` e `layer` por entrada"
+    - "✅ AC2: README.md removido de owned_files e adicionado a sync_files sem campo sha256"
+    - "✅ AC3: push-dual Passo 2a tem subseção sync_files com git checkout e nota explicando a diferença semântica (sync sem ownership)"
+    - "✅ AC4: kairos-doctor.md Check 9 valida existência de sync_files[*].path (→ FAIL se ausente), sem verificação de SHA"
+    - "✅ AC5: kairos-kb.md documenta o conceito sync_files com motivo e trade-off"
+    - "✅ AC6: Manifest guard (Passo 0) não é afetado — Passo 0 só referencia owned_files e varre frontmatter kairos-owned: true; README.md não tem frontmatter YAML. Raciocínio correto, sem mudança necessária."
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/manifest.yaml"
+    - "✅ squads/ops/tasks/push-dual.md"
+    - "✅ .kairos-core/tasks/kairos-doctor.md"
+    - "✅ .kairos-core/data/kairos-kb.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Considerar atualizar ownership.md (L1) em story futura para mencionar sync_files como terceira categoria do manifesto — não bloqueante"

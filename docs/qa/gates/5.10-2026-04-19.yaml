@@ -1,0 +1,52 @@
+schema: 2
+story: "5.10"
+story_title: "Manifest owned_sections: SHA por bloco para suporte a updates"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-19T00:00:00.000Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ .env.example recebe markers KAIROS-MANAGED-START/END para as 6 categorias (ai-providers, automation, database, communication, search, version-control) — verificado lendo o arquivo; todos os 6 pares de markers presentes e corretos"
+    - "✅ push-dual Passo 2b trata .env.example: subseção adicionada com skip por conteúdo, protocolo de extração e formato esperado em main — verificado em squads/ops/tasks/push-dual.md"
+    - "✅ manifest.yaml: .env.example ganha sha256 por seção — 6 entradas {name, sha256} em owned_sections; SHAs computados via script Python do conteúdo de filipe-instance"
+    - "✅ manifest.yaml: markdown_blocks (CLAUDE.md) ganham sha256 por bloco — 3 blocos com sha256 (framework-conventions, agent-system, kairos-core)"
+    - "✅ manifest.yaml: yaml_keys (core-config.yaml) ganham sha256 por chave — sha256_by_key dict com 3 entradas (framework, runtime, versioning)"
+    - "✅ *pre-push Passo 2.7 inclui owned_sections na mesma passagem — expandido em 2.7a (owned_files) + 2.7b (owned_sections) com instruções para markdown_blocks, yaml_keys e env_sections"
+    - "✅ *doctor Check 10 valida SHAs por bloco/seção para todos os tipos de owned_sections; drift emite WARN (não FAIL) — verificado em kairos-doctor.md; marker ausente em env_sections emite FAIL (correto)"
+    - "✅ Todos os SHAs refletem conteúdo de filipe-instance — computados com script Python no momento da implementação"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .env.example — markers adicionados para 6 categorias"
+    - "✅ .kairos-core/manifest.yaml — owned_sections atualizado com sha256 em todos os tipos"
+    - "✅ squads/ops/tasks/push-dual.md — Passo 2b com .env.example"
+    - "✅ .kairos-core/tasks/kairos-pre-push.md — Passo 2.7 expandido (2.7a + 2.7b)"
+    - "✅ .kairos-core/tasks/kairos-doctor.md — Check 10 expandido para todos os tipos"
+    - "✅ docs/stories/5.10.story.md — status In Review, Execution Log presente"
+    - "✅ docs/epics/epic-5-arquitetura-do-framework.md — story 5.10 marcada In Review"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "O Passo 2.7b do pre-push especifica serialização yaml.dump({chave: valor}, sort_keys=False) para yaml_keys; a Nota para @kairos no Execution Log alerta que o doctor e o 2.7b devem usar o mesmo algoritmo. Não há garantia formal de consistência entre os dois pontos de uso."
+    recommendation: "Em story futura (ou como PATCH), extrair a especificação do algoritmo de serialização para uma nota canônica no manifest.yaml ou kairos-kb.md — evita drift entre implementações de *pre-push e *doctor."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ A entry de env_sections em manifest.yaml usa o campo `owned_sections` como nome da lista (mesmo nome do campo pai no manifest) — pode causar confusão ao ler. Considerar renomear para `sections` em story futura (breaking change mínimo)."
+  - "⚠️ O header de .env.example (bloco de comentários iniciais) não está em nenhuma seção managed — se o updater reescreve o arquivo a partir de main, o header chegará via conteúdo pré-managed. Isso é intencional e funcional, mas pode ser formalizado."

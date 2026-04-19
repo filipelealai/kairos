@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.4.1
+kairos-version: 3.5.0
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -16,8 +16,8 @@ Checklist:
   - "[ ] Passo 1: Gate de review para stories MINOR/MAJOR ativas"
   - "[ ] Passo 2: Detectar e executar bump de versão pendente"
   - "[ ] Passo 2.5: Transição da story para Done"
-  - "[ ] Passo 2.6: SHA sync do manifest.yaml"
-  - "[ ] Passo 2.7: Atualizar kairos-version nos arquivos modificados"
+  - "[ ] Passo 2.6: Atualizar kairos-version nos arquivos modificados"
+  - "[ ] Passo 2.7: SHA sync do manifest.yaml"
   - "[ ] Passo 3: Propor e executar commit dos changes relevantes"
   - "[ ] Passo 4: Spot check de referências quebradas"
   - "[ ] Passo 5: Consistência final de versão (core-config vs CHANGELOG)"
@@ -239,30 +239,11 @@ Para cada story com `gate_ok = true` (gate PASS ou RESSALVA confirmado no Passo 
 
 ---
 
-### Passo 2.6 — SHA Sync
-
-**Objetivo:** manter o `manifest.yaml` sincronizado com o estado atual dos arquivos framework.
-
-Pré-condição: Passo 2.5 concluído.
-
-1. Leia `.kairos-core/manifest.yaml` → lista `owned_files`
-2. Para cada entrada em `owned_files`:
-   - Se `sha256 == "self-referential"` → pular esta entrada (sem calcular ou comparar)
-   - Caso contrário: execute `sha256sum {path}` para calcular o SHA atual
-   - Compare com o campo `sha256` registrado
-   - Se divergir → atualize o campo `sha256` no manifesto
-3. Se algum SHA foi atualizado → confirme: `✓ SHA sync: {N} arquivo(s) atualizado(s) em manifest.yaml`
-4. Se nenhum SHA divergiu → confirme: `✓ SHA sync: manifest.yaml já está atualizado`
-
-> Os arquivos modificados pelo SHA sync serão incluídos no commit do Passo 3.
-
----
-
-### Passo 2.7 — Atualizar `kairos-version` nos arquivos modificados
+### Passo 2.6 — Atualizar `kairos-version` nos arquivos modificados
 
 **Objetivo:** manter o campo `kairos-version` no frontmatter sincronizado com a versão em que cada arquivo foi tocado pela última vez.
 
-Pré-condição: Passo 2.6 concluído (versão confirmada, SHA sync realizado).
+Pré-condição: Passo 2.5 concluído (versão confirmada).
 
 1. Execute `git status --porcelain` para listar arquivos modificados ou adicionados. Filtre linhas cujo código de duas letras (XY) contém `M` na posição X ou Y, ou `A` na posição X — padrões relevantes: `M `, ` M`, `MM`, `A `, `AM`. Ignorar `??` (untracked não staged) e `D`/` D` (deletados)
 2. Para cada arquivo listado:
@@ -277,11 +258,59 @@ Pré-condição: Passo 2.6 concluído (versão confirmada, SHA sync realizado).
 
 ---
 
+### Passo 2.7 — SHA Sync
+
+**Objetivo:** manter o `manifest.yaml` sincronizado com o estado atual dos arquivos framework. Executado **depois** do Passo 2.6 para capturar numa única passagem todas as modificações do ciclo (bump de versão, kairos-version, edições de conteúdo).
+
+Pré-condição: Passo 2.6 concluído (kairos-version atualizado nos arquivos modificados).
+
+#### 2.7a — owned_files
+
+1. Leia `.kairos-core/manifest.yaml` → lista `owned_files`
+2. Para cada entrada em `owned_files`:
+   - Se `sha256 == "self-referential"` → pular esta entrada (sem calcular ou comparar)
+   - Caso contrário: execute `sha256sum {path}` para calcular o SHA atual
+   - Compare com o campo `sha256` registrado
+   - Se divergir → atualize o campo `sha256` no manifesto
+
+#### 2.7b — owned_sections
+
+Para cada entrada em `owned_sections`, atualizar os SHAs por bloco/chave/seção:
+
+**markdown_blocks (ex: CLAUDE.md):**
+- Para cada bloco em `blocks[*]`:
+  - Extraia o conteúdo interno entre o marker START e o marker END (excluindo as próprias linhas de marker)
+  - Calcule `sha256` do conteúdo interno (string pura, sem processar)
+  - Se divergir do `sha256` registrado → atualize o campo `sha256` do bloco no manifesto
+
+**yaml_keys (ex: core-config.yaml):**
+- Para cada chave em `owned_keys`:
+  - Leia o valor da chave no arquivo YAML
+  - Leia o campo `sha_method` da entrada no manifesto — esse campo é a especificação canônica do algoritmo de serialização (ex: `"yaml.dump({key: value}, sort_keys=False)"`)
+  - Serialize o valor usando o algoritmo descrito em `sha_method`
+  - Calcule `sha256` da string serializada
+  - Se divergir do `sha256_by_key[chave]` registrado → atualize o campo no manifesto
+
+**env_sections (ex: .env.example):**
+- Para cada seção em `owned_sections[*]`:
+  - Extraia o conteúdo interno entre `# KAIROS-MANAGED-START: {nome}` e `# KAIROS-MANAGED-END: {nome}` (excluindo as linhas de marker)
+  - Calcule `sha256` do conteúdo interno
+  - Se divergir do `sha256` registrado → atualize o campo no manifesto
+
+#### Confirmação
+
+3. Se algum SHA (owned_files ou owned_sections) foi atualizado → confirme: `✓ SHA sync: {N} arquivo(s)/bloco(s) atualizado(s) em manifest.yaml`
+4. Se nenhum SHA divergiu → confirme: `✓ SHA sync: manifest.yaml já está atualizado`
+
+> Os arquivos modificados pelo SHA sync serão incluídos no commit do Passo 3.
+
+---
+
 ### Passo 3 — Commit
 
 **Objetivo:** garantir que as mudanças relevantes estão commitadas antes do push.
 
-Pré-condição: Passo 2.7 concluído (kairos-version atualizado nos arquivos modificados).
+Pré-condição: Passo 2.7 concluído (SHA sync realizado).
 
 1. Execute `git status` para listar arquivos com changes relevantes (excluindo `.kairos-core/runtime/`, `data/`, `node_modules/`)
 
@@ -387,8 +416,8 @@ Checks:
   ✅ Passo 0 — Manifest Guard (sem drift | N arquivos verificados)
   ✅ Passo 1 — Gate de review (stories MINOR/MAJOR com gate PASS/RESSALVA)
   ✅ Passo 2 — Versionamento ({bump feito: antiga → nova | sem bump pendente | PATCH: bump aplicado/ignorado pelo usuário})
-  ✅ Passo 2.6 — SHA sync ({N} atualizado(s) | já atualizado)
-  ✅ Passo 2.7 — kairos-version ({N} atualizado(s) | sem frontmatter)
+  ✅ Passo 2.6 — kairos-version ({N} atualizado(s) | sem frontmatter)
+  ✅ Passo 2.7 — SHA sync ({N} atualizado(s) | já atualizado)
   ✅ Passo 3 — Commit ({mensagem do commit | sem changes pendentes})
   ✅ Passo 4 — Referências verificadas
   ✅ Passo 5 — Versão consistente ({version})

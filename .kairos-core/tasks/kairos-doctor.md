@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.4.1
+kairos-version: 3.5.0
 id: kairos-doctor
 title: Health Check do Framework Kairos
 agent: kairos
@@ -89,6 +89,9 @@ Ler `.kairos-core/manifest.yaml` e validar cada entrada:
      em arquivo framework — requer atenção mas não é fatal)
 - [ ] Para cada `owned_sections[*].path`: arquivo existe
   → ❌ FAIL se ausente
+- [ ] Para cada `sync_files[*].path`: arquivo existe no filesystem
+  → ❌ FAIL com "manifesto lista {path} em sync_files mas arquivo não existe" se ausente
+  (nota: sem verificação de SHA — sync_files não tem sha256)
 - [ ] Para arquivos `.md` com frontmatter `kairos-owned: true`: validar que path está em
   `owned_files`
   → ⚠️ WARN "arquivo marca-se como kairos-owned mas não está no manifesto: {path}"
@@ -96,7 +99,7 @@ Ler `.kairos-core/manifest.yaml` e validar cada entrada:
   `kairos-owned: true`
   → ⚠️ WARN "arquivo no manifesto sem frontmatter kairos-owned: {path}"
 
-**10. Validade de Marcadores em Arquivos Mistos**
+**10. Validade de Marcadores e SHA de Blocos em Arquivos Mistos**
 
 Para cada entrada em `owned_sections[*]` do tipo `markdown_blocks`:
 
@@ -105,6 +108,27 @@ Para cada entrada em `owned_sections[*]` do tipo `markdown_blocks`:
   → ❌ FAIL "marker {name} ausente/desemparelhado em {path}" se inválido
 - [ ] Nenhum marker órfão (`KAIROS-MANAGED-START/END` sem par) existe no arquivo
   → ❌ FAIL se houver
+- [ ] Para cada bloco com `sha256` declarado: calcular SHA do conteúdo interno (excluindo
+  linhas de marker) e comparar com o registrado
+  → ⚠️ WARN "drift de SHA no bloco {name} de {path}" se divergir
+
+Para cada entrada em `owned_sections[*]` do tipo `yaml_keys`:
+
+- [ ] Para cada chave em `owned_keys` com `sha256_by_key[chave]` declarado: ler o campo
+  `sha_method` da entrada no manifesto (especificação canônica do algoritmo de serialização),
+  serializar o valor da chave usando esse algoritmo e comparar o SHA com o registrado
+  → ⚠️ WARN "drift de SHA na chave {chave} de {path}" se divergir
+
+Para cada entrada em `owned_sections[*]` do tipo `env_sections`:
+
+- [ ] Para cada seção em `owned_sections[*]` com `sha256` declarado: verificar que os markers
+  `# KAIROS-MANAGED-START: {nome}` e `# KAIROS-MANAGED-END: {nome}` existem no arquivo
+  → ❌ FAIL "marker {nome} ausente/desemparelhado em {path}" se inválido
+- [ ] Calcular SHA do conteúdo interno (excluindo linhas de marker) e comparar com o registrado
+  → ⚠️ WARN "drift de SHA na seção {nome} de {path}" se divergir
+
+> SHAs de `owned_sections` são verificados com WARN (não FAIL) — drift indica conteúdo
+> framework-owned que foi modificado localmente; operável mas requer atenção do *pre-push.
 
 ---
 

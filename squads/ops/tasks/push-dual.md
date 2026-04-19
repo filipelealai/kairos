@@ -117,6 +117,14 @@ git checkout filipe-instance -- .kairos-core/docs/scope.md
 
 # L3 — Documentação pública
 git checkout filipe-instance -- CHANGELOG.md
+```
+
+**`sync_files` — Documentação da instância (sincronizada, sem ownership de update):**
+
+Diferente dos `owned_files`, arquivos em `sync_files` são copiados integralmente para `main` mas nunca serão sobrescritos por um `kairos update` futuro — o conteúdo é instância-específico e pertence ao usuário.
+
+```bash
+# sync_files (fonte: manifest.yaml → sync_files)
 git checkout filipe-instance -- README.md
 ```
 
@@ -196,6 +204,54 @@ runtime:
 versioning:
   ... (copiado integralmente)
 ```
+
+##### .env.example (env_sections)
+
+**Verificar skip:**
+1. Para cada seção declarada em `owned_sections` do `.env.example` no manifesto, extrair o conteúdo entre `# KAIROS-MANAGED-START: {nome}` e `# KAIROS-MANAGED-END: {nome}` do arquivo em `filipe-instance`.
+2. Montar a string resultante: os blocos concatenados na mesma ordem, mantendo os markers START/END.
+3. Comparar com o conteúdo atual de `main:.env.example` (apenas as seções gerenciadas).
+4. Se idêntico → `→ skip: conteúdo managed sem mudança` — não reprocessar.
+
+Caso contrário, escrever em `main/.env.example` **apenas** os blocos gerenciados (na mesma ordem), sem conteúdo user-owned. Seções não declaradas no manifesto (ex: `# ── Squad-specific ──...`) **não** vão para `main`.
+
+Formato esperado do `.env.example` em `main`:
+
+```
+# ============================================================
+# Kairos — Environment Variables
+# ============================================================
+# Copy this file to .env and fill in your values.
+# All variables are optional except ANTHROPIC_API_KEY.
+# DO NOT commit .env — it contains secrets.
+# ============================================================
+
+# KAIROS-MANAGED-START: ai-providers
+{conteúdo da seção}
+# KAIROS-MANAGED-END: ai-providers
+
+# KAIROS-MANAGED-START: automation
+{conteúdo da seção}
+# KAIROS-MANAGED-END: automation
+
+# KAIROS-MANAGED-START: database
+{conteúdo da seção}
+# KAIROS-MANAGED-END: database
+
+# KAIROS-MANAGED-START: communication
+{conteúdo da seção}
+# KAIROS-MANAGED-END: communication
+
+# KAIROS-MANAGED-START: search
+{conteúdo da seção}
+# KAIROS-MANAGED-END: search
+
+# KAIROS-MANAGED-START: version-control
+{conteúdo da seção}
+# KAIROS-MANAGED-END: version-control
+```
+
+Seções declaradas no manifesto (na ordem): `ai-providers`, `automation`, `database`, `communication`, `search`, `version-control`.
 
 ##### Resumo ao final do Passo 2b
 
@@ -278,4 +334,4 @@ filipe-instance (trabalho)
 
 Quando o manifesto evolui (story 5.3 refresh de SHAs, novos owned_files adicionados):
 - Atualizar a lista de `git checkout` no Passo 2
-- A lista nesta task deve sempre espelhar `manifest.yaml → owned_files`
+- A lista nesta task deve sempre espelhar `manifest.yaml → owned_files` e `manifest.yaml → sync_files`

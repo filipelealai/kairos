@@ -56,5 +56,8 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [3.16](3.16.story.md) | *validate-story: Verificar Ordem do Cabeçalho e Estrutura dos ACs | Draft |
 | [3.17](3.17.story.md) | Pre-Push Step 4: Corrigir Fallback de Epoch para Gate Não Commitado | Draft |
 | [5.1](5.1.story.md) | Segregação Framework × Usuário via Manifesto de Ownership | Done |
-| [5.8](5.8.story.md) | SHA Auto-referencial do manifest.yaml: usar sentinel em vez de hash real | Draft |
-| [5.9](5.9.story.md) | push-dual Passo 2b: skip real por conteúdo managed, não por commits | Draft |
+| [5.8](5.8.story.md) | SHA Auto-referencial do manifest.yaml: usar sentinel em vez de hash real | Done |
+| [5.9](5.9.story.md) | push-dual Passo 2b: skip real por conteúdo managed, não por commits | Done |
+| [5.10](5.10.story.md) | Manifest owned_sections: SHA por bloco para suporte a updates | In Review |
+| [5.11](5.11.story.md) | Manifest yaml_keys: campo sha_method como especificação canônica de serialização | Draft |
+| [5.12](5.12.story.md) | Manifest sync_files: categoria para arquivos sincronizados sem ownership de update | Draft |

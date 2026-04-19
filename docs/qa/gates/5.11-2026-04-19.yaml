@@ -1,0 +1,39 @@
+schema: 2
+story: "5.11"
+story_title: "Manifest yaml_keys: campo sha_method como especificação canônica de serialização"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-19T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: manifest.yaml → entrada yaml_keys de core-config.yaml tem campo `sha_method: \"yaml.dump({key: value}, sort_keys=False)\"` (linha 190)"
+    - "✅ AC2: kairos-pre-push.md Passo 2.7b instrui leitura de `sha_method` do manifesto como especificação canônica antes de serializar (linhas 289-290)"
+    - "✅ AC3: kairos-doctor.md Check 10 instrui leitura de `sha_method` do manifesto para yaml_keys (linha 118)"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/manifest.yaml"
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+    - "✅ .kairos-core/tasks/kairos-doctor.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Fora de escopo confirmado: sha_method não foi adicionado a markdown_blocks nem env_sections — algoritmo trivial, sem ambiguidade nesses tipos. Correto."
