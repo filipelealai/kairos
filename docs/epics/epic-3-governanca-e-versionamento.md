@@ -52,10 +52,10 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | [3.21](../stories/3.21.story.md) | *yolo: Sessão Autônoma Ponta-a-Ponta para kairos-core | Done |
 | [3.22](../stories/3.22.story.md) | *implement all: Implementação em Massa de Stories type: instance | Done |
 | [3.23](../stories/3.23.story.md) | *validate-story all: Validação em Massa de Stories | Done |
-| [3.24](../stories/3.24.story.md) | Pre-Push: Mensagem de Commit sem Referência a Story | Draft |
-| [3.25](../stories/3.25.story.md) | Executor e *review: Sincronizar Status no Epic em Cada Transição | Draft |
-| [3.26](../stories/3.26.story.md) | *validate-story: Remover Check de README em docs/stories/ | Draft |
-| [3.27](../stories/3.27.story.md) | *review: Remover Autoridade de Transição para Done | Draft |
+| [3.24](../stories/3.24.story.md) | Pre-Push: Mensagem de Commit sem Referência a Story | Done |
+| [3.25](../stories/3.25.story.md) | Executor e *review: Sincronizar Status no Epic em Cada Transição | Done |
+| [3.26](../stories/3.26.story.md) | *validate-story: Remover Check de README em docs/stories/ | Done |
+| [3.27](../stories/3.27.story.md) | *review: Remover Autoridade de Transição para Done | Done |
 
 ---
 
@@ -89,4 +89,12 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | 2026-04-18 | Stories 3.21, 3.22, 3.23 criadas — *yolo, *implement all, *validate-story all |
 | 2026-04-18 | Story 3.21 reescrita — *yolo redesenhado como estado de sessão (liga/desliga), escopo restrito a instanciado |
 | 2026-04-18 | Stories 3.24, 3.25 criadas — commit sem referência a story, sincronização de status no epic |
+| 2026-04-18 | Story 3.24 iniciada — In Progress |
+| 2026-04-18 | Story 3.24 concluída — In Review |
+| 2026-04-18 | Story 3.25 iniciada — In Progress |
+| 2026-04-18 | Story 3.25 concluída — In Review |
 | 2026-04-18 | Story 3.26 criada — remover check de README em *validate-story (falso positivo) |
+| 2026-04-18 | Story 3.26 concluída — In Review |
+| 2026-04-18 | Story 3.27 iniciada — In Progress |
+| 2026-04-18 | Story 3.27 concluída — In Review |
+| 2026-04-18 | *pre-push: stories 3.24, 3.25, 3.26, 3.27 → Done (v3.3.1) |

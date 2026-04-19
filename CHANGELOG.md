@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.3.1] — 2026-04-18
+
+### Corrigido
+- kairos-pre-push: mensagem de commit derivada do git sem referência a story; story-lifecycle e kairos-review: sync de status no epic em cada transição; kairos-validate-story: removido falso positivo do check de README; kairos-review: guard explícito — *review nunca transita para Done
+
+---
+
 ## [3.3.0] — 2026-04-18
 
 ### Adicionado

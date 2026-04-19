@@ -1,0 +1,43 @@
+schema: 2
+story: "3.25"
+story_title: "Executor e *review: Sincronizar Status no Epic em Cada Transição"
+epic: 3
+verdict: "RESSALVA"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T00:00:00Z"
+quality_score: 90
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: story-lifecycle.md seção 'Ao INICIAR' tem passos 4–5: atualizar tabela do epic Draft → In Progress + entrada no Change Log do epic"
+    - "✅ AC2: story-lifecycle.md seção 'Ao CONCLUIR' tem passos 5–6: atualizar tabela do epic In Progress → In Review + entrada no Change Log do epic"
+    - "✅ AC3: kairos-review.md Passo 9 BLOCK executa transição In Review → In Progress na story + atualiza tabela do epic + entrada no Change Log do epic"
+    - "✅ AC4: Novos passos inseridos como numeração sequencial obrigatória nos protocolos existentes — mesmo nível dos passos de status da story"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .claude/rules/story-lifecycle.md"
+    - "✅ .kairos-core/tasks/kairos-review.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "medium"
+    description: "A story que adiciona o requisito de sincronização do epic não aplicou esse requisito à sua própria implementação. Tabela do epic-3 ainda mostra 'Draft' para 3.25 (deveria ser 'In Review'). Entradas de INICIAR e CONCLUIR ausentes no Change Log do epic para esta story."
+    recommendation: "Atualizar célula da tabela no epic para 'In Review' e adicionar entradas retrospectivas de lifecycle no Change Log do epic antes do *pre-push. Aplicar o próprio protocolo que a story implementa."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Atualizar docs/epics/epic-3-governanca-e-versionamento.md: tabela 3.25 Draft → In Review + entradas de lifecycle no Change Log"
+  - "⚠️ O protocolo implementado por esta story deve ser aplicado à sua própria implementação (eat your own dog food)"

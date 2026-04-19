@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.2.1
+kairos-version: 3.3.1
 task: Kairos Validate Story
 responsavel: "@kairos"
 responsavel_type: agent
@@ -221,11 +221,9 @@ Regras de pontuação:
 - Nome do arquivo segue `{epic}.{N}.story.md`? (ex: `3.1.story.md` para epic 3, story 1)
 - O número do epic no nome bate com o campo `**Epic:**` no cabeçalho?
 - O story_id solicitado bate com o epic declarado no arquivo?
-- Story está listada em `docs/stories/README.md`?
 - Story está listada no epic file `docs/epics/epic-{N}-*.md`?
 
 Inconsistência de ID → ❌ FALHA.
-Não listada em README mas arquivo existe → ⚠️ RESSALVA.
 
 ---
 
@@ -273,7 +271,7 @@ INVÁLIDA se qualquer:
 
 RESSALVA se:
   - Nenhuma condição de INVÁLIDA
-  - Alguma ⚠️ (seção recomendada ausente, ACs vagos, não listada em README, referência informal)
+  - Alguma ⚠️ (seção recomendada ausente, ACs vagos, referência informal)
   - score entre 50-79
 
 VÁLIDA se:
@@ -312,7 +310,6 @@ VÁLIDA se:
 
 ━━━ CONSISTÊNCIA ━━━
   {✅/⚠️/❌} ID e nomenclatura: {nota}
-  {✅/⚠️/❌} Listada em README: {nota}
   {✅/⚠️/❌} Listada no epic file: {nota}
   {✅/⚠️/❌} Referências cruzadas: {nota}
 

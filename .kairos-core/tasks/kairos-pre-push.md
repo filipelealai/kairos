@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.2.1
+kairos-version: 3.3.1
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -258,20 +258,55 @@ Pré-condição: Passo 2.7 concluído (kairos-version atualizado nos arquivos mo
 1. Execute `git status` para listar arquivos com changes relevantes (excluindo `.kairos-core/runtime/`, `data/`, `node_modules/`)
 
 2. Se existem arquivos relevantes não commitados:
-   a. Identifique a story ativa (a que teve gate confirmado no Passo 1)
-   b. Converta o título da story para kebab-case: minúsculas, espaços → hífens, remover acentos e caracteres especiais
-   c. Leia a versão atual de `.kairos-core/core-config.yaml`
-   d. Exiba:
+   a. Derive a descrição e o tipo do commit automaticamente a partir dos arquivos modificados (mesmo padrão do Passo 2.d para o CHANGELOG):
+
+      **Descrição:**
+
+      1. Para cada story ativa (gate_ok = true ou patch_stories_pendentes):
+         - Leia `docs/stories/{story-id}.story.md`
+         - Localize `## Execution Log` → `### O que foi feito`
+         - Se encontrado, pegue o primeiro item de lista (linha iniciada com `- `)
+         - Sanitize: remover `(story X.Y)`, `story X.Y`, backticks de paths, texto entre aspas duplas
+         → Se múltiplas stories: concatenar os bullets sanitizados separados por `; `
+         → Se ao menos uma story tem o bullet: usar como descrição (prioridade 1)
+
+      2. Se nenhuma story tem `## Execution Log` → `### O que foi feito`:
+         - Execute `git diff HEAD --name-only` e `git diff --cached --name-only`
+           → union dos dois conjuntos de arquivos modificados/adicionados
+         - Leia `.kairos-core/manifest.yaml` → `owned_files`
+           → mantenha apenas os arquivos que constam no manifesto
+           → separe em: novos (status `A`) vs modificados (status `M`)
+         - Se lista não vazia:
+           → descrição = `"{basename1}, {basename2}: adicionado|atualizado"`
+             (todos novos → `adicionado`; qualquer modificado → `atualizado`; usar basename sem path completo quando autoexplicativo)
+
+      3. Fallback final: `"ajuste de instrução no framework"`
+
+      **Tipo (type) — inferir do conteúdo:**
+      - `fix` → se a descrição contém palavras de correção (`corrigir`, `fix`, `corrige`, `ajuste`, `remove`, `bug`) ou se todos os arquivos modificados são `M` (sem adições)
+      - `feat` → se há arquivos novos (`A`) ou a descrição indica criação de capacidade nova
+      - `docs` → se todos os arquivos modificados são `.md` e nenhum é task ou persona de agente
+      - `chore` → se os únicos arquivos modificados são manifest, core-config, CHANGELOG, README ou arquivos de kairos-version sync
+      - Padrão quando ambíguo: `feat`
+
+   b. Leia a versão atual de `.kairos-core/core-config.yaml`
+   c. Exiba para ciência (não para edição):
       ```
       Mudanças não commitadas encontradas.
-      Mensagem sugerida: "feat: {story-title-em-kebab-case} v{version}"
+      Mensagem sugerida: "{type}: {descrição derivada} v{version}"
       Deseja fazer commit agora? (s/n):
       ```
-   e. Se `s` (ou `sim`):
+   d. Se `s` (ou `sim`):
       - Execute `git add` nos arquivos relevantes (excluindo `.kairos-core/runtime/`, `data/`, `node_modules/`)
-      - Execute `git commit -m "feat: {story-title-em-kebab-case} v{version}"`
+      - Construa a mensagem de commit:
+        - Subject: `{type}: {descrição derivada} v{version}` — sem referência a story ID ou título
+        - Se há story(ies) ativa(s): adicionar corpo estendido com referência interna:
+          ```
+          Stories: {story-id1}[, {story-id2}, ...]
+          ```
+      - Execute `git commit` passando subject + corpo via heredoc (se houver stories ativas) ou apenas subject (se não houver)
       - Confirme: `✓ Commit realizado`
-   f. Se `n` (ou `não`):
+   e. Se `n` (ou `não`):
       **BLOCK:**
       ```
       🚫 BLOCK — Mudanças não commitadas. Faça o commit manualmente e rode *pre-push novamente.

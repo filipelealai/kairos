@@ -1,0 +1,36 @@
+schema: 2
+story: "3.27"
+story_title: "*review: Remover Autoridade de Transição para Done"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-review.md Passo 9 contém bloco proibitivo explícito: '⛔ PROIBIDO: *review nunca transita a story para Done'"
+    - "✅ AC2: Instrução esclarece que a transição In Review → Done é responsabilidade exclusiva do *pre-push"
+    - "✅ AC3: Bloco usa ícone ⛔ + blockquote como primeiro elemento do Passo 9 — visível e inequívoco antes de qualquer ação do revisor"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-review.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations: []

@@ -1,0 +1,41 @@
+schema: 2
+story: "3.24"
+story_title: "Pre-Push: Mensagem de Commit sem Referência a Story"
+epic: 3
+verdict: "RESSALVA"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T00:00:00Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Passo 3 do kairos-pre-push.md deriva descrição automaticamente a partir do Execution Log → git diff → fallback, sem interpolação de {story_id} ou {story_title}"
+    - "✅ AC2: Formato da mensagem segue conventional commits — '{type}: {descrição derivada} v{version}' com type inferido do conteúdo (fix/feat/docs/chore)"
+    - "✅ AC3: Passo 3 sub-passo 2 reescrito inteiramente — templates antigos com story ID/título removidos"
+    - "✅ AC4: Story ativa mencionada apenas no corpo estendido do commit ('Stories: {id}'), nunca no subject line"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "Tabela de stories do epic-3 ainda mostra status 'Draft' para 3.24 (deveria ser 'In Review'). Entradas de INICIAR e CONCLUIR ausentes no Change Log do epic para esta story."
+    recommendation: "Atualizar célula da tabela no epic para 'In Review' e adicionar entradas retrospectivas no Change Log do epic antes do *pre-push."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Atualizar docs/epics/epic-3-governanca-e-versionamento.md: tabela 3.24 Draft → In Review + entradas de lifecycle no Change Log"

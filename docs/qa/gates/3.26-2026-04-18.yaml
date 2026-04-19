@@ -1,0 +1,38 @@
+schema: 2
+story: "3.26"
+story_title: "*validate-story: Remover Check de README em docs/stories/"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-18T00:00:00Z"
+quality_score: 98
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Passo 5 de kairos-validate-story.md não contém verificação de README — apenas ID/nomenclatura, epic file e referências cruzadas"
+    - "✅ AC2: Passo 7 não tem dedução específica para README; executor confirma no Execution Log que não havia linha dedicada, apenas menção nas condições RESSALVA (também removida)"
+    - "✅ AC3: Passo 8 template seção CONSISTÊNCIA contém apenas: ID e nomenclatura, Listada no epic file, Referências cruzadas — sem linha 'Listada em README'"
+    - "✅ AC4: Busca completa no arquivo confirmada pelo executor — 4 remoções pontuais nos Passos 5, 7 e 8"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-validate-story.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Micro-gap: epic Change Log tem entrada 'concluída' para 3.26 mas está faltando a entrada 'iniciada' (INICIAR). Não bloqueante — tabela do epic mostra 'In Review' corretamente."
