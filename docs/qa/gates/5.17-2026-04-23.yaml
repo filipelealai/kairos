@@ -1,0 +1,63 @@
+schema: 2
+story: "5.17"
+story_title: "`.github/` Scaffold (Templates de PR/Issue e CODEOWNERS)"
+epic: 5
+verdict: "RESSALVA"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-23T00:00:00.000Z"
+quality_score: 80
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Pasta .github/ criada com estrutura completa — CODEOWNERS, PULL_REQUEST_TEMPLATE.md, ISSUE_TEMPLATE/bug_report.md, ISSUE_TEMPLATE/feature_request.md"
+    - "✅ AC2: CODEOWNERS define '* @filipelealweb' (default) e '/.kairos-core/ @filipelealweb' (explícito); sem frontmatter (não é markdown)"
+    - "✅ AC3: PULL_REQUEST_TEMPLATE.md contém ## Resumo, ## Tipo de mudança (checkboxes), ## Story relacionada, ## Checklist (manifest, *doctor, *review, *pre-push, CHANGELOG)"
+    - "✅ AC4: ISSUE_TEMPLATE/bug_report.md com frontmatter YAML (name: Bug report, about, labels: bug) e seções Descrição, Passos de reprodução, Comportamento esperado, Comportamento atual, Versão, Contexto adicional"
+    - "✅ AC5: ISSUE_TEMPLATE/feature_request.md com frontmatter YAML (name: Feature request, about, labels: enhancement) e seções Motivação, Proposta, Alternativas consideradas, Escopo sugerido (checkboxes)"
+    - "✅ AC6: Frontmatter 'kairos-owned: true' + 'kairos-version: 3.6.0' nos 3 templates markdown; CODEOWNERS sem frontmatter"
+    - "✅ AC7: Manifest atualizado com 4 entries em owned_files (L3) com sha256 calculados: .github/CODEOWNERS, .github/PULL_REQUEST_TEMPLATE.md, .github/ISSUE_TEMPLATE/bug_report.md, .github/ISSUE_TEMPLATE/feature_request.md"
+    - "✅ AC8: push-dual.md Passo 2a atualizado — 4 linhas 'git checkout filipe-instance -- .github/...' presentes"
+    - "✅ AC9: CONTRIBUTING.md atualizado — seção 'Reportar issues' referencia .github/ISSUE_TEMPLATE/ e seção 'Fluxo de PR' menciona PULL_REQUEST_TEMPLATE.md"
+    - "✅ AC10: Bump MINOR 3.5.3 → 3.6.0 em core-config.yaml + entry [3.6.0] no CHANGELOG.md"
+  manual:
+    - "⚠️ AC11: '@kairos *doctor' passa e valida sha256 dos 4 novos owned_files — checkbox [ ] NÃO marcado; Execution Log explicitamente declara que não foi executado"
+  gaps:
+    - "❌ AC3 (sub-item): Checkbox 'instance' ausente em PULL_REQUEST_TEMPLATE.md → Tipo de mudança. Story especificava 'kairos-core / instance / docs / bugfix / user-content' (5 tipos). Implementado: kairos-core / docs / bugfix / user-content (4 tipos). Executor não documentou a omissão no Execution Log."
+
+files:
+  present:
+    - "✅ .github/CODEOWNERS"
+    - "✅ .github/PULL_REQUEST_TEMPLATE.md"
+    - "✅ .github/ISSUE_TEMPLATE/bug_report.md"
+    - "✅ .github/ISSUE_TEMPLATE/feature_request.md"
+    - "✅ .kairos-core/manifest.yaml (4 entries owned_files L3)"
+    - "✅ squads/ops/tasks/push-dual.md (4 linhas .github/)"
+    - "✅ CHANGELOG.md (entry [3.6.0])"
+  missing: []
+
+checks:
+  version_bumped: "✅ PASS — MINOR 3.5.3 → 3.6.0 confirmado no CHANGELOG"
+  changelog_updated: "✅ PASS — [3.6.0] com descrição completa da mudança"
+  story_file_consistent: "✅ PASS — Status In Review, Epic 5, escopo coerente"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "⚠️ RESSALVA — Execution Log presente; declara que *doctor não foi executado e nota sobre sha256 e frontmatter no PR template"
+
+issues:
+  - severity: "medium"
+    description: "Checkbox 'instance' ausente no PULL_REQUEST_TEMPLATE.md → seção '## Tipo de mudança'. Story especificava 5 tipos (kairos-core / instance / docs / bugfix / user-content); implementado com 4 (omitido 'instance'). Não documentado no Execution Log."
+    recommendation: "Adicionar checkbox '- [ ] `instance` — novo squad, agente ou worker (conteúdo instanciado)' na seção Tipo de mudança. Edição simples."
+  - severity: "medium"
+    description: "AC de '*doctor passa e valida sha256' não foi executado — sha256 dos 4 arquivos foram calculados no momento da criação, mas integridade final não foi confirmada. Se *pre-push alterar esses arquivos, os sha256 no manifest precisarão ser atualizados."
+    recommendation: "Executar '@kairos *doctor' antes do *pre-push. Verificar especialmente se sha256 do PULL_REQUEST_TEMPLATE.md no manifest está correto (frontmatter pode ter sido ajustado)."
+  - severity: "low"
+    description: "Frontmatter 'kairos-owned: true' no PULL_REQUEST_TEMPLATE.md aparece visível para contribuidores externos como texto no corpo do PR. Executor reconheceu o trade-off."
+    recommendation: "Discussão futura sobre alternativa de marcação para PR templates (que não são processados como issue templates pelo GitHub). Não bloqueia — decisão consciente do executor."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Adicionar checkbox 'instance' no PULL_REQUEST_TEMPLATE.md — seção Tipo de mudança"
+  - "⚠️ Executar '@kairos *doctor' para validar sha256 dos 4 novos owned_files antes do *pre-push"
+  - "⚠️ Se sha256 precisar ser recalculado após correção do PR template, atualizar manifest.yaml antes do commit"

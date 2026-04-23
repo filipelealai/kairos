@@ -1,0 +1,52 @@
+schema: 2
+story: "5.16"
+story_title: "CODE_OF_CONDUCT.md (Código de Conduta)"
+epic: 5
+verdict: "RESSALVA"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-23T00:00:00.000Z"
+quality_score: 88
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: CODE_OF_CONDUCT.md criado na raiz, versão Contributor Covenant v2.1 adaptada (PT-BR)"
+    - "✅ AC2: Seções obrigatórias presentes — Our Pledge (Nossa Promessa), Our Standards (Nossos Padrões), Enforcement Responsibilities (Responsabilidades de Aplicação), Scope (Escopo), Enforcement (Aplicação, com e-mail), Enforcement Guidelines (4 níveis: Correção, Advertência, Banimento Temporário, Banimento Permanente), Attribution"
+    - "✅ AC3: E-mail de denúncia definido — 'filipeleal@vendoteca.com' declarado explicitamente no arquivo. AC satisfeito."
+    - "✅ AC4: CODE_OF_CONDUCT.md adicionado em manifest.yaml → sync_files (path: CODE_OF_CONDUCT.md, layer: L3, sem sha256)"
+    - "✅ AC5: push-dual.md Passo 2a atualizado — linha 'git checkout filipe-instance -- CODE_OF_CONDUCT.md' presente na seção sync_files"
+    - "✅ AC6: CONTRIBUTING.md já continha seção 'Código de conduta' com link para CODE_OF_CONDUCT.md (story 5.15 antecipou o AC)"
+    - "✅ AC7: Bump PATCH 3.5.2 → 3.5.3 em core-config.yaml + entry [3.5.3] no CHANGELOG.md"
+  manual:
+    - "⚠️ AC8: '@kairos *doctor' continua passando — checkbox [ ] NÃO marcado pelo executor; Execution Log explicitamente declara que não foi executado nesta sessão"
+  gaps: []
+
+files:
+  present:
+    - "✅ CODE_OF_CONDUCT.md"
+    - "✅ .kairos-core/manifest.yaml (sync_files: CODE_OF_CONDUCT.md)"
+    - "✅ squads/ops/tasks/push-dual.md (sync_files section: CODE_OF_CONDUCT.md)"
+    - "✅ CHANGELOG.md (entry [3.5.3])"
+  missing: []
+
+checks:
+  version_bumped: "✅ PASS — PATCH 3.5.2 → 3.5.3 confirmado no CHANGELOG"
+  changelog_updated: "✅ PASS — [3.5.3] com descrição da mudança"
+  story_file_consistent: "✅ PASS — Status In Review, Epic 5, escopo coerente"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "⚠️ RESSALVA — Execution Log presente mas declara que AC de *doctor não foi executado"
+
+issues:
+  - severity: "medium"
+    description: "Discrepância entre Execution Log e implementação real: Execution Log declara e-mail 'filipeeleaal@gmail.com', mas CODE_OF_CONDUCT.md usa 'filipeleal@vendoteca.com'"
+    recommendation: "Confirmar com o usuário qual e-mail é o correto e corrigir o Execution Log (ou o arquivo) para consistência. Ambos são e-mails válidos do usuário — decisão de qual usar."
+  - severity: "low"
+    description: "AC de '*doctor continua passando' não foi executado — checkbox não marcado, explicitamente declarado como pendência"
+    recommendation: "Executar '@kairos *doctor' antes do *pre-push para confirmar integridade"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Verificar com o usuário: e-mail de denúncia deve ser 'filipeeleaal@gmail.com' (conforme sugestão original da story) ou 'filipeleal@vendoteca.com' (conforme implementado)? Edição simples em CODE_OF_CONDUCT.md."
+  - "⚠️ Executar '@kairos *doctor' para validar antes do *pre-push"

@@ -6,6 +6,27 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.6.0] — 2026-04-23
+
+### Adicionado
+- `.github/` scaffold: CODEOWNERS, PULL_REQUEST_TEMPLATE.md, ISSUE_TEMPLATE/bug_report.md, ISSUE_TEMPLATE/feature_request.md; 4 entries em manifest owned_files (L3); push-dual Passo 2a atualizado; CONTRIBUTING.md atualizado com menção aos templates
+
+---
+
+## [3.5.3] — 2026-04-23
+
+### Adicionado
+- CODE_OF_CONDUCT.md: código de conduta baseado no Contributor Covenant v2.1
+
+---
+
+## [3.5.2] — 2026-04-23
+
+### Adicionado
+- CONTRIBUTING.md: governança de contribuição ao repo público (stack-agnóstico, ownership, *doctor)
+
+---
+
 ## [3.5.1] — 2026-04-23
 
 ### Adicionado

@@ -117,6 +117,12 @@ git checkout filipe-instance -- .kairos-core/docs/scope.md
 
 # L3 — Documentação pública
 git checkout filipe-instance -- CHANGELOG.md
+
+# L3 — .github/ scaffold
+git checkout filipe-instance -- .github/CODEOWNERS
+git checkout filipe-instance -- .github/PULL_REQUEST_TEMPLATE.md
+git checkout filipe-instance -- ".github/ISSUE_TEMPLATE/bug_report.md"
+git checkout filipe-instance -- ".github/ISSUE_TEMPLATE/feature_request.md"
 ```
 
 **`sync_files` — Documentação da instância (sincronizada, sem ownership de update):**
@@ -126,6 +132,8 @@ Diferente dos `owned_files`, arquivos em `sync_files` são copiados integralment
 ```bash
 # sync_files (fonte: manifest.yaml → sync_files)
 git checkout filipe-instance -- README.md
+git checkout filipe-instance -- CONTRIBUTING.md
+git checkout filipe-instance -- CODE_OF_CONDUCT.md
 ```
 
 ---

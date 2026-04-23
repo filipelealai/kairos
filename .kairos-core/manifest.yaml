@@ -151,7 +151,21 @@ owned_files:
     sha256: 475fd6445c0b67096168d3c6455dad02457d2708d072a5b5355e32129f968b0b
   - path: CHANGELOG.md
     layer: L3
-    sha256: 82ff32a5228a11d828675cb5487ee000ebaf21a124f7c6513a0d7824da4ae7c9
+    sha256: ba4773a3e07d7acccc9ac47eb2ee1c39cb32866a1c19fc91153ac160ea463ca2
+
+  # .github/ scaffold (L3 — governança do repo público)
+  - path: .github/CODEOWNERS
+    layer: L3
+    sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4
+  - path: .github/PULL_REQUEST_TEMPLATE.md
+    layer: L3
+    sha256: 7772ebda4603e589f7b7a4299daf7079fe1fc4f068d1ce05e420dd2623f877ad
+  - path: .github/ISSUE_TEMPLATE/bug_report.md
+    layer: L3
+    sha256: c7568837cf91b0f5f3763fa564f1e4c036d2d34216748055910c4fb420702534
+  - path: .github/ISSUE_TEMPLATE/feature_request.md
+    layer: L3
+    sha256: 38efe7ab50968c599f961a1151d93892d3f65e726bccdcc1316aa9a859c3fe7a
 
 # -----------------------------------------------------------------------------
 # Arquivos sincronizados para origin/main, mas não framework-owned para update
@@ -161,6 +175,12 @@ owned_files:
 sync_files:
 
   - path: README.md
+    layer: L3
+
+  - path: CONTRIBUTING.md
+    layer: L3
+
+  - path: CODE_OF_CONDUCT.md
     layer: L3
 
 # -----------------------------------------------------------------------------

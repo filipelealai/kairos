@@ -44,15 +44,19 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.12](../stories/5.12.story.md) | Manifest sync_files: categoria para arquivos sincronizados sem ownership de update | Done |
 | [5.13](../stories/5.13.story.md) | ownership.md: documentar sync_files como terceira categoria do manifesto | Done |
 | [5.14](../stories/5.14.story.md) | push-dual Passo 3: commit para main usa mensagem do commit em filipe-instance | Done |
+| [5.15](../stories/5.15.story.md) | CONTRIBUTING.md (Governança de Contribuição ao Repo Público) | In Review |
+| [5.16](../stories/5.16.story.md) | CODE_OF_CONDUCT.md (Código de Conduta) | In Review |
+| [5.17](../stories/5.17.story.md) | `.github/` Scaffold (Templates de PR/Issue e CODEOWNERS) | Done |
+| [5.19](../stories/5.19.story.md) | CI: Validação de Manifest em PRs (GitHub Actions) | Draft |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
 
-- **5.15** — Configuração de branch protection no repo público
-- **5.16** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.17** — Publicação de `@kairos/core` no npm
-- **5.18** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
+- **5.18** — Configuração de branch protection no repo público (depende de 5.17 para CODEOWNERS; após 5.19, pode incluir workflow passando como required check)
+- **5.20** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.21** — Publicação de `@kairos/core` no npm
+- **5.22** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
 
 ---
 
@@ -89,3 +93,11 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-23 | Story 5.13 concluída — In Review |
 | 2026-04-23 | Story 5.14 criada — push-dual Passo 3: commit para main com mensagem de filipe-instance |
 | 2026-04-23 | Stories 5.13 e 5.14 Done — bump PATCH 3.5.0 → 3.5.1 |
+| 2026-04-23 | Stories 5.15, 5.16, 5.17 e 5.19 criadas — governança do repo público (CONTRIBUTING, CODE_OF_CONDUCT, .github/ scaffold, CI validate-manifest). Candidata "branch protection" renumerada 5.15 → 5.18; demais candidatas renumeradas (5.16→5.20, 5.17→5.21, 5.18→5.22) |
+| 2026-04-23 | Story 5.15 iniciada — In Progress |
+| 2026-04-23 | Story 5.15 concluída — In Review |
+| 2026-04-23 | Story 5.16 iniciada — In Progress |
+| 2026-04-23 | Story 5.16 concluída — In Review |
+| 2026-04-23 | Story 5.17 iniciada — In Progress |
+| 2026-04-23 | Story 5.17 concluída — In Review |
+| 2026-04-23 | Story 5.17 Done — gate RESSALVA confirmado (*pre-push) |
