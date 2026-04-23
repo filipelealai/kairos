@@ -20,7 +20,7 @@ owned_files:
     sha256: 5d4e47f11048215d7a5e3d3ada33a4ea69fdf72063dbe2be072ae458138ef2b6
   - path: .claude/rules/ownership.md
     layer: L1
-    sha256: 9c7f5220d3382a0f56bf4390ed7a90b660af5d9996da27d968eaa89f98eeffe6
+    sha256: a264a0fe7fae7f6e3a40e13bbcb2b5a66c81b074d50c37803b26a494a8a02115
   - path: .claude/rules/agent-authority.md
     layer: L1
     sha256: 7ce35a48e62b4b5f187d607c206ea12b7eccfacbb92c55cc172357c63e8dacc0
@@ -151,7 +151,7 @@ owned_files:
     sha256: 475fd6445c0b67096168d3c6455dad02457d2708d072a5b5355e32129f968b0b
   - path: CHANGELOG.md
     layer: L3
-    sha256: d459726003dca998f22b9bce3ce86c541c45eab43e58df1b2ae922f723d82524
+    sha256: 82ff32a5228a11d828675cb5487ee000ebaf21a124f7c6513a0d7824da4ae7c9
 
 # -----------------------------------------------------------------------------
 # Arquivos sincronizados para origin/main, mas não framework-owned para update

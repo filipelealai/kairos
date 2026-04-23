@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.3
+kairos-version: 3.5.1
 ---
 
 # Ownership — Fronteira Framework / Usuário
@@ -20,6 +20,14 @@ A fonte da verdade sobre o que é framework é **`.kairos-core/manifest.yaml`**.
 **Regra default-deny:**
 
 > Se um arquivo NÃO está listado no manifesto → é do usuário → não pode ser tocado por update ou por operação de @kairos.
+
+O manifesto organiza os artefatos framework em três categorias:
+
+| Categoria | Ownership de update | sha256 | Semântica |
+|-----------|--------------------|---------|-|
+| `owned_files` | Sim — framework é dono | Sim | Arquivo inteiro gerenciado pelo framework |
+| `owned_sections` | Sim — nas seções declaradas | Sim (por seção) | Arquivo misto: framework gerencia apenas os blocos/chaves marcados |
+| `sync_files` | Não | Não | Arquivo sincronizado para distribuição (ex: origin/main), mas o usuário pode sobrescrever sem conflito com o updater |
 
 Para arquivos mistos (ex: `CLAUDE.md`, `.claude/settings.json`, `.kairos-core/core-config.yaml`), o manifesto declara **quais seções/chaves** são framework-owned. O resto do arquivo é user-owned.
 
@@ -56,12 +64,14 @@ Presente antes da instalação do Kairos. Não listado no manifesto.
 1. **Antes de modificar um arquivo**, verificar se ele está no manifesto.
 2. Se estiver no manifesto **como arquivo inteiro** (`owned_files`): modificação autorizada (para @kairos ou executor com story).
 3. Se estiver no manifesto **como seções declaradas** (`owned_sections`): modificar **apenas** dentro dos blocos/chaves declarados.
-4. Se **não estiver no manifesto**: é conteúdo do usuário — **não modificar**, a menos que o próprio usuário peça explicitamente e a modificação não seja parte de um update/evolução de framework.
+4. Se estiver no manifesto **como `sync_files`**: tratar como user-owned — **não modificar** o conteúdo; apenas garantir sincronização.
+5. Se **não estiver no manifesto**: é conteúdo do usuário — **não modificar**, a menos que o próprio usuário peça explicitamente e a modificação não seja parte de um update/evolução de framework.
 
 ### Ao criar arquivos novos
 
-1. Se o novo arquivo é framework: adicioná-lo ao manifesto (`owned_files` com layer e sha256). Sem entry no manifesto, o arquivo é considerado user-criado.
-2. Se o arquivo é user-criado: **não** adicionar ao manifesto — ele deve permanecer fora.
+1. Se o novo arquivo é framework gerenciado: adicioná-lo ao manifesto (`owned_files` com layer e sha256). Sem entry no manifesto, o arquivo é considerado user-criado.
+2. Se o arquivo deve ser sincronizado para remotes mas não gerenciado pelo updater: adicioná-lo ao manifesto em `sync_files` (com `path` e `layer`, **sem** sha256).
+3. Se o arquivo é user-criado: **não** adicionar ao manifesto — ele deve permanecer fora.
 
 ### Ao remover arquivos
 
@@ -80,6 +90,29 @@ Arquivos como `CLAUDE.md`, `.claude/settings.json`, `.kairos-core/core-config.ya
 - **YAML/JSON:** o manifesto declara `owned_keys` — listas de chaves top-level ou paths dot-notation que são framework. Chaves fora dessa lista são user-owned.
 
 **Regra:** um update **nunca** modifica conteúdo fora dos blocos/keys declarados, mesmo que a ferramenta seja tecnicamente capaz.
+
+---
+
+## sync_files — Sincronização sem Ownership
+
+`sync_files` é a terceira categoria do manifesto. Ao contrário de `owned_files` e `owned_sections`, entradas em `sync_files` **não** conferem ownership de update ao framework — o updater não sobrescreve esse conteúdo.
+
+**Propósito:** garantir que determinados arquivos sejam incluídos na sincronização para remotes específicos (ex: `origin/main` no push-dual), sem transformá-los em artefatos gerenciados.
+
+**Formato da entrada:**
+
+```yaml
+sync_files:
+  - path: README.md
+    layer: L3
+```
+
+Diferencial em relação a `owned_files`:
+- **Sem `sha256`** — não há drift a detectar; apenas existência importa
+- **Sem ownership de update** — o usuário modifica livremente; o framework nunca sobrescreve
+- **layer declarado** — indica onde o arquivo se enquadra nas camadas de imutabilidade para fins de categorização, não de proteção
+
+**Regra para @kairos e o executor:** arquivos em `sync_files` são tratados como user-owned para fins de modificação. Não modificar seu conteúdo em operações de update ou evolução de framework — apenas garantir sua presença na sincronização.
 
 ---
 
