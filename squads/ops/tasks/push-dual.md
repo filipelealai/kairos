@@ -266,12 +266,15 @@ Passo 2b concluído:
 ### Passo 3 — Commit e push para origin/main
 
 ```bash
+# Capturar mensagem do commit mais recente em filipe-instance
+COMMIT_MSG=$(git log filipe-instance -1 --pretty=%B)
+
 # Verificar o que mudou em main
 git status
 
 # Se houver mudanças (framework evoluiu desde o último push-dual):
 git add <arquivos modificados>
-git commit -m "sync: framework files from filipe-instance → main (push-dual)"
+git commit -m "$COMMIT_MSG"
 
 # Push para o repo público
 git push origin main

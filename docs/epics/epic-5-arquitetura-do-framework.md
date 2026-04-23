@@ -42,15 +42,17 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.10](../stories/5.10.story.md) | Manifest owned_sections: SHA por bloco para suporte a updates | Done |
 | [5.11](../stories/5.11.story.md) | Manifest yaml_keys: campo sha_method como especificação canônica de serialização | Done |
 | [5.12](../stories/5.12.story.md) | Manifest sync_files: categoria para arquivos sincronizados sem ownership de update | Done |
+| [5.13](../stories/5.13.story.md) | ownership.md: documentar sync_files como terceira categoria do manifesto | Done |
+| [5.14](../stories/5.14.story.md) | push-dual Passo 3: commit para main usa mensagem do commit em filipe-instance | Done |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
 
-- **5.13** — Configuração de branch protection no repo público
-- **5.14** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.15** — Publicação de `@kairos/core` no npm
-- **5.16** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
+- **5.15** — Configuração de branch protection no repo público
+- **5.16** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.17** — Publicação de `@kairos/core` no npm
+- **5.18** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
 
 ---
 
@@ -83,3 +85,7 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-19 | Story 5.11 concluída — In Review |
 | 2026-04-19 | Story 5.12 iniciada — In Progress |
 | 2026-04-19 | Stories 5.10, 5.11 e 5.12 Done — bump MINOR 3.4.1 → 3.5.0 |
+| 2026-04-23 | Story 5.13 criada — ownership.md: sync_files como terceira categoria (recomendação gate 5.12) |
+| 2026-04-23 | Story 5.13 concluída — In Review |
+| 2026-04-23 | Story 5.14 criada — push-dual Passo 3: commit para main com mensagem de filipe-instance |
+| 2026-04-23 | Stories 5.13 e 5.14 Done — bump PATCH 3.5.0 → 3.5.1 |

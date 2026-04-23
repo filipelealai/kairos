@@ -1,0 +1,37 @@
+schema: 2
+story: "5.13"
+story_title: "ownership.md: documentar sync_files como terceira categoria do manifesto"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-23T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: ownership.md tem tabela comparativa das três categorias (owned_files, owned_sections, sync_files) com descrição na seção 'O Manifesto é Autoritativo'"
+    - "✅ AC2: coluna 'Ownership de update' na tabela (Sim/Sim/Não) + seção dedicada '## sync_files — Sincronização sem Ownership' explica que o updater não sobrescreve e que o usuário pode modificar livremente"
+    - "✅ AC3: seção sync_files documenta formato da entrada (path, layer, sem sha256) com lista explícita dos diferenciais em relação a owned_files"
+    - "✅ AC4: sem contradições — 'Ao modificar arquivos' ganhou passo 4 para sync_files (tratar como user-owned); 'Ao criar arquivos novos' ganhou opção 2 para sync_files; restante do arquivo consistente"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .claude/rules/ownership.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations: []

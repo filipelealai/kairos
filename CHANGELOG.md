@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.5.1] — 2026-04-23
+
+### Adicionado
+- sync_files documentado em ownership.md (terceira categoria do manifesto); COMMIT_MSG via git log no push-dual Passo 3
+
+---
+
 ## [3.5.0] — 2026-04-19
 
 ### Adicionado

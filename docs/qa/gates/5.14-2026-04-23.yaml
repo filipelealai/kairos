@@ -1,0 +1,40 @@
+schema: 2
+story: "5.14"
+story_title: "push-dual Passo 3: commit para main usa mensagem do commit em filipe-instance"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-23T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+self_reviewed: true
+self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
+
+ac_coverage:
+  covered:
+    - "✅ AC1: COMMIT_MSG=$(git log filipe-instance -1 --pretty=%B) presente no início do Passo 3; git commit usa $COMMIT_MSG"
+    - "✅ AC2: string hardcoded removida; nenhuma referência ao nome da branch privada na mensagem de commit"
+    - "✅ AC3: bloco de skip (git status limpo → pular commit) permanece inalterado abaixo da captura"
+    - "✅ AC4: flag --pretty=%B usada na captura"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ squads/ops/tasks/push-dual.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "ℹ️ A captura de COMMIT_MSG ocorre dentro do Passo 3 (após git checkout main), não antes. Semanticamente equivalente: filipe-instance -1 aponta para o mesmo commit independente da branch checada — sem issue."

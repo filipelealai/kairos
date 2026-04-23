@@ -61,3 +61,5 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [5.10](5.10.story.md) | Manifest owned_sections: SHA por bloco para suporte a updates | In Review |
 | [5.11](5.11.story.md) | Manifest yaml_keys: campo sha_method como especificação canônica de serialização | Draft |
 | [5.12](5.12.story.md) | Manifest sync_files: categoria para arquivos sincronizados sem ownership de update | Draft |
+| [5.13](5.13.story.md) | ownership.md: documentar sync_files como terceira categoria do manifesto | Done |
+| [5.14](5.14.story.md) | push-dual Passo 3: commit para main usa mensagem do commit em filipe-instance | Done |
