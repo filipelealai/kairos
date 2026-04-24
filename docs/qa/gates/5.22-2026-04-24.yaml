@@ -1,0 +1,46 @@
+schema: 2
+story: "5.22"
+story_title: "Expurgar package.json/package-lock.json/tsconfig.json do Repo Público"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-24T00:00:00Z"
+quality_score: 93
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: verificar quais arquivos estavam em origin/main — documentado no Execution Log (todos 3 presentes)"
+    - "✅ AC2: git rm + git push origin main — Execution Log registra commit 9c2a092"
+    - "✅ AC3: push-dual.md não referencia package.json/package-lock.json/tsconfig.json em nenhum git checkout — grep confirmou 0 ocorrências"
+    - "✅ AC4: manifest.yaml nota atualizada — linha 254 cobre package.json, package-lock.json, tsconfig.json como metadados de instância"
+    - "✅ AC5: package.json description → 'Kairos instance — TypeScript agent scripts and squad tooling'"
+    - "✅ AC6: @anthropic-ai/sdk movido para devDependencies — confirmado em package.json"
+  manual:
+    - "⚠️ AC1+AC2: operações git no remote — verificadas via Execution Log (commit 9c2a092), não verificáveis estaticamente pelo reviewer"
+  gaps: []
+
+files:
+  present:
+    - "✅ package.json"
+    - "✅ .kairos-core/manifest.yaml"
+    - "✅ squads/ops/tasks/push-dual.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "ACs 1 e 2 exigem operação em remote (git push origin main) — verificados apenas via Execution Log, não estaticamente"
+    recommendation: "Confirmar commit 9c2a092 em origin/main na próxima oportunidade via 'git log origin/main --oneline'"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Executor sugere no Execution Log adicionar nota explícita ao push-dual.md sobre artefatos de instância proibidos — considerar para story 5.26 ou como PATCH avulso"

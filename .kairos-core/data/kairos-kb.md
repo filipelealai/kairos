@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.5.0
+kairos-version: 3.7.0
 ---
 
 # Kairos Knowledge Base
@@ -49,9 +49,9 @@ kairos-version: 3.5.0
 
 ---
 
-### Quando agents devem ser TypeScript puro sem AI?
+### Quando agents devem ser script puro sem AI?
 
-**Princípio:** Agentes cujo trabalho é computação determinística (métricas, scoring, agregação) devem ser implementados como scripts TypeScript puros, sem chamadas à Claude API. Agentes que precisam de interpretação semântica (classificação natural, geração de texto) usam AI.
+**Princípio:** Agentes cujo trabalho é computação determinística (métricas, scoring, agregação) devem ser implementados como scripts puros, sem chamadas à Claude API. Agentes que precisam de interpretação semântica (classificação natural, geração de texto) usam AI.
 
 **Motivo:** Computação determinística com AI é mais lenta, mais cara e menos auditável. Reservar AI para o que realmente exige linguagem natural reduz custo e aumenta reprodutibilidade.
 
@@ -74,6 +74,22 @@ kairos-version: 3.5.0
 **Motivo:** `README.md` precisa ir para o repositório público do GitHub (documentação visível), mas seu conteúdo é instância-específico (nome do projeto, squads ativos, owner). Em `owned_files`, um `kairos update` futuro poderia sobrescrevê-lo. `sync_files` separa os dois concerns: "vai para main" e "é atualizado pelo framework" — um arquivo pode satisfazer o primeiro sem o segundo.
 
 **Trade-off aceito:** Arquivos em `sync_files` não têm SHA tracking — não há "drift" a detectar. O `*doctor` valida existência, não conteúdo.
+
+---
+
+### Framework stack-agnóstico
+
+**Decisão:** O Kairos é um framework stack-agnóstico. O núcleo é markdown + YAML + CJS. `src/` é user-owned e pode conter scripts em qualquer linguagem.
+
+**O que o Kairos É:** markdown (personas, rules, docs), YAML (config, squads, manifesto), CJS (hooks em `.claude/hooks/`). O núcleo roda sem dependências de runtime de agente — o único runtime exigido pelo framework é Node.js para os hooks CJS.
+
+**O que `src/` é:** conteúdo do usuário, por instância, linguagem definida pelo usuário. O framework interage via comandos e lê outputs — não gerencia dependências de runtime da instância (npm, pip, etc.).
+
+**Estrutura proposta para multi-stack:** quando múltiplas linguagens coexistirem em `src/`, a estrutura será `src/agents/ts/`, `src/agents/python/`, `src/tools/ts/`, `src/tools/python/`. Migração para essa estrutura é futura e não afeta o framework.
+
+**O que NÃO é responsabilidade do framework:** instalar dependências (`npm install`, `pip install`), gerenciar versões de runtime, garantir que scripts de instância funcionem em ambientes arbitrários.
+
+**Motivo:** A imposição de TypeScript em documentação de framework anterior era artefato da primeira instância de referência, não requisito arquitetural. Kairos foi concebido como agnóstico — a stack da instância é separação de concerns.
 
 ---
 
@@ -132,7 +148,7 @@ kairos-version: 3.5.0
 ```
 @kairos *new-epic → @kairos *new-story → @kairos *validate-story
 → Claude Code implementa → @kairos *review
-→ @kairos *version → @kairos *pre-push → @kairos *push
+→ @kairos *pre-push → @kairos *push
 ```
 
 ### Versioning rules
@@ -154,4 +170,4 @@ kairos-version: 3.5.0
 
 ---
 
-*Última atualização: 2026-04-14*
+*Última atualização: 2026-04-24*

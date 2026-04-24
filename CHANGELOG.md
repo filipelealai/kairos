@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.7.0] — 2026-04-24
+
+### Adicionado
+- package.json/package-lock.json/tsconfig.json expurgados de origin/main; ANTHROPIC_API_KEY declarada opcional no .env.example e CONTRIBUTING.md; posição stack-agnóstica do Kairos documentada em CONTRIBUTING.md, kairos-kb.md e kairos-architecture.md
+
+---
+
 ## [3.6.1] — 2026-04-24
 
 ### Corrigido
@@ -317,7 +324,7 @@ Este bump não tem migração automática — é breaking por design. Ao aplicar
 - `CLAUDE.md` — referências pessoais removidas; agentes de squad rotulados como "exemplo dos squads ativos neste projeto"; pipeline e diagrama de governança genéricos (`squads/*`); seção "Restrições Operacionais" agora espaço configurável pelo usuário com exemplos genéricos
 - `.claude/rules/external-integrations.md` — tabela de skills dividida em nativas (sempre disponíveis) vs. de projeto (configuradas pelo usuário/equipe); exemplos rotulados como "stack Supabase/GitHub — não específicos do Kairos"
 - `.kairos-core/constitution.md` — Seção I reescrita como princípio positivo sobre como usar ferramentas externas, sem menção a squads específicos
-- `.env.example` — reescrito com 7 categorias abrangentes (AI Providers, Automation, Database, Communication, Search, Version Control, Squad-specific); todos opcionais exceto `ANTHROPIC_API_KEY`; exemplo de squad-specific comentado no final
+- `.env.example` — reescrito com 7 categorias abrangentes (AI Providers, Automation, Database, Communication, Search, Version Control, Squad-specific); todos opcionais exceto `ANTHROPIC_API_KEY` _(corrigido em v3.6.2: a chave é opcional — necessária apenas se scripts da instância fazem chamadas diretas via @anthropic-ai/sdk)_; exemplo de squad-specific comentado no final
 
 ---
 

@@ -6,7 +6,7 @@ Obrigado por contribuir! O Kairos é um framework de orquestração de agentes d
 
 ## Quick Start para contribuir ao framework
 
-O núcleo do Kairos é composto por markdown, YAML e CJS com docs, rules, tasks e templates — **não exige Node.js para contribuir**.
+O núcleo do Kairos é composto por markdown, YAML e CJS com docs, rules, tasks e templates — **não exige stack para contribuir**.
 
 ```bash
 git clone https://github.com/filipelealweb/kairos
@@ -20,18 +20,6 @@ Para validar suas mudanças localmente, ative o `@kairos` no Claude Code e execu
 ```
 
 O `*doctor` verifica integridade do manifesto, frontmatter e ownership. Se retornar PASS, seu PR está apto a ser enviado.
-
-### Rodar a instância como usuário (requer Node ≥ 20)
-
-Se você quiser rodar os scripts TypeScript dos agentes:
-
-```bash
-node --version   # ≥ 20 obrigatório
-npm install
-cp .env.example .env
-# Preencher ANTHROPIC_API_KEY e demais variáveis relevantes
-npx tsx src/agents/{nome-do-agente}.ts
-```
 
 ---
 
@@ -66,7 +54,7 @@ Stories de tipo `kairos-core` são executadas pelo Claude Code normal (sem perso
 
 ### 4. Scripts em `src/` (user-content, per-instance)
 
-Arquivos em `src/agents/` e `src/tools/` são conteúdo de instância — não são gerenciados por updates de framework e variam por projeto. Contribuições genéricas e reutilizáveis são bem-vindas como exemplos ou templates.
+Arquivos em `src/agents/` e `src/tools/` são conteúdo de instância — não são gerenciados por updates de framework e variam por projeto. **O Kairos não impõe linguagem: scripts podem ser TypeScript, Python ou qualquer outra linguagem — o usuário escolhe e gerencia suas próprias dependências de runtime.** Contribuições genéricas e reutilizáveis são bem-vindas como exemplos ou templates.
 
 ### 5. Conteúdo instanciado
 
@@ -100,7 +88,7 @@ Exemplos:
 ```
 feat: kairos-doctor valida frontmatter em owned_files
 fix: *push passo 2b corrige skip incorreto em arquivos mistos
-docs: CONTRIBUTING.md adicionado com fluxo de PR dual-remote
+docs: CONTRIBUTING.md adicionado com fluxo de PR
 ```
 
 ---
@@ -174,9 +162,10 @@ Roadmap informativo de suporte multi-stack:
 | Camada | Status |
 |--------|--------|
 | Núcleo (markdown + YAML + CJS) | Estável |
-| TypeScript / Node.js | Estável (instâncias atuais) |
-| Python (scripts de agentes) | Planejado |
-| CLI `npx install kairos` | Planejado (story 5.20) |
-| Publicação `@kairos/core` no npm | Planejado (story 5.21) |
+| Scripts TypeScript em `src/agents/` e `src/tools/` | Instância de referência (estável, user-managed) |
+| Scripts Python em `src/agents/` e `src/tools/` | Suportado (user-managed) |
+| Estrutura multi-stack (`src/agents/ts/`, `src/agents/python/`, `src/tools/ts/`, `src/tools/python/`) | Planejado (migração futura) |
+| CLI `npx install kairos` | Planejado |
+| Publicação `@kairos/core` no npm | Planejado |
 
-Contribuições multi-stack são bem-vindas — abra uma issue para discutir antes de implementar.
+Contribuições são bem-vindas — abra uma issue para discutir antes de implementar.

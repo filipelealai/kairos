@@ -54,7 +54,7 @@ owned_files:
   # Governance tasks (kairos-*)
   - path: .kairos-core/tasks/kairos-architecture.md
     layer: L2
-    sha256: 937cdef5f6a77d8ad989c4cbcafc6d19b367cd716179274a409b85e57d3c8139
+    sha256: 5547175ce25eb673f680e8e080da9d8ba5eb661bbcb0e28801a069bad0c9f0e0
   - path: .kairos-core/tasks/kairos-doctor.md
     layer: L2
     sha256: 5942f3c333231e1a2828162ad703934efcde7d2a8c46ea783714e8cfb7f5ca77
@@ -139,10 +139,10 @@ owned_files:
     sha256: e1505c45309fdc5e35ae3cf0407bedde104c33a233ebf0d26ab143ccba25e662
   - path: .kairos-core/data/kairos-kb.md
     layer: L3
-    sha256: 0e7d91c67533cb6e92bacff5d16e690f06c9540d302fb3b89577ffc45646fa7b
+    sha256: ced13b04f61680f070478492be2cace597f5d2e8d1a332f4afe826239144ae24
   - path: .kairos-core/docs/agent-standards.md
     layer: L3
-    sha256: 1f4e71ed9111e9931adbcf7e624a516779ab791961b25d398e76d9185c52ea2e
+    sha256: 7ed42a64d98cfe2d789b9d69cf06813f368a0579a8db0006a9eb102fddc47951
   - path: .kairos-core/docs/data-flow.md
     layer: L3
     sha256: 4a98b1d3105b9d6b07ea605252f688c4d8b97861deca3c9a24ce2ea5d00742ed
@@ -151,7 +151,7 @@ owned_files:
     sha256: 475fd6445c0b67096168d3c6455dad02457d2708d072a5b5355e32129f968b0b
   - path: CHANGELOG.md
     layer: L3
-    sha256: 36ba40b4eaea5b4664ec087c27833b4d4aee5683490d583bafd4d427f11ce2a7
+    sha256: 082c18df8cea2da8417085bfab3ea00c7bb3bbaf221190b56cf924cca821005f
 
   # .github/ scaffold (L3 — governança do repo público)
   - path: .github/CODEOWNERS
@@ -221,7 +221,7 @@ owned_sections:
       comuns. Variáveis específicas do usuário são user-owned.
     owned_sections:
       - name: ai-providers
-        sha256: 69215ba19d13c9120549d5ac085c67c8451513a639e64e0742ebefaf6e655536
+        sha256: 32415bdeb7e3571d7f741114b51ac1f30b683eaf9a1f4926ac8a8ea34fc1ce83
       - name: automation
         sha256: 327f953d13784e0c40f8c1ce84ce3d17f3527295bf8cee168b332527b0108c99
       - name: database

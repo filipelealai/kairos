@@ -230,7 +230,7 @@ Formato esperado do `.env.example` em `main`:
 # Kairos — Environment Variables
 # ============================================================
 # Copy this file to .env and fill in your values.
-# All variables are optional except ANTHROPIC_API_KEY.
+# All variables are optional.
 # DO NOT commit .env — it contains secrets.
 # ============================================================
 

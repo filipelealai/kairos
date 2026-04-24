@@ -50,20 +50,21 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.19](../stories/5.19.story.md) | CI: Validação de Manifest em PRs (GitHub Actions) | Draft |
 | [5.20](../stories/5.20.story.md) | README.md: Limpeza de Hardcodes, Versão e Falsos Positivos | Done |
 | [5.21](../stories/5.21.story.md) | CLAUDE.md: Limpar Hardcodes TypeScript dos Blocos Managed | Done |
-| [5.22](../stories/5.22.story.md) | Expurgar package.json/package-lock.json/tsconfig.json do Repo Público | In Review |
-| [5.23](../stories/5.23.story.md) | Expurgar ANTHROPIC_API_KEY como Pré-requisito Universal do Framework | Draft |
-| [5.24](../stories/5.24.story.md) | Documentar Posição Stack-Agnóstica do Kairos | Draft |
+| [5.22](../stories/5.22.story.md) | Expurgar package.json/package-lock.json/tsconfig.json do Repo Público | Done |
+| [5.23](../stories/5.23.story.md) | Expurgar ANTHROPIC_API_KEY como Pré-requisito Universal do Framework | Done |
+| [5.24](../stories/5.24.story.md) | Documentar Posição Stack-Agnóstica do Kairos | Done |
 | [5.25](../stories/5.25.story.md) | Fix Arquitetural (L1): src/ É User-Owned — Corrigir Documentação de Fundação | Draft |
 | [5.26](../stories/5.26.story.md) | *architecture Stack-Agnóstico e Gestão Simétrica de agent-standards.md | Draft |
+| [5.27](../stories/5.27.story.md) | Depurar Conteúdo Instance-Specific de *architecture e *prd | Draft |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
 
 - **5.18** — Configuração de branch protection no repo público (depende de 5.17 para CODEOWNERS; após 5.19, pode incluir workflow passando como required check)
-- **5.27** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.28** — Publicação de `@kairos/core` no npm
-- **5.29** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
+- **5.28** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.29** — Publicação de `@kairos/core` no npm
+- **5.30** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
 
 ---
 
@@ -117,3 +118,12 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-24 | Stories 5.20 e 5.21 Done — bump PATCH 3.6.0 → 3.6.1 |
 | 2026-04-24 | Story 5.22 iniciada — In Progress |
 | 2026-04-24 | Story 5.22 concluída — In Review |
+| 2026-04-24 | Story 5.23 iniciada — In Progress |
+| 2026-04-24 | Story 5.23 concluída — In Review |
+| 2026-04-24 | Story 5.24 iniciada — In Progress |
+| 2026-04-24 | Story 5.24 concluída — In Review |
+| 2026-04-24 | Story 5.22: gate PASS (93/100) — @kairos *review |
+| 2026-04-24 | Story 5.23: gate PASS (91/100) — @kairos *review |
+| 2026-04-24 | Story 5.24: gate PASS (93/100) — @kairos *review; hardcodes Passo 3 corrigidos pelo usuário |
+| 2026-04-24 | *pre-push: Stories 5.22, 5.23, 5.24 → Done; bump MINOR 3.6.1 → 3.7.0 |
+| 2026-04-24 | Story 5.27 criada — Depurar Conteúdo Instance-Specific de *architecture e *prd (Draft); candidatas antigas 5.27–5.29 renumeradas 5.28–5.30 |
