@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.6.1] — 2026-04-24
+
+### Corrigido
+- README.md: hardcodes de stack e versão corrigidos; CLAUDE.md: TypeScript removido dos blocos managed
+
+---
+
 ## [3.6.0] — 2026-04-23
 
 ### Adicionado

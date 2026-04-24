@@ -10,48 +10,30 @@ Kairos organiza trabalho em **squads**: grupos de agentes especializados que ope
 **Arquitetura:** múltiplos squads, múltiplas integrações, uso individual ou em equipe.
 
 Este repo contém:
-- **Agentes TypeScript** — computação pura para tarefas específicas de cada squad
+- **Scripts de agentes** — computação pura para tarefas específicas de cada squad (linguagem definida pela stack da instância)
 - **Personas de agentes** — ativadas com `@nome` no Claude Code, cada uma especializada em um domínio
 - **Infraestrutura de framework** — governança, memória, handoffs, workers, hooks
 
 ## Stack
 
-- Runtime: Node.js (ESM)
-- Linguagem: TypeScript
-- AI: `@anthropic-ai/sdk` com modelo padrão `claude-sonnet-4-6`
-- Runner: `tsx` (sem compilação — rodar direto com `npx tsx src/agents/nome.ts`)
+**Framework** — o que o Kairos é:
+- Personas, documentação e memória: Markdown
+- Configuração: YAML
+- Hooks: CJS (`.claude/hooks/`)
 
-## Estrutura
-
-```
-src/
-  agents/     # Um arquivo por agente/caso de uso
-  tools/      # Utilitários compartilhados (claude.ts, fs, etc.)
-  types/      # Tipos TypeScript globais
-data/         # Dados de entrada/saída dos agentes
-.claude/
-  commands/   # Slash commands customizados
-```
+**Instância** — stack definida pelo usuário (scripts, integrações, ferramentas).
 
 ## Convenções
 
-- Cada agente em `src/agents/` é autossuficiente e pode ser rodado diretamente
-- Usar `src/tools/claude.ts` como wrapper da Claude API — nunca instanciar Anthropic diretamente nos agentes
+- Cada agente é autossuficiente e pode ser rodado diretamente
 - Variáveis de ambiente em `.env` (nunca commitar — usar `.env.example` como template)
-- Preferir ESM (`import`/`export`), sem CommonJS
-
-## Como rodar um agente
-
-```bash
-npx tsx src/agents/nome-do-agente.ts
-```
 
 ## Instruções para Claude Code
 
-- Ao criar novos agentes, seguir o padrão de `src/tools/claude.ts` (funções `ask`, `chat`, `run`)
 - Manter cada agente focado em uma responsabilidade
 - Não criar abstrações desnecessárias — clareza é melhor que elegância prematura
 - Responder em português (Brasil)
+- As diretrizes de como usar skills, MCPs e APIs estão em `.claude/rules/external-integrations.md`.
 <!-- KAIROS-MANAGED-END: framework-conventions -->
 
 <!-- KAIROS-MANAGED-START: agent-system -->
@@ -64,15 +46,7 @@ npx tsx src/agents/nome-do-agente.ts
 
 **Operacional (squads — definidos pelo usuário/equipe):**
 
-Os agentes de squad são criados com `@kairos *new-squad` e variam por projeto.
-Exemplo dos squads ativos neste projeto:
-
-| Agente | Persona | Escopo |
-|--------|---------|--------|
-| `@campaign-analyst` | Clio | Métricas e análise da campanha |
-| `@lead-scorer` | Lex | Pontuação e priorização de leads |
-| `@niche-classifier` | Nix | Classificação de atividades por nicho |
-| `@email-writer` | Eva | Geração de e-mails personalizados |
+Os agentes de squad são criados com `@kairos *new-squad` e variam por instância.
 
 ### Comandos de Agentes
 
@@ -91,7 +65,7 @@ Use prefixo `*` dentro de um agente ativo:
 
 ### Pipeline de Squad (exemplo)
 
-Cada squad define seu pipeline. Exemplo com os squads ativos:
+Cada squad define seu pipeline. Exemplo ilustrativo:
 
 ```
 @campaign-analyst *analyze → @lead-scorer *score
@@ -113,28 +87,35 @@ squads/* (trabalho operacional — definido pelo usuário)
 Claude Code na conversa principal (constrói e mantém o Kairos)
 ```
 
-Stories em `docs/stories/` = desenvolvimento do Kairos. Outputs operacionais = `data/`.
+NOTA: Kairos consegue se auto-aperfeiçoar com planejamento de arquitetura, PRD, stories, epics, revisões do que foi implementado, mas NÃO pode implementar/desenvolver modificações em si próprio (`**Tipo:** kairos-core` nas stories)
+
+Stories em `docs/stories/` = log, histórico e desenvolvimento criados e gerenciados pelo Kairos. Outputs operacionais dos agentes = `data/`.
 <!-- KAIROS-MANAGED-END: agent-system -->
 
 <!-- KAIROS-MANAGED-START: kairos-core -->
 ## Estrutura Kairos Core
 
 ```
-.kairos-core/
-  agents/       # Memória persistente por agente (MEMORY.md)
-  tasks/        # Definições de tasks executáveis (referenciadas pelos agentes)
-  data/         # kairos-kb.md, workflow-chains.yaml, dados de configuração
-  templates/    # Templates para stories, agentes, squads
-  constitution.md  # Princípios não-negociáveis do framework (L1)
-  runtime/      # Handoffs e logs (conteúdo gitignored)
+.github/                     # Templates de PR/Issue, CODEOWNERS e CI workflows
 
 .claude/
   commands/kairos/agents/  # Personas completas dos agentes (YAML-in-Markdown)
-  hooks/                   # PreCompact e PreToolUse hooks
-  rules/                   # Regras cross-cutting (lifecycle, handoff, authority, IDS, layers)
+  rules/                   # Regras cross-cutting (lifecycle, handoff, authority...)
+  hooks/                   # Hooks do Claude Code (PreCompact, PreToolUse)
 
-src/agents/  # Scripts TypeScript de computação pura (sem AI)
-data/        # Outputs dos agentes (reports, emails)
+.kairos-core/
+  constitution.md          # Princípios não-negociáveis do framework (L1)
+  core-config.yaml         # Configuração central e versão semântica
+  manifest.yaml            # Ownership: o que é framework vs. usuário
+  agents/                  # MEMORY.md persistente por agente
+  tasks/                   # Definições de tasks executáveis
+  data/                    # KB, workers registry e dados de configuração
+  docs/                    # Documentação de arquitetura e escopo do Kairos
+  runtime/                 # Handoffs e logs de execução (conteúdo gitignored)
+  templates/               # Templates do Kairos para criação de agentes, squads, stories etc.
+
+src/agents/  # Scripts e ferramentas (user-owned, linguagem definida pela instância)
+data/        # Outputs dos agentes (reports, emails, etc.)
 ```
 
 ## Regras Cross-Cutting
@@ -157,9 +138,9 @@ Versão atual: ver `.kairos-core/core-config.yaml`
 Histórico: `CHANGELOG.md`
 
 Regras:
-- **PATCH** — correção, ajuste de instrução, atualização de memória
+- **PATCH** — correção, bug fixes, ajuste de instrução, documentação
 - **MINOR** — novo agente, nova task, nova rule, nova capacidade
-- **MAJOR** — novo squad/escopo, breaking change
+- **MAJOR** — novo escopo, breaking change, mudança de arquitetura, modificações em arquivos L1
 
-Autoridade para versionar: `@kairos *version`
+Autoridade para versionar: `@kairos *version` e `@kairos *pre-push`
 <!-- KAIROS-MANAGED-END: kairos-core -->

@@ -4,41 +4,69 @@
 
 Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura de governança, memória, handoffs, workers agendados e ferramentas de desenvolvimento para criar, evoluir e operar esses squads ao longo do tempo.
 
-**Versão atual:** `3.5.1` — ver [CHANGELOG.md](CHANGELOG.md)
+**Versão atual:** `3.6.1` — ver [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
 ## Como funciona
 
-Squads são criados com `@kairos *new-squad`. Cada squad tem seus próprios agentes, integrações externas e pipeline. O framework fornece a infraestrutura comum.
+Squads são criados com `@kairos *new-squad`. Cada squad tem seus próprios agentes, integrações externas, workers e pipeline. O framework fornece a infraestrutura comum.
 
-**Exemplo** — um squad de prospecção B2B integrando com n8n e Google Sheets:
+**Exemplo** — um squad integrando com sistema externo e fonte de dados:
+
+```
+sistema externo (operacional)  ↔  Kairos/squad  ↔  fonte de dados
+```
+
+O squad define quais sistemas externos seus agentes têm autoridade para usar. O Kairos não age diretamente sobre sistemas externos — delega para os sistemas definidos pelo squad (ver [constitution.md](.kairos-core/constitution.md)).
+
+**Exemplo ilustrativo** — um squad de prospecção B2B integrando com n8n e Google Sheets:
 
 ```
 n8n (operacional)  ↔  Kairos/squad  ↔  Google Sheets (dados)
 ```
 
-O squad define quais sistemas externos seus agentes têm autoridade para usar. O Kairos não age diretamente sobre sistemas externos — delega para os sistemas definidos pelo squad (ver `constitution.md`).
-
 ---
 
 ## Stack
 
-| Camada | Tecnologia |
-|--------|-----------|
-| Runtime | Node.js (ESM) |
-| Linguagem | TypeScript |
-| AI | `@anthropic-ai/sdk` — `claude-sonnet-4-6` |
-| Runner | `tsx` (sem etapa de build) |
-| Integrações externas | Definidas por squad (n8n, Supabase, APIs, etc.) |
+O Kairos é stack-agnóstico. Há duas camadas distintas:
+
+**Framework** — o que o Kairos é:
+
+| Componente | Tecnologia |
+|------------|-----------|
+| Personas de agentes, documentação e memória | Markdown (YAML frontmatter) |
+| Configuração | YAML |
+| Hooks | CJS (`.claude/hooks/`) |
+
+Sem dependência de runtime de linguagem — o Kairos roda onde o Claude Code roda.
+
+**Instância** — o que o usuário usa:
+
+A instância é a combinação de squads, scripts e integrações que o usuário configura em seu ambiente local ou seu projeto. O Kairos interage com e governa essa stack, mas não a impõe. Exemplos comuns: Node.js + TypeScript, Python, scripts shell, n8n, Supabase — a escolha é do usuário.
+
+O conteúdo instanciado é sempre intocado por atualizações do framework Kairos, e é responsabilidade do usuário ter um backup seguro desses arquivos e dados, uma vez que só existem no projeto/repositório do usuário.
+
+Exemplos comuns de conteúdo instanciado incluem:
+
+- Epics e stories
+- Gates de QA das stories
+- Squads, workers, agentes e suas memórias e comandos
+- Outputs em `data/`
+- Skills do Claude Code (`.claude/skills/` e `skills-lock.json`)
+- Configurações de MCP (`.mcp.json`)
+- Scripts, ferramentas etc. em `src/`
+- Conteúdo fora das seções `<KAIROS-MANAGED>` em CLAUDE.md
+- .env do projeto
+- Arquivos específicos de stack (`package.json`, `package-lock.json`, `tsconfig.json`, `Pipfile`, `Pipfile.lock`, `tailwind.config.js`, `vite.config.ts` etc. )
 
 ---
 
 ## Pré-requisitos
 
-- Node.js 18+
-- Uma chave de API da Anthropic ([console.anthropic.com](https://console.anthropic.com))
-- Integrações externas opcionais conforme os squads que você configurar (ver `.env.example`)
+- Claude Code instalado
+- Integrações externas conforme os squads que você configurar — stack, dependências e chaves de API são responsabilidade do usuário (ver [.env.example](.env.example) da sua instância quando aplicável)
 
 ---
 
@@ -47,35 +75,57 @@ O squad define quais sistemas externos seus agentes têm autoridade para usar. O
 ```bash
 git clone <repo>
 cd kairos
-npm install
 cp .env.example .env
 ```
 
-Edite `.env` com as variáveis relevantes para seus squads (ver `.env.example` para a lista completa).
+Edite `.env` com as variáveis relevantes para seus squads (ver [.env.example](.env.example) para a lista).
 
 ---
 
-## Como rodar um agente
+## Como usar agentes
 
-Cada agente é um script TypeScript autossuficiente:
+Agentes são ativados pelo nome no Claude Code:
 
-```bash
-npx tsx src/agents/{nome-do-agente}.ts
+```
+@nome-do-agente *comando
 ```
 
-Os outputs são salvos em `data/outputs/{squad}/{tipo}/` com prefixo do agente gerador:
+**Exemplos:**
+
+```
+@kairos *status            # estado geral do sistema
+@kairos *new-squad         # criar novo squad
+@{agente} *{comando}       # executar qualquer comando de agente do squad
+```
+
+Outputs são salvos em `data/outputs/{squad}/{tipo}/`
+
+**Exemplo:**
 
 ```
 data/outputs/{squad}/
-  reports/   # relatórios gerados pelo squad
-  emails/    # outputs prontos para envio (quando aplicável)
+  reports/   # relatórios e análises
+  emails/    # outputs prontos para envio
+  {tipo}/    # outros tipos de output que o agente gerar
 ```
 
 ---
 
 ## Pipeline de squad (exemplo)
 
-Cada squad define seu próprio pipeline. **Exemplo** — squad `cold-prospecting`:
+Cada squad define seu próprio pipeline. Exemplo genérico de um pipeline multi-agente:
+
+```
+@{agente-1} *{comando}
+        ↓  gera: {agente-1}_{output}-YYYY-MM-DD.{ext}
+@{agente-2} *{comando}
+        ↓  gera: {agente-2}_{output}-YYYY-MM-DD.{ext}
+@{agente-3} *{comando}
+        ↓  gera: {agente-3}_{output}-YYYY-MM-DD.{ext}
+(sistema externo de disparo lê os outputs e executa)
+```
+
+**Exemplo ilustrativo** — squad `cold-prospecting`:
 
 ```
 @campaign-analyst *analyze
@@ -102,13 +152,23 @@ O Kairos usa o Claude Code como ambiente de execução. Cada agente é uma **per
 @kairos   🌀  — governança do framework
 ```
 
-**Squads (definidos pelo usuário — exemplo):**
+**Squads (definidos pela instância do usuário):**
+```
+@{agente-a}   — responsabilidade principal do agente A
+@{agente-b}   — responsabilidade principal do agente B
+@{agente-c}   — responsabilidade principal do agente C
+```
+
+Exemplo ilustrativo:
+
 ```
 @campaign-analyst   Clio 📊  — análise de campanha
 @lead-scorer        Lex  🎯  — pontuação de leads
 @niche-classifier   Nix  🗂️  — classificação de nichos
 @email-writer       Eva  ✉️  — geração de e-mails
 ```
+
+Cada squad define seus próprios agentes com `@kairos *new-squad`.
 
 Para ativar, basta mencionar o agente pelo nome. Cada agente tem comandos com prefixo `*`:
 
@@ -133,12 +193,15 @@ Comandos principais:
 | `*new-story` | Cria nova story de desenvolvimento |
 | `*new-squad` | Scaffolda novo squad completo |
 | `*validate-story {id}` | Valida formato e qualidade da story |
-| `*review [{id}]` | Valida implementação — gate PASS / RESSALVA / BLOCK |
+| `*validate-squad {squad}` | Valida formato e consistência geral de um squad |
+| `*update-squad {squad}` | Atualiza um squad existente |
+| `*implement {id}` | Implementa story de desenvolvimento |
+| `*review {id}` | Valida implementação — gate PASS / RESSALVA / BLOCK |
 | `*version patch\|minor\|major "desc"` | Bump de versão semântica |
 | `*pre-push` | Verificações antes do push |
 | `*push` | git push — exclusivo, requer *pre-push PASS |
 | `*prd` | Cria ou atualiza `docs/scope.md` |
-| `*architecture` | Audita consistência entre docs e código |
+| `*architecture [{squad}]` | Audita consistência entre docs e código — framework geral (sem argumento) ou squad específico |
 | `*help [{topic}]` | Ajuda completa com fluxos e exemplos |
 
 ---
@@ -148,15 +211,12 @@ Comandos principais:
 ```
 kairos/
 ├── src/
-│   ├── agents/          # Scripts TypeScript dos agentes (adicionados por squad)
-│   └── tools/
-│       └── claude.ts    # Wrapper da Anthropic SDK — usar sempre este, nunca instanciar diretamente
+│   └── agents/          # Scripts e ferramentas utilizados por agentes e squads (user-owned)
 │
 ├── data/
-│   └── outputs/         # Outputs dos agentes (gitignored por conteúdo)
+│   └── outputs/         # Outputs dos agentes
 │       └── {squad}/
-│           ├── reports/ # Relatórios gerados pelo squad
-│           └── emails/  # Outputs prontos para envio (quando aplicável)
+│           └── {tipo}/  # Relatórios, outputs e dados gerados por agentes, divididos por tipo e agente
 │
 ├── squads/
 │   └── {squad}/
@@ -167,29 +227,31 @@ kairos/
 │       └── workflows/           # Pipeline documentado
 │
 ├── docs/
-│   ├── scope.md                 # PRD — escopo, arquitetura, objetivos, restrições
 │   ├── epics/                   # Epic files
 │   ├── stories/                 # Stories de desenvolvimento do Kairos
-│   ├── framework/
-│   │   ├── agent-standards.md   # Padrões obrigatórios para criação de agentes
-│   │   └── data-flow.md         # Fluxo completo de dados pelo sistema
 │   └── qa/
 │       └── gates/               # Gates de review (PASS/RESSALVA/BLOCK)
+│
+├── .github/                     # Templates de PR/Issue, CODEOWNERS e CI workflows
 │
 ├── .claude/
 │   ├── commands/kairos/agents/  # Personas completas dos agentes (YAML-in-Markdown)
 │   ├── rules/                   # Regras cross-cutting (lifecycle, handoff, authority...)
-│   └── skills/                  # Skills configuradas pelo usuário/equipe
+│   └── hooks/                   # Hooks do Claude Code (PreCompact, PreToolUse)
 │
 ├── .kairos-core/
+│   ├── constitution.md          # Princípios não-negociáveis do framework (L1)
 │   ├── core-config.yaml         # Configuração central e versão semântica
+│   ├── manifest.yaml            # Ownership: o que é framework vs. usuário
 │   ├── agents/                  # MEMORY.md persistente por agente
 │   ├── tasks/                   # Definições de tasks executáveis
 │   ├── data/                    # KB, workers registry e dados de configuração
-│   └── runtime/                 # Handoffs e logs de execução (conteúdo gitignored)
+│   ├── docs/                    # Documentação de arquitetura e escopo do Kairos
+│   ├── runtime/                 # Handoffs e logs de execução (conteúdo gitignored)
+│   └── templates/               # Templates do Kairos para criação de agentes, squads, stories etc.
 │
 ├── CHANGELOG.md
-├── CLAUDE.md                    # Instruções para o Claude Code
+├── CLAUDE.md                    # Instruções para o Claude Code, contendo seções gerenciadas pelo Kairos
 └── .env.example
 ```
 
@@ -199,25 +261,27 @@ kairos/
 
 O Kairos usa um modelo de governança próprio para se auto-documentar e evoluir:
 
-**Ciclo típico:**
+**Ciclo típico de auto-desenvolvimento:**
 ```
 @kairos *new-epic          # planejar conjunto de trabalho
-@kairos *new-story "título" # detalhar uma unidade de trabalho
+@kairos *new-story [{id}]  # detalhar uma unidade de trabalho
 @kairos *validate-story {id} # checar qualidade da story antes de executar
-(Claude Code implementa)   # executor move Draft → In Progress → In Review
+@kairos *exit              # sai da persona do Kairos, que não pode implementar a si mesmo
+Claude Code, sem persona   # executor move Draft → In Progress → In Review
                            # e adiciona Execution Log na story
 @kairos *review            # valida implementação — gate PASS/RESSALVA/BLOCK
-@kairos *version minor "…" # bump de versão
+@kairos *doctor            
 @kairos *pre-push          # verificações finais
 @kairos *push              # push ao remoto (exclusivo do @kairos)
 ```
+Para abrir um PR e contribuir no repositório público do Kairos, veja [CONTRIBUTING.md](CONTRIBUTING.md).
 
 **Versionamento semântico:**
-- `PATCH` — correção, ajuste de instrução, atualização de memória (não exige story)
+- `PATCH` — correção, bug fixes, ajuste de instrução, documentação (não exige story)
 - `MINOR` — novo agente, nova task, nova rule, nova capacidade (exige story)
-- `MAJOR` — novo squad/escopo, breaking change (exige story)
+- `MAJOR` — novo escopo, breaking change, mudança de arquitetura, modificações em arquivos L1 (exige story)
 
-**Stories** em `docs/stories/` rastreiam o desenvolvimento do **framework Kairos** — não são outputs operacionais. E-mails gerados, relatórios e scores vão para `data/outputs/`.
+**Stories** em `docs/stories/` rastreiam o desenvolvimento do **framework Kairos** e do conteúdo instanciado (quando modificado/criado pelo Kairos), servindo como backlog do que fazer, e logs do que está sendo feito ou do que foi feito — não são outputs operacionais dos agentes/squads. Outputs gerados por agentes vão para `data/outputs/`.
 
 ---
 
@@ -225,10 +289,10 @@ O Kairos usa um modelo de governança próprio para se auto-documentar e evoluir
 
 | Documento | Conteúdo |
 |-----------|----------|
-| [docs/scope.md](docs/scope.md) | PRD — escopo, arquitetura, objetivos, restrições, stack |
+| [docs/scope.md](docs/scope.md) | PRD da instância, para o Kairos entender o projeto — criado e editado por @kairos *prd |
+| [.kairos-core/docs/scope.md](.kairos-core/docs/scope.md) | PRD do framework Kairos — escopo, arquitetura, objetivos, restrições, stack |
 | [.kairos-core/docs/agent-standards.md](.kairos-core/docs/agent-standards.md) | Como criar e estruturar novos agentes |
-| [.kairos-core/docs/data-flow.md](.kairos-core/docs/data-flow.md) | Fluxo completo de dados, campos do webhook, formatos de output |
-| [docs/stories/README.md](docs/stories/README.md) | Epics e stories de desenvolvimento do Kairos |
+| [.kairos-core/docs/data-flow.md](.kairos-core/docs/data-flow.md) | Fluxo completo de dados, estrutura, formatos de output |
 | [CHANGELOG.md](CHANGELOG.md) | Histórico de versões |
 | [CLAUDE.md](CLAUDE.md) | Instruções e contexto para o Claude Code |
 
@@ -236,4 +300,4 @@ O Kairos usa um modelo de governança próprio para se auto-documentar e evoluir
 
 ## Licença
 
-MIT
+[MIT](LICENSE)
