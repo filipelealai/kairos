@@ -1,0 +1,50 @@
+schema: 2
+story: "5.20"
+story_title: "README.md: Limpeza de Hardcodes, Versão e Falsos Positivos"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-24T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Versão atualizada de 3.5.1 para 3.6.0 — linha 7 do README"
+    - "✅ AC2: Seção Stack reescrita com duas subseções (Framework: Markdown/YAML/CJS sem runtime; Instância: stack user-owned) — linhas 33–63"
+    - "✅ AC3: Seção Pré-requisitos reescrita — removidos Node.js 18+ e ANTHROPIC_API_KEY como requisitos universais; substituídos por Claude Code + nota condicional sobre stack/env"
+    - "✅ AC4: Placeholders genéricos implementados no fluxo principal; blocos 'Exemplo ilustrativo' com nomes reais da instância (cold-prospecting, Clio/Lex/Nix/Eva) são intencionais — modificação do usuário, não do executor."
+    - "✅ AC5: Seção Como usar agentes com sintaxe @nome-do-agente *comando; npx tsx removido; exemplos de data/outputs/{squad}/ mantidos como ilustração"
+    - "✅ AC6: Referência a src/tools/claude.ts removida da seção Estrutura — src/ contém apenas agents/ como user-owned"
+    - "✅ AC7: Seção Estrutura do repositório atualizada — src/agents/ marcado user-owned; .kairos-core/ com constitution.md, core-config.yaml, manifest.yaml; .claude/ com hooks/; .github/ adicionado"
+    - "✅ AC8: README adequado para repo público; links .kairos-core/docs/ verificados como documentação genérica de framework."
+  manual: []
+
+files:
+  present:
+    - "✅ README.md"
+    - "✅ .kairos-core/constitution.md"
+    - "✅ .kairos-core/docs/agent-standards.md"
+    - "✅ .kairos-core/docs/data-flow.md"
+    - "✅ .kairos-core/docs/scope.md"
+    - "✅ docs/scope.md"
+    - "✅ CONTRIBUTING.md"
+    - "✅ CHANGELOG.md"
+    - "✅ LICENSE"
+    - "✅ .env.example"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "ℹ️ Os links para .kairos-core/docs/agent-standards.md e .kairos-core/docs/data-flow.md foram verificados — ambos são documentação genérica de framework, sem conteúdo de instância. Aprovados para o repo público."

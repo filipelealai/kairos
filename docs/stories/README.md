@@ -63,3 +63,14 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [5.12](5.12.story.md) | Manifest sync_files: categoria para arquivos sincronizados sem ownership de update | Draft |
 | [5.13](5.13.story.md) | ownership.md: documentar sync_files como terceira categoria do manifesto | Done |
 | [5.14](5.14.story.md) | push-dual Passo 3: commit para main usa mensagem do commit em filipe-instance | Done |
+| [5.15](5.15.story.md) | CONTRIBUTING.md (Governança de Contribuição ao Repo Público) | Done |
+| [5.16](5.16.story.md) | CODE_OF_CONDUCT.md (Código de Conduta) | Done |
+| [5.17](5.17.story.md) | `.github/` Scaffold (Templates de PR/Issue e CODEOWNERS) | Done |
+| [5.19](5.19.story.md) | CI: Validação de Manifest em PRs (GitHub Actions) | Draft |
+| [5.20](5.20.story.md) | README.md: Limpeza de Hardcodes, Versão e Falsos Positivos | Draft |
+| [5.21](5.21.story.md) | CLAUDE.md: Limpar Hardcodes TypeScript dos Blocos Managed | Draft |
+| [5.22](5.22.story.md) | Expurgar package.json/package-lock.json/tsconfig.json do Repo Público | Draft |
+| [5.23](5.23.story.md) | Expurgar ANTHROPIC_API_KEY como Pré-requisito Universal do Framework | Draft |
+| [5.24](5.24.story.md) | Documentar Posição Stack-Agnóstica do Kairos | Draft |
+| [5.25](5.25.story.md) | Fix Arquitetural (L1): src/ É User-Owned — Corrigir Documentação de Fundação | Draft |
+| [5.26](5.26.story.md) | *architecture Stack-Agnóstico e Gestão Simétrica de agent-standards.md | Draft |

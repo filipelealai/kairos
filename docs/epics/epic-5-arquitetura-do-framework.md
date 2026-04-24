@@ -44,19 +44,26 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.12](../stories/5.12.story.md) | Manifest sync_files: categoria para arquivos sincronizados sem ownership de update | Done |
 | [5.13](../stories/5.13.story.md) | ownership.md: documentar sync_files como terceira categoria do manifesto | Done |
 | [5.14](../stories/5.14.story.md) | push-dual Passo 3: commit para main usa mensagem do commit em filipe-instance | Done |
-| [5.15](../stories/5.15.story.md) | CONTRIBUTING.md (Governança de Contribuição ao Repo Público) | In Review |
-| [5.16](../stories/5.16.story.md) | CODE_OF_CONDUCT.md (Código de Conduta) | In Review |
+| [5.15](../stories/5.15.story.md) | CONTRIBUTING.md (Governança de Contribuição ao Repo Público) | Done |
+| [5.16](../stories/5.16.story.md) | CODE_OF_CONDUCT.md (Código de Conduta) | Done |
 | [5.17](../stories/5.17.story.md) | `.github/` Scaffold (Templates de PR/Issue e CODEOWNERS) | Done |
 | [5.19](../stories/5.19.story.md) | CI: Validação de Manifest em PRs (GitHub Actions) | Draft |
+| [5.20](../stories/5.20.story.md) | README.md: Limpeza de Hardcodes, Versão e Falsos Positivos | Done |
+| [5.21](../stories/5.21.story.md) | CLAUDE.md: Limpar Hardcodes TypeScript dos Blocos Managed | Done |
+| [5.22](../stories/5.22.story.md) | Expurgar package.json/package-lock.json/tsconfig.json do Repo Público | Draft |
+| [5.23](../stories/5.23.story.md) | Expurgar ANTHROPIC_API_KEY como Pré-requisito Universal do Framework | Draft |
+| [5.24](../stories/5.24.story.md) | Documentar Posição Stack-Agnóstica do Kairos | Draft |
+| [5.25](../stories/5.25.story.md) | Fix Arquitetural (L1): src/ É User-Owned — Corrigir Documentação de Fundação | Draft |
+| [5.26](../stories/5.26.story.md) | *architecture Stack-Agnóstico e Gestão Simétrica de agent-standards.md | Draft |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
 
 - **5.18** — Configuração de branch protection no repo público (depende de 5.17 para CODEOWNERS; após 5.19, pode incluir workflow passando como required check)
-- **5.20** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.21** — Publicação de `@kairos/core` no npm
-- **5.22** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
+- **5.27** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.28** — Publicação de `@kairos/core` no npm
+- **5.29** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
 
 ---
 
@@ -101,3 +108,10 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-23 | Story 5.17 iniciada — In Progress |
 | 2026-04-23 | Story 5.17 concluída — In Review |
 | 2026-04-23 | Story 5.17 Done — gate RESSALVA confirmado (*pre-push) |
+| 2026-04-23 | Stories 5.15 e 5.16 Done — gates PASS/RESSALVA confirmados (pós-push) |
+| 2026-04-23 | Stories 5.20–5.25 criadas — limpeza de hardcodes TS, expurgamento de artefatos de instância do público, fix L1 de ownership de src/; candidatas antigas 5.20–5.22 renumeradas para 5.26–5.28 |
+| 2026-04-24 | Story 5.20 iniciada — In Progress |
+| 2026-04-24 | Story 5.20 concluída — In Review |
+| 2026-04-24 | Story 5.21 iniciada — In Progress |
+| 2026-04-24 | Story 5.21 concluída — In Review |
+| 2026-04-24 | Stories 5.20 e 5.21 Done — bump PATCH 3.6.0 → 3.6.1 |

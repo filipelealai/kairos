@@ -1,0 +1,39 @@
+schema: 2
+story: "5.21"
+story_title: "CLAUDE.md: Limpar Hardcodes TypeScript dos Blocos Managed"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-24T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Bloco framework-conventions — bullet 'Scripts de agentes — computação pura para tarefas específicas de cada squad (linguagem definida pela stack da instância)' — hardcode TypeScript removido"
+    - "✅ AC2: Bloco framework-conventions, seção Stack — reescrita com duas subseções (Framework: Markdown/YAML/CJS; Instância: stack definida pelo usuário) — sem referências TypeScript hardcoded"
+    - "✅ AC3: Bloco kairos-core, seção Estrutura Kairos Core — substituído pelo code block atualizado com .github/, hooks/ em .claude/, constitution.md/core-config.yaml/manifest.yaml em .kairos-core/, src/agents/ como user-owned"
+    - "✅ AC4: Seções user-owned do CLAUDE.md (Restrições Operacionais, Squads ativos, Squad ops) permanecem intactas — zero modificações fora dos blocos KAIROS-MANAGED"
+    - "✅ AC5: sha256 no manifest.yaml intencionalmente não atualizados — confirmado no Execution Log ('sha256 dos blocos no manifest.yaml desatualizados — *pre-push Passo 2.7 deve recalcular antes do commit')"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ CLAUDE.md — blocos framework-conventions e kairos-core atualizados dentro dos markers"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "ℹ️ templates/ incluído no bloco kairos-core (consistente com o filesystem), mas omitido no README.md (story 5.20). A discrepância é intencional segundo o Execution Log de 5.21 — o README é a referência canônica da story, e templates/ tem presença física mas não foi listado. Consistência entre os dois documentos pode ser endereçada em story futura se necessário."

@@ -151,7 +151,7 @@ owned_files:
     sha256: 475fd6445c0b67096168d3c6455dad02457d2708d072a5b5355e32129f968b0b
   - path: CHANGELOG.md
     layer: L3
-    sha256: ba4773a3e07d7acccc9ac47eb2ee1c39cb32866a1c19fc91153ac160ea463ca2
+    sha256: 36ba40b4eaea5b4664ec087c27833b4d4aee5683490d583bafd4d427f11ce2a7
 
   # .github/ scaffold (L3 — governança do repo público)
   - path: .github/CODEOWNERS
@@ -194,15 +194,15 @@ owned_sections:
       - name: framework-conventions
         start: "<!-- KAIROS-MANAGED-START: framework-conventions -->"
         end: "<!-- KAIROS-MANAGED-END: framework-conventions -->"
-        sha256: c477c4d2ad2adc57e299ba88b1c302e6b5e64709d2162251e0b85e5d5f23d35b
+        sha256: e52bb7d27b192263708268719d28a674ab6f4e9ae9030f3386cb3e3ac3dc1865
       - name: agent-system
         start: "<!-- KAIROS-MANAGED-START: agent-system -->"
         end: "<!-- KAIROS-MANAGED-END: agent-system -->"
-        sha256: 3bb7a80286efba071d4a61cee7eb3daef69af99a9b042277e9aadb466051dd8c
+        sha256: 2c95f9c95b7a1aa4f23f2f6a9fb7881f3fa2955c79e5cee5a1a96121dfafd88d
       - name: kairos-core
         start: "<!-- KAIROS-MANAGED-START: kairos-core -->"
         end: "<!-- KAIROS-MANAGED-END: kairos-core -->"
-        sha256: 83cac07c34480780ccac51a316c2807a6b49658b27e2f907200ba7b86c81a974
+        sha256: 0556fd254cdc3a8f8c1e054ed0c529300b26100f021637730e0f0747385a36b6
 
   - path: .kairos-core/core-config.yaml
     type: yaml_keys
