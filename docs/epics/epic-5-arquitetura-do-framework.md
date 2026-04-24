@@ -50,7 +50,7 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.19](../stories/5.19.story.md) | CI: Validação de Manifest em PRs (GitHub Actions) | Draft |
 | [5.20](../stories/5.20.story.md) | README.md: Limpeza de Hardcodes, Versão e Falsos Positivos | Done |
 | [5.21](../stories/5.21.story.md) | CLAUDE.md: Limpar Hardcodes TypeScript dos Blocos Managed | Done |
-| [5.22](../stories/5.22.story.md) | Expurgar package.json/package-lock.json/tsconfig.json do Repo Público | In Progress |
+| [5.22](../stories/5.22.story.md) | Expurgar package.json/package-lock.json/tsconfig.json do Repo Público | In Review |
 | [5.23](../stories/5.23.story.md) | Expurgar ANTHROPIC_API_KEY como Pré-requisito Universal do Framework | Draft |
 | [5.24](../stories/5.24.story.md) | Documentar Posição Stack-Agnóstica do Kairos | Draft |
 | [5.25](../stories/5.25.story.md) | Fix Arquitetural (L1): src/ É User-Owned — Corrigir Documentação de Fundação | Draft |
@@ -116,3 +116,4 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-24 | Story 5.21 concluída — In Review |
 | 2026-04-24 | Stories 5.20 e 5.21 Done — bump PATCH 3.6.0 → 3.6.1 |
 | 2026-04-24 | Story 5.22 iniciada — In Progress |
+| 2026-04-24 | Story 5.22 concluída — In Review |

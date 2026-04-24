@@ -251,7 +251,7 @@ notes: |
     (histórico de desenvolvimento do Kairos neste repo) — não são shipped para
     instâncias instaladas, logo não entram no manifesto.
 
-  - package.json, tsconfig.json, docs/scope.md,
+  - package.json, package-lock.json, tsconfig.json, docs/scope.md,
     .gitignore, .mcp.json são metadados da instância — não são gerenciados por
     updates de framework, logo não entram no manifesto.
 
