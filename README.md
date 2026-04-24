@@ -4,7 +4,7 @@
 
 Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura de governança, memória, handoffs, workers agendados e ferramentas de desenvolvimento para criar, evoluir e operar esses squads ao longo do tempo.
 
-**Versão atual:** `3.6.1` — ver [CHANGELOG.md](CHANGELOG.md)
+**Versão atual:** `3.7.0` — ver [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -270,7 +270,6 @@ O Kairos usa um modelo de governança próprio para se auto-documentar e evoluir
 Claude Code, sem persona   # executor move Draft → In Progress → In Review
                            # e adiciona Execution Log na story
 @kairos *review            # valida implementação — gate PASS/RESSALVA/BLOCK
-@kairos *doctor            
 @kairos *pre-push          # verificações finais
 @kairos *push              # push ao remoto (exclusivo do @kairos)
 ```
@@ -289,7 +288,7 @@ Para abrir um PR e contribuir no repositório público do Kairos, veja [CONTRIBU
 
 | Documento | Conteúdo |
 |-----------|----------|
-| [docs/scope.md](docs/scope.md) | PRD da instância, para o Kairos entender o projeto — criado e editado por @kairos *prd |
+| [docs/scope.md](docs/scope.md) | PRD da instância, para o Kairos entender o projeto — criado e editado por `@kairos *prd` |
 | [.kairos-core/docs/scope.md](.kairos-core/docs/scope.md) | PRD do framework Kairos — escopo, arquitetura, objetivos, restrições, stack |
 | [.kairos-core/docs/agent-standards.md](.kairos-core/docs/agent-standards.md) | Como criar e estruturar novos agentes |
 | [.kairos-core/docs/data-flow.md](.kairos-core/docs/data-flow.md) | Fluxo completo de dados, estrutura, formatos de output |

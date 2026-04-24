@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.7.0
 ---
 
 # Padrões de Agentes — Kairos
@@ -91,7 +91,7 @@ dependencies:
   tasks:
     - {nome-da-task}.md
   scripts:
-    - src/agents/{id}.ts
+    - src/agents/{id}.{ext}  # extensão definida pela linguagem da instância
   data:
     - data/{pasta}/
 

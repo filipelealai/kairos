@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.0
+kairos-version: 3.7.0
 task: Kairos Architecture
 responsavel: "@kairos"
 responsavel_type: agent
@@ -61,11 +61,11 @@ Verifique cada item:
 
 | Check | Como checar |
 |-------|-------------|
-| Runtime Node.js + ESM | `package.json` tem `"type": "module"`? |
-| TypeScript + tsx | `@anthropic-ai/sdk` e `tsx` estão em dependencies/devDependencies? |
-| Modelo declarado | Buscar `claude-sonnet-4-6` ou equivalente nos arquivos de agente e tools |
-| Versão do SDK | `@anthropic-ai/sdk` em package.json — está recente? |
-| Modelo nos docs vs código | `src/tools/claude.ts` declara o mesmo modelo mencionado em `.kairos-core/docs/scope.md`? |
+| Núcleo do framework (markdown + YAML + CJS) | `.claude/hooks/` tem arquivos `.cjs`? `.kairos-core/` existe? |
+| Runtime de scripts da instância | `package.json` existe? Se sim, verificar `"type"` e dependências declaradas. Se não, verificar se há outro runtime (ex: `requirements.txt`, `pyproject.toml`) |
+| Modelo declarado (se instância usa AI) | Buscar `claude-sonnet-4-6` ou equivalente nos arquivos de agente e tools/scripts |
+| Versão do SDK (se instância usa SDK Anthropic) | `@anthropic-ai/sdk` em `package.json` — está recente? |
+| Modelo nos docs vs código (se aplicável) | `src/tools/claude.ts` (ou equivalente) declara o mesmo modelo mencionado em `.kairos-core/docs/scope.md`? |
 
 Marcar: ✅ consistente / ⚠️ desatualizado / ❌ divergente
 
@@ -80,7 +80,7 @@ Leia `.kairos-core/core-config.yaml`. Para cada agente em `agents.squads.{squad}
 | Persona existe | `.claude/commands/kairos/agents/{id}.md` existe? |
 | Definição no squad existe | `squads/{squad}/agents/{id}.md` existe? |
 | MEMORY.md existe | `.kairos-core/agents/{id}/MEMORY.md` existe? |
-| Script TypeScript existe | `src/agents/{id}.ts` existe? |
+| Script do agente existe | `src/agents/{id}.*` existe (ou equivalente na linguagem da instância)? |
 | `id` no YAML da persona bate | Campo `agent.id` no persona file bate com o nome do arquivo? |
 
 Marcar cada agente: ✅ completo / ⚠️ artefato faltando / ❌ não encontrado
@@ -116,11 +116,11 @@ Leia `.kairos-core/docs/data-flow.md` e compare com o código.
 
 **Descoberta dinâmica dos agentes:**
 Leia `core-config.yaml → agents.squads` para obter a lista de squads e agentes ativos.
-Para cada squad ativo e seus agentes, encontrar o script correspondente em `src/agents/{id}.ts`.
+Para cada squad ativo e seus agentes, encontrar o script correspondente em `src/agents/{id}.{ext}`.
 
 **Campos do webhook (para cada agente com script):**
 - Ler `.kairos-core/docs/data-flow.md` seção "Campos do Lead" (ou equivalente)
-- Ler o script TypeScript correspondente — quais campos são lidos/usados?
+- Ler o script correspondente — quais campos são lidos/usados?
 - Se campo usado no código mas não documentado → ⚠️ "Campo não documentado: {campo}"
 - Se campo documentado mas nunca usado no código → ⚠️ "Campo documentado mas sem uso encontrado: {campo}"
 
@@ -155,10 +155,11 @@ Verificar se existe `.kairos-core/docs/decisions.md` (ADR log):
 - Se existe → verificar se decisões-chave estão registradas
 
 Decisões-chave esperadas para o estado atual do Kairos:
-- Por que n8n para disparo (não direto pela API)?
-- Por que tsx sem compilação?
-- Por que ESM ao invés de CommonJS?
 - Por que agentes como personas YAML-in-Markdown?
+- Por que `.kairos-core/` em vez de `.kairos/`?
+- Por que manifesto de ownership em vez de convenção por path?
+- (Se instância usa TypeScript) Por que tsx sem compilação? Por que ESM?
+- (Se instância usa n8n) Por que n8n para disparo e não direto pela API?
 
 Para cada decisão-chave ausente → listar como sugestão de registro.
 
@@ -171,9 +172,9 @@ Para cada decisão-chave ausente → listar como sugestão de registro.
 Data: {hoje}
 
 ━━━ STACK ━━━
-  {✅/⚠️/❌} Runtime ESM: {nota}
-  {✅/⚠️/❌} TypeScript + tsx: {nota}
-  {✅/⚠️/❌} Modelo AI: {nota}
+  {✅/⚠️/❌} Núcleo framework (markdown + YAML + CJS): {nota}
+  {✅/⚠️/❌} Runtime de scripts da instância: {nota}
+  {✅/⚠️/❌} Modelo AI (se aplicável): {nota}
   {✅/⚠️/❌} Consistência docs vs código: {nota}
 
 ━━━ AGENTES ━━━
@@ -258,7 +259,7 @@ Para cada agente:
 | Item | Onde encontrar |
 |------|----------------|
 | Persona | `.claude/commands/kairos/agents/{id}.md` |
-| Script TS | `src/agents/{id}.ts` |
+| Script | `src/agents/{id}.*` (ou equivalente na linguagem da instância) |
 | MEMORY.md | `.kairos-core/agents/{id}/MEMORY.md` |
 
 Verificar existência de cada artefato. Marcar: ✅ existe / ⚠️ ausente.
@@ -285,7 +286,7 @@ Verificar:
 
 | Check | O que checar |
 |-------|--------------|
-| Agentes em squad.yaml têm script | `src/agents/{id}.ts` existe para cada agente declarado? |
+| Agentes em squad.yaml têm script | `src/agents/{id}.*` existe para cada agente declarado? |
 | Agentes em squad.yaml têm persona | `.claude/commands/kairos/agents/{id}.md` existe? |
 | Pipeline documentado | `squads/{squad}/workflows/` tem pelo menos um arquivo de pipeline? |
 | Data-flow cobre todos os agentes | Cada agente do squad aparece no data-flow? |
