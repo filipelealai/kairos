@@ -16,10 +16,10 @@ cd kairos
 Para validar suas mudanças localmente, ative o `@kairos` no Claude Code e execute:
 
 ```
-@kairos *doctor
+@kairos *pre-push
 ```
 
-O `*doctor` verifica integridade do manifesto, frontmatter e ownership. Se retornar PASS, seu PR está apto a ser enviado.
+O `*pre-push` executa o health check completo do framework (`*doctor`), verifica o gate de review, realiza o bump de versão se necessário e prepara o commit. Se retornar PASS, seu PR está apto a ser enviado.
 
 ---
 
@@ -33,7 +33,7 @@ Arquivos em `.kairos-core/tasks/`, `.claude/rules/`, `.kairos-core/templates/` e
 
 - Abra uma issue descrevendo o problema ou melhoria
 - Implemente a mudança
-- Execute `@kairos *doctor` para validar
+- Execute `@kairos *pre-push` para validar
 - Abra um PR contra `main`
 
 ### 2. Novo squad ou agente
@@ -45,7 +45,7 @@ Squads e agentes são conteúdo de instância — criados pelo `@kairos *new-squ
 Para mudanças que impactam o núcleo (novas camadas, protocolo de handoff, modelo de autoridade), o fluxo é:
 
 ```
-@kairos *new-story → implementação com o Claude Core → @kairos *review → @kairos *doctor → @kairos *pre-push → PR
+@kairos *new-story → implementação com o Claude Code → @kairos *review → @kairos *pre-push → PR
 ```
 
 NOTA: Idealmente, `@kairos *push` só é utilizado para fazer push em branches e repos do usuário, como para salvar todo o Kairos **com** o seu conteúdo instanciado.
@@ -95,7 +95,7 @@ docs: CONTRIBUTING.md adicionado com fluxo de PR
 
 ## Fluxo de PR
 
-Ao abrir um PR, use o template em [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md) — ele é carregado automaticamente pelo GitHub. O template inclui checklist de manifest, `*doctor` e `*review`.
+Ao abrir um PR, use o template em [`.github/PULL_REQUEST_TEMPLATE.md`](.github/PULL_REQUEST_TEMPLATE.md) — ele é carregado automaticamente pelo GitHub. O template inclui checklist de manifest, `*pre-push` e `*review`.
 
 O Kairos, idealmente, usa dois remotes:
 
@@ -128,11 +128,11 @@ Antes de contribuir com mudanças estruturais, leia [`.claude/rules/ownership.md
 ## Validação local
 
 ```
-@kairos *doctor      # integridade do manifesto e frontmatter
+@kairos *pre-push    # health check completo (*doctor), gate de review, versionamento e commit
 @kairos *review      # gate de qualidade da story (se aplicável)
 ```
 
-`*doctor` retorna PASS, RESSALVA ou BLOCK. PRs com BLOCK não são aceitos sem resolução dos issues.
+`*pre-push` retorna PASS ou BLOCK. PRs com BLOCK não são aceitos sem resolução dos issues.
 
 ---
 
@@ -162,9 +162,7 @@ Roadmap informativo de suporte multi-stack:
 | Camada | Status |
 |--------|--------|
 | Núcleo (markdown + YAML + CJS) | Estável |
-| Scripts TypeScript em `src/agents/` e `src/tools/` | Instância de referência (estável, user-managed) |
-| Scripts Python em `src/agents/` e `src/tools/` | Suportado (user-managed) |
-| Estrutura multi-stack (`src/agents/ts/`, `src/agents/python/`, `src/tools/ts/`, `src/tools/python/`) | Planejado (migração futura) |
+| Estrutura multi-stack (`src/agents/ts/`, `src/agents/python/`, `src/tools/ts/`, `src/tools/python/` etc.) | Planejado (migração futura) |
 | CLI `npx install kairos` | Planejado |
 | Publicação `@kairos/core` no npm | Planejado |
 

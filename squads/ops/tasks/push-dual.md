@@ -123,6 +123,8 @@ git checkout filipe-instance -- .github/CODEOWNERS
 git checkout filipe-instance -- .github/PULL_REQUEST_TEMPLATE.md
 git checkout filipe-instance -- ".github/ISSUE_TEMPLATE/bug_report.md"
 git checkout filipe-instance -- ".github/ISSUE_TEMPLATE/feature_request.md"
+git checkout filipe-instance -- .github/workflows/validate-manifest.yml
+git checkout filipe-instance -- .github/scripts/validate-manifest.sh
 ```
 
 **`sync_files` — Documentação da instância (sincronizada, sem ownership de update):**

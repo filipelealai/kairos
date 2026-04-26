@@ -47,24 +47,25 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.15](../stories/5.15.story.md) | CONTRIBUTING.md (Governança de Contribuição ao Repo Público) | Done |
 | [5.16](../stories/5.16.story.md) | CODE_OF_CONDUCT.md (Código de Conduta) | Done |
 | [5.17](../stories/5.17.story.md) | `.github/` Scaffold (Templates de PR/Issue e CODEOWNERS) | Done |
-| [5.19](../stories/5.19.story.md) | CI: Validação de Manifest em PRs (GitHub Actions) | Draft |
+| [5.18](../stories/5.18.story.md) | Configurar Branch Protection no Repo Público | Done |
+| [5.19](../stories/5.19.story.md) | CI: Validação de Manifest em PRs (GitHub Actions) | Done |
 | [5.20](../stories/5.20.story.md) | README.md: Limpeza de Hardcodes, Versão e Falsos Positivos | Done |
 | [5.21](../stories/5.21.story.md) | CLAUDE.md: Limpar Hardcodes TypeScript dos Blocos Managed | Done |
 | [5.22](../stories/5.22.story.md) | Expurgar package.json/package-lock.json/tsconfig.json do Repo Público | Done |
 | [5.23](../stories/5.23.story.md) | Expurgar ANTHROPIC_API_KEY como Pré-requisito Universal do Framework | Done |
 | [5.24](../stories/5.24.story.md) | Documentar Posição Stack-Agnóstica do Kairos | Done |
-| [5.25](../stories/5.25.story.md) | Fix Arquitetural (L1): src/ É User-Owned — Corrigir Documentação de Fundação | Draft |
-| [5.26](../stories/5.26.story.md) | *architecture Stack-Agnóstico e Gestão Simétrica de agent-standards.md | Draft |
-| [5.27](../stories/5.27.story.md) | Depurar Conteúdo Instance-Specific de *architecture e *prd | Draft |
+| [5.25](../stories/5.25.story.md) | Fix Arquitetural (L1): src/ É User-Owned — Corrigir Documentação de Fundação | Done |
+| [5.26](../stories/5.26.story.md) | *architecture Stack-Agnóstico e Gestão Simétrica de agent-standards.md | Done |
+| [5.27](../stories/5.27.story.md) | Depurar Conteúdo Instance-Specific de *architecture e *prd | Done |
+| [5.28](../stories/5.28.story.md) | Integrar `*doctor` no `*pre-push` como Passo 0 Universal | Done |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
 
-- **5.18** — Configuração de branch protection no repo público (depende de 5.17 para CODEOWNERS; após 5.19, pode incluir workflow passando como required check)
-- **5.28** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.29** — Publicação de `@kairos/core` no npm
-- **5.30** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
+- **5.29** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
+- **5.30** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.31** — Publicação de `@kairos/core` no npm
 
 ---
 
@@ -126,4 +127,20 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-24 | Story 5.23: gate PASS (91/100) — @kairos *review |
 | 2026-04-24 | Story 5.24: gate PASS (93/100) — @kairos *review; hardcodes Passo 3 corrigidos pelo usuário |
 | 2026-04-24 | *pre-push: Stories 5.22, 5.23, 5.24 → Done; bump MINOR 3.6.1 → 3.7.0 |
+| 2026-04-24 | Story 5.25 iniciada — In Progress |
+| 2026-04-24 | Story 5.25 concluída — In Review |
 | 2026-04-24 | Story 5.27 criada — Depurar Conteúdo Instance-Specific de *architecture e *prd (Draft); candidatas antigas 5.27–5.29 renumeradas 5.28–5.30 |
+| 2026-04-25 | Story 5.26 iniciada — In Progress |
+| 2026-04-25 | Story 5.26 concluída — In Review |
+| 2026-04-25 | Story 5.27 iniciada — In Progress |
+| 2026-04-25 | Story 5.27 concluída — In Review |
+| 2026-04-25 | Story 5.18 criada — Branch Protection no Repo Público (Draft) |
+| 2026-04-25 | Story 5.28 criada — *ci: Gate de Validação para Contribuidores (Draft); candidatas antigas 5.28–5.30 renumeradas 5.29–5.31 |
+| 2026-04-25 | Story 5.18 iniciada e concluída via *implement — In Review |
+| 2026-04-25 | Story 5.28 reescrita por @kairos — `*ci` eliminado; integrar `*doctor` no `*pre-push` como Passo 0 |
+| 2026-04-25 | Story 5.28 iniciada — In Progress |
+| 2026-04-25 | Story 5.28 concluída — In Review; bump MINOR 3.7.0 → 3.8.0 |
+| 2026-04-25 | Story 5.19 iniciada — In Progress |
+| 2026-04-25 | Story 5.19 concluída — In Review; bump MINOR 3.8.0 → 3.9.0 |
+| 2026-04-25 | Story 5.18 Done — *pre-push: bump PATCH 3.9.0 → 3.9.1 |
+| 2026-04-25 | Stories 5.19, 5.25, 5.26, 5.27, 5.28 Done — *pre-push: gate confirmado |

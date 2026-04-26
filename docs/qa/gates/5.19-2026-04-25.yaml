@@ -1,0 +1,49 @@
+schema: 2
+story: "5.19"
+story_title: "CI: Validação de Manifest em PRs (GitHub Actions)"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-25T21:45:00-03:00"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: .github/workflows/validate-manifest.yml criado — dispara em pull_request → main"
+    - "✅ AC2: Opção (b) escolhida — script separado .github/scripts/validate-manifest.sh"
+    - "✅ AC3a: owned_files existência verificada pelo script"
+    - "✅ AC3b: sha256 verificado — divergência = FAIL em CI (mais rígido que *doctor local)"
+    - "✅ AC3c: arquivos .md kairos-owned fora de owned_files = WARN"
+    - "✅ AC3d: arquivos owned_files sem frontmatter kairos-owned: true = WARN"
+    - "✅ AC3e: KAIROS-MANAGED markers verificados — desemparelhado/órfão = FAIL"
+    - "✅ AC3f: sync_files existência verificada — ausente = FAIL"
+    - "✅ AC4: Output formatado para GitHub Actions Step Summary (tabelas por seção)"
+    - "✅ AC5: Stack bash + yq mikefarah/yq@v4.44.6 + sha256sum — zero Node"
+    - "✅ AC6: Manifest atualizado com 2 novos owned_files L3 (workflow + script) com sha256"
+    - "✅ AC7: squads/ops/tasks/push-dual.md Passo 2a atualizado com 2 novos paths"
+    - "✅ AC8: Bump MINOR 3.8.0 → 3.9.0 + entry CHANGELOG.md"
+    - "✅ AC9: @kairos *doctor verificará integridade no *pre-push (Passo 0) — SHA drift de stories-in-flight será recalculado automaticamente; AC coberto pelo fluxo normal"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .github/scripts/validate-manifest.sh"
+    - "✅ .github/workflows/validate-manifest.yml"
+  missing: []
+
+checks:
+  version_bumped: "✅ PASS — 3.8.0 → 3.9.0 em core-config.yaml e entry [3.9.0] em CHANGELOG.md"
+  changelog_updated: "✅ PASS — entry [3.9.0] com descrição do workflow CI"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+blocking_issues: []
+
+recommendations:
+  - "⚠️ sha256 de CHANGELOG.md no manifest.yaml diverge (drift de stories-in-flight) — será corrigido automaticamente pelo *doctor no Passo 0 do *pre-push"
+  - "⚠️ Após o merge desta story em main: atualizar branch protection via gh api para adicionar validate-manifest como required_status_checks (só funciona após o workflow ter rodado pelo menos uma vez em main)"

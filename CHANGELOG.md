@@ -6,6 +6,27 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.9.1] — 2026-04-25
+
+### Adicionado
+- branch protection habilitada na branch `main` de `filipelealweb/kairos` via `gh api PUT`
+
+---
+
+## [3.9.0] — 2026-04-25
+
+### Adicionado
+- `.github/workflows/validate-manifest.yml` e `.github/scripts/validate-manifest.sh`: primeiro workflow de CI do Kairos — valida owned_files (existência + sha256), frontmatter kairos-owned, KAIROS-MANAGED markers e sync_files em PRs contra main; stack bash + yq + sha256sum, zero Node
+
+---
+
+## [3.8.0] — 2026-04-25
+
+### Adicionado
+- `*doctor` integrado ao `*pre-push` como Passo 0 universal; referências a `*ci` substituídas por `*pre-push` em CONTRIBUTING.md, PULL_REQUEST_TEMPLATE.md e story 5.19
+
+---
+
 ## [3.7.0] — 2026-04-24
 
 ### Adicionado

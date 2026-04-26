@@ -17,13 +17,13 @@ owned_files:
   # --- L1 — Fundação ----------------------------------------------------------
   - path: .kairos-core/constitution.md
     layer: L1
-    sha256: 5d4e47f11048215d7a5e3d3ada33a4ea69fdf72063dbe2be072ae458138ef2b6
+    sha256: 4af46b55b0c0166affb35b71cf99433c2dbf78d147b8b13506da3a3893d495c4
   - path: .claude/rules/ownership.md
     layer: L1
     sha256: a264a0fe7fae7f6e3a40e13bbcb2b5a66c81b074d50c37803b26a494a8a02115
   - path: .claude/rules/agent-authority.md
     layer: L1
-    sha256: 7ce35a48e62b4b5f187d607c206ea12b7eccfacbb92c55cc172357c63e8dacc0
+    sha256: de49653412492a1e83a71d6e10c1f446899502a40976499eccfd23c88a48e1a9
   - path: .claude/rules/framework-layers.md
     layer: L1
     sha256: 568dbc4c6bf7f41a78f95f15a689dcb0a6f91f25b04eb80e36228779f1361468
@@ -54,7 +54,7 @@ owned_files:
   # Governance tasks (kairos-*)
   - path: .kairos-core/tasks/kairos-architecture.md
     layer: L2
-    sha256: 5547175ce25eb673f680e8e080da9d8ba5eb661bbcb0e28801a069bad0c9f0e0
+    sha256: 51399b3a1c7e1529dcb43f1fcb844bb93b0222ac8763b3cc58ce4c765cfd50cb
   - path: .kairos-core/tasks/kairos-doctor.md
     layer: L2
     sha256: 5942f3c333231e1a2828162ad703934efcde7d2a8c46ea783714e8cfb7f5ca77
@@ -84,10 +84,10 @@ owned_files:
     sha256: 14025232a01c693ff3ba5a9dc2c3ff2180038c9945e1ef3604c1a75137cbbb2d
   - path: .kairos-core/tasks/kairos-prd.md
     layer: L2
-    sha256: 358cf1ba99998c21ecd144eae69f6edabf1f226c747104c9ee156c03898ffe56
+    sha256: accdd840df7aa5f9839ffe0743cfeed5eb12f0d1b44a7c0bd50c6cd24dcc547d
   - path: .kairos-core/tasks/kairos-pre-push.md
     layer: L2
-    sha256: 0a028669c8208a4afee41372b9722da1321094da0f7501af1c62246188996c4c
+    sha256: 7baeff2dff5fc964830b550e2e74502443fafa5269d274ca221ba6320abde3f9
   - path: .kairos-core/tasks/kairos-push.md
     layer: L2
     sha256: c342c228049396420b286675e65f4d30e8fbb08a49d4416d2dcc3eafb0e45093
@@ -151,7 +151,7 @@ owned_files:
     sha256: 475fd6445c0b67096168d3c6455dad02457d2708d072a5b5355e32129f968b0b
   - path: CHANGELOG.md
     layer: L3
-    sha256: 082c18df8cea2da8417085bfab3ea00c7bb3bbaf221190b56cf924cca821005f
+    sha256: 378a382a0d8e212b6ef2682db0f933f8b87217a0f3a4e315bd177031b81fa22d
 
   # .github/ scaffold (L3 — governança do repo público)
   - path: .github/CODEOWNERS
@@ -159,13 +159,19 @@ owned_files:
     sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4
   - path: .github/PULL_REQUEST_TEMPLATE.md
     layer: L3
-    sha256: 7772ebda4603e589f7b7a4299daf7079fe1fc4f068d1ce05e420dd2623f877ad
+    sha256: a1f1c78178c1c29363bf5a59b1de7bf216a678472a4fd134cc03c151869a741f
   - path: .github/ISSUE_TEMPLATE/bug_report.md
     layer: L3
     sha256: c7568837cf91b0f5f3763fa564f1e4c036d2d34216748055910c4fb420702534
   - path: .github/ISSUE_TEMPLATE/feature_request.md
     layer: L3
     sha256: 38efe7ab50968c599f961a1151d93892d3f65e726bccdcc1316aa9a859c3fe7a
+  - path: .github/workflows/validate-manifest.yml
+    layer: L3
+    sha256: eb1f7eac27de5727e2ab76b1d99c9dcc4c79433b5d475e4e09047d76bd7c205f
+  - path: .github/scripts/validate-manifest.sh
+    layer: L3
+    sha256: a104f5d8be8799fd7e290b374d59ba7c856cb1ba77ec0c379697be38be219bfe
 
 # -----------------------------------------------------------------------------
 # Arquivos sincronizados para origin/main, mas não framework-owned para update
@@ -254,6 +260,10 @@ notes: |
   - package.json, package-lock.json, tsconfig.json, docs/scope.md,
     .gitignore, .mcp.json são metadados da instância — não são gerenciados por
     updates de framework, logo não entram no manifesto.
+
+  - src/ é integralmente user-owned (incluindo src/tools/ e src/agents/) —
+    nenhum arquivo de src/ está listado neste manifesto. Por default-deny,
+    qualquer operação de update ou @kairos jamais toca em src/.
 
   - CHANGELOG.md é framework-owned (L3): histórico de versões faz parte do artefato
     entregue pelo framework.

@@ -1,0 +1,47 @@
+schema: 2
+story: "5.27"
+story_title: "Depurar Conteúdo Instance-Specific de *architecture e *prd"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-25T00:00:00-03:00"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1 (arch): Passo 4 usa 'Inputs/campos declarados no data-flow.md' — label 'Campos do webhook' removido"
+    - "✅ AC2 (arch): 'Campos do Lead' removido de Passo 4; seção identificada genericamente pelo que data-flow.md declara"
+    - "✅ AC3 (arch): data/outputs/{squad}/emails/ removido como hardcode; outputs descobertos via data-flow.md ou squad.yaml dinamicamente"
+    - "✅ AC4 (arch): Decisões instance-specific removidas do Passo 6 — 'Por que tsx sem compilação?' e 'Por que n8n para disparo?' ausentes; apenas decisões universais ao framework permanecem"
+    - "✅ AC5 (arch): Passo 7 template usa 'Inputs/campos documentados no data-flow' — label genérico conforme especificado"
+    - "✅ AC6 (arch): Nota inline no Passo 4 explicita que a verificação não assume mecanismo de transporte (webhook, API, arquivo, planilha)"
+    - "✅ AC7 (prd): Passo 0 trata arquivo de dependências condicionalmente — verifica package.json, pyproject.toml, requirements.txt; se nenhum existir, anota para perguntar no Passo 2"
+    - "✅ AC8 (prd): Passo 2 Stack sem 'Node.js/tsx/Anthropic SDK' como padrão; quando sem arquivo de dependências → pergunta ao usuário"
+    - "✅ AC9 (prd): Mapeamento 'prospecção/leads → cold outreach' e 'dados/relatórios → analytics' removidos; exemplos genéricos preservados (automação de marketing, análise de dados, atendimento)"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-architecture.md"
+    - "✅ .kairos-core/tasks/kairos-prd.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "Passo 2 de *prd mantém exemplos de domínio genéricos ('automação de marketing, análise de dados, atendimento'). Executor sinalizou que pode ser desnecessário."
+    recommendation: "Os exemplos são neutros o suficiente — não codificam cold-prospecting. Manter ou remover em refinamento futuro (opcional)."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Exemplos genéricos no Passo 2 do *prd são inócuos mas podem ser simplificados em story futura se o princípio de inferência for suficientemente claro sem exemplos fixos."

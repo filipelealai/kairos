@@ -1,0 +1,42 @@
+schema: 2
+story: "5.18"
+story_title: "Configurar Branch Protection no Repo Público"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-25T21:30:00-03:00"
+quality_score: 95
+execution_log_found: true
+self_reviewed: true
+self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Branch protection habilitada — confirmada via gh api repos/filipelealweb/kairos/branches/main/protection"
+    - "✅ AC2: enforce_admins: false — confirmado via gh api"
+    - "✅ AC3: required_approving_review_count: 1 — confirmado"
+    - "✅ AC4: require_code_owner_reviews: true — confirmado"
+    - "✅ AC5: dismiss_stale_reviews: true — confirmado"
+    - "✅ AC6: allow_force_pushes: false — confirmado"
+    - "✅ AC7: allow_deletions: false — confirmado"
+    - "✅ AC8: required_status_checks: null (5.19 Draft na execução) — decisão documentada no Execution Log"
+  manual: []
+  gaps: []
+
+files:
+  present: []
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "N/A — configuração remota GitHub, sem artefatos locais"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Quando 5.19 for concluída, atualizar branch protection para adicionar required_status_checks: validate-manifest via gh api"

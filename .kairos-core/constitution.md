@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.9.1
 ---
 
 # Constituição do Kairos
@@ -54,7 +54,7 @@ kairos-version: 2.0.0
 
 18. **O Kairos é a infraestrutura; squads, agentes e integrações são o que o usuário constrói com ela.** São coisas distintas. A identidade do framework não depende de nenhum squad específico, nenhuma skill ou integração particular.
 
-19. **Artefatos de framework** (infraestrutura): `.kairos-core/`, `.claude/rules/`, `.claude/commands/kairos/agents/`, `src/tools/`, hooks, tasks, templates, constituição. Estes definem o que o Kairos É.
+19. **Artefatos de framework** (infraestrutura): `.kairos-core/`, `.claude/rules/`, `.claude/commands/kairos/agents/`, hooks, tasks, templates, constituição. Estes definem o que o Kairos É. **`src/` é integralmente user-owned** — o manifesto é a fonte autoritativa; qualquer diretório não listado nele é conteúdo do usuário.
 
 20. **Artefatos do usuário** (produtos do framework): squads em `squads/`, agents em `src/agents/`, skills em `.claude/skills/`, MCPs e integrações configuradas. Estes definem o que o usuário FAZ com o Kairos.
 

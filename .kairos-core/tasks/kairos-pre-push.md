@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.5.0
+kairos-version: 3.9.1
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -12,7 +12,7 @@ Saida: |
   - verdict: PASS | BLOCK exibido em tela
   - pre_push_passed: true|false (guardado em sessão para *push verificar)
 Checklist:
-  - "[ ] Passo 0: Manifest Guard — arquivos kairos-owned sem entrada no manifest"
+  - "[ ] Passo 0: *doctor — health check completo do framework (Checks 1–10)"
   - "[ ] Passo 1: Gate de review para stories MINOR/MAJOR ativas"
   - "[ ] Passo 2: Detectar e executar bump de versão pendente"
   - "[ ] Passo 2.5: Transição da story para Done"
@@ -30,29 +30,31 @@ O `*pre-push` é o centro do pré-voo: trata o gate de review, o bump de versão
 
 ## Execução
 
-### Passo 0 — Manifest Guard
+### Passo 0 — *doctor (Health Check Completo)
 
-**Objetivo:** detectar arquivos `kairos-owned: true` que não estão listados no manifesto — fail fast antes de qualquer outro check.
+**Objetivo:** executar o health check completo do framework antes de qualquer outro passo — fail fast em problemas estruturais.
 
-1. Leia `.kairos-core/manifest.yaml` → extraia a lista de paths em `owned_files`
-2. Escaneie os seguintes diretórios em busca de arquivos `.md`, `.cjs` e `.yaml`:
-   - `.kairos-core/tasks/`
-   - `.kairos-core/templates/`
-   - `.claude/rules/`
-   - `.claude/commands/kairos/agents/`
-   - `.kairos-core/docs/`
-3. Para cada arquivo encontrado, leia o frontmatter YAML (delimitado por `---`) e verifique se contém `kairos-owned: true`
-4. Para cada arquivo com `kairos-owned: true`, verifique se seu path aparece em `owned_files`
-5. Se algum arquivo com `kairos-owned: true` **não** está listado no manifesto → **BLOCK:**
-   ```
-   🚫 BLOCK — Manifest Guard: arquivos kairos-owned fora do manifesto:
-     - {path1}
-     - {path2}
-   Adicione ao manifest.yaml e ao push-dual antes de continuar.
-   ```
-6. Se todos os arquivos estão listados → confirme: `✓ Manifest Guard: sem drift detectado`
+Execute `*doctor` (Checks 1–10 conforme definido em `kairos-doctor.md`) e avalie o veredicto:
 
-**BLOCK se:** qualquer arquivo com `kairos-owned: true` não está em `manifest.yaml → owned_files`.
+**Mapeamento de veredicto → decisão do `*pre-push`:**
+
+| Veredicto `*doctor` | Ação |
+|---------------------|------|
+| `HEALTHY` | Confirme `✓ *doctor: HEALTHY — prosseguindo` e continue |
+| `WARNING` | Verifique a natureza dos WARNs (ver abaixo) |
+| `CRITICAL` | **BLOCK imediato** — listar todos os FAILs |
+
+**Regra para `WARNING`:**
+
+- WARNs de **integridade de manifesto** — arquivo com `kairos-owned: true` não está em `owned_files` (Check 9) → **BLOCK:**
+  ```
+  🚫 BLOCK — *doctor WARNING de manifest integrity:
+    ⚠️ {arquivo} marca-se como kairos-owned mas não está no manifesto
+  Adicione ao manifest.yaml e ao push-dual antes de continuar.
+  ```
+- Todos os demais WARNs (drift de SHA, story sem gate, referência quebrada, etc.) → **não bloqueam**; os warnings são listados no sumário final do `*pre-push` na seção "Avisos".
+
+**BLOCK se:** veredicto `*doctor` = CRITICAL, **ou** se qualquer WARN for de categoria manifest integrity (arquivo `kairos-owned: true` fora de `owned_files`).
 
 ---
 
@@ -413,7 +415,7 @@ Resumo:
   Versão: {version}
 
 Checks:
-  ✅ Passo 0 — Manifest Guard (sem drift | N arquivos verificados)
+  ✅ Passo 0 — *doctor (HEALTHY | warnings listados abaixo se houver)
   ✅ Passo 1 — Gate de review (stories MINOR/MAJOR com gate PASS/RESSALVA)
   ✅ Passo 2 — Versionamento ({bump feito: antiga → nova | sem bump pendente | PATCH: bump aplicado/ignorado pelo usuário})
   ✅ Passo 2.6 — kairos-version ({N} atualizado(s) | sem frontmatter)

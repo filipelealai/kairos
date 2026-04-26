@@ -1,0 +1,52 @@
+schema: 2
+story: "5.25"
+story_title: "Fix Arquitetural (L1): src/ É User-Owned — Corrigir Documentação de Fundação"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-25T00:00:00Z"
+quality_score: 85
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: agent-authority.md — seção 'Quem Implementa Instâncias' reescrita; afirmação falsa de L2/manifesto removida; substituída por nota user-owned correta"
+    - "✅ AC2: agent-authority.md — nenhuma outra ocorrência afirmando src/ como framework-owned encontrada"
+    - "✅ AC3: constitution.md — princípio 19 corrigido: src/tools/ removido da lista de artefatos de framework; nota explícita 'src/ é integralmente user-owned' adicionada"
+    - "✅ AC4: manifest.yaml seção notes — nota sobre src/ user-owned adicionada (linhas 258-261)"
+  manual:
+    - "⚠️ AC5: Bump MAJOR — não executado; deferido para confirmação do usuário conforme instrução explícita da story ('executor deve confirmar com o usuário antes de executar o bump')"
+    - "⚠️ AC6: CHANGELOG com seção ### Fundação — não gerado; pendente pelo mesmo motivo do AC5"
+    - "⚠️ AC7: *doctor continua passando — requer execução manual após bump"
+  gaps: []
+
+files:
+  present:
+    - "✅ .claude/rules/agent-authority.md"
+    - "✅ .kairos-core/constitution.md"
+    - "✅ .kairos-core/manifest.yaml"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — resolvido via *pre-push (bump MAJOR + CHANGELOG ### Fundação)"
+  changelog_updated: "⚠️ RESSALVA — resolvido via *pre-push"
+  story_file_consistent: "✅ PASS — status, epic, ACs marcados coerentemente com o trabalho realizado"
+  files_exist: "✅ PASS — todos os arquivos declarados no Execution Log existem e foram verificados"
+  no_broken_references: "✅ PASS — referências cruzadas em ordem"
+  execution_log_present: "✅ PASS — Execution Log completo: o que foi feito, decisões, arquivos, pendências e notas para @kairos"
+
+issues:
+  - severity: "medium"
+    description: "AC5 e AC6 (bump MAJOR + CHANGELOG ### Fundação) não executados — deferidos por instrução da própria story que exige confirmação do usuário"
+    recommendation: "Confirmar com o usuário e executar: *version major 'Fix L1: src/ declarado user-owned — corrige afirmação falsa em agent-authority.md e constitution.md'; depois adicionar entrada ### Fundação no CHANGELOG"
+  - severity: "low"
+    description: "sha256 de agent-authority.md e constitution.md no manifest.yaml divergem após as edições — *doctor detectará drift"
+    recommendation: "Atualizar sha256 dos dois arquivos L1 no manifesto durante *pre-push"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Confirmar bump MAJOR com o usuário antes de executar *version"
+  - "⚠️ CHANGELOG deve incluir seção '### Fundação' com: correção factual (não comportamental), justificativa, e quais afirmações falsas foram removidas"
+  - "⚠️ Atualizar sha256 de .claude/rules/agent-authority.md e .kairos-core/constitution.md no manifesto (owned_files, L1) — divergem após as edições desta story"
+  - "⚠️ Executar *doctor após bump para confirmar integridade do framework"

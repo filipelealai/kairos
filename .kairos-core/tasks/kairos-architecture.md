@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.7.0
+kairos-version: 3.9.1
 task: Kairos Architecture
 responsavel: "@kairos"
 responsavel_type: agent
@@ -16,10 +16,11 @@ Saida: |
   - Modo framework: relatório de estado arquitetural com checks ✅/⚠️/❌
   - Modo squad: squads/{squad}/workflows/data-flow.md criado ou atualizado
   - .kairos-core/docs/data-flow.md atualizado (se divergências encontradas, modo framework)
+  - .kairos-core/docs/agent-standards.md atualizado (se divergências encontradas, modo framework)
   - sugestões de decisões a registrar (se ADRs ausentes)
 Checklist:
   - "[ ] Detectar modo: com ou sem argumento {squad}"
-  - "[ ] Modo framework: verificar stack, agentes, tasks, data-flow, referências, decisões"
+  - "[ ] Modo framework: verificar stack (via docs/scope.md), agentes, tasks, data-flow, agent-standards, referências, decisões"
   - "[ ] Modo squad: verificar existência do squad, gerar/atualizar data-flow.md"
   - "[ ] Exibir relatório com checks marcados"
   - "[ ] Listar divergências e sugestões de atualização"
@@ -48,26 +49,43 @@ Se chamado como *architecture (sem argumento):
 
 ## Modo Framework — Auditoria Geral
 
+> **Descoberta de stack sem hardcodes:** toda informação de runtime, linguagem e SDK é lida
+> de `docs/scope.md` seção Stack. Se a seção não existir, os checks de stack são limitados
+> sem assumir nenhum default de runtime ou linguagem. Scripts de agentes são descobertos via
+> `dependencies.scripts` na persona ou `squads/{squad}/squad.yaml` — nunca por path fixo.
+>
+> **Agent-standards simétrico ao data-flow:** `.kairos-core/docs/agent-standards.md` recebe
+> os mesmos checks aplicados a `data-flow.md` — comparação docs vs implementação, diff
+> proposto e confirmação explícita antes de atualizar.
+
 ### Passo 1 — Verificar Stack
 
-Leia:
-- `package.json` (dependências reais)
+**Lógica de descoberta (sem hardcodes):**
+
+1. Ler `docs/scope.md` seção Stack — fonte autoritativa de runtime, linguagem, SDK e modelo.
+2. Se `docs/scope.md` não existir ou não tiver seção Stack:
+   ```
+   ⚠️ AVISO: docs/scope.md não tem seção Stack declarada.
+      Checks de stack serão limitados — sem assumir runtime, linguagem ou dependências.
+      Para checks completos, declare a stack em docs/scope.md via *prd.
+   ```
+   Prosseguir apenas com o check do núcleo do framework.
+3. Se seção Stack presente: extrair `Runtime`, `AI` (SDK + modelo) e ferramentas declaradas.
+
+Leia também:
 - `.kairos-core/docs/scope.md` (stack declarada do framework)
-- `docs/scope.md` (escopo da instância — para contexto de squads e integrações ativas)
-- `CLAUDE.md` (stack na seção principal)
 - `.kairos-core/core-config.yaml` (agentes declarados)
 
-Verifique cada item:
+Verifique cada item com base no que está declarado em `docs/scope.md`:
 
 | Check | Como checar |
 |-------|-------------|
 | Núcleo do framework (markdown + YAML + CJS) | `.claude/hooks/` tem arquivos `.cjs`? `.kairos-core/` existe? |
-| Runtime de scripts da instância | `package.json` existe? Se sim, verificar `"type"` e dependências declaradas. Se não, verificar se há outro runtime (ex: `requirements.txt`, `pyproject.toml`) |
-| Modelo declarado (se instância usa AI) | Buscar `claude-sonnet-4-6` ou equivalente nos arquivos de agente e tools/scripts |
-| Versão do SDK (se instância usa SDK Anthropic) | `@anthropic-ai/sdk` em `package.json` — está recente? |
-| Modelo nos docs vs código (se aplicável) | `src/tools/claude.ts` (ou equivalente) declara o mesmo modelo mencionado em `.kairos-core/docs/scope.md`? |
+| Runtime da instância | Declarado em `docs/scope.md` seção Stack → verificar se arquivo de dependências correspondente existe (ex: `package.json` para Node.js, `requirements.txt` para Python). Se runtime não declarado → ⚠️ "Runtime não declarado em docs/scope.md" |
+| Modelo AI (se instância usa AI) | Declarado em `docs/scope.md` seção Stack → buscar o modelo declarado nos scripts e tools da instância |
+| Consistência docs vs código | Se SDK AI declarado em scope.md → verificar se script client equivalente existe; se não declarado → ⚠️ "SDK não declarado em docs/scope.md" |
 
-Marcar: ✅ consistente / ⚠️ desatualizado / ❌ divergente
+Marcar: ✅ consistente / ⚠️ desatualizado ou não declarado / ❌ divergente
 
 ---
 
@@ -80,7 +98,7 @@ Leia `.kairos-core/core-config.yaml`. Para cada agente em `agents.squads.{squad}
 | Persona existe | `.claude/commands/kairos/agents/{id}.md` existe? |
 | Definição no squad existe | `squads/{squad}/agents/{id}.md` existe? |
 | MEMORY.md existe | `.kairos-core/agents/{id}/MEMORY.md` existe? |
-| Script do agente existe | `src/agents/{id}.*` existe (ou equivalente na linguagem da instância)? |
+| Script do agente existe | Ler campo `dependencies.scripts` na persona do agente; se declarado → verificar existência de cada path. Se não declarado → ⚠️ "Scripts não declarados no escopo" |
 | `id` no YAML da persona bate | Campo `agent.id` no persona file bate com o nome do arquivo? |
 
 Marcar cada agente: ✅ completo / ⚠️ artefato faltando / ❌ não encontrado
@@ -116,10 +134,15 @@ Leia `.kairos-core/docs/data-flow.md` e compare com o código.
 
 **Descoberta dinâmica dos agentes:**
 Leia `core-config.yaml → agents.squads` para obter a lista de squads e agentes ativos.
-Para cada squad ativo e seus agentes, encontrar o script correspondente em `src/agents/{id}.{ext}`.
+Para cada squad ativo e seus agentes, encontrar o script correspondente via `dependencies.scripts` na persona do agente.
 
-**Campos do webhook (para cada agente com script):**
-- Ler `.kairos-core/docs/data-flow.md` seção "Campos do Lead" (ou equivalente)
+**Inputs/campos declarados no data-flow.md (para cada agente com script):**
+
+> Esta verificação não assume mecanismo de transporte (webhook, API, arquivo, planilha). Os
+> inputs/campos relevantes são os que o próprio `data-flow.md` da instância declara — seja qual
+> for a seção em que estão documentados.
+
+- Ler `.kairos-core/docs/data-flow.md` — identificar a seção de inputs/campos declarada no documento
 - Ler o script correspondente — quais campos são lidos/usados?
 - Se campo usado no código mas não documentado → ⚠️ "Campo não documentado: {campo}"
 - Se campo documentado mas nunca usado no código → ⚠️ "Campo documentado mas sem uso encontrado: {campo}"
@@ -127,13 +150,38 @@ Para cada squad ativo e seus agentes, encontrar o script correspondente em `src/
 **Outputs dos agentes:**
 - Verificar se os formatos de output documentados batem com o que o código gera
 - `data/outputs/{squad}/reports/` — verificar padrão de nomenclatura
-- `data/outputs/{squad}/emails/` (quando aplicável) — verificar schema do JSON
+- Outputs adicionais: descobertos a partir do que está declarado no `data-flow.md` ou `squad.yaml` — nenhum subdiretório é assumido por default
 
 **Handoff format:**
 - Verificar se `.kairos-core/runtime/handoffs/` existe (runtime, pode não ter arquivos)
 - Verificar se `squads/{squad}/data/workflow-chains.yaml` existe e está consistente (quando o squad define chains)
 
 Marcar cada item: ✅ consistente / ⚠️ possível divergência / ❌ divergência confirmada
+
+---
+
+### Passo 4.5 — Verificar Agent Standards
+
+Leia `.kairos-core/docs/agent-standards.md` e compare com as personas existentes em `.claude/commands/kairos/agents/`.
+
+**Descoberta de agentes:** ler `core-config.yaml → agents.squads` para lista de agentes ativos.
+
+Para cada agente ativo, verificar:
+
+| Check | Como checar |
+|-------|-------------|
+| Formato da persona | Persona tem os campos obrigatórios: `activation-instructions`, `agent`, `persona_profile`, `persona`, `core_principles`, `commands`, `{id}-task`, `dependencies`, `autoClaude`? |
+| Greeting em 6 steps | Persona inclui Step 5.5 (handoff check no greeting)? |
+| `blocking` e `completion` declarados | `{id}-task.blocking` e `{id}-task.completion` presentes na persona? |
+| Definição no squad | `squads/{squad}/agents/{id}.md` existe e tem campos obrigatórios (`agent`, `commands_key`, `outputs`, `handoff_to`)? |
+| MEMORY.md | `.kairos-core/agents/{id}/MEMORY.md` existe e tem seções `Active Patterns`, `Gotchas Técnicos`, `Promotion Candidates`, `Archived`? |
+| Nomenclatura | ID em kebab-case? Nome da persona em PascalCase? Arquivo de task em kebab-case? |
+
+Para cada divergência entre as personas reais e o padrão documentado:
+- ⚠️ "Campo ausente: {campo} em {persona}"
+- ❌ "Formato incorreto: {item} em {persona}"
+
+Marcar cada check: ✅ conforme / ⚠️ parcial / ❌ não conforme
 
 ---
 
@@ -158,8 +206,6 @@ Decisões-chave esperadas para o estado atual do Kairos:
 - Por que agentes como personas YAML-in-Markdown?
 - Por que `.kairos-core/` em vez de `.kairos/`?
 - Por que manifesto de ownership em vez de convenção por path?
-- (Se instância usa TypeScript) Por que tsx sem compilação? Por que ESM?
-- (Se instância usa n8n) Por que n8n para disparo e não direto pela API?
 
 Para cada decisão-chave ausente → listar como sugestão de registro.
 
@@ -188,10 +234,16 @@ Data: {hoje}
   ...
 
 ━━━ DATA FLOW ━━━
-  {✅/⚠️/❌} Campos do webhook documentados: {nota}
+  {✅/⚠️/❌} Inputs/campos documentados no data-flow: {nota}
   {✅/⚠️/❌} Outputs dos agentes: {nota}
   {✅/⚠️/❌} Handoff format: {nota}
   {✅/⚠️/❌} workflow-chains.yaml: {nota}
+
+━━━ AGENT STANDARDS ━━━
+  {✅/⚠️/❌} Formato das personas: {nota}
+  {✅/⚠️/❌} Definições no squad: {nota}
+  {✅/⚠️/❌} MEMORY.md dos agentes: {nota}
+  {✅/⚠️/❌} Nomenclatura: {nota}
 
 ━━━ REFERÊNCIAS ━━━
   {✅/⚠️/❌} .kairos-core/docs/: {nota}
@@ -226,6 +278,19 @@ Se divergências de data-flow forem encontradas (⚠️ ou ❌), `@kairos` pode:
 2. Aguardar confirmação: "Posso atualizar .kairos-core/docs/data-flow.md com estas correções?"
 3. Após confirmação → atualizar o arquivo
 4. Registrar no Change Log do data-flow.md (se o arquivo tiver um)
+
+**Nunca atualizar automaticamente sem confirmação explícita** — mudanças em .kairos-core/docs/ são estruturais.
+
+---
+
+### Atualização do agent-standards.md
+
+Se divergências de agent-standards forem encontradas (⚠️ ou ❌), `@kairos` pode:
+
+1. Exibir diff proposto ao usuário
+2. Aguardar confirmação: "Posso atualizar .kairos-core/docs/agent-standards.md com estas correções?"
+3. Após confirmação → atualizar o arquivo
+4. Registrar no Change Log do agent-standards.md (se o arquivo tiver um)
 
 **Nunca atualizar automaticamente sem confirmação explícita** — mudanças em .kairos-core/docs/ são estruturais.
 
@@ -286,7 +351,7 @@ Verificar:
 
 | Check | O que checar |
 |-------|--------------|
-| Agentes em squad.yaml têm script | `src/agents/{id}.*` existe para cada agente declarado? |
+| Agentes em squad.yaml têm script | Campo `dependencies.scripts` na persona de cada agente — verificar existência dos paths declarados; se não declarado → ⚠️ "Scripts não declarados no escopo" |
 | Agentes em squad.yaml têm persona | `.claude/commands/kairos/agents/{id}.md` existe? |
 | Pipeline documentado | `squads/{squad}/workflows/` tem pelo menos um arquivo de pipeline? |
 | Data-flow cobre todos os agentes | Cada agente do squad aparece no data-flow? |

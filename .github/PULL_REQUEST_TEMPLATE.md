@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.6.0
+kairos-version: 3.9.1
 ---
 
 ## Resumo
@@ -22,8 +22,7 @@ kairos-version: 3.6.0
 ## Checklist
 
 - [ ] `.kairos-core/manifest.yaml` atualizado (se novos arquivos framework-owned foram criados)
-- [ ] `@kairos *doctor` retornou PASS
+- [ ] `@kairos *pre-push` retornou PASS (obrigatório antes de PR — inclui health check, gate de review e versionamento)
 - [ ] `@kairos *review` retornou PASS ou RESSALVA (obrigatório se há story associada)
-- [ ] `@kairos *pre-push` retornou PASS e fez commit válido (obrigatório antes de PR)
 - [ ] `CHANGELOG.md` atualizado (obrigatório para MINOR e MAJOR; recomendado para PATCH)
 - [ ] Frontmatter `kairos-owned: true` + `kairos-version` presentes nos novos arquivos framework (se aplicável)

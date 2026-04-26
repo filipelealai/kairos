@@ -1,0 +1,49 @@
+schema: 2
+story: "5.28"
+story_title: "Integrar *doctor no *pre-push como Passo 0 Universal"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-25T21:50:00-03:00"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-pre-push.md Passo 0 substituído por *doctor completo (Checks 1–10) com mapeamento HEALTHY/WARNING/CRITICAL → PASS/BLOCK"
+    - "✅ AC2: Manifest Guard isolado removido — cobertura absorvida pelo *doctor Check 9 com elevação de severidade a BLOCK no contexto do *pre-push"
+    - "✅ AC3: Passos 1–5 do *pre-push preservados sem renumeração"
+    - "✅ AC4: kairos-doctor.md não modificado — *doctor permanece health check standalone"
+    - "✅ AC5: CONTRIBUTING.md atualizado — todas as ocorrências de @kairos *ci substituídas por @kairos *pre-push"
+    - "✅ AC6: .github/PULL_REQUEST_TEMPLATE.md atualizado — checklist *ci substituído por *pre-push"
+    - "✅ AC7: docs/stories/5.19.story.md atualizado — Objetivo e dependência de 5.28 referenciam *pre-push"
+    - "✅ AC8: manifest.yaml atualizado — sha256 de kairos-pre-push.md (41fc20...) e PULL_REQUEST_TEMPLATE.md (183543...) verificados e coincidem com os arquivos atuais"
+    - "✅ AC9: Bump MINOR 3.7.0 → 3.8.0 + entry [3.8.0] em CHANGELOG.md"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+    - "✅ CONTRIBUTING.md"
+    - "✅ .github/PULL_REQUEST_TEMPLATE.md"
+    - "✅ docs/stories/5.19.story.md"
+    - "✅ .kairos-core/manifest.yaml"
+    - "✅ .kairos-core/core-config.yaml"
+    - "✅ CHANGELOG.md"
+    - "✅ README.md"
+  missing: []
+
+checks:
+  version_bumped: "✅ PASS — 3.7.0 → 3.8.0 confirmado em core-config.yaml e CHANGELOG.md"
+  changelog_updated: "✅ PASS — entry [3.8.0] com descrição da integração *doctor/*pre-push"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+blocking_issues: []
+
+recommendations:
+  - "⚠️ sha256 de CHANGELOG.md no manifest.yaml diverge (drift de stories-in-flight) — será recalculado automaticamente pelo *doctor no Passo 0 do *pre-push"
