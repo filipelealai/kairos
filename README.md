@@ -4,7 +4,7 @@
 
 Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura de governança, memória, handoffs, workers agendados e ferramentas de desenvolvimento para criar, evoluir e operar esses squads ao longo do tempo.
 
-**Versão atual:** `3.7.0` — ver [CHANGELOG.md](CHANGELOG.md)
+**Versão atual:** `3.9.1` — ver [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -66,6 +66,7 @@ Exemplos comuns de conteúdo instanciado incluem:
 ## Pré-requisitos
 
 - Claude Code instalado
+- Um software de IDE, como VSCode, instalado (recomendado, opcional)
 - Integrações externas conforme os squads que você configurar — stack, dependências e chaves de API são responsabilidade do usuário (ver [.env.example](.env.example) da sua instância quando aplicável)
 
 ---
@@ -198,7 +199,7 @@ Comandos principais:
 | `*implement {id}` | Implementa story de desenvolvimento |
 | `*review {id}` | Valida implementação — gate PASS / RESSALVA / BLOCK |
 | `*version patch\|minor\|major "desc"` | Bump de versão semântica |
-| `*pre-push` | Verificações antes do push |
+| `*pre-push` | Verificações antes do push ou PR |
 | `*push` | git push — exclusivo, requer *pre-push PASS |
 | `*prd` | Cria ou atualiza `docs/scope.md` |
 | `*architecture [{squad}]` | Audita consistência entre docs e código — framework geral (sem argumento) ou squad específico |

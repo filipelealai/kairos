@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.3
+kairos-version: 3.9.1
 task: Kairos PRD
 responsavel: "@kairos"
 responsavel_type: agent
@@ -44,7 +44,10 @@ Se docs/scope.md existe     → modo: UPDATE
 
 Antes de fazer qualquer pergunta ao usuário, ler:
 
-1. `package.json` → extrair `name`, runtime, principais dependências
+1. Arquivo de dependências da instância (condicional):
+   - Se existir `package.json` → extrair `name`, runtime, principais dependências
+   - Se existir `pyproject.toml` ou `requirements.txt` → extrair nome do projeto e dependências principais
+   - Se nenhum arquivo de dependências existir → anotar: stack a ser perguntada ao usuário no Passo 2
 2. `.kairos-core/core-config.yaml` → extrair `agents.squads` (squads ativos e seus agentes)
 
 Com esse contexto em mãos, formular a abertura.
@@ -68,7 +71,7 @@ Aguarde a resposta antes de continuar.
 
 A partir da resposta do usuário:
 
-**Inferência de domínio:** se o usuário menciona termos como "prospecção", "leads", "e-mails", "clientes", "vendas" → inferir domínio de cold outreach. Se menciona "dados", "relatórios", "análise" → inferir analytics. Confirmar a inferência em vez de perguntar do zero.
+**Inferência de domínio:** a partir do que o usuário descreveu, inferir o domínio de negócio (ex: automação de marketing, análise de dados, atendimento, etc.). Confirmar a inferência em vez de perguntar do zero — o princípio é: inferir do contexto e confirmar, sem assumir domínios específicos.
 
 **Squads ativos:** os squads lidos de `core-config.yaml` → `agents.squads` são apresentados como confirmação:
 ```
@@ -76,7 +79,11 @@ Vi que você tem o squad X ativo (agentes: A, B, C). Quer incluir no escopo?
 ```
 Não perguntar quais squads existem — confirmá-los.
 
-**Stack:** inferida de `package.json` e `core-config.yaml`. Não perguntar ao usuário, a menos que o `package.json` não exista ou indique stack divergente do padrão Kairos (Node.js/tsx/Anthropic SDK).
+**Stack:** inferida do arquivo de dependências coletado no Passo 0 e de `core-config.yaml`. Não perguntar ao usuário quando a stack foi identificada com sucesso. Se nenhum arquivo de dependências existir (anotado no Passo 0) → perguntar ao usuário:
+```
+Qual a stack que você está usando nos scripts desta instância?
+(ex: Node.js/TypeScript, Python, Ruby, ou outra)
+```
 
 ---
 

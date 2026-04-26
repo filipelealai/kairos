@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.0.0
+kairos-version: 3.9.1
 ---
 
 # Agent Authority — Matriz de Autoridade
@@ -33,10 +33,10 @@ Stories de desenvolvimento do Kairos são de dois tipos e têm executores distin
 | `type: kairos-core` | Claude Code plain (sem persona) | Implementa diretamente na conversa principal; @kairos governa, exibe aviso e revisa |
 | `type: instance` | @kairos via `*implement` | @kairos permanece ativo durante toda a implementação; assina o Execution Log como "@kairos via *implement" |
 
-**Todo `src/` é domínio de @kairos:**
-- `src/tools/*.ts` — infraestrutura de instâncias (L2 no manifesto; @kairos tem autoridade exclusiva)
-- `src/agents/*.ts` — scripts de instância implementados via `*implement`
-- Claude Code plain **não escreve arquivos em `src/`** sob o novo modelo
+**Sobre `src/`:**
+- `src/` inteiro é user-owned por default-deny — nenhum arquivo de `src/` está listado no manifesto
+- `src/tools/` — utilitários de instância (user-owned; não listado no manifesto)
+- `src/agents/` — scripts de instância implementados via `*implement` (user-owned)
 
 ---
 
