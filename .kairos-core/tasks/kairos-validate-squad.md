@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.1.1
+kairos-version: 3.10.0
 id: kairos-validate-squad
 title: Validação de Coerência de Squad
 agent: kairos
@@ -139,45 +139,43 @@ Após todos os checks:
 ## Exemplo de Output
 
 ```
-🌀 @kairos *validate-squad cold-prospecting
+🌀 @kairos *validate-squad {squad-name}
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 Check 1 — squad.yaml válido
-  ✅ PASS   — squads/cold-prospecting/squad.yaml existe
-  ✅ PASS   — campo name presente: "cold-prospecting"
-  ✅ PASS   — agentes encontrados em components.agents: 4 agentes
+  ✅ PASS   — squads/{squad-name}/squad.yaml existe
+  ✅ PASS   — campo name presente: "{squad-name}"
+  ✅ PASS   — agentes encontrados em components.agents: {N} agentes
   ✅ PASS   — status encontrado em core-config.yaml: active
 
 Check 2 — Personas existem
-  ✅ PASS   — .claude/commands/kairos/agents/campaign-analyst.md
-  ✅ PASS   — .claude/commands/kairos/agents/lead-scorer.md
-  ✅ PASS   — .claude/commands/kairos/agents/niche-classifier.md
-  ✅ PASS   — .claude/commands/kairos/agents/email-writer.md
+  ✅ PASS   — .claude/commands/kairos/agents/{agent-id-1}.md
+  ✅ PASS   — .claude/commands/kairos/agents/{agent-id-2}.md
+  ⚠️  WARN   — .claude/commands/kairos/agents/{agent-id-3}.md: arquivo ausente
 
 Check 3 — Tasks existem
-  ✅ PASS   — squads/cold-prospecting/tasks/analyze-campaign.md
-  ⚠️  WARN   — squads/cold-prospecting/tasks/score-leads.md: arquivo ausente
-  ⚠️  WARN   — squads/cold-prospecting/tasks/classify-niches.md: arquivo ausente
-  ⚠️  WARN   — squads/cold-prospecting/tasks/write-emails.md: arquivo ausente
+  ✅ PASS   — squads/{squad-name}/tasks/{task-id-1}.md
+  ⚠️  WARN   — squads/{squad-name}/tasks/{task-id-2}.md: arquivo ausente
+  ⚠️  WARN   — squads/{squad-name}/tasks/{task-id-3}.md: arquivo ausente
 
 Check 4 — Pipeline documentado
-  ✅ PASS   — squads/cold-prospecting/rules/ tem 3 arquivo(s)
+  ✅ PASS   — squads/{squad-name}/rules/ tem 3 arquivo(s)
   ✅ PASS   — squad.yaml contém campo pipeline
 
 Check 5 — MEMORY.md dos agentes
-  ✅ PASS   — .kairos-core/agents/campaign-analyst/MEMORY.md
-  ✅ PASS   — .kairos-core/agents/lead-scorer/MEMORY.md
-  ✅ PASS   — .kairos-core/agents/niche-classifier/MEMORY.md
-  ✅ PASS   — .kairos-core/agents/email-writer/MEMORY.md
+  ✅ PASS   — .kairos-core/agents/{agent-id-1}/MEMORY.md
+  ✅ PASS   — .kairos-core/agents/{agent-id-2}/MEMORY.md
+  ⚠️  WARN   — .kairos-core/agents/{agent-id-3}/MEMORY.md: arquivo ausente
 
 ┌─────────────────────────────────────────────────┐
-│  VALIDATE-SQUAD: cold-prospecting — 2026-04-17  │
+│  VALIDATE-SQUAD: {squad-name} — {YYYY-MM-DD}    │
 │  ⚠️  INCOMPLETO — 3 WARNs, 0 FAILs              │
 └─────────────────────────────────────────────────┘
 
 Ações recomendadas:
-  ⚠️  Criar tasks ausentes em squads/cold-prospecting/tasks/:
-     • score-leads.md
-     • classify-niches.md
-     • write-emails.md
+  ⚠️  Criar tasks ausentes em squads/{squad-name}/tasks/:
+     • {task-id-2}.md
+     • {task-id-3}.md
+  ⚠️  Criar persona ausente: .claude/commands/kairos/agents/{agent-id-3}.md
+  ⚠️  Criar MEMORY.md ausente: .kairos-core/agents/{agent-id-3}/MEMORY.md
 ```

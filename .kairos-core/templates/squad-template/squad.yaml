@@ -36,7 +36,12 @@ data:
   emails_location: data/outputs/{squad-name}/emails/  # se aplicável
 
 # Integrações externas
-integrations:
-  n8n: true | false
-  google_sheets: true | false
-  external_apis: []
+integrations: []  # liste as integrações externas do squad (ex: n8n, google_sheets, salesforce, make)
+
+# Dependências — adapte para sua stack
+dependencies:
+  # adapte para sua stack
+  # node: [tsx, "@anthropic-ai/sdk", dotenv]
+  # python: [requests, anthropic]
+  squads: []
+  external: []

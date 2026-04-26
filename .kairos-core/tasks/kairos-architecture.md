@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.9.1
+kairos-version: 3.10.0
 task: Kairos Architecture
 responsavel: "@kairos"
 responsavel_type: agent
@@ -340,7 +340,7 @@ Construir o diagrama de fluxo com base em:
    - Dados consumidos (de onde lê)
    - Output gerado (o que cria, em qual formato, em qual path)
    - Handoff gerado (para quem)
-3. **Outputs finais:** onde os dados saem do Kairos (ex: JSON para n8n, CSV para planilha)
+3. **Outputs finais:** onde os dados saem do Kairos (ex: `{formato}` para `{sistema externo}`, CSV para planilha)
 4. **Integrações externas:** sistemas externos que o squad aciona ou consome
 
 ---

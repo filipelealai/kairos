@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.10.0
 id: kairos-kb
 title: Knowledge Base do Kairos
 agent: kairos
@@ -23,15 +23,15 @@ Expor e gerenciar a base de conhecimento curada do Kairos em `.kairos-core/data/
 1. Ler `.kairos-core/data/kairos-kb.md`
 2. Extrair o Índice (seção `## Índice`)
 3. Exibir tópicos disponíveis com descrição de uma linha
-4. Exibir: "Use `*kb {tópico}` para ver detalhes — ex: `*kb webhook`"
+4. Exibir: "Use `*kb {tópico}` para ver detalhes — ex: `*kb decisoes`"
 
 **Tópicos disponíveis:**
 - `decisoes` — Decisões arquiteturais registradas
-- `webhook` — Campos, gotchas e filtros do webhook de leads
+- `integracoes` — Integrações externas: gotchas, campos e configurações
 - `naming` — Convenções de nomenclatura
 - `erros` — Erros comuns e soluções
-- `padroes` — Padrões validados por nicho/contexto
-- `referencias` — Pipelines e fluxos como referência rápida
+- `padroes` — Padrões validados e boas práticas
+- `referencias` — Fluxos e pipelines de referência rápida
 
 ---
 
@@ -42,7 +42,7 @@ Expor e gerenciar a base de conhecimento curada do Kairos em `.kairos-core/data/
    | Argumento | Seção |
    |-----------|-------|
    | `decisoes`, `arch`, `arquitetura` | `## Decisões Arquiteturais` |
-   | `webhook`, `leads`, `dados` | `## Webhook de Leads` |
+   | `integracoes`, `integrações`, `dados` | `## Integrações` |
    | `naming`, `nomenclatura`, `nomes` | `## Convenções de Naming` |
    | `erros`, `bugs`, `problemas` | `## Erros Comuns` |
    | `padroes`, `validados` | `## Padrões Validados` |
@@ -57,7 +57,7 @@ Expor e gerenciar a base de conhecimento curada do Kairos em `.kairos-core/data/
 
 **Elicitação guiada:**
 
-1. Perguntar: "Em qual tópico? (decisoes / webhook / naming / erros / padroes / referencias)"
+1. Perguntar: "Em qual tópico? (decisoes / integracoes / naming / erros / padroes / referencias)"
 2. Perguntar: "Qual o título/cabeçalho da entrada?"
 3. Perguntar: "Qual o conteúdo? (decisão tomada, gotcha encontrado, padrão validado...)"
 4. Perguntar: "Contexto: por que isso merece estar no KB?"

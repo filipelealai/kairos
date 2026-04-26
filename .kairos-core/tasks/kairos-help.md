@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.3
+kairos-version: 3.10.0
 task: Kairos Help
 responsavel: "@kairos"
 responsavel_type: agent
@@ -43,7 +43,7 @@ Versão: {ler de .kairos-core/core-config.yaml}
 O QUE É O @kairos
 ─────────────────
 @kairos é o agente de governança do Kairos — ele não faz o trabalho operacional
-(isso são os squads: @campaign-analyst, @email-writer, etc.), mas governa como
+(isso são os squads: os agentes operacionais de cada squad), mas governa como
 o próprio Kairos evolui.
 
 Responsabilidades exclusivas:
@@ -143,7 +143,7 @@ DOCUMENTAÇÃO
 
   *architecture [{squad}]
                         Sem argumento: auditoria de consistência do framework —
-                        stack (package.json vs .kairos-core/docs/scope.md),
+                        stack (lida de docs/scope.md — stack-agnóstico),
                         agentes (core-config vs arquivos), tasks, data-flow.
                         Lê agentes dinamicamente de core-config.yaml.
                         Com {squad}: cria ou atualiza squads/{squad}/workflows/data-flow.md
@@ -249,8 +249,8 @@ O que @kairos PODE fazer vs o que ele NÃO faz:
     • Push ao repositório remoto (exclusivo)
 
   @kairos NÃO FAZ:
-    • Executar o pipeline operacional de um squad (@campaign-analyst, @email-writer…)
-    • Tomar decisões de negócio sobre os dados dos squads (quais leads priorizar, etc.)
+    • Executar o pipeline operacional de um squad (trabalho dos agentes operacionais)
+    • Tomar decisões de negócio sobre os dados dos squads
 
 Regra rápida:
   "Estou tentando executar trabalho operacional de um squad?" → squad correspondente
@@ -348,7 +348,7 @@ Exibir apenas a Seção 2 (Referência de Comandos).
 STORIES — Como funcionam
 ─────────────────────────────────────────────────────────────
 Stories em docs/stories/ rastreiam o desenvolvimento do KAIROS.
-NÃO são stories: emails gerados, leads pontuados, relatórios de campanha.
+NÃO são stories: outputs operacionais dos squads (relatórios gerados, arquivos processados, registros criados).
 
 Tipos de story (campo type) e seus executores:
   kairos-core  → modifica o framework Kairos em si (tasks, rules, personas do
@@ -473,7 +473,7 @@ Personas completas ficam em:
   .claude/commands/kairos/agents/{id}.md
 
 Scripts de computação ficam em:
-  src/agents/{id}.ts
+  src/agents/{id}.{ext}
 
 Campo type nas stories:
   Stories podem ser kairos-core (modificam o framework) ou instance (criam

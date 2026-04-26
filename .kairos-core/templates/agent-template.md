@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.10.0
 ---
 
 # {id}
@@ -104,9 +104,9 @@ commands:
     2. {segundo passo}
     3. {terceiro passo — gerar output + handoff}
   blocking: |
-    HALT se: webhook indisponível
-    HALT se: 0 leads pendentes
-    HALT se: erro no script TS — exibir stderr
+    HALT se: {fonte de dados externa indisponível}
+    HALT se: {sem dados para processar}
+    HALT se: erro no script — exibir stderr
   ready: "{o que precisa existir para iniciar}"
   completion: |
     {o que define completo}
@@ -116,7 +116,7 @@ dependencies:
   tasks:
     - {nome-da-task}.md
   scripts:
-    - src/agents/{id}.ts
+    - src/agents/{id}.{ext}
   data:
     - data/outputs/{squad}/{tipo}/
 

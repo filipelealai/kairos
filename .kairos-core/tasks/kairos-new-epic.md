@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.10.0
 task: Kairos New Epic
 responsavel: "@kairos"
 responsavel_type: agent
@@ -21,7 +21,7 @@ Checklist:
   - "[ ] Oferecer handoff condicional para *new-story"
 ---
 
-# *new-epic — Criação de Epic com Elicitação Guiada
+# *new-epic — Criação de Epic
 
 ---
 
@@ -34,7 +34,59 @@ Checklist:
 
 ---
 
-## Sequência de Elicitação
+## Modos de Entrada
+
+Esta task aceita dois fluxos. Ambos estão disponíveis — o modo livre é o caminho principal:
+
+- **Modo Livre**: o usuário descreve o objetivo do epic em linguagem natural → o @kairos deriva os campos e exibe proposta consolidada para confirmação
+- **Modo Guiado**: perguntas sequenciais campo a campo → ativado quando o usuário pede ou quando a descrição não contém informação suficiente
+
+### Modo Livre
+
+Quando o usuário fornece uma descrição do objetivo do epic (ex: "quero um epic para organizar tudo relacionado a integrações externas"), derivar:
+
+- **Tema**: em uma frase curta
+- **Objetivo**: o que estará diferente/melhor quando o epic for concluído
+- **Critérios de conclusão**: mínimo 3, verificáveis
+- **Status inicial**: `Backlog` por default (salvo se a descrição indicar trabalho já em andamento)
+- **Stories candidatas**: se mencionadas na descrição
+- **Dependências**: se mencionadas na descrição
+
+Exibir proposta consolidada para confirmação antes de criar qualquer arquivo:
+
+```
+Vou criar o epic com estas informações:
+
+Epic {N} — {Tema}
+Status: {status}
+Objetivo: {objetivo}
+
+Critérios de Conclusão:
+  - [ ] {critério 1}
+  - [ ] {critério 2}
+  - [ ] {critério 3}
+
+Stories Candidatas:
+  - {candidata 1}
+  (ou "nenhuma")
+
+Dependências: {deps ou "nenhuma"}
+
+Arquivo: docs/epics/epic-{N}-{slug}.md
+
+Posso criar? (s/n — ou diga o que ajustar)
+```
+
+Aguardar confirmação:
+- `s` → criar
+- Ajuste pontual → aplicar e criar
+- "me faça as perguntas" → ativar Modo Guiado abaixo
+
+---
+
+## Modo Guiado — Elicitação Sequencial
+
+Ativado quando o usuário pede explicitamente ou quando a descrição livre não contém informação suficiente. É um fallback, não o caminho principal.
 
 Faça as perguntas em ordem. Aguarde resposta completa antes de prosseguir.
 Não pule nem junte perguntas.

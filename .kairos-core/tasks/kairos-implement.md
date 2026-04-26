@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.2.1
+kairos-version: 3.10.0
 task: Kairos Implement
 responsavel: "@kairos"
 responsavel_type: agent
@@ -231,7 +231,7 @@ Para cada AC:
 
 **Regras durante a implementação:**
 - Seguir o princípio IDS: REUTILIZAR > ADAPTAR > CRIAR
-- Para scripts em `src/`: criar em `src/agents/{id}.ts` ou `src/tools/{id}.ts`
+- Para scripts em `src/`: criar em `src/agents/{id}.{ext}` ou `src/tools/{id}.{ext}`
 - Para personas: criar em `.claude/commands/kairos/agents/{id}.md`
 - Para tasks de squad: criar em `squads/{squad}/tasks/{task}.md`
 - Para tasks de governança: criar em `.kairos-core/tasks/kairos-{task}.md`

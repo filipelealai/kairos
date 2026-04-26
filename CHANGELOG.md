@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.10.0] — 2026-04-26
+
+### Adicionado
+- docs e tasks de scaffolding refatorados: data-flow.md e agent-standards.md com separação de camadas; elicitação propósito-first em new-squad/update-squad/new-story/new-epic; expurgo de hardcodes de stack e ferramentas; scope.md v2.0
+
+---
+
 ## [3.9.1] — 2026-04-25
 
 ### Adicionado

@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.10.0
 agent:
   id: {agent-id}
   name: {NomeDaPersona}
@@ -16,5 +16,5 @@ commands_key:
 outputs:
   - "data/outputs/{squad-name}/{tipo}/{agent-id}_{filename}-YYYY-MM-DD.{ext}"
 
-handoff_to: "{próximo agente no pipeline — ou 'n8n' se for o último}"
+handoff_to: "{próximo agente — ou sistema externo se for o último}"
 ---
