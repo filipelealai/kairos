@@ -58,14 +58,17 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.26](../stories/5.26.story.md) | *architecture Stack-Agnóstico e Gestão Simétrica de agent-standards.md | Done |
 | [5.27](../stories/5.27.story.md) | Depurar Conteúdo Instance-Specific de *architecture e *prd | Done |
 | [5.28](../stories/5.28.story.md) | Integrar `*doctor` no `*pre-push` como Passo 0 Universal | Done |
+| [5.29](../stories/5.29.story.md) | Expurgar Exemplos de Instância e Hardcodes de Stack das Tasks e Templates do Framework | Done |
+| [5.30](../stories/5.30.story.md) | Expurgar Hardcodes de Ferramentas Específicas das Tasks e Templates do Framework | Done |
+| [5.31](../stories/5.31.story.md) | Atualizar scope.md para Refletir o Estado Atual do Framework | Done |
+| [5.32](../stories/5.32.story.md) | Squad-scaffolding Dinâmico — Gerar Personas a partir de `squads/{squad}/agents/*.yaml` | Draft |
+| [5.33](../stories/5.33.story.md) | Regeneração Incremental de Personas — `*regenerate-squad` e Integração ao `*pre-push` | Draft |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
-
-- **5.29** — Squad-scaffolding dinâmico (gerar personas em `.claude/commands/` a partir de `squads/{squad}/agents/*.yaml`)
-- **5.30** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.31** — Publicação de `@kairos/core` no npm
+- **5.34** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.35** — Publicação de `@kairos/core` no npm
 
 ---
 
@@ -144,3 +147,13 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-25 | Story 5.19 concluída — In Review; bump MINOR 3.8.0 → 3.9.0 |
 | 2026-04-25 | Story 5.18 Done — *pre-push: bump PATCH 3.9.0 → 3.9.1 |
 | 2026-04-25 | Stories 5.19, 5.25, 5.26, 5.27, 5.28 Done — *pre-push: gate confirmado |
+| 2026-04-25 | Story 5.29 criada — expurgar exemplos de instância e hardcodes de stack das tasks e templates |
+| 2026-04-26 | Story 5.29 iniciada — In Progress |
+| 2026-04-26 | Story 5.29 concluída — In Review |
+| 2026-04-26 | Story 5.30 criada — Expurgar Hardcodes de Ferramentas Específicas (complementar à 5.29) |
+| 2026-04-26 | Story 5.31 criada — Atualizar scope.md (PRD do framework defasado em v3.1.0); candidatas 5.31–5.33 renumeradas 5.32–5.34 |
+| 2026-04-26 | Story 5.31 iniciada — In Progress |
+| 2026-04-26 | Story 5.31 concluída — In Review |
+| 2026-04-26 | *pre-push: stories 5.29, 5.30, 5.31 → Done (v3.10.0) |
+| 2026-04-26 | Story 5.32 criada — Squad-scaffolding dinâmico (Draft); candidatas 5.33–5.34 renumeradas 5.34–5.35; nova 5.33 adicionada (regeneração incremental) |
+| 2026-04-26 | Story 5.33 criada — Regeneração incremental de personas via *regenerate-squad (Draft) |

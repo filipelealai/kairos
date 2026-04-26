@@ -75,4 +75,11 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [5.24](5.24.story.md) | Documentar Posição Stack-Agnóstica do Kairos | Draft |
 | [5.25](5.25.story.md) | Fix Arquitetural (L1): src/ É User-Owned — Corrigir Documentação de Fundação | Draft |
 | [5.26](5.26.story.md) | *architecture Stack-Agnóstico e Gestão Simétrica de agent-standards.md | Draft |
+| [3.28](3.28.story.md) | Refatoração de data-flow.md e agent-standards.md | Draft |
 | [5.28](5.28.story.md) | `*ci`: Gate de Validação para Contribuidores (PRs) | Draft |
+| [5.29](5.29.story.md) | Expurgar Exemplos de Instância e Hardcodes de Stack das Tasks e Templates do Framework | In Review |
+| [5.30](5.30.story.md) | Expurgar Hardcodes de Ferramentas Específicas das Tasks e Templates do Framework | Draft |
+| [3.29](3.29.story.md) | Elicitação Propósito-First em *new-squad, *update-squad, *new-story e *new-epic | Draft |
+| [5.31](5.31.story.md) | Atualizar scope.md para Refletir o Estado Atual do Framework | In Review |
+| [5.32](5.32.story.md) | Squad-scaffolding Dinâmico — Gerar Personas a partir de `squads/{squad}/agents/*.yaml` | Draft |
+| [5.33](5.33.story.md) | Regeneração Incremental de Personas — `*regenerate-squad` e Integração ao `*pre-push` | Draft |

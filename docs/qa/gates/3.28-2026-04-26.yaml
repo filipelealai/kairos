@@ -1,0 +1,46 @@
+schema: 2
+story: "3.28"
+story_title: "Refatoração de data-flow.md e agent-standards.md"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-26T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ data-flow.md reescrito com diagrama de duas camadas (scripts + agentes IA)"
+    - "✅ data-flow.md sem referências a tipos de output específicos de instância — {tipo} definido pelo squad"
+    - "✅ data-flow.md referencia squads/{squad}/workflows/data-flow.md (não docs/)"
+    - "✅ data-flow.md menciona squads/{squad}/data/workflow-chains.yaml e papel no Step 5.5"
+    - "✅ data-flow.md inclui tabela de responsabilidade por nível (framework / squad / pipeline)"
+    - "✅ data-flow.md referencia I.2, I.4, IV.13, IV.14 na seção Limites"
+    - "✅ agent-standards.md documenta wrapper markdown completo (ACTIVATION-NOTICE, CRÍTICO, COMPLETE AGENT DEFINITION FOLLOWS, Comandos Rápidos, Guia, footer)"
+    - "✅ agent-standards.md documenta IDE-FILE-RESOLUTION como primeiro campo obrigatório do YAML interno"
+    - "✅ agent-standards.md corrige devLoadAlwaysFiles: 'via core-config.yaml (campo devLoadAlwaysFiles)'"
+    - "✅ Nenhum dos dois arquivos contém referências a squads/integrações específicas como padrão (constituição VI.21)"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/docs/data-flow.md (kairos-version: 3.9.1)"
+    - "✅ .kairos-core/docs/agent-standards.md (kairos-version: 3.9.1)"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ agent-template.md ainda tem kairos-version: 2.0.0 (fora de escopo desta story — story separada recomendada)"
+  - "⚠️ Verificar se cold-prospecting tem data-flow.md em squads/cold-prospecting/workflows/ ou em docs/ (nota do executor)"

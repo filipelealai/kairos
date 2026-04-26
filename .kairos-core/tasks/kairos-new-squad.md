@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.3.0
+kairos-version: 3.10.0
 task: Kairos New Squad
 responsavel: "@kairos"
 responsavel_type: agent
@@ -33,7 +33,7 @@ Checklist:
   - "[ ] Auto-executar *new-story com type: instance ao final do scaffolding"
 ---
 
-# *new-squad — Criação de Squad com Elicitação Guiada
+# *new-squad — Criação de Squad
 
 Um squad é um grupo de agentes especializados que colaboram para um fluxo de trabalho específico do usuário/equipe.
 Esta task elicita tudo o que é necessário para scaffoldar uma estrutura completa e útil — não stubs genéricos.
@@ -50,7 +50,46 @@ Se não houver candidatos (ou o nome já foi passado como argumento) → prosseg
 
 ---
 
-## Sequência de Elicitação
+## Entrada — Pergunta Inicial
+
+Após o pré-passo, fazer uma única pergunta:
+
+```
+Descreva o que este squad vai fazer ou qual problema resolve.
+Pode ser livre — o Kairos cuida do resto.
+```
+
+Com base na resposta, seguir para o modo adequado:
+
+- **Modo Propósito**: o usuário descreveu o objetivo em linguagem natural com informação suficiente para derivar uma arquitetura razoável → ir para "Modo Propósito" abaixo
+- **Modo Guiado**: o usuário respondeu com perguntas, disse que não sabe por onde começar, ou a descrição foi insuficiente para derivar arquitetura razoável → ir para "Modo Guiado" (Blocos 1–4 abaixo)
+
+---
+
+## Modo Propósito
+
+Quando o usuário descreve o objetivo em linguagem livre:
+
+1. **Derivar todos os campos dos Blocos 1–4** a partir da descrição:
+   - Nome do squad (slug em kebab-case)
+   - Contexto de negócio
+   - Agentes: IDs, personas, papéis, comandos principais, se precisam de script de computação
+   - Fonte de dados e outputs esperados por agente
+   - Pipeline: ordem, execução parcial
+   - Integração externa e frequência de uso
+
+2. **Exibir proposta consolidada para confirmação** usando o formato da seção "Confirmação antes de criar" abaixo, com todos os campos preenchidos pelo @kairos.
+
+3. **Aguardar resposta do usuário:**
+   - `s` → criar com a arquitetura proposta
+   - Ajuste pontual (ex: "mudar nome do agente para X") → aplicar o ajuste e criar
+   - "me faça as perguntas" ou pedido de reelicitação campo a campo → ativar Modo Guiado (Blocos 1–4 abaixo)
+
+---
+
+## Modo Guiado — Elicitação Sequencial
+
+Ativado quando o usuário pede ajuda para estruturar, responde com perguntas à pergunta inicial, ou a descrição livre não é suficiente para derivar uma arquitetura razoável. As perguntas são um fallback, não o caminho principal.
 
 Faça as perguntas em ordem. Aguarde resposta completa antes de prosseguir.
 
@@ -98,14 +137,12 @@ Para cada agente, qual é o comando mais importante que ele executa?
 Pode listar mais de um por agente se necessário.
 ```
 
-**Pergunta 2.3 — Tem script TypeScript?**
+**Pergunta 2.3 — Tem scripts de computação?**
 ```
 Algum agente precisa de computação pura (sem AI) — processamento de dados,
 cálculos, transformações — que deveria virar um script em src/agents/?
 
-(ex: o lead-scorer.ts calcula scores numericamente sem chamar Claude)
-
-Liste quais agentes terão script TS e uma frase do que o script faz.
+Liste quais agentes terão script e uma frase do que o script faz.
 (Pressione Enter sem texto se todos usam Claude diretamente)
 ```
 
@@ -116,12 +153,11 @@ Liste quais agentes terão script TS e uma frase do que o script faz.
 **Pergunta 3.1 — Fonte de dados**
 ```
 De onde vêm os dados que este squad processa?
-  1. Webhook n8n existente (kairos-leads ou similar) — informar URL
-  2. Novo webhook n8n — descrever o que retorna
+  1. Webhook externo (ex: n8n, Make, Zapier) — informar URL e plataforma
+  2. API externa direta — informar endpoint e autenticação
   3. Arquivo local (CSV, JSON) — informar path e formato
-  4. API externa direta — informar endpoint e autenticação
-  5. Input manual do usuário (sem fonte automatizada)
-  6. Misto — descrever
+  4. Input manual do usuário (sem fonte automatizada)
+  5. Misto — descrever
 ```
 
 **Pergunta 3.2 — Outputs**
@@ -148,10 +184,10 @@ Execução parcial é permitida? (pode rodar agentes individualmente, sem o pipe
 
 **Pergunta 4.2 — Integração externa**
 ```
-Este squad depende de n8n para alguma ação automatizada?
-(ex: disparo de e-mails, leitura de planilha, webhook de entrada)
+Este squad depende de algum sistema externo de automação ou integração?
+(ex: n8n, Make, Zapier, scripts próprios, API de terceiro)
 
-Se sim: descreva o papel do n8n — o que ele faz que o Kairos não faz.
+Se sim: descreva o papel desse sistema — o que ele faz que o Kairos não faz.
 Se não: o squad opera de forma autônoma com os dados disponíveis.
 ```
 
@@ -181,14 +217,14 @@ Agentes ({N}):
   {id} ({Nome}) — {papel}
     Comando principal: *{cmd}
     Output: {path}
-    Script TS: {sim/não}
+    Script de computação: {sim/não}
   ...
 
 Pipeline: {agente1} → {agente2} → {agente3}
 Execução parcial: {sim/não}
 
 Fonte de dados: {fonte}
-Integração n8n: {sim/não — papel}
+Integração externa: {sim/não — sistema e papel}
 Frequência: {frequência}
 
 Arquivos a criar:
@@ -254,13 +290,12 @@ data:
   handoffs: .kairos-core/runtime/handoffs/
 
 dependencies:
-  node:
-    - tsx
-    - "@anthropic-ai/sdk"
-    - dotenv
+  # adapte para sua stack
+  # node: [tsx, "@anthropic-ai/sdk", dotenv]
+  # python: [requests, anthropic]
   squads: []
   external:
-    {lista de integrações externas — ex: "n8n webhook (kairos-leads)"}
+    {lista de integrações externas — ex: "n8n webhook"}
 
 tags:
   - {squad_name}
@@ -617,7 +652,7 @@ Em seguida, **auto-executar `*new-story`** sem perguntar ao usuário (a story é
 - ACs pré-preenchidos derivados do elicitado:
   1. Persona `.claude/commands/kairos/agents/{id}.md` criada para cada agente
   2. Tasks em `squads/{squad_name}/tasks/` implementadas com conteúdo real (não stubs)
-  3. Scripts `src/agents/{id}.ts` por agente com script TS (apenas se elicitado na pergunta 2.3)
+  3. Scripts `src/agents/{id}.{ext}` por agente com script de computação (apenas se elicitado na pergunta 2.3)
 - Demais campos (fora de escopo, complexidade, dependências): elicitar normalmente
 
 Após a story ser criada, exibir a oferta de implementação imediata:

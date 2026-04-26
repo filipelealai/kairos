@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.2.0
+kairos-version: 3.10.0
 task: Kairos New Story
 responsavel: "@kairos"
 responsavel_type: agent
@@ -30,9 +30,56 @@ Checklist:
 
 # *new-story — Criar Nova Story de Desenvolvimento do Kairos
 
-## Elicitação (obrigatória)
+## Modos de Entrada
 
-Esta task tem `elicit: true` — colete as informações abaixo antes de criar o arquivo.
+Esta task aceita dois fluxos. Ambos estão disponíveis — o modo livre é o caminho principal:
+
+- **Modo Livre**: o usuário descreve o objetivo em linguagem natural → o @kairos deriva os campos e exibe proposta consolidada para confirmação
+- **Modo Guiado**: perguntas sequenciais campo a campo → ativado quando o usuário pede ("me faça as perguntas") ou quando a descrição não contém informação suficiente para derivar os campos
+
+### Modo Livre
+
+Quando o usuário fornece uma descrição do objetivo (ex: "quero rastrear quando o n8n falha"), derivar:
+
+- **Epic**: selecionar o epic mais provável lendo `docs/epics/`; apresentar para confirmação se houver ambiguidade
+- **Type**: `instance` por default (usar `kairos-core` apenas se a descrição indicar explicitamente modificação do framework)
+- **Título**: derivado da descrição
+- **Critérios de aceite**: mínimo 3, testáveis
+- **Fora de escopo**: o que naturalmente não faz parte do objetivo descrito
+- **Complexidade**: P/M/G com razão em uma frase (usar heurística: P = ajuste em um arquivo; M = múltiplos arquivos ou novo comportamento; G = novo agente, nova task ou mudança de pipeline)
+- **Dependências**: se detectáveis da descrição
+
+Exibir proposta consolidada para confirmação antes de criar qualquer arquivo:
+
+```
+Vou criar a story com estas informações:
+
+Epic: {N} — {nome}
+Tipo: {instance | kairos-core}
+Título: {título derivado}
+
+Critérios de aceite:
+  - [ ] {AC 1}
+  - [ ] {AC 2}
+  - [ ] {AC 3}
+
+Fora de escopo:
+  - {item}
+
+Complexidade: {P|M|G} — {razão}
+Dependências: {deps ou "Nenhuma"}
+
+Posso criar? (s/n — ou ajuste o que precisar)
+```
+
+Aguardar confirmação:
+- `s` → criar
+- Ajuste pontual → aplicar e criar
+- "me faça as perguntas" ou pedido de edição campo a campo → ativar Modo Guiado abaixo
+
+### Modo Guiado
+
+Ativado quando o usuário pede explicitamente ("me faça as perguntas") ou quando a descrição livre não contém informação suficiente para derivar os campos. É um fallback, não o caminho principal.
 
 Pergunte sequencialmente, aguardando resposta a cada passo:
 

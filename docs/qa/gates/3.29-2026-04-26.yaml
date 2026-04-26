@@ -1,0 +1,54 @@
+schema: 2
+story: "3.29"
+story_title: "Elicitação Propósito-First em *new-squad, *update-squad, *new-story e *new-epic"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-26T00:00:00Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ kairos-new-squad.md documenta explicitamente Modo Propósito e Modo Guiado"
+    - "✅ kairos-new-squad.md começa com pergunta única de abertura (não vai direto para Bloco 1)"
+    - "✅ Modo Propósito deriva todos os campos (Blocos 1–4) e exibe confirmação consolidada"
+    - "✅ Modo Guiado preservado idêntico (Blocos 1–4 intactos), ativado como fallback"
+    - "✅ kairos-update-squad.md remove Pergunta 5 — Complexidade"
+    - "✅ @kairos deriva complexidade com heurística P/M/G (arquivo, arquivos, novo agente/task/pipeline)"
+    - "✅ Complexidade derivada exibida na confirmação como informação, não como pergunta"
+    - "✅ Regra de desambiguação single-question se ambíguo"
+    - "✅ kairos-new-story.md documenta Modo Livre (descrição natural → derivação de campos)"
+    - "✅ Modo Livre exibe proposta consolidada antes de criar arquivo"
+    - "✅ Modo Guiado (sequencial) permanece disponível como fallback"
+    - "✅ Task documenta explicitamente ambos os fluxos e quando usar cada um"
+    - "✅ kairos-new-epic.md documenta Modo Livre com derivação e proposta consolidada"
+    - "✅ Modo Guiado (*new-epic) preservado como fallback"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-new-squad.md"
+    - "✅ .kairos-core/tasks/kairos-update-squad.md"
+    - "✅ .kairos-core/tasks/kairos-new-story.md"
+    - "✅ .kairos-core/tasks/kairos-new-epic.md"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — story é MINOR (nova capacidade em 4 comandos: modo propósito); bump pendente para *pre-push"
+  changelog_updated: "⚠️ RESSALVA — entrada pendente para *pre-push"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "Version bump (MINOR) ainda não executado"
+    recommendation: "Executar em *pre-push — mecanismo esperado para este tipo de bump."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Version bump MINOR pendente — executar via *pre-push"

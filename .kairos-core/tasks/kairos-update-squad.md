@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.3.0
+kairos-version: 3.10.0
 task: Kairos Update Squad
 responsavel: "@kairos"
 responsavel_type: agent
@@ -15,6 +15,7 @@ Checklist:
   - "[ ] Elicitar: qual aspecto está sendo modificado"
   - "[ ] Elicitar: descrição da mudança"
   - "[ ] Elicitar: critérios de aceite (pelo menos 3)"
+  - "[ ] Derivar complexidade (P/M/G) com base no aspecto e na descrição da mudança"
   - "[ ] Selecionar epic de destino (preferencialmente o epic original do squad)"
   - "[ ] Criar story com type: instance e prefixo update: no título"
   - "[ ] Atualizar docs/stories/README.md"
@@ -56,8 +57,8 @@ Qual aspecto do squad '{squad_name}' está sendo modificado?
   5. Regra específica do squad (arquivo em squads/{squad}/rules/)
      ⚠️  Se a atualização adicionar um novo arquivo em `rules/`, o AC da story gerada deve incluir explicitamente:
          "Adicionar `@squads/{squad}/rules/{novo-arquivo}.md` na seção Squads ativos do CLAUDE.md"
-  6. Integração externa (n8n, API, webhook)
-  7. Script TypeScript (src/agents/)
+  6. Integração externa (API, webhook, automação)
+  7. Script de computação (src/agents/)
   8. Outro — descreva
 
 (Pode selecionar múltiplos — separe por vírgula)
@@ -82,7 +83,7 @@ Quais são os critérios de aceite? (pelo menos 3, testáveis)
 Ex:
   - "Persona {id}.md atualizada com novo comportamento X"
   - "Task squads/{squad}/tasks/{task}.md com instrução Y implementada"
-  - "Script src/agents/{id}.ts com nova lógica Z"
+  - "Script src/agents/{id}.{ext} com nova lógica Z"
 ```
 
 ---
@@ -96,11 +97,19 @@ O que explicitamente NÃO está incluído nesta atualização?
 
 ---
 
-**Pergunta 5 — Complexidade**
+## Derivar Complexidade
 
-```
-Estimativa: P (pequena) / M (média) / G (grande)?
-```
+Após coletar as respostas das Perguntas 1–4, derivar a complexidade sem perguntar ao usuário:
+
+| Heurística | Complexidade |
+|-----------|-------------|
+| Ajuste de instrução ou texto em um único arquivo | P |
+| Múltiplos arquivos ou novo comportamento em agente existente | M |
+| Novo agente, nova task ou mudança de pipeline | G |
+
+Se a mudança puder ser M ou G dependendo do escopo real (ex: "nova regra que pode virar nova task"), fazer uma única pergunta de desambiguação antes de prosseguir — não a pergunta genérica de complexidade.
+
+A complexidade derivada é exibida na confirmação abaixo como informação, não como pergunta: "Complexidade estimada: {P|M|G} — {razão em uma frase}"
 
 ---
 
@@ -111,6 +120,26 @@ Após coletar as respostas, selecionar o epic de destino:
 1. Ler `docs/epics/` e identificar o epic que mais se relaciona com o squad ou com evoluções de squads ativos.
 2. Informar ao usuário: "Destino: Epic {N} — {nome}" e prosseguir.
 3. Se nenhum epic existente fizer sentido: criar novo epic via `*new-epic` antes de criar a story.
+
+---
+
+## Confirmação antes de criar
+
+Antes de criar o arquivo, exibir para confirmação:
+
+```
+Squad: {squad_name}
+Aspecto: {aspecto(s) elicitado(s)}
+Mudança: {descrição em uma frase}
+Critérios de aceite: {N} itens
+Fora de escopo: {fora de escopo ou "Nenhum escopo descartado"}
+Complexidade estimada: {P|M|G} — {razão em uma frase}
+Epic de destino: {N} — {nome}
+
+Posso criar a story? (s/n — ou diga o que ajustar)
+```
+
+Aguardar confirmação. Se "n" → voltar ao ponto específico indicado.
 
 ---
 

@@ -1,0 +1,49 @@
+schema: 2
+story: "5.31"
+story_title: "Atualizar scope.md para Refletir o Estado Atual do Framework"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-26T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ Seção 'Stack de Referência' removida — sem TypeScript, Node.js, tsx, @anthropic-ai/sdk, claude-sonnet-4-6 como stack do framework"
+    - "✅ Nota stack-agnóstica adicionada na Visão Geral e nos Princípios de Design (item 6)"
+    - "✅ src/ removido do diagrama de diretórios (user-owned — constituição VI.25, story 5.25)"
+    - "✅ .github/ adicionado ao diagrama com descrição: templates de PR/Issue, CODEOWNERS e CI workflows"
+    - "✅ docs/qa/gates/ adicionado ao diagrama com descrição: gates de review emitidos por *review"
+    - "✅ docs/epics/ adicionado ao diagrama"
+    - "✅ squads/ estrutura mantida corretamente (squad.yaml, agents/, tasks/, workflows/, rules/)"
+    - "✅ Comandos *workers, *validate-squad, *validate-story, *new-epic, *kb, *architecture, *yolo, *update-squad, *doctor na tabela de comandos"
+    - "✅ Modo yolo mencionado: modo autônomo de sessão, afeta apenas type: instance, push sempre manual"
+    - "✅ Sistema de workers mencionado: workers.yaml, /schedule, gerenciados por *workers"
+    - "✅ *implement all mencionado"
+    - "✅ Modelo de Dois Executores articulado (tabela type: kairos-core vs type: instance)"
+    - "✅ validate-manifest CI mencionado na subseção CI/CD"
+    - "✅ Change Log do arquivo atualizado com entrada v2.0 (story 5.31)"
+    - "✅ Nenhuma referência a squads de instância ou ferramentas específicas como padrão"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/docs/scope.md (kairos-version: 3.9.1, v2.0)"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ docs/stories/ não está no diagrama do scope.md (nota do executor — intencional; mencionado como PATCH opcional)"

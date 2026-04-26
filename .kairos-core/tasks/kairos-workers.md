@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.10.0
 id: kairos-workers
 title: Workers — Agentes Agendados
 agent: kairos
@@ -28,9 +28,9 @@ O scheduling real usa o mecanismo nativo do Claude Code (`/schedule`).
 3. Exibir tabela:
 
 ```
-ID                        Agente             Comando         Cron             Status
-weekly-campaign-analysis  @campaign-analyst  *analyze        0 9 * * 1        ⏸ desativado
-daily-email-batch         @email-writer      *write 20       0 8 * * 1-5      ▶ ativo
+ID                   Agente        Comando      Cron             Status
+weekly-{squad}-task  @{agent}      *{command}   0 9 * * 1        ⏸ desativado
+daily-{squad}-batch  @{agent}      *{command}   0 8 * * 1-5      ▶ ativo
 ```
 
 ---

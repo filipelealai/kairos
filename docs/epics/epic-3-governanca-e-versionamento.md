@@ -56,6 +56,8 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | [3.25](../stories/3.25.story.md) | Executor e *review: Sincronizar Status no Epic em Cada Transição | Done |
 | [3.26](../stories/3.26.story.md) | *validate-story: Remover Check de README em docs/stories/ | Done |
 | [3.27](../stories/3.27.story.md) | *review: Remover Autoridade de Transição para Done | Done |
+| [3.28](../stories/3.28.story.md) | Refatoração de data-flow.md e agent-standards.md | Done |
+| [3.29](../stories/3.29.story.md) | Elicitação Propósito-First em *new-squad, *update-squad, *new-story e *new-epic | Done |
 
 ---
 
@@ -98,3 +100,9 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | 2026-04-18 | Story 3.27 iniciada — In Progress |
 | 2026-04-18 | Story 3.27 concluída — In Review |
 | 2026-04-18 | *pre-push: stories 3.24, 3.25, 3.26, 3.27 → Done (v3.3.1) |
+| 2026-04-25 | Story 3.28 criada — refatoração de data-flow.md e agent-standards.md |
+| 2026-04-26 | Story 3.28 iniciada — In Progress |
+| 2026-04-26 | Story 3.28 concluída — In Review |
+| 2026-04-26 | Story 3.29 criada — elicitação propósito-first em *new-squad, *update-squad, *new-story e *new-epic |
+| 2026-04-26 | Story 3.29 concluída — In Review |
+| 2026-04-26 | *pre-push: stories 3.28, 3.29 → Done (v3.10.0) |

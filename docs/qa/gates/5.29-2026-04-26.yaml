@@ -1,0 +1,56 @@
+schema: 2
+story: "5.29"
+story_title: "Expurgar Exemplos de Instância e Hardcodes de Stack das Tasks e Templates do Framework"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-26T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ kairos-kb.md: topics genéricos — 'webhook' → 'integracoes', exemplos sem cold-prospecting"
+    - "✅ kairos-help.md: agentes substituídos por genéricos; src/agents/{id}.{ext}; 'NÃO são stories' usa exemplos genéricos; *architecture sem package.json"
+    - "✅ kairos-workers.md: exemplos @{agent} *{command} genéricos"
+    - "✅ kairos-status.md: exemplo de handoff {from-agent} → {to-agent}"
+    - "✅ kairos-validate-squad.md: Exemplo de Output com {squad-name}, {agent-id-N}, {task-id-N}"
+    - "✅ kairos-new-squad.md: Pergunta 2.3 'scripts de computação'; template squad.yaml com placeholder comentado; exemplos {id}.{ext}"
+    - "✅ kairos-update-squad.md: Opção 7 'Script de computação (src/agents/)'; exemplos {id}.{ext}"
+    - "✅ kairos-implement.md: rule usa src/agents/{id}.{ext}"
+    - "✅ agent-template.md: campo scripts usa {id}.{ext}"
+    - "✅ squad-template/squad.yaml: dependencies com placeholder comentado '# adapte para sua stack'"
+    - "✅ Nenhum arquivo contém nomes de agentes cold-prospecting como padrão de framework"
+    - "✅ Nenhum arquivo menciona TypeScript/Node.js como stack obrigatória ou default"
+    - "✅ Todas as menções a scripts usam {ext} ou linguagem agnóstica"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-kb.md"
+    - "✅ .kairos-core/tasks/kairos-help.md"
+    - "✅ .kairos-core/tasks/kairos-workers.md"
+    - "✅ .kairos-core/tasks/kairos-status.md"
+    - "✅ .kairos-core/tasks/kairos-validate-squad.md"
+    - "✅ .kairos-core/tasks/kairos-new-squad.md"
+    - "✅ .kairos-core/tasks/kairos-update-squad.md"
+    - "✅ .kairos-core/tasks/kairos-implement.md"
+    - "✅ .kairos-core/templates/agent-template.md"
+    - "✅ .kairos-core/templates/squad-template/squad.yaml"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ squad-template/squad.yaml recebeu seção dependencies com placeholder — verificar se o template não fica excessivamente verboso para instalações minimalistas (baixo risco, executor justificou)"

@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.10.0
 task: Kairos Status
 responsavel: "@kairos"
 responsavel_type: agent
@@ -81,7 +81,7 @@ Verifique `.kairos-core/runtime/handoffs/` por handoff com `consumed: false`. Se
   Story 1.2 — PASS — 2026-04-06
 
 💬 Handoff Pendente
-  email-writer → campaign-analyst (aguardando *analyze)
+  {from-agent} → {to-agent} (aguardando *{command})
   [ou: nenhum]
 
 📝 Último Changelog

@@ -1,0 +1,51 @@
+schema: 2
+story: "5.30"
+story_title: "Expurgar Hardcodes de Ferramentas Específicas das Tasks e Templates do Framework"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-26T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ kairos-new-squad.md Pergunta 3.1: opções genéricas (webhook externo, API, arquivo, manual) — n8n como exemplo entre parênteses"
+    - "✅ kairos-new-squad.md Pergunta 4.2: 'sistema externo de automação ou integração?' — n8n como exemplo entre Make, Zapier, scripts próprios"
+    - "✅ kairos-new-squad.md template squad.yaml: integrations como lista livre com comentário orientador"
+    - "✅ squad-template/squad.yaml: integrations substituído por lista livre '# liste as integrações externas do squad'"
+    - "✅ squad-template/agents/agent-id.md: handoff_to genérico sem n8n como destino padrão"
+    - "✅ squad-template/README.md: mantido como está — '{sistema externo — ex: n8n}' é claramente ilustrativo (AC permite esta escolha)"
+    - "✅ agent-template.md: blocking com placeholders genéricos (fonte de dados, dados para processar, erro no script)"
+    - "✅ agent-template.md: 'erro no script TS' → 'erro no script'"
+    - "✅ kairos-architecture.md: 'JSON para n8n' → '{formato} para {sistema externo}'"
+    - "✅ kairos-update-squad.md: Opção 6 'Integração externa (API, webhook, automação)' sem n8n em destaque"
+    - "✅ Nenhum arquivo trata n8n/Google Sheets como campo obrigatório, opção default ou pressuposto estrutural"
+    - "✅ Ferramentas específicas aparecem apenas como exemplos em categorias genéricas"
+    - "✅ Usuário sem n8n não recebe elicitações ou templates que assumem n8n"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-new-squad.md"
+    - "✅ .kairos-core/templates/squad-template/squad.yaml"
+    - "✅ .kairos-core/templates/squad-template/agents/agent-id.md"
+    - "✅ .kairos-core/templates/agent-template.md"
+    - "✅ .kairos-core/tasks/kairos-architecture.md"
+    - "✅ .kairos-core/tasks/kairos-update-squad.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations: []
