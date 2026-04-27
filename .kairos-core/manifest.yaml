@@ -192,6 +192,24 @@ sync_files:
   - path: CODE_OF_CONDUCT.md
     layer: L3
 
+  - path: .gitignore
+    layer: L3
+
+  - path: LICENSE
+    layer: L3
+
+  - path: .kairos-core/runtime/.gitignore
+    layer: L3
+
+  - path: data/.gitkeep
+    layer: L3
+
+  - path: docs/.gitkeep
+    layer: L3
+
+  - path: squads/.gitkeep
+    layer: L3
+
 # -----------------------------------------------------------------------------
 # Arquivos mistos — apenas seções/chaves declaradas são framework-owned
 # -----------------------------------------------------------------------------
