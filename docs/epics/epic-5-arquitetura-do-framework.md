@@ -63,12 +63,13 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.31](../stories/5.31.story.md) | Atualizar scope.md para Refletir o Estado Atual do Framework | Done |
 | [5.32](../stories/5.32.story.md) | Squad-scaffolding Dinâmico — Gerar Personas a partir de `squads/{squad}/agents/*.yaml` | Done |
 | [5.33](../stories/5.33.story.md) | Regeneração Incremental de Personas — `*regenerate-squad` e Integração ao `*pre-push` | Done |
+| [5.34](../stories/5.34.story.md) | push-dual auto-sync com manifest: lista dinâmica e detecção de remoções | Done |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
-- **5.34** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.35** — Publicação de `@kairos/core` no npm
+- **5.35** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.36** — Publicação de `@kairos/core` no npm
 
 ---
 
@@ -163,3 +164,6 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-26 | Story 5.33 concluída — In Review |
 | 2026-04-26 | Story 5.32 Done — gate PASS, *pre-push v3.11.0 |
 | 2026-04-26 | Story 5.33 Done — gate PASS, *pre-push v3.11.0 |
+| 2026-04-27 | Story 5.34 criada — push-dual auto-sync com manifest (Draft); candidatas 5.34–5.35 renumeradas 5.35–5.36 |
+| 2026-04-27 | Story 5.34 implementada via *implement — In Review |
+| 2026-04-27 | Story 5.34 Done — gate PASS, *pre-push |

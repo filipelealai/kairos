@@ -1,0 +1,43 @@
+schema: 2
+story: "5.34"
+story_title: "push-dual auto-sync com manifest: lista dinâmica e detecção de remoções"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-27T00:00:00Z"
+quality_score: 100
+execution_log_found: true
+self_reviewed: true
+self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Passo 2a usa manifest_owned_files e manifest_sync_files dinamicamente — sem lista hardcoded de git checkout"
+    - "✅ AC2: Passo 2b itera sobre manifest_owned_sections dinamicamente — sem hardcodes de paths ou nomes de blocos/seções/keys"
+    - "✅ AC3: Passo 2.0 adicionado antes do Passo 2a; git ls-files vs manifest_all_paths (owned_files + sync_files + paths de owned_sections); git rm para arquivos não presentes"
+    - "✅ AC4: Passo 3 usa git add -A para capturar git rm staged + arquivos atualizados; skip mantido quando git status limpo"
+    - "✅ AC5: Seção 'Manutenção' removida — ausente no arquivo"
+    - "✅ AC6: Guard, pré-condições, skip 2b por conteúdo idêntico, resumo 2b, Passo 1/3/4/5, tabela de erros comuns — todos preservados"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ squads/ops/tasks/push-dual.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ git add -A no Passo 3: executor justifica corretamente que main só contém arquivos framework por design — git add -A é seguro e necessário para capturar git rm staged. Sem ação requerida."
+  - "⚠️ git ls-files sem filtro de diretório no Passo 2.0: seguro no estado atual de main. Se main ganhar estrutura mais complexa no futuro, revisar se filtro é necessário."

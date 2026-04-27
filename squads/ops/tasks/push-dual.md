@@ -50,219 +50,120 @@ Resultado esperado: todos os arquivos da instância (framework + conteúdo do us
 git checkout main
 ```
 
+**Leitura do manifest (uma vez, usada em todos os sub-passos abaixo):**
+
+Executar `git show filipe-instance:.kairos-core/manifest.yaml` e extrair:
+
+- **manifest_owned_files** — lista de `owned_files[].path`
+- **manifest_sync_files** — lista de `sync_files[].path`
+- **manifest_owned_sections** — lista de entradas de `owned_sections` (cada entrada com `path`, `type`, e os campos específicos do tipo: `blocks[]` para markdown_blocks, `owned_keys[]` para yaml_keys, `owned_sections[]` para env_sections)
+- **manifest_all_paths** — união de manifest_owned_files + manifest_sync_files + `[e.path for e in manifest_owned_sections]`
+
 ---
 
-#### Passo 2a — Arquivos inteiros (`owned_files`)
+#### Passo 2.0 — Detecção de remoções
 
-**Fonte autoritativa:** `.kairos-core/manifest.yaml → owned_files`. Para cada `path` listado:
+Antes de sincronizar, identificar arquivos que estão em `main` mas não fazem mais parte do manifest.
+
+1. Executar `git ls-files` para obter todos os arquivos tracked em `main`
+2. Para cada arquivo tracked que **não** esteja em `manifest_all_paths`:
+
+```bash
+git rm <arquivo>
+```
+
+3. Ao final, exibir:
+
+```
+Passo 2.0 — Detecção de remoções:
+  → {N} arquivo(s) removido(s): {lista, ou "nenhum"}
+```
+
+Se não houver remoções: `→ Passo 2.0: sem remoções.`
+
+---
+
+#### Passo 2a — Arquivos inteiros (`owned_files` e `sync_files`)
+
+**Fonte autoritativa:** `manifest_owned_files` e `manifest_sync_files` (lidos no início do Passo 2).
+
+Para cada path em `manifest_owned_files`, executar:
 
 ```bash
 git checkout filipe-instance -- <path>
 ```
 
-Lista atual (atualizar conforme manifest evolui):
+Em seguida, para cada path em `manifest_sync_files`, executar:
 
 ```bash
-# L1 — Fundação
-git checkout filipe-instance -- .kairos-core/constitution.md
-git checkout filipe-instance -- .claude/rules/ownership.md
-git checkout filipe-instance -- .claude/rules/agent-authority.md
-git checkout filipe-instance -- .claude/rules/framework-layers.md
-git checkout filipe-instance -- .claude/rules/ids-principles.md
-
-# L2 — Controlado
-git checkout filipe-instance -- .kairos-core/manifest.yaml
-git checkout filipe-instance -- .claude/commands/kairos/agents/kairos.md
-git checkout filipe-instance -- .claude/hooks/kairos-code-intel.cjs
-git checkout filipe-instance -- .claude/hooks/kairos-precompact.cjs
-git checkout filipe-instance -- .claude/settings.json
-git checkout filipe-instance -- .kairos-core/data/workers.yaml
-
-# L2 — Governance tasks
-git checkout filipe-instance -- .kairos-core/tasks/kairos-architecture.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-doctor.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-help.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-kb.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-new-epic.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-new-squad.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-update-squad.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-implement.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-validate-squad.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-new-story.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-prd.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-pre-push.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-regenerate-squad.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-push.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-review.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-status.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-validate-story.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-version-bump.md
-git checkout filipe-instance -- .kairos-core/tasks/kairos-workers.md
-
-# L2 — Templates
-git checkout filipe-instance -- .kairos-core/templates/agent-template.md
-git checkout filipe-instance -- .kairos-core/templates/story-template.md
-git checkout filipe-instance -- ".kairos-core/templates/squad-template/README.md"
-git checkout filipe-instance -- ".kairos-core/templates/squad-template/squad.yaml"
-git checkout filipe-instance -- ".kairos-core/templates/squad-template/agents/agent-id.yaml"
-git checkout filipe-instance -- ".kairos-core/templates/squad-template/workflows/full-pipeline.md"
-
-# L3 — Gerenciado
-git checkout filipe-instance -- .claude/rules/agent-handoff.md
-git checkout filipe-instance -- .claude/rules/story-lifecycle.md
-git checkout filipe-instance -- .claude/rules/external-integrations.md
-git checkout filipe-instance -- .kairos-core/data/kairos-kb.md
-git checkout filipe-instance -- .kairos-core/docs/agent-standards.md
-git checkout filipe-instance -- .kairos-core/docs/data-flow.md
-git checkout filipe-instance -- .kairos-core/docs/scope.md
-
-# L3 — Documentação pública
-git checkout filipe-instance -- CHANGELOG.md
-
-# L3 — .github/ scaffold
-git checkout filipe-instance -- .github/CODEOWNERS
-git checkout filipe-instance -- .github/PULL_REQUEST_TEMPLATE.md
-git checkout filipe-instance -- ".github/ISSUE_TEMPLATE/bug_report.md"
-git checkout filipe-instance -- ".github/ISSUE_TEMPLATE/feature_request.md"
-git checkout filipe-instance -- .github/workflows/validate-manifest.yml
-git checkout filipe-instance -- .github/scripts/validate-manifest.sh
+git checkout filipe-instance -- <path>
 ```
 
-**`sync_files` — Documentação da instância (sincronizada, sem ownership de update):**
+> **`sync_files`:** diferente dos `owned_files`, arquivos em `sync_files` são copiados integralmente para `main` mas nunca serão sobrescritos por um `kairos update` futuro — o conteúdo é instância-específico e pertence ao usuário.
 
-Diferente dos `owned_files`, arquivos em `sync_files` são copiados integralmente para `main` mas nunca serão sobrescritos por um `kairos update` futuro — o conteúdo é instância-específico e pertence ao usuário.
+Ao final, exibir:
 
-```bash
-# sync_files (fonte: manifest.yaml → sync_files)
-git checkout filipe-instance -- README.md
-git checkout filipe-instance -- CONTRIBUTING.md
-git checkout filipe-instance -- CODE_OF_CONDUCT.md
+```
+Passo 2a concluído:
+  → {N} owned_files sincronizados
+  → {M} sync_files sincronizados
 ```
 
 ---
 
 #### Passo 2b — Arquivos mistos (`owned_sections`)
 
-**Fonte autoritativa:** `.kairos-core/manifest.yaml → owned_sections`. Cada arquivo é reconstruído para `main` contendo apenas as seções/chaves framework-owned. Conteúdo user-owned não chega ao `main`.
+**Fonte autoritativa:** `manifest_owned_sections` (lido no início do Passo 2). Iterar sobre cada entrada — o `type` determina a lógica de reconstrução aplicada.
 
 **Skip por conteúdo:** antes de reprocessar cada arquivo misto, construir mentalmente a versão que seria escrita em `main` e compará-la com o que já está em `main`. Se o conteúdo managed que seria escrito for idêntico ao que já existe → `→ skip: conteúdo managed sem mudança` — não reprocessar. O skip se aplica **independentemente** a cada arquivo misto.
 
-##### CLAUDE.md (markdown_blocks)
+##### Tipo `markdown_blocks`
 
 **Verificar skip:**
-1. Extrair todos os blocos `<!-- KAIROS-MANAGED-START: {nome} -->` ... `<!-- KAIROS-MANAGED-END: {nome} -->` do `CLAUDE.md` de `filipe-instance` (na ordem em que aparecem).
+1. Extrair todos os blocos `<!-- KAIROS-MANAGED-START: {nome} -->` ... `<!-- KAIROS-MANAGED-END: {nome} -->` do arquivo de `filipe-instance` (na ordem em que aparecem, conforme declarado em `owned_sections[i].blocks[].name`).
 2. Montar a string resultante (apenas os blocos, sem conteúdo user-owned entre eles).
-3. Comparar com o conteúdo atual de `main:CLAUDE.md`.
+3. Comparar com o conteúdo atual do arquivo em `main`.
 4. Se idêntico → `→ skip: conteúdo managed sem mudança` — não reprocessar.
 
-Caso contrário, escrever em `main/CLAUDE.md` **apenas** esses blocos (na mesma ordem que aparecem no arquivo fonte), sem conteúdo user-owned entre eles.
+Caso contrário, escrever no arquivo em `main` **apenas** esses blocos (na mesma ordem em que aparecem no arquivo fonte de `filipe-instance`), sem conteúdo user-owned entre eles.
 
-Blocos atuais declarados no manifesto: `framework-conventions`, `agent-system`, `kairos-core`.
-
-Formato esperado do `CLAUDE.md` em `main`:
+Formato esperado em `main`:
 
 ```
-<!-- KAIROS-MANAGED-START: framework-conventions -->
+<!-- KAIROS-MANAGED-START: {bloco 1} -->
 {conteúdo do bloco}
-<!-- KAIROS-MANAGED-END: framework-conventions -->
+<!-- KAIROS-MANAGED-END: {bloco 1} -->
 
-<!-- KAIROS-MANAGED-START: agent-system -->
+<!-- KAIROS-MANAGED-START: {bloco 2} -->
 {conteúdo do bloco}
-<!-- KAIROS-MANAGED-END: agent-system -->
+<!-- KAIROS-MANAGED-END: {bloco 2} -->
 
-<!-- KAIROS-MANAGED-START: kairos-core -->
-{conteúdo do bloco}
-<!-- KAIROS-MANAGED-END: kairos-core -->
+...
 ```
 
-##### .kairos-core/core-config.yaml (yaml_keys)
+##### Tipo `yaml_keys`
 
 **Verificar skip:**
-1. Construir a versão que seria escrita em `main` a partir do `core-config.yaml` de `filipe-instance` (campos top-level + seções owned + placeholders para `project` e `agents`).
-2. Comparar com o conteúdo atual de `main:.kairos-core/core-config.yaml`.
+1. Construir a versão que seria escrita em `main` a partir do arquivo de `filipe-instance` (campos top-level + seções declaradas em `owned_sections[i].owned_keys[]` + placeholders para `project` e `agents`).
+2. Comparar com o conteúdo atual do arquivo em `main`.
 3. Se idêntico → `→ skip: conteúdo managed sem mudança` — não reprocessar.
 
-Caso contrário, ler o `core-config.yaml` de `filipe-instance` e escrever em `main/.kairos-core/core-config.yaml` uma versão com:
+Caso contrário, ler o arquivo de `filipe-instance` e escrever em `main` uma versão com:
 - Campos top-level (`version`, `installedAt`, `updatedAt`) — copiados integralmente
-- Seções `framework`, `runtime`, `versioning` (`owned_keys` no manifesto) — copiadas integralmente
+- Seções declaradas em `owned_keys` (lidas do manifest) — copiadas integralmente
 - Seção `project` — substituída por placeholders: `owner: "{owner}"`, `name: "{project-name}"`, `scope: personal`
 - Seção `agents` — substituída por placeholder: `squads: {}`
 - Demais campos fora das seções acima — omitidos
 
-Formato esperado do `core-config.yaml` em `main`:
-
-```yaml
-version: {atual}
-installedAt: {atual}
-updatedAt: {atual}
-
-project:
-  name: "{project-name}"
-  type: claude-code-orchestrator
-  owner: "{owner}"
-  scope: personal
-
-agents:
-  master: kairos
-  squads: {}
-
-framework:
-  ... (copiado integralmente)
-
-runtime:
-  ... (copiado integralmente)
-
-versioning:
-  ... (copiado integralmente)
-```
-
-##### .env.example (env_sections)
+##### Tipo `env_sections`
 
 **Verificar skip:**
-1. Para cada seção declarada em `owned_sections` do `.env.example` no manifesto, extrair o conteúdo entre `# KAIROS-MANAGED-START: {nome}` e `# KAIROS-MANAGED-END: {nome}` do arquivo em `filipe-instance`.
+1. Para cada seção declarada em `owned_sections[i].owned_sections[].name` (na ordem do manifest), extrair o conteúdo entre `# KAIROS-MANAGED-START: {nome}` e `# KAIROS-MANAGED-END: {nome}` do arquivo em `filipe-instance`.
 2. Montar a string resultante: os blocos concatenados na mesma ordem, mantendo os markers START/END.
-3. Comparar com o conteúdo atual de `main:.env.example` (apenas as seções gerenciadas).
+3. Comparar com o conteúdo atual do arquivo em `main` (apenas as seções gerenciadas).
 4. Se idêntico → `→ skip: conteúdo managed sem mudança` — não reprocessar.
 
-Caso contrário, escrever em `main/.env.example` **apenas** os blocos gerenciados (na mesma ordem), sem conteúdo user-owned. Seções não declaradas no manifesto (ex: `# ── Squad-specific ──...`) **não** vão para `main`.
-
-Formato esperado do `.env.example` em `main`:
-
-```
-# ============================================================
-# Kairos — Environment Variables
-# ============================================================
-# Copy this file to .env and fill in your values.
-# All variables are optional.
-# DO NOT commit .env — it contains secrets.
-# ============================================================
-
-# KAIROS-MANAGED-START: ai-providers
-{conteúdo da seção}
-# KAIROS-MANAGED-END: ai-providers
-
-# KAIROS-MANAGED-START: automation
-{conteúdo da seção}
-# KAIROS-MANAGED-END: automation
-
-# KAIROS-MANAGED-START: database
-{conteúdo da seção}
-# KAIROS-MANAGED-END: database
-
-# KAIROS-MANAGED-START: communication
-{conteúdo da seção}
-# KAIROS-MANAGED-END: communication
-
-# KAIROS-MANAGED-START: search
-{conteúdo da seção}
-# KAIROS-MANAGED-END: search
-
-# KAIROS-MANAGED-START: version-control
-{conteúdo da seção}
-# KAIROS-MANAGED-END: version-control
-```
-
-Seções declaradas no manifesto (na ordem): `ai-providers`, `automation`, `database`, `communication`, `search`, `version-control`.
+Caso contrário, escrever no arquivo em `main` **apenas** os blocos gerenciados (na mesma ordem declarada no manifest), sem conteúdo user-owned. Seções não declaradas no manifest **não** vão para `main`.
 
 ##### Resumo ao final do Passo 2b
 
@@ -282,16 +183,17 @@ COMMIT_MSG=$(git log filipe-instance -1 --pretty=%B)
 
 # Verificar o que mudou em main
 git status
+```
 
-# Se houver mudanças (framework evoluiu desde o último push-dual):
-git add <arquivos modificados>
+Se houver mudanças (remoções do Passo 2.0, arquivos atualizados do Passo 2a/2b, ou ambos):
+
+```bash
+git add -A
 git commit -m "$COMMIT_MSG"
-
-# Push para o repo público
 git push origin main
 ```
 
-Se `git status` estiver limpo (nenhum arquivo framework mudou), pular o commit — apenas push:
+Se `git status` estiver limpo (nenhum arquivo framework mudou e nenhuma remoção ocorreu), pular o commit — apenas push:
 
 ```bash
 git push origin main
@@ -325,8 +227,12 @@ filipe-instance (trabalho)
     ├─ git push private filipe-instance      → kairos-pessoal (privado, completo)
     │
     └─ git checkout main
-       git checkout filipe-instance -- {owned_files}
-       git commit + git push origin main     → kairos (público, framework puro)
+       git show filipe-instance:.kairos-core/manifest.yaml  ← leitura única do manifest
+       git rm {arquivos não mais no manifest}               ← Passo 2.0 (detecção de remoções)
+       git checkout filipe-instance -- {owned_files}        ← Passo 2a (derivado do manifest)
+       git checkout filipe-instance -- {sync_files}         ← Passo 2a (derivado do manifest)
+       {reconstruir owned_sections}                         ← Passo 2b (derivado do manifest)
+       git add -A + git commit + git push origin main       → kairos (público, framework puro)
        git checkout filipe-instance
 ```
 
@@ -341,11 +247,4 @@ filipe-instance (trabalho)
 | Remote `private` não existe | Configurar: `git remote add private https://github.com/filipelealweb/kairos-pessoal.git` |
 | Remote `origin` não tem permissão de push | HALT — verificar autenticação do `gh` CLI |
 | Arquivo de manifest não encontrado | HALT — executar `*doctor` para diagnóstico |
-
----
-
-## Manutenção
-
-Quando o manifesto evolui (story 5.3 refresh de SHAs, novos owned_files adicionados):
-- Atualizar a lista de `git checkout` no Passo 2
-- A lista nesta task deve sempre espelhar `manifest.yaml → owned_files` e `manifest.yaml → sync_files`
+| `git show filipe-instance:.kairos-core/manifest.yaml` falha | HALT — verificar se branch `filipe-instance` existe e manifest está commitado |
