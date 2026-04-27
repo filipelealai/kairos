@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.9.1
+kairos-version: 3.11.0
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -18,8 +18,8 @@ Checklist:
   - "[ ] Passo 2.5: Transição da story para Done"
   - "[ ] Passo 2.6: Atualizar kairos-version nos arquivos modificados"
   - "[ ] Passo 2.7: SHA sync do manifest.yaml"
-  - "[ ] Passo 3: Propor e executar commit dos changes relevantes"
-  - "[ ] Passo 4: Spot check de referências quebradas"
+  - "[ ] Passo 3: Spot check de referências quebradas"
+  - "[ ] Passo 4: Propor e executar commit dos changes relevantes"
   - "[ ] Passo 5: Consistência final de versão (core-config vs CHANGELOG)"
   - "[ ] Exibir sumário e verdict"
 ---
@@ -52,9 +52,20 @@ Execute `*doctor` (Checks 1–10 conforme definido em `kairos-doctor.md`) e aval
     ⚠️ {arquivo} marca-se como kairos-owned mas não está no manifesto
   Adicione ao manifest.yaml e ao push-dual antes de continuar.
   ```
-- Todos os demais WARNs (drift de SHA, story sem gate, referência quebrada, etc.) → **não bloqueam**; os warnings são listados no sumário final do `*pre-push` na seção "Avisos".
+- WARNs de **drift de persona** (Check 3b) — YAML editado desde a última geração → **executar regeneração automática** antes de continuar:
+  1. Identificar todos os squads afetados (extrair `{squad}` do path `squads/{squad}/agents/{id}.yaml` dos WARNs)
+  2. Para cada squad com drift: executar `*regenerate-squad {squad}` (carregar `kairos-regenerate-squad.md` e executar inline)
+  3. Após regeneração bem-sucedida: confirmar `✓ Regeneração automática: personas de {squad1}[, {squad2}] atualizadas`
+  4. Continuar com o próximo passo do `*pre-push`
+  5. Se regeneração falhar → **BLOCK:**
+     ```
+     🚫 BLOCK — Falha na regeneração automática de personas:
+       ⚠️ {detalhe do erro}
+     Rode *regenerate-squad {squad} manualmente e rode *pre-push novamente.
+     ```
+- Todos os demais WARNs (drift de SHA de owned_files, story sem gate, referência quebrada, YAML sem persona — check 3a, etc.) → **não bloqueam**; os warnings são listados no sumário final do `*pre-push` na seção "Avisos".
 
-**BLOCK se:** veredicto `*doctor` = CRITICAL, **ou** se qualquer WARN for de categoria manifest integrity (arquivo `kairos-owned: true` fora de `owned_files`).
+**BLOCK se:** veredicto `*doctor` = CRITICAL, **ou** se qualquer WARN for de categoria manifest integrity (arquivo `kairos-owned: true` fora de `owned_files`), **ou** se regeneração automática falhar.
 
 ---
 
@@ -256,7 +267,7 @@ Pré-condição: Passo 2.5 concluído (versão confirmada).
 3. Se algum arquivo foi atualizado → confirme: `✓ kairos-version: {N} arquivo(s) atualizado(s) para v{version}`
 4. Se nenhum arquivo tinha o campo → confirme: `✓ kairos-version: sem frontmatter para atualizar`
 
-> Os arquivos com `kairos-version` atualizado serão incluídos no commit do Passo 3.
+> Os arquivos com `kairos-version` atualizado serão incluídos no commit do Passo 4.
 
 ---
 
@@ -304,15 +315,36 @@ Para cada entrada em `owned_sections`, atualizar os SHAs por bloco/chave/seção
 3. Se algum SHA (owned_files ou owned_sections) foi atualizado → confirme: `✓ SHA sync: {N} arquivo(s)/bloco(s) atualizado(s) em manifest.yaml`
 4. Se nenhum SHA divergiu → confirme: `✓ SHA sync: manifest.yaml já está atualizado`
 
-> Os arquivos modificados pelo SHA sync serão incluídos no commit do Passo 3.
+> Os arquivos modificados pelo SHA sync serão incluídos no commit do Passo 4.
 
 ---
 
-### Passo 3 — Commit
+### Passo 3 — Referências quebradas (spot check)
+
+**Objetivo:** verificar links internos nos arquivos `.md` modificados antes de commitar — para que o executor possa corrigir eventuais problemas antes de o commit acontecer.
+
+Pré-condição: Passo 2.7 concluído (SHA sync realizado).
+
+Para arquivos `.md` modificados recentemente (identificados no pré-check):
+- Verificar links internos `[texto](caminho)` — o path existe no repo?
+- Verificar referências a tasks em YAML — o arquivo da task existe?
+
+**Resolução de paths relativos:** ao verificar um link relativo, resolver o path **a partir do diretório do arquivo que contém o link** — não a partir de `docs/` nem da raiz do repositório.
+
+Exemplo correto: link `../stories/3.1.story.md` encontrado em `docs/epics/epic-3-*.md`
+→ resolver a partir de `docs/epics/` → `docs/epics/../stories/3.1.story.md` → `docs/stories/3.1.story.md` ✓
+
+Limite: verificar até 10 arquivos. Não é revisão exaustiva.
+
+**BLOCK se:** referência crítica quebrada (agente referencia task inexistente, story aponta para epic inexistente).
+
+---
+
+### Passo 4 — Commit
 
 **Objetivo:** garantir que as mudanças relevantes estão commitadas antes do push.
 
-Pré-condição: Passo 2.7 concluído (SHA sync realizado).
+Pré-condição: Passo 3 concluído (spot check realizado).
 
 1. Execute `git status` para listar arquivos com changes relevantes (excluindo `.kairos-core/runtime/`, `data/`, `node_modules/`)
 
@@ -375,18 +407,6 @@ Pré-condição: Passo 2.7 concluído (SHA sync realizado).
 
 ---
 
-### Passo 4 — Referências quebradas (spot check)
-
-Para arquivos `.md` modificados recentemente (identificados no pré-check):
-- Verificar links internos `[texto](caminho)` — o path existe no repo?
-- Verificar referências a tasks em YAML — o arquivo da task existe?
-
-Limite: verificar até 10 arquivos. Não é revisão exaustiva.
-
-**BLOCK se:** referência crítica quebrada (agente referencia task inexistente, story aponta para epic inexistente).
-
----
-
 ### Passo 5 — Consistência final
 
 **Objetivo:** garantir que core-config e CHANGELOG estão sincronizados.
@@ -415,13 +435,13 @@ Resumo:
   Versão: {version}
 
 Checks:
-  ✅ Passo 0 — *doctor (HEALTHY | warnings listados abaixo se houver)
+  ✅ Passo 0 — *doctor (HEALTHY | regeneração automática executada se drift | warnings listados abaixo se houver)
   ✅ Passo 1 — Gate de review (stories MINOR/MAJOR com gate PASS/RESSALVA)
   ✅ Passo 2 — Versionamento ({bump feito: antiga → nova | sem bump pendente | PATCH: bump aplicado/ignorado pelo usuário})
   ✅ Passo 2.6 — kairos-version ({N} atualizado(s) | sem frontmatter)
   ✅ Passo 2.7 — SHA sync ({N} atualizado(s) | já atualizado)
-  ✅ Passo 3 — Commit ({mensagem do commit | sem changes pendentes})
-  ✅ Passo 4 — Referências verificadas
+  ✅ Passo 3 — Referências verificadas
+  ✅ Passo 4 — Commit ({mensagem do commit | sem changes pendentes})
   ✅ Passo 5 — Versão consistente ({version})
 
 Pronto para push. Execute: *push
