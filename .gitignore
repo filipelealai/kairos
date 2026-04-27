@@ -1,33 +1,7 @@
 node_modules/
 dist/
 .env
+data/cache/
 *.log
 /.env
 .mcp.json
-
-# Instance-specific content — not shipped as framework
-squads/*
-!squads/.gitkeep
-
-src/
-
-.kairos-core/agents/
-.kairos-core/tasks/*
-!.kairos-core/tasks/kairos-*.md
-
-skills-lock.json
-.claude/skills/
-.agents/
-
-data/*
-!data/.gitkeep
-
-.claude/settings.local.json
-
-# Squad personas (user-created, not shipped)
-.claude/commands/kairos/agents/*.md
-!.claude/commands/kairos/agents/kairos.md
-
-# Project metadata (instance-owned — entire docs/ is instance content)
-docs/*
-!docs/.gitkeep
