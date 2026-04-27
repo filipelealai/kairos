@@ -91,6 +91,7 @@ git checkout filipe-instance -- .kairos-core/tasks/kairos-validate-squad.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-new-story.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-prd.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-pre-push.md
+git checkout filipe-instance -- .kairos-core/tasks/kairos-regenerate-squad.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-push.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-review.md
 git checkout filipe-instance -- .kairos-core/tasks/kairos-status.md
@@ -103,7 +104,7 @@ git checkout filipe-instance -- .kairos-core/templates/agent-template.md
 git checkout filipe-instance -- .kairos-core/templates/story-template.md
 git checkout filipe-instance -- ".kairos-core/templates/squad-template/README.md"
 git checkout filipe-instance -- ".kairos-core/templates/squad-template/squad.yaml"
-git checkout filipe-instance -- ".kairos-core/templates/squad-template/agents/agent-id.md"
+git checkout filipe-instance -- ".kairos-core/templates/squad-template/agents/agent-id.yaml"
 git checkout filipe-instance -- ".kairos-core/templates/squad-template/workflows/full-pipeline.md"
 
 # L3 — Gerenciado
