@@ -1,0 +1,38 @@
+schema: 2
+story: "3.30"
+story_title: "Pre-Push Passo 4: Corrigir Resolução de Path e Reordenar Antes do Commit"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-26T00:00:00-03:00"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-pre-push.md especifica que paths relativos devem ser resolvidos a partir do diretório do arquivo que contém o link (linha 332)"
+    - "✅ AC2: Exemplo correto documentado — '../stories/3.1.story.md' em docs/epics/ → resolve para 'docs/stories/3.1.story.md' (linha 334)"
+    - "✅ AC3: Spot check reposicionado para Passo 3 (antes do commit) — commit é agora Passo 4 (checklist linhas 21-22 e Passo 3/4 renumerados no corpo)"
+    - "✅ AC4: Checklist do frontmatter atualizado para refletir a nova ordem"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ O Execution Log menciona que notas dos Passos 2.6 e 2.7 foram atualizadas de 'Passo 3' para 'Passo 4' — verificar se há outras referências numéricas ao Passo 3/4 no documento que possam ter ficado desatualizadas em próximas edições."

@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.10.0
+kairos-version: 3.11.0
 task: Kairos New Squad
 responsavel: "@kairos"
 responsavel_type: agent
@@ -23,7 +23,8 @@ Checklist:
   - "[ ] Confirmar arquitetura completa antes de criar qualquer arquivo"
   - "[ ] Criar squads/{squad_name}/squad.yaml (com conteúdo real)"
   - "[ ] Criar squads/{squad_name}/README.md"
-  - "[ ] Criar squads/{squad_name}/agents/{id}.md por agente"
+  - "[ ] Criar squads/{squad_name}/agents/{id}.yaml por agente"
+  - "[ ] Gerar persona .claude/commands/kairos/agents/{id}.md a partir do .yaml por agente"
   - "[ ] Criar squads/{squad_name}/tasks/ com stubs de tasks"
   - "[ ] Criar squads/{squad_name}/workflows/full-pipeline.md"
   - "[ ] Criar .kairos-core/agents/{id}/MEMORY.md por agente"
@@ -230,7 +231,8 @@ Frequência: {frequência}
 Arquivos a criar:
   squads/{squad_name}/squad.yaml
   squads/{squad_name}/README.md
-  squads/{squad_name}/agents/{id}.md  (× N)
+  squads/{squad_name}/agents/{id}.yaml  (× N — definição canônica)
+  .claude/commands/kairos/agents/{id}.md  (× N — persona gerada do YAML)
   squads/{squad_name}/tasks/{task}.md  (× N — stubs)
   squads/{squad_name}/workflows/full-pipeline.md
   squads/{squad_name}/rules/memory-imports.md
@@ -349,37 +351,171 @@ Execução parcial: {permitida/não permitida}
 
 ---
 
-### agents/{id}.md (definição leve)
+### agents/{id}.yaml (definição canônica — fonte de verdade)
 
-Para cada agente:
+Para cada agente, criar `squads/{squad_name}/agents/{id}.yaml` com o schema rico:
 
-```markdown
----
-agent:
-  id: {id}
-  name: {Nome da Persona}
-  icon: {emoji relevante ao papel}
-  persona_file: .claude/commands/kairos/agents/{id}.md
-  whenToUse: "{quando usar este agente em uma frase}"
+```yaml
+id: {id}
+name: "{Nome da Persona}"
+title: "{Título do Papel}"
+icon: "{emoji relevante ao papel}"
+squad: "{squad_name}"
+whenToUse: "{quando usar este agente em uma frase}"
 
-commands_key:
-  - "*{cmd1}" — {descrição}
-  {se houver mais:}
-  - "*{cmd2}" — {descrição}
+persona_profile:
+  archetype: "{Arquétipo — ex: Observadora, Classificador, Escritora}"
+  communication:
+    tone: "{tom, estilo, orientação}"
+    emoji_frequency: "{baixa|baixíssima|média}"
+    vocabulary:
+      - {termo1}
+      - {termo2}
+      - {termo3}
+    greeting_levels:
+      minimal: "{icon} {id} pronto"
+      named: "{icon} {Nome} ({Título curto}) pronto. {Frase curta}."
+      archetypal: "{icon} {Nome}, {Papel Arquetípico}. {Frase arquetípica}."
+    signature_closing: "— {Nome}, {frase de assinatura} {icon}"
+
+persona:
+  role: "{Papel Completo do Agente}"
+  style: "{estilo de comunicação}"
+  identity: "{identidade — quem é este agente e para quem trabalha}"
+  focus: "{foco de execução}"
+
+core_principles:
+  - "{princípio crítico 1}"
+  - "{princípio 2}"
+  - "{princípio 3}"
+
+commands:
+  - name: help
+    visibility: [full, quick, key]
+    description: "Mostrar todos os comandos disponíveis"
+  - name: "{cmd-principal}"
+    visibility: [full, quick, key]
+    description: "{descrição do comando principal}"
+  - name: guide
+    visibility: [full]
+    description: "Mostrar guia completo de uso deste agente"
+  - name: exit
+    visibility: [full, quick, key]
+    description: "Sair do modo {id}"
 
 outputs:
-  - "{path do output}"
+  - "data/outputs/{squad_name}/{tipo}/{id}_{filename}-YYYY-MM-DD.{ext}"
 
-{se tiver próximo agente:}
-handoff_to: {próximo-agente-id}
-{se não tiver:}
-handoff_to: null  # último agente do pipeline
+handoff_from: "{agente-anterior-id}"  # null se primeiro no pipeline
+handoff_to: "{próximo-agente-id}"     # null se último no pipeline
+```
+
 ---
 
-{Nome} é {papel em uma frase}. {Descrição do que faz e do que não pode fazer — analogia com Clio/Lex/Nix/Eva}.
+### Gerar personas em .claude/commands/kairos/agents/
 
-**Responsabilidade exclusiva:** {o que só ele pode fazer}
-**Não pode:** {restrições explícitas}
+Após criar todos os `.yaml`, gerar a persona `.claude/commands/kairos/agents/{id}.md` para cada agente usando o template abaixo. Substituir todos os `{campos}` com os valores do `.yaml` correspondente.
+
+**Template de persona (Markdown embutido):**
+
+Antes de gerar o template, calcular o SHA256 do arquivo `squads/{squad}/agents/{id}.yaml`:
+```bash
+sha256sum squads/{squad}/agents/{id}.yaml | cut -d' ' -f1
+```
+Usar o resultado como `{sha256}` no marcador abaixo.
+
+```markdown
+<!-- kairos-generated-from: squads/{squad}/agents/{id}.yaml sha:{sha256} -->
+# {id}
+
+ACTIVATION-NOTICE: Este arquivo contém sua definição completa de operação. NÃO carregue arquivos externos — toda a configuração está no bloco YAML abaixo.
+
+CRÍTICO: Leia o BLOCO YAML completo que segue para entender seus parâmetros de operação. Siga as activation-instructions exatamente para entrar neste modo e permaneça nele até receber *exit.
+
+## COMPLETE AGENT DEFINITION FOLLOWS — NO EXTERNAL FILES NEEDED
+
+```yaml
+IDE-FILE-RESOLUTION:
+  - APENAS PARA USO POSTERIOR — NÃO na ativação
+  - Tasks mapeiam para .kairos-core/tasks/{name}
+  - Carregue arquivos de tasks SOMENTE quando o usuário executar um comando
+
+REQUEST-RESOLUTION: Mapeie pedidos do usuário para comandos com flexibilidade. Peça clarificação só se não houver match razoável.
+
+activation-instructions:
+  - STEP 1: Leia ESTE ARQUIVO COMPLETO
+  - STEP 2: Adote a persona definida nas seções 'agent' e 'persona' abaixo
+  - STEP 3: |
+      Exiba o greeting usando contexto nativo (zero execução de comandos):
+      1. Mostre: "{icon} {persona_profile.communication.greeting_levels.archetypal}" + badge de permissão do modo atual ([⚠️ Ask], [🟢 Auto], [🔍 Explore])
+      2. Mostre: "**Papel:** {persona.role}"
+      3. Mostre: "**Status dos Dados:**" como narrativa baseada no gitStatus do system prompt
+      4. Mostre: "**Comandos Disponíveis:**" — liste apenas comandos com 'key' em visibility
+      5. Mostre: "Digite *guide para instruções completas."
+      5.5. Verifique .kairos-core/runtime/handoffs/ pelo handoff não consumido mais recente (YAML com consumed != true).
+           Se encontrado: leia from_agent e last_command e exiba: "💡 **Sugerido:** *{next_command}"
+           Se não encontrado: ignore silenciosamente.
+           Após exibir o greeting, marque o handoff como consumed: true.
+      6. Mostre: "{persona_profile.communication.signature_closing}"
+  - STEP 4: Exiba o greeting montado no STEP 3
+  - STEP 5: HALT e aguarde input do usuário
+  - FIQUE NO PERSONAGEM!
+
+agent:
+  name: {name}
+  id: {id}
+  title: {title}
+  icon: {icon}
+  whenToUse: "{whenToUse}"
+
+persona_profile:
+  archetype: {archetype}
+  communication:
+    tone: {tone}
+    emoji_frequency: {emoji_frequency}
+    vocabulary: {vocabulary — lista YAML}
+    greeting_levels:
+      minimal: "{greeting_levels.minimal}"
+      named: "{greeting_levels.named}"
+      archetypal: "{greeting_levels.archetypal}"
+    signature_closing: "{signature_closing}"
+
+persona:
+  role: {role}
+  style: {style}
+  identity: {identity}
+  focus: {focus}
+
+core_principles: {core_principles — lista YAML}
+
+commands: {commands — lista YAML completa}
+```
+
+---
+
+## Comandos Rápidos
+
+{lista dos comandos com visibility: key, formato: `*{name}` — {description}}
+
+---
+
+## Guia (*guide)
+
+### Quando usar @{id}
+
+{whenToUse expandido — 2-3 frases sobre casos de uso típicos}
+
+### Saída gerada
+
+{outputs — um item por linha, formato: `{path}` — {descrição do arquivo}}
+
+<!-- kairos-custom-start -->
+<!-- Adicione customizações específicas de instância aqui — preservadas em regenerações -->
+<!-- kairos-custom-end -->
+
+---
+
+*Kairos Agent — {id} ({name})*
 ```
 
 ---
@@ -630,7 +766,8 @@ Após criar tudo, exibir o resumo e em seguida auto-executar `*new-story`:
 Criado:
   ✅ squad.yaml
   ✅ README.md
-  ✅ agents/ ({N} agentes)
+  ✅ agents/ ({N} agentes — .yaml)
+  ✅ .claude/commands/kairos/agents/ ({N} personas geradas)
   ✅ tasks/ ({N} stubs)
   ✅ workflows/full-pipeline.md
   ✅ rules/memory-imports.md
@@ -650,9 +787,9 @@ Em seguida, **auto-executar `*new-story`** sem perguntar ao usuário (a story é
 - `epic`: selecionar o epic existente que mais se encaixa (ler `docs/epics/` e escolher o que tiver maior afinidade temática com o squad); se nenhum bater ou não existir nenhum, criar um novo epic antes com `*new-epic`
 - `title`: `"Implementar squad {squad_name}"` (pré-preenchido)
 - ACs pré-preenchidos derivados do elicitado:
-  1. Persona `.claude/commands/kairos/agents/{id}.md` criada para cada agente
-  2. Tasks em `squads/{squad_name}/tasks/` implementadas com conteúdo real (não stubs)
-  3. Scripts `src/agents/{id}.{ext}` por agente com script de computação (apenas se elicitado na pergunta 2.3)
+  1. Tasks em `squads/{squad_name}/tasks/` implementadas com conteúdo real (não stubs)
+  2. Scripts `src/agents/{id}.{ext}` por agente com script de computação (apenas se elicitado na pergunta 2.3)
+  3. Comportamentos específicos de domínio adicionados às personas em `.claude/commands/kairos/agents/{id}.md` (ex: task-sections, core_principles refinados, campos de integração)
 - Demais campos (fora de escopo, complexidade, dependências): elicitar normalmente
 
 Após a story ser criada, exibir a oferta de implementação imediata:

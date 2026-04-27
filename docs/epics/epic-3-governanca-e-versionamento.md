@@ -58,6 +58,7 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | [3.27](../stories/3.27.story.md) | *review: Remover Autoridade de Transição para Done | Done |
 | [3.28](../stories/3.28.story.md) | Refatoração de data-flow.md e agent-standards.md | Done |
 | [3.29](../stories/3.29.story.md) | Elicitação Propósito-First em *new-squad, *update-squad, *new-story e *new-epic | Done |
+| [3.30](../stories/3.30.story.md) | Pre-Push Passo 4: Corrigir Resolução de Path e Reordenar Antes do Commit | Done |
 
 ---
 
@@ -106,3 +107,6 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | 2026-04-26 | Story 3.29 criada — elicitação propósito-first em *new-squad, *update-squad, *new-story e *new-epic |
 | 2026-04-26 | Story 3.29 concluída — In Review |
 | 2026-04-26 | *pre-push: stories 3.28, 3.29 → Done (v3.10.0) |
+| 2026-04-26 | Story 3.30 criada — falso positivo no Passo 4 e reordenação antes do commit |
+| 2026-04-26 | Story 3.30 concluída — In Review |
+| 2026-04-26 | Story 3.30 Done — gate PASS, *pre-push v3.11.0 |

@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.11.0] — 2026-04-26
+
+### Adicionado
+- Criado template agent-id.yaml com schema canônico rico; adicionado *regenerate-squad com detecção de drift e integração ao *pre-push
+
+---
+
 ## [3.10.0] — 2026-04-26
 
 ### Adicionado

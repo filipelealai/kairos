@@ -1,0 +1,49 @@
+schema: 2
+story: "5.32"
+story_title: "Squad-scaffolding Dinâmico — Gerar Personas a partir de squads/{squad}/agents/*.yaml"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-26T00:00:00-03:00"
+quality_score: 100
+execution_log_found: true
+validation_note: "ACs 3 e 6 confirmados empiricamente via execução controlada de *new-squad com squad _test-squad (criado e deletado na sessão de review)"
+
+ac_coverage:
+  covered:
+    - "✅ AC1: .kairos-core/templates/squad-template/agents/agent-id.yaml criado com schema canônico rico — arquivo existe (2342 bytes)"
+    - "✅ AC2: kairos-new-squad.md inclui passo 'Gerar personas em .claude/commands/kairos/agents/' a partir do YAML — seção dedicada com template Markdown embutido (linha 415)"
+    - "✅ AC3: Persona gerada é funcionalmente completa e imediatamente ativável — confirmado empiricamente: kairos:agents:test-agent apareceu no harness do Claude Code logo após criação da persona, sem qualquer passo adicional"
+    - "✅ AC4: 4 agentes cold-prospecting migrados para .yaml (campaign-analyst, lead-scorer, niche-classifier, email-writer) — arquivos .md removidos, squad.yaml atualizado com referências .yaml"
+    - "✅ AC5: kairos-doctor.md inclui check 3a — detecta .yaml sem persona correspondente → ⚠️ WARN (linhas 52-57)"
+    - "✅ AC6: kairos-new-squad.md não inclui 'criar persona em .claude/commands/' como AC das stories geradas — ACs gerados são: tasks implementadas, scripts (se elicitado), comportamentos específicos adicionados às personas existentes. Confirmado por leitura direta do template (linhas 789-793)"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/templates/squad-template/agents/agent-id.yaml"
+    - "✅ squads/cold-prospecting/agents/campaign-analyst.yaml"
+    - "✅ squads/cold-prospecting/agents/lead-scorer.yaml"
+    - "✅ squads/cold-prospecting/agents/niche-classifier.yaml"
+    - "✅ squads/cold-prospecting/agents/email-writer.yaml"
+    - "✅ squads/cold-prospecting/squad.yaml (atualizado)"
+    - "✅ .kairos-core/tasks/kairos-new-squad.md (atualizado)"
+    - "✅ .kairos-core/tasks/kairos-doctor.md (atualizado)"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — bump MINOR pendente; a ser feito em *pre-push (esperado por design)"
+  changelog_updated: "⚠️ RESSALVA — entrada no CHANGELOG a ser adicionada em *pre-push"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Ao executar *pre-push, bump deve ser pelo menos MINOR (nova task kairos-new-squad.md reformulada, check 3a no doctor, template novo, migração cold-prospecting)"
+  - "⚠️ As personas existentes em .claude/commands/kairos/agents/ para cold-prospecting não têm marcador SHA ainda — comportamento por design (check 3b as ignorará silenciosamente). Documentado como pendência no Execution Log."

@@ -61,8 +61,8 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.29](../stories/5.29.story.md) | Expurgar Exemplos de Instância e Hardcodes de Stack das Tasks e Templates do Framework | Done |
 | [5.30](../stories/5.30.story.md) | Expurgar Hardcodes de Ferramentas Específicas das Tasks e Templates do Framework | Done |
 | [5.31](../stories/5.31.story.md) | Atualizar scope.md para Refletir o Estado Atual do Framework | Done |
-| [5.32](../stories/5.32.story.md) | Squad-scaffolding Dinâmico — Gerar Personas a partir de `squads/{squad}/agents/*.yaml` | Draft |
-| [5.33](../stories/5.33.story.md) | Regeneração Incremental de Personas — `*regenerate-squad` e Integração ao `*pre-push` | Draft |
+| [5.32](../stories/5.32.story.md) | Squad-scaffolding Dinâmico — Gerar Personas a partir de `squads/{squad}/agents/*.yaml` | Done |
+| [5.33](../stories/5.33.story.md) | Regeneração Incremental de Personas — `*regenerate-squad` e Integração ao `*pre-push` | Done |
 
 ---
 
@@ -157,3 +157,9 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-26 | *pre-push: stories 5.29, 5.30, 5.31 → Done (v3.10.0) |
 | 2026-04-26 | Story 5.32 criada — Squad-scaffolding dinâmico (Draft); candidatas 5.33–5.34 renumeradas 5.34–5.35; nova 5.33 adicionada (regeneração incremental) |
 | 2026-04-26 | Story 5.33 criada — Regeneração incremental de personas via *regenerate-squad (Draft) |
+| 2026-04-26 | Story 5.32 iniciada — In Progress |
+| 2026-04-26 | Story 5.32 concluída — In Review |
+| 2026-04-26 | Story 5.33 iniciada — In Progress |
+| 2026-04-26 | Story 5.33 concluída — In Review |
+| 2026-04-26 | Story 5.32 Done — gate PASS, *pre-push v3.11.0 |
+| 2026-04-26 | Story 5.33 Done — gate PASS, *pre-push v3.11.0 |

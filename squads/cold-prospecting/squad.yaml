@@ -13,10 +13,10 @@ kairos:
 
 components:
   agents:
-    - agents/campaign-analyst.md
-    - agents/lead-scorer.md
-    - agents/niche-classifier.md
-    - agents/email-writer.md
+    - agents/campaign-analyst.yaml
+    - agents/lead-scorer.yaml
+    - agents/niche-classifier.yaml
+    - agents/email-writer.yaml
   tasks:
     - tasks/analyze-campaign.md
     - tasks/score-leads.md

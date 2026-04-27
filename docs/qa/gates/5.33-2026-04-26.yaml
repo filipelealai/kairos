@@ -1,0 +1,51 @@
+schema: 2
+story: "5.33"
+story_title: "Regeneração Incremental de Personas — *regenerate-squad e Integração ao *pre-push"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-26T00:00:00-03:00"
+quality_score: 100
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Template de persona em kairos-new-squad.md inclui marcador '<!-- kairos-generated-from: squads/{squad}/agents/{id}.yaml sha:{sha256} -->' com instrução sha256sum (linhas 423-428)"
+    - "✅ AC2: kairos-doctor.md inclui check 3b — SHA drift: lê marcador, calcula SHA atual, emite WARN se divergir; ignora silenciosamente personas sem marcador (linhas 59-68)"
+    - "✅ AC3: kairos-regenerate-squad.md criada — task completa com detecção de drift, preservação de seções custom, regeneração incremental e sumário"
+    - "✅ AC4: *regenerate-squad registrado em kairos.md com visibility: full, quick, key — presente em REQUEST-RESOLUTION, Comandos Rápidos e dependencies.tasks (confirmado no arquivo de persona ativo)"
+    - "✅ AC5: README.md atualizado com '*regenerate-squad {squad}' na tabela de comandos do @kairos (linha 199)"
+    - "✅ AC6: kairos-pre-push.md Passo 0 integra regeneração — WARNs de drift 3b disparam *regenerate-squad automático nos squads afetados; falha na regeneração → BLOCK (linhas 55-64)"
+    - "✅ AC7: Regeneração idempotente e preserva seções '<!-- kairos-custom-start -->' / '<!-- kairos-custom-end -->' — lógica de extração e reinserção documentada na task (linhas 89-94, 240)"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-regenerate-squad.md"
+    - "✅ .kairos-core/tasks/kairos-new-squad.md (atualizado — marcador SHA + bloco custom)"
+    - "✅ .kairos-core/tasks/kairos-doctor.md (atualizado — check 3b)"
+    - "✅ .kairos-core/tasks/kairos-pre-push.md (atualizado — regra drift de persona)"
+    - "✅ .kairos-core/tasks/kairos-help.md (atualizado)"
+    - "✅ .claude/commands/kairos/agents/kairos.md (atualizado — comando registrado)"
+    - "✅ README.md (atualizado)"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — bump MINOR pendente; a ser feito em *pre-push (esperado por design)"
+  changelog_updated: "⚠️ RESSALVA — entrada no CHANGELOG a ser adicionada em *pre-push"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "Template de persona compartilhado entre kairos-new-squad.md e kairos-regenerate-squad.md — se o template for atualizado no futuro, ambas as tasks precisam ser sincronizadas manualmente"
+    recommendation: "Documentar no kairos-kb.md como gotcha de manutenção: atualizações no template de persona devem ser aplicadas em kairos-new-squad.md E kairos-regenerate-squad.md"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ A assimetria no *pre-push (check 3b dispara regeneração automática; check 3a — YAML sem persona — apenas lista como aviso) está correta e alinhada com a intenção declarada no Execution Log. Confirmada."
+  - "⚠️ Ao executar *pre-push, bump deve ser pelo menos MINOR (nova task kairos-regenerate-squad.md, integração no doctor e pre-push, comando novo no @kairos)"

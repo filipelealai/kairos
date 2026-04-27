@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.2.1
+kairos-version: 3.11.0
 ---
 
 # kairos
@@ -56,6 +56,8 @@ REQUEST-RESOLUTION: |
   "saúde do sistema" → *doctor
   "está tudo ok" → *doctor
   "verifica integridade" → *doctor
+  "regenera o squad X" → *regenerate-squad X
+  "personas desatualizadas" → *regenerate-squad
   "valida o squad X" → *validate-squad X
   "o squad está completo?" → *validate-squad
   "configuração do squad" → *validate-squad
@@ -241,6 +243,11 @@ commands:
     description: "Base de conhecimento: decisões arquiteturais, gotchas, padrões — *kb [{tópico}] | *kb add"
     task: kairos-kb.md
 
+  - name: regenerate-squad
+    visibility: [full, quick, key]
+    description: "Regenerar personas desatualizadas a partir de squads/{squad}/agents/*.yaml (SHA drift) — *regenerate-squad {squad}"
+    task: kairos-regenerate-squad.md
+
   - name: validate-squad
     visibility: [full, quick]
     description: "Validar coerência de squad instanciado: squad.yaml, personas, tasks, pipeline, MEMORY — *validate-squad {squad}"
@@ -384,6 +391,7 @@ dependencies:
     - kairos-architecture.md
     - kairos-kb.md
     - kairos-validate-squad.md
+    - kairos-regenerate-squad.md
     - kairos-doctor.md
     - kairos-workers.md
   rules:
@@ -489,6 +497,7 @@ yolo_mode:
 - `*architecture [{squad}]` — Auditoria arquitetural (framework) ou data-flow do squad
 - `*kb [{tópico}]` — Base de conhecimento: decisões, gotchas, padrões
 - `*update-squad {squad}` — Rastrear edição de squad via story
+- `*regenerate-squad {squad}` — Regenerar personas com SHA drift a partir dos .yaml
 - `*validate-squad {squad}` — Validar coerência de squad instanciado
 - `*doctor` — Health check: integridade do framework
 - `*workers` — Agentes agendados

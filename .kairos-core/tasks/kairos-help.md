@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.10.0
+kairos-version: 3.11.0
 task: Kairos Help
 responsavel: "@kairos"
 responsavel_type: agent
@@ -155,6 +155,17 @@ DIAGNÓSTICO
                         Elicita aspecto modificado (persona, task, pipeline, regra,
                         integração), descrição e ACs. Gera story com prefixo update:.
                         → Omitir {squad}: lista squads disponíveis.
+
+  *regenerate-squad {squad}
+                        Regenera personas em .claude/commands/kairos/agents/ para
+                        agentes cujo squads/{squad}/agents/*.yaml foi editado
+                        desde a última geração (SHA drift detectado).
+                        Incremental: apenas personas desatualizadas são regera das.
+                        Preserva conteúdo entre <!-- kairos-custom-start --> e
+                        <!-- kairos-custom-end --> em cada persona.
+                        Personas sem marcador SHA (pré-5.33) são ignoradas.
+                        → Usar após editar manualmente um .yaml de agente.
+                        → Executado automaticamente pelo *pre-push quando drift detectado.
 
   *validate-squad {squad} Valida coerência de um squad instanciado pelo usuário:
                         squad.yaml (campos obrigatórios), personas, tasks,
@@ -317,6 +328,7 @@ Implementar inst.   *implement [{id}]   (type: instance — @kairos executa)
 Revisar entrega     *review [{id}]
 Publicar            *pre-push → *push   (*version disponível para uso avulso)
 Evoluir squad       *update-squad {squad}
+Regenerar personas  *regenerate-squad {squad}
 Validar squad       *validate-squad {squad}
 Documentar          *prd | *architecture [{squad}]
 Diagnóstico         *validate-squad {squad} | *doctor

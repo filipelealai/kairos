@@ -37,7 +37,7 @@ owned_files:
     sha256: self-referential
   - path: .claude/commands/kairos/agents/kairos.md
     layer: L2
-    sha256: 060cec72e9b2ebe74f0f6df923baf85f37250c592281c4bfadef1d43792ce21b
+    sha256: a39a39c438a9fef033f0f2e3b988798f0bef428c3fb67c20a2a48a6c9db3d893
   - path: .claude/hooks/kairos-code-intel.cjs
     layer: L2
     sha256: 84edddf2f613f3f32eddb422e2d8db60dcc00e5846141f52fa56fbf431be6203
@@ -57,10 +57,10 @@ owned_files:
     sha256: 032745c52d0bef8d7e4dba7ea61883bc30f11e18b06ddc8cd194feac44d86cc4
   - path: .kairos-core/tasks/kairos-doctor.md
     layer: L2
-    sha256: 5942f3c333231e1a2828162ad703934efcde7d2a8c46ea783714e8cfb7f5ca77
+    sha256: 617ec3c67122db03e522a654b4ac8faee5782db5e8d942eba4449527f80afa87
   - path: .kairos-core/tasks/kairos-help.md
     layer: L2
-    sha256: 837a1031128ccf28a7ba2ad7722fe8bb4ae0e0ced3cee9b3ef92618de255bfd0
+    sha256: edf202ded6cac23d6da201b8bf4e835dab2038157a1b1c20efdb2ab6cd296ea6
   - path: .kairos-core/tasks/kairos-kb.md
     layer: L2
     sha256: b1fc8b5bea931e503b9030cb3da4487d1322bcec0b8086a6957b73e0e8a8797e
@@ -69,7 +69,7 @@ owned_files:
     sha256: 5d8008d6cdc7cd0776e756e5b26f127b699f887635176dda39135f2d7424069d
   - path: .kairos-core/tasks/kairos-new-squad.md
     layer: L2
-    sha256: fad717f8f6caf6c2c344b563e849d692f00a7b3250b83c7f0c3745a496ac4e4d
+    sha256: 39cacb8f4b75a0832dba5ffdca62cd283eccbbd88558c3ff4a9d2e913321a66e
   - path: .kairos-core/tasks/kairos-update-squad.md
     layer: L2
     sha256: b580c7f67f6a4cf035f2dee411c292fb6e4bc9b25c5d71d93b6fb01afc7db333
@@ -87,7 +87,10 @@ owned_files:
     sha256: accdd840df7aa5f9839ffe0743cfeed5eb12f0d1b44a7c0bd50c6cd24dcc547d
   - path: .kairos-core/tasks/kairos-pre-push.md
     layer: L2
-    sha256: 7baeff2dff5fc964830b550e2e74502443fafa5269d274ca221ba6320abde3f9
+    sha256: 04afb2c77f4438f0d323e1ee892d68f25cd99b911b10dda1edd7e12c9a48168e
+  - path: .kairos-core/tasks/kairos-regenerate-squad.md
+    layer: L2
+    sha256: 350abd0289bd3c3a433da96cb9317382ab64c4a96374e01f03b4fde0e0ac113e
   - path: .kairos-core/tasks/kairos-push.md
     layer: L2
     sha256: c342c228049396420b286675e65f4d30e8fbb08a49d4416d2dcc3eafb0e45093
@@ -120,9 +123,9 @@ owned_files:
   - path: .kairos-core/templates/squad-template/squad.yaml
     layer: L2
     sha256: 7bb6f85a5c5bd20e1f465c8c7a1e72cfde603b5998e0932c453406d61f6f4272
-  - path: .kairos-core/templates/squad-template/agents/agent-id.md
+  - path: .kairos-core/templates/squad-template/agents/agent-id.yaml
     layer: L2
-    sha256: dd316fba78edb3fb752d2962d37842bd54ab13226547125b00c04c492bfc428f
+    sha256: 3f28a9b1a46a9d71a73f4619e133b42fc94100c916ff1ba5c37011b8c761a7bc
   - path: .kairos-core/templates/squad-template/workflows/full-pipeline.md
     layer: L2
     sha256: 8cb2a1509a68933a515daca27afc205595a2c2197e012bb644bec729689264c2
@@ -151,7 +154,7 @@ owned_files:
     sha256: 9c7edc688996f8bb7366b2839ce67092bf7354bc3422671440de9dbd99009c86
   - path: CHANGELOG.md
     layer: L3
-    sha256: 9de137d65129df372bcca03cfab5248f94e5553a1c8ace6fb4c773b304639564
+    sha256: b2be8e13904a8f21ee7a3eb8636f364f9e1dd0fac451798d01c1a69fe113016a
 
   # .github/ scaffold (L3 — governança do repo público)
   - path: .github/CODEOWNERS
@@ -200,15 +203,15 @@ owned_sections:
       - name: framework-conventions
         start: "<!-- KAIROS-MANAGED-START: framework-conventions -->"
         end: "<!-- KAIROS-MANAGED-END: framework-conventions -->"
-        sha256: e52bb7d27b192263708268719d28a674ab6f4e9ae9030f3386cb3e3ac3dc1865
+        sha256: 2476891e04856b09468200023c532f738289fd0f858db1ab92bdfc9581210573
       - name: agent-system
         start: "<!-- KAIROS-MANAGED-START: agent-system -->"
         end: "<!-- KAIROS-MANAGED-END: agent-system -->"
-        sha256: 2c95f9c95b7a1aa4f23f2f6a9fb7881f3fa2955c79e5cee5a1a96121dfafd88d
+        sha256: 232cb6556338f4fbe9d8ae3ac986fcf13119bce2513a7437a4b9b9e52a6f7b2a
       - name: kairos-core
         start: "<!-- KAIROS-MANAGED-START: kairos-core -->"
         end: "<!-- KAIROS-MANAGED-END: kairos-core -->"
-        sha256: 0556fd254cdc3a8f8c1e054ed0c529300b26100f021637730e0f0747385a36b6
+        sha256: 4a6b32ea2c3c513fe8e7db3eba41dcded26a75305e06d99c501810aa0a603f3c
 
   - path: .kairos-core/core-config.yaml
     type: yaml_keys
