@@ -1,0 +1,45 @@
+schema: 2
+story: "4.2"
+story_title: "update: sales-pipeline — CLI Trello e independência do @pre-call"
+epic: 4
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-28T00:00:00.000Z"
+quality_score: 97
+execution_log_found: true
+self_reviewed: true
+self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
+
+ac_coverage:
+  covered:
+    - "✅ AC1: call-analyze.md atualizada — trello-cli como caminho primário com comandos --check-auth, --get-all-cards, --create-card, --move-card, --update-card"
+    - "✅ AC2: fallback REST documentado com URL literal https://api.trello.com/1, usando apenas env vars existentes (TRELLO_API_KEY, TRELLO_TOKEN, TRELLO_BOARD_ID), ativado apenas se --check-auth falhar"
+    - "✅ AC3: agent-authority.md revisada — CLI como interface primária, REST como fallback, operações segregadas por caminho"
+    - "✅ AC4: pre-call-brief.md com {N8N_LEADS_URL} como fonte opcional — comportamento 'informar e continuar', sem HALT obrigatório"
+    - "✅ AC5: persona pre-call.md com identity e core_principles refletindo independência de cold-prospecting; kairos-custom sem hardcode de URL"
+    - "✅ AC6: frontmatter entrada de call-analyze.md generalizado para 'aceita qualquer ferramenta: Fathom, Fireflies, texto colado manualmente'"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ squads/sales-pipeline/tasks/call-analyze.md"
+    - "✅ squads/sales-pipeline/rules/agent-authority.md"
+    - "✅ squads/sales-pipeline/tasks/pre-call-brief.md"
+    - "✅ .claude/commands/kairos/agents/pre-call.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ SHA no header de pre-call.md está desatualizado após edição manual da kairos-custom — executar *regenerate-squad sales-pipeline para sincronizar"

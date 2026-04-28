@@ -1,0 +1,56 @@
+name: sales-pipeline
+version: 0.1.0
+description: >
+  Squad de vendas B2B que prepara contexto antes de calls e analisa transcrições
+  pós-call, mantendo o pipeline no Trello atualizado automaticamente. Cobre desde
+  o brief pré-call até o follow-up e classificação de estágio do deal.
+author: Filipe Leal
+
+kairos:
+  minVersion: "3.11.0"
+  type: squad
+  scope: sales-pipeline
+  context: Vendas B2B — prospecção outbound para fechamento
+
+components:
+  agents:
+    - agents/pre-call.yaml
+    - agents/call-analyst.yaml
+  tasks:
+    - tasks/pre-call-brief.md
+    - tasks/call-analyze.md
+  workflows:
+    - workflows/full-pipeline.md
+
+config:
+  scope: ../../docs/scope.md
+  agent-standards: ../../.kairos-core/docs/agent-standards.md
+  data-flow: ../../.kairos-core/docs/data-flow.md
+
+pipeline:
+  order:
+    - pre-call      # *brief
+    - call-analyst  # *analyze
+  partial_execution: true
+
+data:
+  input_webhook: https://n8n.vendoteca.com/webhook/kairos-leads  # leads do cold-prospecting
+  outputs:
+    - data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-YYYY-MM-DD.md
+    - data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-YYYY-MM-DD.md
+  handoffs: .kairos-core/runtime/handoffs/
+
+dependencies:
+  squads:
+    - cold-prospecting  # fonte de leads para o @pre-call
+  external:
+    - "Trello (pipeline de deals)"
+    - "Fathom (transcrição de calls)"
+    - "Google Sheets via cold-prospecting webhook (dados de leads)"
+
+tags:
+  - sales-pipeline
+  - kairos
+  - vendas
+  - pipeline
+  - calls

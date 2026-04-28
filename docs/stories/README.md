@@ -26,7 +26,7 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [1](../epics/epic-1-infraestrutura-de-dados.md) | Infraestrutura de Dados | Done |
 | [2](../epics/epic-2-automacao-de-disparo.md) | Automação de Disparo | In Progress |
 | [3](../epics/epic-3-governanca-e-versionamento.md) | Governança e Versionamento | In Progress |
-| [4](../epics/epic-4-novos-escopos.md) | Novos Escopos | Backlog |
+| [4](../epics/epic-4-novos-escopos.md) | Novos Escopos | In Progress |
 | [5](../epics/epic-5-arquitetura-do-framework.md) | Arquitetura do Framework | In Progress |
 
 ## Nomenclatura

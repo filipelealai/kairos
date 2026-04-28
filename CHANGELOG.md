@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.11.1] — 2026-04-28
+
+### Corrigido
+- ajuste de instrução em kairos-regenerate-squad e correções menores no framework
+
+---
+
 ## [3.11.0] — 2026-04-26
 
 ### Adicionado

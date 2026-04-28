@@ -1,294 +1,239 @@
-# Kairos Ownership Manifest
-#
-# Fonte autoritativa da fronteira framework/usuário.
-# Ver .claude/rules/ownership.md e constituição Seção VI (princípios 24-26).
-#
-# Regra default-deny: qualquer arquivo/seção NÃO listado aqui é conteúdo do usuário
-# e NUNCA pode ser tocado por update, @kairos *review ou operação automática.
-
 kairos_version: 3.1.3
-generated_at: "2026-04-17"
-
-# -----------------------------------------------------------------------------
-# Arquivos completamente framework-owned
-# -----------------------------------------------------------------------------
+generated_at: '2026-04-17'
 owned_files:
-
-  # --- L1 — Fundação ----------------------------------------------------------
-  - path: .kairos-core/constitution.md
-    layer: L1
-    sha256: 4af46b55b0c0166affb35b71cf99433c2dbf78d147b8b13506da3a3893d495c4
-  - path: .claude/rules/ownership.md
-    layer: L1
-    sha256: a264a0fe7fae7f6e3a40e13bbcb2b5a66c81b074d50c37803b26a494a8a02115
-  - path: .claude/rules/agent-authority.md
-    layer: L1
-    sha256: de49653412492a1e83a71d6e10c1f446899502a40976499eccfd23c88a48e1a9
-  - path: .claude/rules/framework-layers.md
-    layer: L1
-    sha256: 568dbc4c6bf7f41a78f95f15a689dcb0a6f91f25b04eb80e36228779f1361468
-  - path: .claude/rules/ids-principles.md
-    layer: L1
-    sha256: 483aee002cdeae8b3fa97389c1124f484ec844b550bcfa1d6769c3e2a5b0d60f
-
-  # --- L2 — Controlado (apenas @kairos) ---------------------------------------
-  - path: .kairos-core/manifest.yaml
-    layer: L2
-    sha256: self-referential
-  - path: .claude/commands/kairos/agents/kairos.md
-    layer: L2
-    sha256: a39a39c438a9fef033f0f2e3b988798f0bef428c3fb67c20a2a48a6c9db3d893
-  - path: .claude/hooks/kairos-code-intel.cjs
-    layer: L2
-    sha256: 84edddf2f613f3f32eddb422e2d8db60dcc00e5846141f52fa56fbf431be6203
-  - path: .claude/hooks/kairos-precompact.cjs
-    layer: L2
-    sha256: 41e1ef7c965c6cee85dbb6d70232890f96a3f25e4227ffe7b536ca673c0fd79f
-  - path: .claude/settings.json
-    layer: L2
-    sha256: a335ad246714c2101798b58527c66c8f63f91d582a59660cdc410ee808a7bf01
-  - path: .kairos-core/data/workers.yaml
-    layer: L2
-    sha256: 9add36be14b4d1b81dfbf23d858e4ae7dcbaf2600be5a23ae3bc8a9a79842deb
-
-  # Governance tasks (kairos-*)
-  - path: .kairos-core/tasks/kairos-architecture.md
-    layer: L2
-    sha256: 032745c52d0bef8d7e4dba7ea61883bc30f11e18b06ddc8cd194feac44d86cc4
-  - path: .kairos-core/tasks/kairos-doctor.md
-    layer: L2
-    sha256: 617ec3c67122db03e522a654b4ac8faee5782db5e8d942eba4449527f80afa87
-  - path: .kairos-core/tasks/kairos-help.md
-    layer: L2
-    sha256: edf202ded6cac23d6da201b8bf4e835dab2038157a1b1c20efdb2ab6cd296ea6
-  - path: .kairos-core/tasks/kairos-kb.md
-    layer: L2
-    sha256: b1fc8b5bea931e503b9030cb3da4487d1322bcec0b8086a6957b73e0e8a8797e
-  - path: .kairos-core/tasks/kairos-new-epic.md
-    layer: L2
-    sha256: 5d8008d6cdc7cd0776e756e5b26f127b699f887635176dda39135f2d7424069d
-  - path: .kairos-core/tasks/kairos-new-squad.md
-    layer: L2
-    sha256: 39cacb8f4b75a0832dba5ffdca62cd283eccbbd88558c3ff4a9d2e913321a66e
-  - path: .kairos-core/tasks/kairos-update-squad.md
-    layer: L2
-    sha256: b580c7f67f6a4cf035f2dee411c292fb6e4bc9b25c5d71d93b6fb01afc7db333
-  - path: .kairos-core/tasks/kairos-implement.md
-    layer: L2
-    sha256: 44c51ddd2e6070caccc44caf8af5b0b03564a8d34c95afd0871e79e8b8a2dfcb
-  - path: .kairos-core/tasks/kairos-validate-squad.md
-    layer: L2
-    sha256: 9348af087b44301e292e04f7ea1c6781c962868a0fd32f604d865ac02fc1145e
-  - path: .kairos-core/tasks/kairos-new-story.md
-    layer: L2
-    sha256: 617459c3fbffcd5f1890be3b406fffe8b0eb609e2ea9c15742fa5b633439c58e
-  - path: .kairos-core/tasks/kairos-prd.md
-    layer: L2
-    sha256: accdd840df7aa5f9839ffe0743cfeed5eb12f0d1b44a7c0bd50c6cd24dcc547d
-  - path: .kairos-core/tasks/kairos-pre-push.md
-    layer: L2
-    sha256: 04afb2c77f4438f0d323e1ee892d68f25cd99b911b10dda1edd7e12c9a48168e
-  - path: .kairos-core/tasks/kairos-regenerate-squad.md
-    layer: L2
-    sha256: 350abd0289bd3c3a433da96cb9317382ab64c4a96374e01f03b4fde0e0ac113e
-  - path: .kairos-core/tasks/kairos-push.md
-    layer: L2
-    sha256: c342c228049396420b286675e65f4d30e8fbb08a49d4416d2dcc3eafb0e45093
-  - path: .kairos-core/tasks/kairos-review.md
-    layer: L2
-    sha256: 10e87096e79125552e8bd6bc95d5d328b6d5a7271558a12ecb3a3212f7b48a59
-  - path: .kairos-core/tasks/kairos-status.md
-    layer: L2
-    sha256: 4d606218c83f9029288d5e5676f198b526439483b65ca86bbfbb35f353167829
-  - path: .kairos-core/tasks/kairos-validate-story.md
-    layer: L2
-    sha256: 99398d070c9c927bb44ffe7d32a2885263732c823ce97dfcb5c03df2996e1088
-  - path: .kairos-core/tasks/kairos-version-bump.md
-    layer: L2
-    sha256: 87f4a31659e87aeeb4a5dd13fb7f53f7e9c49a2bcd00c725e0c6bdb4c92b78a1
-  - path: .kairos-core/tasks/kairos-workers.md
-    layer: L2
-    sha256: 3af1973dfcefe6cec813062b664fa91578b85c2890eb0204e8f84c30d2b5613c
-
-  # Templates (L2 — scaffold base)
-  - path: .kairos-core/templates/agent-template.md
-    layer: L2
-    sha256: b30297f0d64784adb288f89cdeee38978b256aa14405290420af85ea58018b8d
-  - path: .kairos-core/templates/story-template.md
-    layer: L2
-    sha256: 423fb4ff71062f1859a0d62f17fd9df765083afaadd3f7587ce45352abbf974d
-  - path: .kairos-core/templates/squad-template/README.md
-    layer: L2
-    sha256: 4d6503f5565f88b43211b8533999b6fafdd8d666939e2e67a91d7902a4b2e52e
-  - path: .kairos-core/templates/squad-template/squad.yaml
-    layer: L2
-    sha256: 7bb6f85a5c5bd20e1f465c8c7a1e72cfde603b5998e0932c453406d61f6f4272
-  - path: .kairos-core/templates/squad-template/agents/agent-id.yaml
-    layer: L2
-    sha256: 3f28a9b1a46a9d71a73f4619e133b42fc94100c916ff1ba5c37011b8c761a7bc
-  - path: .kairos-core/templates/squad-template/workflows/full-pipeline.md
-    layer: L2
-    sha256: 8cb2a1509a68933a515daca27afc205595a2c2197e012bb644bec729689264c2
-
-  # --- L3 — Gerenciado --------------------------------------------------------
-  - path: .claude/rules/agent-handoff.md
-    layer: L3
-    sha256: 6fa7e77e6cdd80a07554ab6ade34fff3d6b542908b919d44a8fc4b2653653bdf
-  - path: .claude/rules/story-lifecycle.md
-    layer: L3
-    sha256: 79060f120fcb3b118d8bfd6f829f569250c199fe6d2ce868702c6a8fd7664e7a
-  - path: .claude/rules/external-integrations.md
-    layer: L3
-    sha256: e1505c45309fdc5e35ae3cf0407bedde104c33a233ebf0d26ab143ccba25e662
-  - path: .kairos-core/data/kairos-kb.md
-    layer: L3
-    sha256: ced13b04f61680f070478492be2cace597f5d2e8d1a332f4afe826239144ae24
-  - path: .kairos-core/docs/agent-standards.md
-    layer: L3
-    sha256: c8af6478ac90104afd07edb726bd64f93ad50237a61c097caedee0183d277757
-  - path: .kairos-core/docs/data-flow.md
-    layer: L3
-    sha256: 191b2136856ddb960509256127484b543e8c7a17d68222f09c8da0013472e2d4
-  - path: .kairos-core/docs/scope.md
-    layer: L3
-    sha256: 9c7edc688996f8bb7366b2839ce67092bf7354bc3422671440de9dbd99009c86
-  - path: CHANGELOG.md
-    layer: L3
-    sha256: b2be8e13904a8f21ee7a3eb8636f364f9e1dd0fac451798d01c1a69fe113016a
-
-  # .github/ scaffold (L3 — governança do repo público)
-  - path: .github/CODEOWNERS
-    layer: L3
-    sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4
-  - path: .github/PULL_REQUEST_TEMPLATE.md
-    layer: L3
-    sha256: a1f1c78178c1c29363bf5a59b1de7bf216a678472a4fd134cc03c151869a741f
-  - path: .github/ISSUE_TEMPLATE/bug_report.md
-    layer: L3
-    sha256: c7568837cf91b0f5f3763fa564f1e4c036d2d34216748055910c4fb420702534
-  - path: .github/ISSUE_TEMPLATE/feature_request.md
-    layer: L3
-    sha256: 38efe7ab50968c599f961a1151d93892d3f65e726bccdcc1316aa9a859c3fe7a
-  - path: .github/workflows/validate-manifest.yml
-    layer: L3
-    sha256: eb1f7eac27de5727e2ab76b1d99c9dcc4c79433b5d475e4e09047d76bd7c205f
-  - path: .github/scripts/validate-manifest.sh
-    layer: L3
-    sha256: a104f5d8be8799fd7e290b374d59ba7c856cb1ba77ec0c379697be38be219bfe
-
-# -----------------------------------------------------------------------------
-# Arquivos sincronizados para origin/main, mas não framework-owned para update
-# O usuário customiza livremente; um `kairos update` futuro nunca sobrescreve.
-# Sem sha256 — não há drift a detectar, apenas existência.
-# -----------------------------------------------------------------------------
+- path: .kairos-core/constitution.md
+  layer: L1
+  sha256: 4af46b55b0c0166affb35b71cf99433c2dbf78d147b8b13506da3a3893d495c4
+- path: .claude/rules/ownership.md
+  layer: L1
+  sha256: a264a0fe7fae7f6e3a40e13bbcb2b5a66c81b074d50c37803b26a494a8a02115
+- path: .claude/rules/agent-authority.md
+  layer: L1
+  sha256: de49653412492a1e83a71d6e10c1f446899502a40976499eccfd23c88a48e1a9
+- path: .claude/rules/framework-layers.md
+  layer: L1
+  sha256: 568dbc4c6bf7f41a78f95f15a689dcb0a6f91f25b04eb80e36228779f1361468
+- path: .claude/rules/ids-principles.md
+  layer: L1
+  sha256: 483aee002cdeae8b3fa97389c1124f484ec844b550bcfa1d6769c3e2a5b0d60f
+- path: .kairos-core/manifest.yaml
+  layer: L2
+  sha256: self-referential
+- path: .claude/commands/kairos/agents/kairos.md
+  layer: L2
+  sha256: a39a39c438a9fef033f0f2e3b988798f0bef428c3fb67c20a2a48a6c9db3d893
+- path: .claude/hooks/kairos-code-intel.cjs
+  layer: L2
+  sha256: 84edddf2f613f3f32eddb422e2d8db60dcc00e5846141f52fa56fbf431be6203
+- path: .claude/hooks/kairos-precompact.cjs
+  layer: L2
+  sha256: 41e1ef7c965c6cee85dbb6d70232890f96a3f25e4227ffe7b536ca673c0fd79f
+- path: .claude/settings.json
+  layer: L2
+  sha256: a335ad246714c2101798b58527c66c8f63f91d582a59660cdc410ee808a7bf01
+- path: .kairos-core/data/workers.yaml
+  layer: L2
+  sha256: 9add36be14b4d1b81dfbf23d858e4ae7dcbaf2600be5a23ae3bc8a9a79842deb
+- path: .kairos-core/tasks/kairos-architecture.md
+  layer: L2
+  sha256: 032745c52d0bef8d7e4dba7ea61883bc30f11e18b06ddc8cd194feac44d86cc4
+- path: .kairos-core/tasks/kairos-doctor.md
+  layer: L2
+  sha256: 617ec3c67122db03e522a654b4ac8faee5782db5e8d942eba4449527f80afa87
+- path: .kairos-core/tasks/kairos-help.md
+  layer: L2
+  sha256: edf202ded6cac23d6da201b8bf4e835dab2038157a1b1c20efdb2ab6cd296ea6
+- path: .kairos-core/tasks/kairos-kb.md
+  layer: L2
+  sha256: b1fc8b5bea931e503b9030cb3da4487d1322bcec0b8086a6957b73e0e8a8797e
+- path: .kairos-core/tasks/kairos-new-epic.md
+  layer: L2
+  sha256: 5d8008d6cdc7cd0776e756e5b26f127b699f887635176dda39135f2d7424069d
+- path: .kairos-core/tasks/kairos-new-squad.md
+  layer: L2
+  sha256: 39cacb8f4b75a0832dba5ffdca62cd283eccbbd88558c3ff4a9d2e913321a66e
+- path: .kairos-core/tasks/kairos-update-squad.md
+  layer: L2
+  sha256: b580c7f67f6a4cf035f2dee411c292fb6e4bc9b25c5d71d93b6fb01afc7db333
+- path: .kairos-core/tasks/kairos-implement.md
+  layer: L2
+  sha256: 44c51ddd2e6070caccc44caf8af5b0b03564a8d34c95afd0871e79e8b8a2dfcb
+- path: .kairos-core/tasks/kairos-validate-squad.md
+  layer: L2
+  sha256: 9348af087b44301e292e04f7ea1c6781c962868a0fd32f604d865ac02fc1145e
+- path: .kairos-core/tasks/kairos-new-story.md
+  layer: L2
+  sha256: 617459c3fbffcd5f1890be3b406fffe8b0eb609e2ea9c15742fa5b633439c58e
+- path: .kairos-core/tasks/kairos-prd.md
+  layer: L2
+  sha256: accdd840df7aa5f9839ffe0743cfeed5eb12f0d1b44a7c0bd50c6cd24dcc547d
+- path: .kairos-core/tasks/kairos-pre-push.md
+  layer: L2
+  sha256: 04afb2c77f4438f0d323e1ee892d68f25cd99b911b10dda1edd7e12c9a48168e
+- path: .kairos-core/tasks/kairos-regenerate-squad.md
+  layer: L2
+  sha256: 6432f1d6761ccd8d947704e492ab3ea0d2b6795cec454ddcceab48c12ffeb1c6
+- path: .kairos-core/tasks/kairos-push.md
+  layer: L2
+  sha256: c342c228049396420b286675e65f4d30e8fbb08a49d4416d2dcc3eafb0e45093
+- path: .kairos-core/tasks/kairos-review.md
+  layer: L2
+  sha256: 10e87096e79125552e8bd6bc95d5d328b6d5a7271558a12ecb3a3212f7b48a59
+- path: .kairos-core/tasks/kairos-status.md
+  layer: L2
+  sha256: 4d606218c83f9029288d5e5676f198b526439483b65ca86bbfbb35f353167829
+- path: .kairos-core/tasks/kairos-validate-story.md
+  layer: L2
+  sha256: 99398d070c9c927bb44ffe7d32a2885263732c823ce97dfcb5c03df2996e1088
+- path: .kairos-core/tasks/kairos-version-bump.md
+  layer: L2
+  sha256: 87f4a31659e87aeeb4a5dd13fb7f53f7e9c49a2bcd00c725e0c6bdb4c92b78a1
+- path: .kairos-core/tasks/kairos-workers.md
+  layer: L2
+  sha256: 3af1973dfcefe6cec813062b664fa91578b85c2890eb0204e8f84c30d2b5613c
+- path: .kairos-core/templates/agent-template.md
+  layer: L2
+  sha256: b30297f0d64784adb288f89cdeee38978b256aa14405290420af85ea58018b8d
+- path: .kairos-core/templates/story-template.md
+  layer: L2
+  sha256: 423fb4ff71062f1859a0d62f17fd9df765083afaadd3f7587ce45352abbf974d
+- path: .kairos-core/templates/squad-template/README.md
+  layer: L2
+  sha256: 4d6503f5565f88b43211b8533999b6fafdd8d666939e2e67a91d7902a4b2e52e
+- path: .kairos-core/templates/squad-template/squad.yaml
+  layer: L2
+  sha256: 7bb6f85a5c5bd20e1f465c8c7a1e72cfde603b5998e0932c453406d61f6f4272
+- path: .kairos-core/templates/squad-template/agents/agent-id.yaml
+  layer: L2
+  sha256: 3f28a9b1a46a9d71a73f4619e133b42fc94100c916ff1ba5c37011b8c761a7bc
+- path: .kairos-core/templates/squad-template/workflows/full-pipeline.md
+  layer: L2
+  sha256: 8cb2a1509a68933a515daca27afc205595a2c2197e012bb644bec729689264c2
+- path: .claude/rules/agent-handoff.md
+  layer: L3
+  sha256: 6fa7e77e6cdd80a07554ab6ade34fff3d6b542908b919d44a8fc4b2653653bdf
+- path: .claude/rules/story-lifecycle.md
+  layer: L3
+  sha256: 79060f120fcb3b118d8bfd6f829f569250c199fe6d2ce868702c6a8fd7664e7a
+- path: .claude/rules/external-integrations.md
+  layer: L3
+  sha256: e1505c45309fdc5e35ae3cf0407bedde104c33a233ebf0d26ab143ccba25e662
+- path: .kairos-core/data/kairos-kb.md
+  layer: L3
+  sha256: ced13b04f61680f070478492be2cace597f5d2e8d1a332f4afe826239144ae24
+- path: .kairos-core/docs/agent-standards.md
+  layer: L3
+  sha256: c8af6478ac90104afd07edb726bd64f93ad50237a61c097caedee0183d277757
+- path: .kairos-core/docs/data-flow.md
+  layer: L3
+  sha256: 191b2136856ddb960509256127484b543e8c7a17d68222f09c8da0013472e2d4
+- path: .kairos-core/docs/scope.md
+  layer: L3
+  sha256: 9c7edc688996f8bb7366b2839ce67092bf7354bc3422671440de9dbd99009c86
+- path: CHANGELOG.md
+  layer: L3
+  sha256: e8531f415065a2ddcca0c65f9f1a00990b6b8b951769931fc8fbcbe9e1ab4916
+- path: .github/CODEOWNERS
+  layer: L3
+  sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4
+- path: .github/PULL_REQUEST_TEMPLATE.md
+  layer: L3
+  sha256: a1f1c78178c1c29363bf5a59b1de7bf216a678472a4fd134cc03c151869a741f
+- path: .github/ISSUE_TEMPLATE/bug_report.md
+  layer: L3
+  sha256: c7568837cf91b0f5f3763fa564f1e4c036d2d34216748055910c4fb420702534
+- path: .github/ISSUE_TEMPLATE/feature_request.md
+  layer: L3
+  sha256: 38efe7ab50968c599f961a1151d93892d3f65e726bccdcc1316aa9a859c3fe7a
+- path: .github/workflows/validate-manifest.yml
+  layer: L3
+  sha256: eb1f7eac27de5727e2ab76b1d99c9dcc4c79433b5d475e4e09047d76bd7c205f
+- path: .github/scripts/validate-manifest.sh
+  layer: L3
+  sha256: a104f5d8be8799fd7e290b374d59ba7c856cb1ba77ec0c379697be38be219bfe
 sync_files:
-
-  - path: README.md
-    layer: L3
-
-  - path: CONTRIBUTING.md
-    layer: L3
-
-  - path: CODE_OF_CONDUCT.md
-    layer: L3
-
-  - path: .gitignore
-    layer: L3
-
-  - path: LICENSE
-    layer: L3
-
-  - path: .kairos-core/runtime/.gitignore
-    layer: L3
-
-  - path: data/.gitkeep
-    layer: L3
-
-  - path: docs/.gitkeep
-    layer: L3
-
-  - path: squads/.gitkeep
-    layer: L3
-
-# -----------------------------------------------------------------------------
-# Arquivos mistos — apenas seções/chaves declaradas são framework-owned
-# -----------------------------------------------------------------------------
+- path: README.md
+  layer: L3
+- path: CONTRIBUTING.md
+  layer: L3
+- path: CODE_OF_CONDUCT.md
+  layer: L3
+- path: .gitignore
+  layer: L3
+- path: LICENSE
+  layer: L3
+- path: .kairos-core/runtime/.gitignore
+  layer: L3
+- path: data/.gitkeep
+  layer: L3
+- path: docs/.gitkeep
+  layer: L3
+- path: squads/.gitkeep
+  layer: L3
 owned_sections:
+- path: CLAUDE.md
+  type: markdown_blocks
+  blocks:
+  - name: framework-conventions
+    start: '<!-- KAIROS-MANAGED-START: framework-conventions -->'
+    end: '<!-- KAIROS-MANAGED-END: framework-conventions -->'
+    sha256: e52bb7d27b192263708268719d28a674ab6f4e9ae9030f3386cb3e3ac3dc1865
+  - name: agent-system
+    start: '<!-- KAIROS-MANAGED-START: agent-system -->'
+    end: '<!-- KAIROS-MANAGED-END: agent-system -->'
+    sha256: 2c95f9c95b7a1aa4f23f2f6a9fb7881f3fa2955c79e5cee5a1a96121dfafd88d
+  - name: kairos-core
+    start: '<!-- KAIROS-MANAGED-START: kairos-core -->'
+    end: '<!-- KAIROS-MANAGED-END: kairos-core -->'
+    sha256: 0556fd254cdc3a8f8c1e054ed0c529300b26100f021637730e0f0747385a36b6
+- path: .kairos-core/core-config.yaml
+  type: yaml_keys
+  owned_keys:
+  - framework
+  - runtime
+  - versioning
+  sha_method: 'yaml.dump({key: value}, sort_keys=False)'
+  sha256_by_key:
+    framework: ad6c0f935b1e9b995d9b919bf51f55259193950ad0bb0ce2723ddea64ff8172f
+    runtime: 4a64e1643f6dd390011f11fe48682442da1f6db1fb9b96c4b78444c4b215162f
+    versioning: 3386e3031f8de7e2c71c0368fb7fb48f6281cd073ba11500f01eac5d133e0aa1
+- path: .env.example
+  type: env_sections
+  notes: 'Categorias shipped pelo framework (ai-providers, automation, database,
 
-  - path: CLAUDE.md
-    type: markdown_blocks
-    blocks:
-      - name: framework-conventions
-        start: "<!-- KAIROS-MANAGED-START: framework-conventions -->"
-        end: "<!-- KAIROS-MANAGED-END: framework-conventions -->"
-        sha256: 2476891e04856b09468200023c532f738289fd0f858db1ab92bdfc9581210573
-      - name: agent-system
-        start: "<!-- KAIROS-MANAGED-START: agent-system -->"
-        end: "<!-- KAIROS-MANAGED-END: agent-system -->"
-        sha256: 232cb6556338f4fbe9d8ae3ac986fcf13119bce2513a7437a4b9b9e52a6f7b2a
-      - name: kairos-core
-        start: "<!-- KAIROS-MANAGED-START: kairos-core -->"
-        end: "<!-- KAIROS-MANAGED-END: kairos-core -->"
-        sha256: 4a6b32ea2c3c513fe8e7db3eba41dcded26a75305e06d99c501810aa0a603f3c
+    communication, search, version-control) são templates de integrações
 
-  - path: .kairos-core/core-config.yaml
-    type: yaml_keys
-    owned_keys: [framework, runtime, versioning]
-    sha_method: "yaml.dump({key: value}, sort_keys=False)"
-    sha256_by_key:
-      framework: ad6c0f935b1e9b995d9b919bf51f55259193950ad0bb0ce2723ddea64ff8172f
-      runtime: 4a64e1643f6dd390011f11fe48682442da1f6db1fb9b96c4b78444c4b215162f
-      versioning: 3386e3031f8de7e2c71c0368fb7fb48f6281cd073ba11500f01eac5d133e0aa1
+    comuns. Variáveis específicas do usuário são user-owned.
 
-  - path: .env.example
-    type: env_sections
-    notes: |
-      Categorias shipped pelo framework (ai-providers, automation, database,
-      communication, search, version-control) são templates de integrações
-      comuns. Variáveis específicas do usuário são user-owned.
-    owned_sections:
-      - name: ai-providers
-        sha256: 32415bdeb7e3571d7f741114b51ac1f30b683eaf9a1f4926ac8a8ea34fc1ce83
-      - name: automation
-        sha256: 327f953d13784e0c40f8c1ce84ce3d17f3527295bf8cee168b332527b0108c99
-      - name: database
-        sha256: 8347f452e754090fe60103b063e3117bd5b1e9254e66e9cca2380e3b713cd786
-      - name: communication
-        sha256: 6ceeabe1b271477503233638ca272d7f54c320f31c7a10f11b029be58f9e8f63
-      - name: search
-        sha256: 5ab9981d41238a17d4bc848cf2e57ebe302650894ee56e5e189c3206e08bf48f
-      - name: version-control
-        sha256: b93593b10b38caa15216e02e1fed9689f76dbaf678796530c1bcdb97192f8d71
-
-# -----------------------------------------------------------------------------
-# Notas operacionais
-# -----------------------------------------------------------------------------
-notes: |
-  - Arquivos squad-operational (analyze-campaign.md, write-emails.md, etc.)
-    NÃO são framework — vivem em .kairos-core/tasks/ mas são conteúdo do usuário
-    por não estarem neste manifesto (default-deny).
-
-  - Personas de agentes de squad (.claude/commands/kairos/agents/{squad-agent}.md)
-    são user-content. Apenas .claude/commands/kairos/agents/kairos.md é framework.
-
-  - MEMORY.md em .kairos-core/agents/*/MEMORY.md é SEMPRE user-content
-    (memória persistente aprendida) — nunca entra no manifesto.
-
-  - Stories e epics em docs/stories/ e docs/epics/ são metadados de projeto
-    (histórico de desenvolvimento do Kairos neste repo) — não são shipped para
-    instâncias instaladas, logo não entram no manifesto.
-
-  - package.json, package-lock.json, tsconfig.json, docs/scope.md,
-    .gitignore, .mcp.json são metadados da instância — não são gerenciados por
-    updates de framework, logo não entram no manifesto.
-
-  - src/ é integralmente user-owned (incluindo src/tools/ e src/agents/) —
-    nenhum arquivo de src/ está listado neste manifesto. Por default-deny,
-    qualquer operação de update ou @kairos jamais toca em src/.
-
-  - CHANGELOG.md é framework-owned (L3): histórico de versões faz parte do artefato
-    entregue pelo framework.
-
-  - README.md é sync_files (L3): sincronizado para origin/main como documentação pública,
-    mas não gerenciado por updates — conteúdo instância-específico, nunca sobrescrito
-    por `kairos update`.
+    '
+  owned_sections:
+  - name: ai-providers
+    sha256: 17cfee75f3eaeeec92aed708ab19c56e94dbe989b2a154f279f59543c72bb5b7
+  - name: automation
+    sha256: e1cdce281e41b87cd4553859c2ba0f041981d0ce21d3f3bdb97235a72e0016a8
+  - name: database
+    sha256: cb2ca0630bea560ff1705bde65a956a2dd876d77ef7447e83e09e666c1763765
+  - name: communication
+    sha256: 8de6a9da32a21204d0a5307c85d3dd8b5c9a80d551c93ea5cabaedda0ab31671
+  - name: search
+    sha256: 1161119be8269d27922ff5412463c4be08dff3e95ef2eed2dc85bfaf07a90add
+  - name: version-control
+    sha256: 94b31d61fc740233083adc1cc4622ceb3b4f99758d006a99cc6bce09c95243b3
+notes: "- Arquivos squad-operational (analyze-campaign.md, write-emails.md, etc.)\n\
+  \  NÃO são framework — vivem em .kairos-core/tasks/ mas são conteúdo do usuário\n\
+  \  por não estarem neste manifesto (default-deny).\n\n- Personas de agentes de squad\
+  \ (.claude/commands/kairos/agents/{squad-agent}.md)\n  são user-content. Apenas\
+  \ .claude/commands/kairos/agents/kairos.md é framework.\n\n- MEMORY.md em .kairos-core/agents/*/MEMORY.md\
+  \ é SEMPRE user-content\n  (memória persistente aprendida) — nunca entra no manifesto.\n\
+  \n- Stories e epics em docs/stories/ e docs/epics/ são metadados de projeto\n  (histórico\
+  \ de desenvolvimento do Kairos neste repo) — não são shipped para\n  instâncias\
+  \ instaladas, logo não entram no manifesto.\n\n- package.json, package-lock.json,\
+  \ tsconfig.json, docs/scope.md,\n  .gitignore, .mcp.json são metadados da instância\
+  \ — não são gerenciados por\n  updates de framework, logo não entram no manifesto.\n\
+  \n- src/ é integralmente user-owned (incluindo src/tools/ e src/agents/) —\n  nenhum\
+  \ arquivo de src/ está listado neste manifesto. Por default-deny,\n  qualquer operação\
+  \ de update ou @kairos jamais toca em src/.\n\n- CHANGELOG.md é framework-owned\
+  \ (L3): histórico de versões faz parte do artefato\n  entregue pelo framework.\n\
+  \n- README.md é sync_files (L3): sincronizado para origin/main como documentação\
+  \ pública,\n  mas não gerenciado por updates — conteúdo instância-específico, nunca\
+  \ sobrescrito\n  por `kairos update`.\n"
