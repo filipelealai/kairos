@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.10.0
+kairos-version: 3.11.1
 task: Kairos Regenerate Squad
 responsavel: "@kairos"
 responsavel_type: agent
@@ -95,6 +95,16 @@ Se a persona existe (status: drift):
    <!-- kairos-custom-end -->
    ```
 
+Se a persona **não existe** (status: missing):
+1. Se o YAML contém campo `task_sections` → gerar `custom_block_{id}` com base nos dados do YAML:
+   ```
+   <!-- kairos-custom-start -->
+   ## Comportamentos de Domínio
+   {para cada chave em task_sections: renderizar como subseção ### {chave} com os campos formatados em Markdown}
+   <!-- kairos-custom-end -->
+   ```
+2. Se o YAML **não** contém `task_sections` → `custom_block_{id}` = bloco vazio padrão.
+
 #### 2.2 — Ler YAML fonte
 
 Ler `squads/{squad}/agents/{id}.yaml` e extrair todos os campos:
@@ -105,6 +115,7 @@ Ler `squads/{squad}/agents/{id}.yaml` e extrair todos os campos:
 - `commands` (lista com name, visibility, description)
 - `outputs` (lista)
 - `handoff_from`, `handoff_to`
+- `task_sections` (mapa opcional — usado para popular `kairos-custom` em personas ausentes)
 
 #### 2.3 — Calcular novo SHA
 
