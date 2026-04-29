@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.12.1] — 2026-04-29
+
+### Corrigido
+- manifest: seção `project-management` adicionada a `owned_sections` do `.env.example` — chaves Trello agora sincronizam para `origin/main` via push-dual
+
+---
+
 ## [3.12.0] — 2026-04-29
 
 ### Adicionado
