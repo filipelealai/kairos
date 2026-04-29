@@ -144,4 +144,3 @@ Regras:
 
 Autoridade para versionar: `@kairos *version` e `@kairos *pre-push`
 <!-- KAIROS-MANAGED-END: kairos-core -->
-

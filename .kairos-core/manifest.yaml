@@ -132,7 +132,7 @@ owned_files:
   sha256: 9c7edc688996f8bb7366b2839ce67092bf7354bc3422671440de9dbd99009c86
 - path: CHANGELOG.md
   layer: L3
-  sha256: 7532403e048c79e16b7d727274bf260ad48055c1504df819c83830deaadc61d6
+  sha256: 859c263dae8bef906b9fd0198b22fad8ffb7bd7ed325e07bc9d921e83e6d6f83
 - path: .github/CODEOWNERS
   layer: L3
   sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4
@@ -201,24 +201,26 @@ owned_sections:
   type: env_sections
   notes: 'Categorias shipped pelo framework (ai-providers, automation, database,
 
-    communication, search, version-control) são templates de integrações
+    communication, search, version-control, project-management) são templates de
 
-    comuns. Variáveis específicas do usuário são user-owned.
+    integrações comuns. Variáveis específicas do usuário são user-owned.
 
     '
   owned_sections:
   - name: ai-providers
-    sha256: 17cfee75f3eaeeec92aed708ab19c56e94dbe989b2a154f279f59543c72bb5b7
+    sha256: 32415bdeb7e3571d7f741114b51ac1f30b683eaf9a1f4926ac8a8ea34fc1ce83
   - name: automation
-    sha256: e1cdce281e41b87cd4553859c2ba0f041981d0ce21d3f3bdb97235a72e0016a8
+    sha256: 1ff697e63ee01ed4decf6831c5a6a8a11a47f23343b43590630ee3f746a0daf7
   - name: database
-    sha256: cb2ca0630bea560ff1705bde65a956a2dd876d77ef7447e83e09e666c1763765
+    sha256: 8347f452e754090fe60103b063e3117bd5b1e9254e66e9cca2380e3b713cd786
   - name: communication
-    sha256: 8de6a9da32a21204d0a5307c85d3dd8b5c9a80d551c93ea5cabaedda0ab31671
+    sha256: 9fd285ff5f7f75e5ac58d1fa00e4ec56f205a89d9f34e711ef36265f3d8f7bf7
   - name: search
-    sha256: 1161119be8269d27922ff5412463c4be08dff3e95ef2eed2dc85bfaf07a90add
+    sha256: 5ab9981d41238a17d4bc848cf2e57ebe302650894ee56e5e189c3206e08bf48f
   - name: version-control
-    sha256: 94b31d61fc740233083adc1cc4622ceb3b4f99758d006a99cc6bce09c95243b3
+    sha256: 53c0928d555ae86d3e4d9fbddf0c5a488d399beba0db1c0c91af137c3414a217
+  - name: project-management
+    sha256: ab5a545ac0e498b90bbcbcc56f60726d35e1287de93559eec6b00df8a4f096c1
 notes: "- Arquivos squad-operational (analyze-campaign.md, write-emails.md, etc.)\n\
   \  NÃO são framework — vivem em .kairos-core/tasks/ mas são conteúdo do usuário\n\
   \  por não estarem neste manifesto (default-deny).\n\n- Personas de agentes de squad\
