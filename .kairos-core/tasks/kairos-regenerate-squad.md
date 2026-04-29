@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.11.1
+kairos-version: 3.12.0
 task: Kairos Regenerate Squad
 responsavel: "@kairos"
 responsavel_type: agent
@@ -84,11 +84,13 @@ Para cada agente com `status: drift` ou `status: missing`:
 
 #### 2.1 — Preservar seções customizadas (se persona existir)
 
+**Contrato:** blocos kairos-custom são seções user-owned dentro de personas framework-managed — nunca sobrescrever durante regeneração.
+
 Se a persona existe (status: drift):
 1. Ler o conteúdo completo da persona
-2. Extrair todo o conteúdo entre `<!-- kairos-custom-start -->` e `<!-- kairos-custom-end -->` (inclusive as tags)
-3. Guardar em memória de sessão como `custom_block_{id}`
-4. Se não houver as tags → `custom_block_{id}` = bloco vazio padrão:
+2. Extrair **todos** os blocos `<!-- kairos-custom-start --> ... <!-- kairos-custom-end -->` (inclusive as tags de abertura e fechamento). Contar quantos blocos foram encontrados → N.
+3. Guardar blocos extraídos em memória de sessão como `custom_blocks_{id}` (lista ordenada pela posição no arquivo)
+4. Se N = 0 → `custom_blocks_{id}` = lista com bloco vazio padrão:
    ```
    <!-- kairos-custom-start -->
    <!-- Adicione customizações específicas de instância aqui — preservadas em regenerações -->
@@ -96,14 +98,14 @@ Se a persona existe (status: drift):
    ```
 
 Se a persona **não existe** (status: missing):
-1. Se o YAML contém campo `task_sections` → gerar `custom_block_{id}` com base nos dados do YAML:
+1. Se o YAML contém campo `task_sections` → gerar `custom_blocks_{id}` com base nos dados do YAML:
    ```
    <!-- kairos-custom-start -->
    ## Comportamentos de Domínio
    {para cada chave em task_sections: renderizar como subseção ### {chave} com os campos formatados em Markdown}
    <!-- kairos-custom-end -->
    ```
-2. Se o YAML **não** contém `task_sections` → `custom_block_{id}` = bloco vazio padrão.
+2. Se o YAML **não** contém `task_sections` → `custom_blocks_{id}` = bloco vazio padrão.
 
 #### 2.2 — Ler YAML fonte
 
@@ -125,7 +127,7 @@ sha256sum squads/{squad}/agents/{id}.yaml | cut -d' ' -f1
 
 #### 2.4 — Gerar nova persona
 
-Usar o template abaixo, substituindo todos os `{campos}` com os valores do YAML. Inserir `custom_block_{id}` preservado (ou o bloco padrão) no local marcado.
+Usar o template abaixo, substituindo todos os `{campos}` com os valores do YAML. Inserir `custom_blocks_{id}` (lista concatenada) preservado (ou o bloco padrão) no local marcado.
 
 ```markdown
 <!-- kairos-generated-from: squads/{squad}/agents/{id}.yaml sha:{sha256} -->
@@ -212,7 +214,7 @@ commands: {commands — lista YAML completa}
 
 {outputs — um item por linha, formato: `{path}` — {descrição do arquivo}}
 
-{custom_block_{id}}
+{custom_blocks_{id} — concatenação de todos os blocos kairos-custom preservados, na ordem original}
 
 ---
 
@@ -234,6 +236,7 @@ Após processar todos os agentes com drift:
 
 Regeneradas:
   ✅ .claude/commands/kairos/agents/{id}.md — SHA {sha_antigo[:8]}… → {sha_novo[:8]}…
+     → {N} bloco(s) kairos-custom preservado(s)    (exibir apenas se N > 0)
   ✅ .claude/commands/kairos/agents/{id2}.md — persona ausente → criada
 
 Ignoradas (sem marcador SHA):
@@ -248,6 +251,7 @@ Sem drift (não alteradas):
 ## Notas de Implementação
 
 - **Idempotência**: rodar `*regenerate-squad` duas vezes sem editar o YAML → segunda execução detecta SHA coincide e não altera nada
-- **Seções custom**: conteúdo entre `<!-- kairos-custom-start -->` e `<!-- kairos-custom-end -->` é sempre preservado (mesmo se o bloco estiver vazio)
+- **Contrato kairos-custom**: blocos `<!-- kairos-custom-start --> ... <!-- kairos-custom-end -->` são seções user-owned dentro de personas framework-managed — nunca sobrescrever durante regeneração. Todos os blocos são extraídos, contados e re-injetados na mesma posição relativa. Se nenhum bloco existir, o comportamento de regeneração permanece inalterado.
+- **Múltiplos blocos**: uma persona pode ter mais de um bloco kairos-custom — todos são extraídos e preservados na ordem original
 - **Personas pré-5.33**: sem marcador SHA → ignoradas silenciosamente (não são regeneradas nem alteradas)
 - **Personas ausentes**: status: missing → regeneradas como se fosse novo scaffolding (sem seção custom a preservar)
