@@ -166,6 +166,10 @@ Esta seção é user-owned. Cada squad importa suas rules específicas aqui.
 @squads/sales-pipeline/rules/memory-imports.md
 @squads/sales-pipeline/rules/agent-authority.md
 
+@squads/client-onboarding/rules/client-onboarding-lifecycle.md
+@squads/client-onboarding/rules/memory-imports.md
+@squads/client-onboarding/rules/agent-authority.md
+
 ### Squad ops (governança de repo)
 
 Squad sem persona. Tasks executadas pelo @kairos via `*push`.

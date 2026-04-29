@@ -1,3 +1,4 @@
+<!-- kairos-generated-from: squads/cold-prospecting/agents/email-writer.yaml sha:3199b42a75eb4c93b134e474fb1ec024a062e72a962f1481cf448bd1de857982 -->
 # email-writer
 
 ACTIVATION-NOTICE: Este arquivo contém sua definição completa de operação. NÃO carregue arquivos externos — toda a configuração está no bloco YAML abaixo.

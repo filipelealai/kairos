@@ -1,0 +1,74 @@
+name: client-onboarding
+version: 0.1.0
+description: >
+  Gerencia o ciclo pós-comercial: extrai contexto de briefs e documentos do cliente,
+  gera proposta (pré-compromisso), contrato legal (formalização) e kit de onboarding
+  (boas-vindas + início do projeto), entregando documentos estruturados prontos para
+  uso — do "fechou na call" ao kickoff do projeto.
+author: Filipe Leal
+
+kairos:
+  minVersion: "3.11.1"
+  type: squad
+  scope: client-onboarding
+  context: Pós-venda — da call fechada ao kickoff do projeto
+
+components:
+  agents:
+    - agents/brief-extractor.yaml
+    - agents/proposal-writer.yaml
+    - agents/contract-writer.yaml
+    - agents/onboarding-writer.yaml
+  tasks:
+    - tasks/extract-brief.md
+    - tasks/write-proposal.md
+    - tasks/draft-contract.md
+    - tasks/generate-kit.md
+  workflows:
+    - workflows/full-pipeline.md
+
+config:
+  scope: ../../docs/scope.md
+  agent-standards: ../../.kairos-core/docs/agent-standards.md
+  data-flow: ../../.kairos-core/docs/data-flow.md
+
+pipeline:
+  order:
+    - brief-extractor   # *extract
+    - proposal-writer   # *write
+    - contract-writer   # *draft
+    - onboarding-writer # *kit
+  partial_execution: true
+
+data:
+  input: manual  # texto livre, brief, notas de call, docs do cliente
+  outputs:
+    - data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-YYYY-MM-DD.md
+    - data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-YYYY-MM-DD.md
+    - data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-YYYY-MM-DD.md
+    - data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-YYYY-MM-DD.md
+  handoffs: .kairos-core/runtime/handoffs/
+
+templates:
+  proposal: squads/client-onboarding/templates/proposal/
+  contract: squads/client-onboarding/templates/contract/
+  onboarding: squads/client-onboarding/templates/onboarding/
+
+dependencies:
+  squads: []
+  external:
+    - "PDF renderer: pandoc | md-to-pdf | puppeteer (a definir na story de implementação)"
+
+integrations:
+  pdf:
+    status: pending
+    candidates: [pandoc, md-to-pdf, puppeteer]
+    decision: "a ser tomada na story de implementação — investigar ambiente WSL2"
+
+tags:
+  - client-onboarding
+  - kairos
+  - contratos
+  - onboarding
+  - proposta
+  - pos-venda

@@ -64,12 +64,14 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | [5.32](../stories/5.32.story.md) | Squad-scaffolding Dinâmico — Gerar Personas a partir de `squads/{squad}/agents/*.yaml` | Done |
 | [5.33](../stories/5.33.story.md) | Regeneração Incremental de Personas — `*regenerate-squad` e Integração ao `*pre-push` | Done |
 | [5.34](../stories/5.34.story.md) | push-dual auto-sync com manifest: lista dinâmica e detecção de remoções | Done |
+| [5.35](../stories/5.35.story.md) | update: cold-prospecting — conformar squad ao framework v3.11.x | Done |
+| [5.36](../stories/5.36.story.md) | *regenerate-squad: preservar blocos kairos-custom durante regeneração | Done |
 
 ---
 
 ## Stories Candidatas (não criadas ainda)
-- **5.35** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
-- **5.36** — Publicação de `@kairos/core` no npm
+- **5.37** — CLI `npx install kairos` / `npx kairos update` (greenfield + brownfield)
+- **5.38** — Publicação de `@kairos/core` no npm
 
 ---
 
@@ -167,3 +169,11 @@ Esse epic trata a implementação estrutural da Seção VI da constituição (de
 | 2026-04-27 | Story 5.34 criada — push-dual auto-sync com manifest (Draft); candidatas 5.34–5.35 renumeradas 5.35–5.36 |
 | 2026-04-27 | Story 5.34 implementada via *implement — In Review |
 | 2026-04-27 | Story 5.34 Done — gate PASS, *pre-push |
+| 2026-04-28 | Story 5.35 criada — update: cold-prospecting conformar ao framework v3.11.x (Draft) |
+| 2026-04-28 | Story 5.35 concluída via *implement — In Review |
+| 2026-04-29 | Story 5.36 criada — *regenerate-squad: preservar kairos-custom em regenerações (padrão identificado no review de 4.4) |
+| 2026-04-29 | Story 5.36 iniciada — In Progress |
+| 2026-04-29 | Story 5.36 concluída — In Review |
+| 2026-04-29 | Story 5.36: gate RESSALVA (95/100) — @kairos *review; inconsistência custom_block_/custom_blocks_ pendente (medium, não bloqueia); bump MINOR pendente para *pre-push |
+| 2026-04-29 | Story 5.36: fix aplicado — custom_blocks_{id} homogeneizado (3 ocorrências); gate PASS (100/100) — @kairos *review v2 |
+| 2026-04-29 | Stories 5.35 e 5.36 — *pre-push: gate confirmado — status → Done |

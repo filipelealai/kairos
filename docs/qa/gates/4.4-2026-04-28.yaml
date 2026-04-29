@@ -1,0 +1,62 @@
+schema: 2
+story: "4.4"
+story_title: "Especializar templates de contrato por tipo de serviço"
+epic: 4
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-28T00:00:00-03:00"
+quality_score: 95
+execution_log_found: true
+self_reviewed: true
+self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
+
+ac_coverage:
+  covered:
+    - "✅ AC1: squads/client-onboarding/data/kb.md tem seção 'Tipos de Serviço' com 3 tipos documentados (Projeto Fechado, Retainer Mensal, Hora Avulsa) com características, exemplos e referência à variante"
+    - "✅ AC2: 13 arquivos de template criados em squads/client-onboarding/templates/contract/variants/ — 4 para projeto-fechado (03, 04, 05, 06), 4 para retainer-mensal (04, 05, 06, 11-horas-incluidas), 4 para hora-avulsa (04, 05, 06, 11-aprovacao-horas), 1 README de variantes"
+    - "✅ AC3: squads/client-onboarding/README.md atualizado com tabela 'quando usar qual variante', casos ambíguos e princípio de sobreposição"
+  manual:
+    - "⚠️ AC4: Bloco kairos-custom em squads/client-onboarding/tasks/draft-contract.md tem Passo 0 completo com seleção de variante. Porém o bloco <!-- kairos-custom-start --> da persona contract-writer.md não menciona variantes explicitamente — delega via 'Ver protocolo completo em draft-contract.md'. Funcionalmente equivalente mas literal do AC pedia atualização do bloco da persona."
+  gaps: []
+
+files:
+  present:
+    - "✅ squads/client-onboarding/data/kb.md (seção Tipos de Serviço)"
+    - "✅ squads/client-onboarding/templates/contract/variants/README.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/projeto-fechado/03-escopo-entregaveis.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/projeto-fechado/04-pagamento.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/projeto-fechado/05-vigencia.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/projeto-fechado/06-rescisao.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/retainer-mensal/04-pagamento.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/retainer-mensal/05-vigencia.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/retainer-mensal/06-rescisao.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/retainer-mensal/11-horas-incluidas.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/hora-avulsa/04-pagamento.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/hora-avulsa/05-vigencia.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/hora-avulsa/06-rescisao.md"
+    - "✅ squads/client-onboarding/templates/contract/variants/hora-avulsa/11-aprovacao-horas.md"
+    - "✅ squads/client-onboarding/README.md (seção de variantes)"
+    - "✅ squads/client-onboarding/tasks/draft-contract.md (Passo 0 kairos-custom)"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "AC4 interpretado como atualização do task file (draft-contract.md) em vez do bloco kairos-custom da persona (contract-writer.md). O Passo 0 na task cobre o critério de seleção — a persona delega via referência ao arquivo de task."
+    recommendation: "Considerar adicionar uma linha explícita no bloco kairos-custom da persona: '→ Antes de carregar templates, executar Passo 0 de draft-contract.md para selecionar a variante correta.' Não bloqueante."
+  - severity: "low"
+    description: "Política C em 11-horas-incluidas.md está marcada como '(não recomendado)'. Executor pediu orientação sobre manter ou remover."
+    recommendation: "Manter. O aviso contextualiza sem eliminar a opção — útil para redatores que enfrentam clientes com expectativa de rollover total. O [REVISAR JURIDICAMENTE] é suficiente como guarda."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ AC4 (low): considerar adicionar linha explícita na persona (contract-writer.md) referenciando Passo 0 de variantes — uma linha no bloco kairos-custom seria suficiente"
+  - "⚠️ Política C em 11-horas-incluidas.md: decisão de manter documentada — adequada como está"

@@ -1,3 +1,4 @@
+<!-- kairos-generated-from: squads/cold-prospecting/agents/campaign-analyst.yaml sha:0c34fdc736163ff9be6d30adb1098d93fe24e961ac14a1886bc2dd5755969d3f -->
 # campaign-analyst
 
 ACTIVATION-NOTICE: Este arquivo contém sua definição completa de operação. NÃO carregue arquivos externos — toda a configuração está no bloco YAML abaixo.

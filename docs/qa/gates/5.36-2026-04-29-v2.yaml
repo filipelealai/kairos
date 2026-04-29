@@ -1,0 +1,40 @@
+schema: 2
+story: "5.36"
+story_title: "*regenerate-squad: preservar blocos kairos-custom durante regeneração"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-29T01:00:00.000Z"
+quality_score: 100
+execution_log_found: true
+review_note: "v2 — re-review após correção da inconsistência custom_block_/custom_blocks_ (3 ocorrências homogeneizadas para plural)"
+
+ac_coverage:
+  covered:
+    - "✅ AC1: protocolo de preservação em Passo 2.1 (extração + contagem N + custom_blocks_{id} como lista), Passo 2.4 (template com re-injeção de custom_blocks_{id} antes de '*Kairos Agent'), Passo 3 (log condicional N>0)"
+    - "✅ AC2: caso N=0 → comportamento inalterado documentado em Passo 2.1 e Notas de Implementação"
+    - "✅ AC3: Passo 3 exibe '→ {N} bloco(s) kairos-custom preservado(s)' com instrução '(exibir apenas se N > 0)'"
+    - "✅ AC4: label '**Contrato:**' em Passo 2.1 + Notas de Implementação com contrato explícito: 'blocos kairos-custom são seções user-owned dentro de personas framework-managed — nunca sobrescrever durante regeneração'"
+    - "✅ AC5: verificação retroativa confirmada — SHA contract-writer.yaml (be52f80a) bate com marcador da persona; SHA brief-extractor.yaml (954a122c) bate com marcador da persona. Sem drift ativo."
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-regenerate-squad.md — Passo 2.1, Passo 2.4 e Notas de Implementação atualizados; nomenclatura custom_blocks_{id} homogeneizada em todas as ocorrências"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — MINOR pendente: v3.11.1 → 3.12.0 (esperado em *pre-push)"
+  changelog_updated: "⚠️ RESSALVA — entrada de CHANGELOG pendente para *pre-push"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "ℹ️ Bump MINOR obrigatório em *pre-push: 3.11.1 → 3.12.0"

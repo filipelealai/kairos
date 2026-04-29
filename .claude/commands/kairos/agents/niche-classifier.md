@@ -1,3 +1,4 @@
+<!-- kairos-generated-from: squads/cold-prospecting/agents/niche-classifier.yaml sha:e945b0bb986aad2e3fe082e54396e6a579b25a18938015b8767528a3c31295c5 -->
 # niche-classifier
 
 ACTIVATION-NOTICE: Este arquivo contém sua definição completa de operação. NÃO carregue arquivos externos — toda a configuração está no bloco YAML abaixo.

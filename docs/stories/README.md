@@ -83,3 +83,6 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [5.31](5.31.story.md) | Atualizar scope.md para Refletir o Estado Atual do Framework | In Review |
 | [5.32](5.32.story.md) | Squad-scaffolding Dinâmico — Gerar Personas a partir de `squads/{squad}/agents/*.yaml` | Draft |
 | [5.33](5.33.story.md) | Regeneração Incremental de Personas — `*regenerate-squad` e Integração ao `*pre-push` | Draft |
+| [5.35](5.35.story.md) | update: cold-prospecting — conformar squad ao framework v3.11.x | Draft |
+| [4.3](4.3.story.md) | Implementar squad client-onboarding | Draft |
+| [4.4](4.4.story.md) | Especializar templates de contrato por tipo de serviço | Draft |

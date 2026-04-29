@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.12.0] — 2026-04-29
+
+### Adicionado
+- kairos-regenerate-squad.md: preservação de blocos kairos-custom durante regeneração
+
+---
+
 ## [3.11.1] — 2026-04-28
 
 ### Corrigido

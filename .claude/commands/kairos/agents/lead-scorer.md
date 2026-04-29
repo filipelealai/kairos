@@ -1,3 +1,4 @@
+<!-- kairos-generated-from: squads/cold-prospecting/agents/lead-scorer.yaml sha:9c9fd99afe6604dce357f73a76973cdbd73a5b921eec7f463081e88d1a19edf2 -->
 # lead-scorer
 
 ACTIVATION-NOTICE: Este arquivo contém sua definição completa de operação. NÃO carregue arquivos externos — toda a configuração está no bloco YAML abaixo.

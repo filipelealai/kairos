@@ -1,0 +1,64 @@
+schema: 2
+story: "4.3"
+story_title: "Implementar squad client-onboarding"
+epic: 4
+verdict: "BLOCK"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-28T00:00:00.000Z"
+quality_score: 80
+execution_log_found: true
+self_reviewed: true
+self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
+
+ac_coverage:
+  covered:
+    - "✅ AC1: 4 tasks implementadas com protocolo completo (extract-brief.md, write-proposal.md, draft-contract.md, generate-kit.md)"
+    - "✅ AC2: 7 templates de proposta + 10 templates de contrato + 7 templates de onboarding criados"
+    - "✅ AC3 (parcial): ferramenta md-to-pdf investigada, escolhida, documentada no README"
+    - "✅ AC4: 4 personas refinadas com blocos kairos-custom (seções *extract, *write, *draft, *kit)"
+  manual:
+    - "⚠️ AC5: pipeline end-to-end validado via mock (Acme Automações fictícia) — outputs presentes em data/outputs/client-onboarding/; documentado no Execution Log como decisão explícita"
+  gaps:
+    - "❌ AC3 (parcial): decisão PDF registrada em .kairos-core/data/kairos-kb.md (framework) em vez de squads/client-onboarding/data/kb.md (squad) — conteúdo instância-específico no KB de framework é regressão de governança"
+
+files:
+  present:
+    - "✅ squads/client-onboarding/tasks/extract-brief.md"
+    - "✅ squads/client-onboarding/tasks/write-proposal.md"
+    - "✅ squads/client-onboarding/tasks/draft-contract.md"
+    - "✅ squads/client-onboarding/tasks/generate-kit.md"
+    - "✅ squads/client-onboarding/templates/proposal/ (01–07 + README)"
+    - "✅ squads/client-onboarding/templates/contract/ (01–10 + README)"
+    - "✅ squads/client-onboarding/templates/onboarding/ (01–07 + README)"
+    - "✅ squads/client-onboarding/README.md (atualizado com comando PDF)"
+    - "✅ .claude/commands/kairos/agents/brief-extractor.md"
+    - "✅ .claude/commands/kairos/agents/proposal-writer.md"
+    - "✅ .claude/commands/kairos/agents/contract-writer.md"
+    - "✅ .claude/commands/kairos/agents/onboarding-writer.md"
+    - "✅ data/outputs/client-onboarding/briefs/brief-extractor_brief-acme-automacoes-2026-04-28.md"
+    - "✅ data/outputs/client-onboarding/proposals/proposal-writer_proposal-acme-automacoes-2026-04-28.md"
+    - "✅ data/outputs/client-onboarding/contracts/contract-writer_contract-acme-automacoes-2026-04-28.md"
+    - "✅ data/outputs/client-onboarding/onboarding/onboarding-writer_kit-acme-automacoes-2026-04-28.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "critical"
+    description: "KB framework (.kairos-core/data/kairos-kb.md) contaminado com conteúdo instância-específico. A seção '## Conhecimento de Squad' adicionada pelo executor contém decisão de ambiente (md-to-pdf no WSL2) que é específica desta instância — não tem aplicabilidade cross-instance. O KB declara explicitamente: 'Este arquivo contém apenas conteúdo de framework'. A especificação do AC 3 da story também estava incorreta ao apontar kairos-kb.md como destino."
+    recommendation: "Remover integralmente a seção '## Conhecimento de Squad' de .kairos-core/data/kairos-kb.md. Criar squads/client-onboarding/data/kb.md com o conteúdo da decisão PDF."
+  - severity: "low"
+    description: "AC 5 validado via mock (dados fictícios) em vez de dados reais — aceitável como ponto de partida mas o usuário deve validar com cliente real na primeira oportunidade."
+    recommendation: "Executar pipeline completo com primeiro cliente real assim que disponível."
+
+blocking_issues:
+  - "KB framework (.kairos-core/data/kairos-kb.md) contaminado com conteúdo instância-específico (seção '## Conhecimento de Squad'). Deve ser revertido integralmente antes do PASS."
+
+recommendations:
+  - "⚠️ Após corrigir o KB, revisar o AC 3 da story para apontar o destino correto (squads/client-onboarding/data/kb.md) — ou manter como registro de que o AC estava mal especificado."

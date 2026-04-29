@@ -1,0 +1,39 @@
+schema: 2
+story: "4.5"
+story_title: "fix: contract-writer — referenciar variantes de contrato no bloco kairos-custom da persona"
+epic: 4
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-29T00:00:00.000Z"
+quality_score: 100
+execution_log_found: true
+self_reviewed: true
+self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
+
+ac_coverage:
+  covered:
+    - "✅ AC1: bloco kairos-custom-start de contract-writer.md atualizado — Passo 0 obrigatório referenciado antes da tabela de templates, nomeando as 3 variantes (Projeto Fechado / Retainer Mensal / Hora Avulsa) e apontando para squads/client-onboarding/templates/contract/variants/"
+    - "✅ AC2: adição não duplica lógica de seleção — 1 parágrafo de referência + 'Ver protocolo completo em squads/client-onboarding/tasks/draft-contract.md'; a tabela de templates e o Passo 0 completo permanecem apenas em draft-contract.md"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .claude/commands/kairos/agents/contract-writer.md — bloco kairos-custom atualizado com referência ao Passo 0"
+    - "✅ squads/client-onboarding/tasks/draft-contract.md — arquivo referenciado existe (criado em story 4.4)"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "ℹ️ Risco documentado pelo executor: bloco kairos-custom pode ser perdido se o YAML de contract-writer.yaml for editado antes de story 5.36 (em review simultâneo) estar Done e integrado. Mitigado pela execução paralela dos reviews."

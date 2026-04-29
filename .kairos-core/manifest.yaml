@@ -72,7 +72,7 @@ owned_files:
   sha256: 04afb2c77f4438f0d323e1ee892d68f25cd99b911b10dda1edd7e12c9a48168e
 - path: .kairos-core/tasks/kairos-regenerate-squad.md
   layer: L2
-  sha256: 6432f1d6761ccd8d947704e492ab3ea0d2b6795cec454ddcceab48c12ffeb1c6
+  sha256: 75a0a9e427e4eda9d67cc4ff01dd46ee73cdc5f4c27d4222f7b02ee3df63f69b
 - path: .kairos-core/tasks/kairos-push.md
   layer: L2
   sha256: c342c228049396420b286675e65f4d30e8fbb08a49d4416d2dcc3eafb0e45093
@@ -132,7 +132,7 @@ owned_files:
   sha256: 9c7edc688996f8bb7366b2839ce67092bf7354bc3422671440de9dbd99009c86
 - path: CHANGELOG.md
   layer: L3
-  sha256: e8531f415065a2ddcca0c65f9f1a00990b6b8b951769931fc8fbcbe9e1ab4916
+  sha256: 7532403e048c79e16b7d727274bf260ad48055c1504df819c83830deaadc61d6
 - path: .github/CODEOWNERS
   layer: L3
   sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4
@@ -177,15 +177,15 @@ owned_sections:
   - name: framework-conventions
     start: '<!-- KAIROS-MANAGED-START: framework-conventions -->'
     end: '<!-- KAIROS-MANAGED-END: framework-conventions -->'
-    sha256: e52bb7d27b192263708268719d28a674ab6f4e9ae9030f3386cb3e3ac3dc1865
+    sha256: 2476891e04856b09468200023c532f738289fd0f858db1ab92bdfc9581210573
   - name: agent-system
     start: '<!-- KAIROS-MANAGED-START: agent-system -->'
     end: '<!-- KAIROS-MANAGED-END: agent-system -->'
-    sha256: 2c95f9c95b7a1aa4f23f2f6a9fb7881f3fa2955c79e5cee5a1a96121dfafd88d
+    sha256: 232cb6556338f4fbe9d8ae3ac986fcf13119bce2513a7437a4b9b9e52a6f7b2a
   - name: kairos-core
     start: '<!-- KAIROS-MANAGED-START: kairos-core -->'
     end: '<!-- KAIROS-MANAGED-END: kairos-core -->'
-    sha256: 0556fd254cdc3a8f8c1e054ed0c529300b26100f021637730e0f0747385a36b6
+    sha256: 4a6b32ea2c3c513fe8e7db3eba41dcded26a75305e06d99c501810aa0a603f3c
 - path: .kairos-core/core-config.yaml
   type: yaml_keys
   owned_keys:
@@ -196,7 +196,7 @@ owned_sections:
   sha256_by_key:
     framework: ad6c0f935b1e9b995d9b919bf51f55259193950ad0bb0ce2723ddea64ff8172f
     runtime: 4a64e1643f6dd390011f11fe48682442da1f6db1fb9b96c4b78444c4b215162f
-    versioning: 3386e3031f8de7e2c71c0368fb7fb48f6281cd073ba11500f01eac5d133e0aa1
+    versioning: fa83de7aaf3997513b3df6322cb4ce79211fccd17d6cb6efa8aaf1e1d0f04375
 - path: .env.example
   type: env_sections
   notes: 'Categorias shipped pelo framework (ai-providers, automation, database,

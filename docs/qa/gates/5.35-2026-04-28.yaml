@@ -1,0 +1,54 @@
+schema: 2
+story: "5.35"
+story_title: "update: cold-prospecting — conformar squad ao framework v3.11.x"
+epic: 5
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-28T00:00:00Z"
+quality_score: 95
+execution_log_found: true
+self_reviewed: true
+self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
+
+ac_coverage:
+  covered:
+    - "✅ AC1: campaign-analyst.md tem marcador SHA correto na linha 1 — sha:0c34fdc736163ff9be6d30adb1098d93fe24e961ac14a1886bc2dd5755969d3f bate com sha256sum do YAML fonte"
+    - "✅ AC2: lead-scorer.md tem marcador SHA correto na linha 1 — sha:9c9fd99afe6604dce357f73a76973cdbd73a5b921eec7f463081e88d1a19edf2 bate"
+    - "✅ AC3: niche-classifier.md tem marcador SHA correto na linha 1 — sha:e945b0bb986aad2e3fe082e54396e6a579b25a18938015b8767528a3c31295c5 bate"
+    - "✅ AC4: email-writer.md tem marcador SHA correto na linha 1 — sha:3199b42a75eb4c93b134e474fb1ec024a062e72a962f1481cf448bd1de857982 bate"
+    - "✅ AC6: squad.yaml lista apenas tasks existentes no filesystem — analyze-campaign.md, score-leads.md, classify-niches.md, write-emails.md presentes em squads/cold-prospecting/tasks/"
+    - "✅ AC7: squad.yaml kairos.minVersion atualizado para '3.11.0'"
+  manual:
+    - "⚠️ AC5: *regenerate-squad cold-prospecting detectar as 4 personas como status: up-to-date — requer execução para confirmar; risco baixo pois os SHAs nos marcadores batem exatamente com os sha256sum atuais dos YAMLs fonte"
+  gaps: []
+
+files:
+  present:
+    - "✅ .claude/commands/kairos/agents/campaign-analyst.md"
+    - "✅ .claude/commands/kairos/agents/lead-scorer.md"
+    - "✅ .claude/commands/kairos/agents/niche-classifier.md"
+    - "✅ .claude/commands/kairos/agents/email-writer.md"
+    - "✅ squads/cold-prospecting/tasks/analyze-campaign.md"
+    - "✅ squads/cold-prospecting/tasks/score-leads.md"
+    - "✅ squads/cold-prospecting/tasks/classify-niches.md"
+    - "✅ squads/cold-prospecting/tasks/write-emails.md"
+    - "✅ squads/cold-prospecting/squad.yaml"
+  missing: []
+
+checks:
+  version_bumped: "N/A"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "AC5 (*regenerate-squad detecta up-to-date) não foi executado pelo implementador — verificação estática confirma SHAs corretos mas execução do comando não foi demonstrada"
+    recommendation: "Executar *regenerate-squad cold-prospecting em próxima sessão para confirmar circuito completo; risco de falha é baixo dado SHAs exatos"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Executar *regenerate-squad cold-prospecting para confirmar que o circuito SHA→up-to-date funciona end-to-end (AC5 manual)"

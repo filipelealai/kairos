@@ -1,6 +1,6 @@
-version: 3.11.1
+version: 3.12.0
 installedAt: '2026-04-06T00:00:00.000Z'
-updatedAt: '2026-04-28T00:00:00.000Z'
+updatedAt: '2026-04-29T00:00:00.000Z'
 
 project:
   name: kairos
@@ -18,6 +18,10 @@ agents:
       version: 1.0.0
     sales-pipeline:
       agents: [pre-call, call-analyst]
+      status: active
+      version: 0.1.0
+    client-onboarding:
+      agents: [brief-extractor, proposal-writer, contract-writer, onboarding-writer]
       status: active
       version: 0.1.0
 

@@ -1,0 +1,43 @@
+schema: 2
+story: "5.36"
+story_title: "*regenerate-squad: preservar blocos kairos-custom durante regeneração"
+epic: 5
+verdict: "RESSALVA"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-29T00:00:00.000Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: protocolo de preservação implementado em Passo 2.1 (extração + contagem N + custom_blocks_{id} como lista), Passo 2.4 (template com {custom_blocks_{id} — concatenação...}) e Passo 3 (log condicional); posição de re-injeção: antes de '*Kairos Agent — {id} ({name})*' (fallback autorizado pelo AC)"
+    - "✅ AC2: Notas de Implementação: 'Se nenhum bloco existir, o comportamento de regeneração permanece inalterado'; Passo 2.1: se N=0 → bloco vazio padrão preservado (comportamento inalterado)"
+    - "✅ AC3: Passo 3 exibe '→ {N} bloco(s) kairos-custom preservado(s)' com instrução explícita '(exibir apenas se N > 0)'"
+    - "✅ AC4: label '**Contrato:**' adicionado diretamente no Passo 2.1; Notas de Implementação contêm contrato explícito: 'blocos kairos-custom são seções user-owned dentro de personas framework-managed — nunca sobrescrever durante regeneração'"
+    - "✅ AC5: verificação retroativa executada e confirmada no Execution Log — SHA de contract-writer.yaml (be52f80a...) bate com marcador em contract-writer.md; SHA de brief-extractor.yaml (954a122c...) bate com marcador em brief-extractor.md. Sem drift ativo."
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-regenerate-squad.md — Passo 2.1, Passo 3 e Notas de Implementação atualizados"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — story MINOR (Complexidade M, type: kairos-core); bump v3.11.1 → 3.12.0 pendente para *pre-push"
+  changelog_updated: "⚠️ RESSALVA — entrada de CHANGELOG pendente para *pre-push"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "medium"
+    description: "Inconsistência de nomenclatura: Passo 2.1 (caso drift) e Passo 2.4 template usam 'custom_blocks_{id}' (plural, correto), mas Passo 2.1 (caso missing, linhas de gerar custom_block_{id}) e Passo 2.4 preamble usam 'custom_block_{id}' (singular, stale). Um executor seguindo o preamble de 2.4 pode não saber qual nome de variável usar."
+    recommendation: "Homogeneizar para 'custom_blocks_{id}' em todos os lugares: Passo 2.1 caso missing (2 ocorrências) e Passo 2.4 preamble. O template em 2.4 já está correto."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Bump MINOR obrigatório em *pre-push: v3.11.1 → 3.12.0 (nova capacidade de preservação de blocos kairos-custom no ciclo de regeneração)"
+  - "⚠️ Corrigir inconsistência custom_block_ vs custom_blocks_ antes ou logo após integração — não bloqueia, mas pode causar confusão em executor futuro"
