@@ -177,15 +177,15 @@ owned_sections:
   - name: framework-conventions
     start: '<!-- KAIROS-MANAGED-START: framework-conventions -->'
     end: '<!-- KAIROS-MANAGED-END: framework-conventions -->'
-    sha256: 2476891e04856b09468200023c532f738289fd0f858db1ab92bdfc9581210573
+    sha256: e52bb7d27b192263708268719d28a674ab6f4e9ae9030f3386cb3e3ac3dc1865
   - name: agent-system
     start: '<!-- KAIROS-MANAGED-START: agent-system -->'
     end: '<!-- KAIROS-MANAGED-END: agent-system -->'
-    sha256: 232cb6556338f4fbe9d8ae3ac986fcf13119bce2513a7437a4b9b9e52a6f7b2a
+    sha256: 2c95f9c95b7a1aa4f23f2f6a9fb7881f3fa2955c79e5cee5a1a96121dfafd88d
   - name: kairos-core
     start: '<!-- KAIROS-MANAGED-START: kairos-core -->'
     end: '<!-- KAIROS-MANAGED-END: kairos-core -->'
-    sha256: 4a6b32ea2c3c513fe8e7db3eba41dcded26a75305e06d99c501810aa0a603f3c
+    sha256: 0556fd254cdc3a8f8c1e054ed0c529300b26100f021637730e0f0747385a36b6
 - path: .kairos-core/core-config.yaml
   type: yaml_keys
   owned_keys:
@@ -208,19 +208,19 @@ owned_sections:
     '
   owned_sections:
   - name: ai-providers
-    sha256: 32415bdeb7e3571d7f741114b51ac1f30b683eaf9a1f4926ac8a8ea34fc1ce83
+    sha256: 17cfee75f3eaeeec92aed708ab19c56e94dbe989b2a154f279f59543c72bb5b7
   - name: automation
-    sha256: 1ff697e63ee01ed4decf6831c5a6a8a11a47f23343b43590630ee3f746a0daf7
+    sha256: e1cdce281e41b87cd4553859c2ba0f041981d0ce21d3f3bdb97235a72e0016a8
   - name: database
-    sha256: 8347f452e754090fe60103b063e3117bd5b1e9254e66e9cca2380e3b713cd786
+    sha256: cb2ca0630bea560ff1705bde65a956a2dd876d77ef7447e83e09e666c1763765
   - name: communication
-    sha256: 9fd285ff5f7f75e5ac58d1fa00e4ec56f205a89d9f34e711ef36265f3d8f7bf7
+    sha256: 8de6a9da32a21204d0a5307c85d3dd8b5c9a80d551c93ea5cabaedda0ab31671
   - name: search
-    sha256: 5ab9981d41238a17d4bc848cf2e57ebe302650894ee56e5e189c3206e08bf48f
+    sha256: 1161119be8269d27922ff5412463c4be08dff3e95ef2eed2dc85bfaf07a90add
   - name: version-control
-    sha256: 53c0928d555ae86d3e4d9fbddf0c5a488d399beba0db1c0c91af137c3414a217
+    sha256: 94b31d61fc740233083adc1cc4622ceb3b4f99758d006a99cc6bce09c95243b3
   - name: project-management
-    sha256: ab5a545ac0e498b90bbcbcc56f60726d35e1287de93559eec6b00df8a4f096c1
+    sha256: b37d8f0a86ef086a9e420fc7b78540a01ed37340397da6450c9474d6cd3e6f6a
 notes: "- Arquivos squad-operational (analyze-campaign.md, write-emails.md, etc.)\n\
   \  NÃO são framework — vivem em .kairos-core/tasks/ mas são conteúdo do usuário\n\
   \  por não estarem neste manifesto (default-deny).\n\n- Personas de agentes de squad\
