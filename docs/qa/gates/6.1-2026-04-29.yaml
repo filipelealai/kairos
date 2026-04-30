@@ -1,0 +1,76 @@
+schema: 2
+story: "6.1"
+story_title: "Kairos MCP Server v1 — Implementação (Código + Docker + Docs)"
+epic: 6
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-04-29T00:00:00.000Z"
+quality_score: 95
+execution_log_found: true
+self_reviewed: true
+self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
+
+ac_coverage:
+  covered:
+    - "✅ AC1: Servidor MCP em Node.js + TypeScript usando @modelcontextprotocol/sdk — src/mcp-server/ com 10 arquivos TS"
+    - "✅ AC5: Whitelist via core-config.yaml > agents.squads — implementada defensivamente em agent-registry.ts (masterAgent filtrado; se novo agente de governança for criado, não vaza por padrão)"
+    - "✅ AC8: job-queue.ts — Map limitado a 50 entries, mais antigos descartados ao exceder"
+    - "✅ AC9: drive-client.ts — cliente Google Drive Service Account, pastas sob demanda, uploads idempotentes"
+    - "✅ AC10: _FILE pattern — config.ts faz expansão automática de vars terminadas em _FILE para Docker Swarm secrets"
+    - "✅ AC11: Dockerfile — node:22-bookworm-slim + tini + git + healthcheck via curl"
+    - "✅ AC12: docker-stack.yml — Swarm-ready, rede easypanel-kairos, labels Traefik, secrets externos, volume nomeado, limites 512MB/128MB"
+    - "✅ AC13: package.json — todas as 5 deps declaradas presentes (@modelcontextprotocol/sdk ^1.18.0, express ^4.21.2, googleapis ^144.0.0, yaml ^2.6.1, zod ^3.24.1)"
+    - "✅ AC14: .env.example — bloco KAIROS_MCP_API_KEY presente, fora dos blocos KAIROS-MANAGED (instance-owned)"
+    - "✅ AC15: squads/team-setup.md — guia completo para o time (passo a passo Claude Desktop, JSON de config, boas práticas, troubleshooting, matriz de responsabilidades)"
+    - "✅ AC16: squads/ops/tasks/mcp-deploy.md — 12 passos numerados cobrindo toda a Fase 2"
+    - "✅ AC17: src/mcp-server/README.md — documentação interna presente"
+    - "✅ AC18 (docs): docs/stories/README.md com 6.1 e 6.2 listadas; docs/epics/epic-6 com split documentado"
+  manual:
+    - "⚠️ AC2: Resources MCP kairos://agents e kairos://agent/{id} — registrados em server.ts (linhas 78 e 92); comportamento requer execução do servidor para verificação completa"
+    - "⚠️ AC3: Prompts MCP por agente no formato kairos-{squad}-{agent} — presentes em server.ts; smoke test no Execution Log confirma 10 prompts retornados, nenhum de governança"
+    - "⚠️ AC4: 7 Tools MCP — execute_script, check_job, list_jobs, save_output, list_outputs, read_handoff, write_handoff — todos presentes em server.ts com validação Zod; funcionamento verificado via Execution Log"
+    - "⚠️ AC6: Auth Bearer + KAIROS_MCP_API_KEY mínimo 16 chars — config.ts valida via Zod, index.ts aplica guard; smoke test confirma 401 em request sem token"
+    - "⚠️ AC7: git-sync.ts com clone inicial + pull loop + KAIROS_SYNC_MODE — arquivo presente (3.2K), implementação descrita no Execution Log"
+    - "⚠️ AC18 (smoke test): TypeScript compila limpo, servidor sobe em ~1s, 10 agentes carregados, @kairos excluído, /health 200, initialize retorna protocolVersion, prompts/list retorna exatamente 10 prompts — documentado no Execution Log"
+  gaps: []
+
+files:
+  present:
+    - "✅ src/mcp-server/index.ts"
+    - "✅ src/mcp-server/server.ts"
+    - "✅ src/mcp-server/agent-registry.ts"
+    - "✅ src/mcp-server/context-loader.ts"
+    - "✅ src/mcp-server/git-sync.ts"
+    - "✅ src/mcp-server/job-queue.ts"
+    - "✅ src/mcp-server/drive-client.ts"
+    - "✅ src/mcp-server/config.ts"
+    - "✅ src/mcp-server/logger.ts"
+    - "✅ src/mcp-server/Dockerfile"
+    - "✅ src/mcp-server/docker-stack.yml"
+    - "✅ src/mcp-server/README.md"
+    - "✅ squads/team-setup.md"
+    - "✅ squads/ops/tasks/mcp-deploy.md"
+    - "✅ package.json (5 deps + 2 scripts adicionados)"
+    - "✅ .env.example (bloco MCP Server adicionado)"
+    - "✅ docs/stories/README.md (6.1 e 6.2 listadas)"
+    - "✅ docs/epics/epic-6-kairos-como-servico.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A — type:instance nunca gera bump semântico"
+  changelog_updated: "N/A — type:instance nunca gera bump semântico"
+  story_file_consistent: "✅ PASS — Status In Review, Epic 6, Tipo instance, todos os ACs marcados [x]"
+  files_exist: "✅ PASS — todos os 18 artefatos declarados presentes"
+  no_broken_references: "✅ PASS — core-config.yaml referenciado existe com estrutura agents.squads correta; squads/ e docs/ coerentes"
+  execution_log_present: "✅ PASS — Execution Log detalhado: smoke test, decisões arquiteturais, todos os arquivos listados, pendências declaradas"
+
+issues:
+  - severity: "low"
+    description: "Execution Log e 'Notas para *review' mencionam 'A story é MINOR... Bump no *pre-push', sugerindo que esta story type:instance geraria bump semântico. Por design do framework, type:instance nunca dispara versionamento — apenas type:kairos-core."
+    recommendation: "Corrigir a nota no Execution Log para evitar confusão em stories futuras. Nenhum bump é esperado."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Nota sobre 'Bump no *pre-push' no Execution Log deve ser removida — type:instance não gera bump semântico por design."
+  - "⚠️ Dado self_reviewed=true, considerar smoke test manual em ambiente limpo (npx tsx src/mcp-server/index.ts) antes do deploy da Fase 2 para confirmar comportamento fora da sessão de implementação."

@@ -1,0 +1,73 @@
+# Kairos MCP — Docker Stack (Swarm) deployable via Easypanel ou docker stack deploy
+#
+# Pré-requisitos:
+#   - rede overlay 'easypanel-kairos' já existente (criada pelo Easypanel ao criar o projeto)
+#   - Traefik 3.x rodando como serviço de ingress (já presente no host)
+#   - DNS kairos.vendoteca.com → IP da VPS (já configurado)
+#
+# Deploy:
+#   docker stack deploy -c docker-stack.yml kairos --with-registry-auth
+#
+# Secrets (configure antes do deploy):
+#   echo -n "<api-key-32-chars>" | docker secret create kairos_mcp_api_key -
+#   docker secret create kairos_drive_sa /path/to/service-account.json
+#   docker secret create kairos_git_url -   (digite o URL com PAT, depois Ctrl+D)
+#
+version: "3.9"
+
+services:
+  kairos-mcp:
+    image: kairos-mcp:latest
+    networks:
+      - easypanel-kairos
+    environment:
+      PORT: "3333"
+      KAIROS_REPO_PATH: /app/kairos-repo
+      KAIROS_SYNC_MODE: cron
+      KAIROS_SYNC_INTERVAL_SECONDS: "60"
+      KAIROS_SYNC_BRANCH: filipe-instance
+      KAIROS_MCP_API_KEY_FILE: /run/secrets/kairos_mcp_api_key
+      GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON_FILE: /run/secrets/kairos_drive_sa
+      KAIROS_SYNC_REMOTE_URL_FILE: /run/secrets/kairos_git_url
+      GOOGLE_DRIVE_ROOT_FOLDER_ID: "${GOOGLE_DRIVE_ROOT_FOLDER_ID:-}"
+      LOG_LEVEL: info
+    secrets:
+      - kairos_mcp_api_key
+      - kairos_drive_sa
+      - kairos_git_url
+    volumes:
+      - kairos_runtime:/app/kairos-repo
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 5
+      resources:
+        limits:
+          memory: 512M
+        reservations:
+          memory: 128M
+      labels:
+        - "traefik.enable=true"
+        - "traefik.docker.network=easypanel-kairos"
+        - "traefik.http.routers.kairos-mcp.rule=Host(`kairos.vendoteca.com`)"
+        - "traefik.http.routers.kairos-mcp.entrypoints=websecure"
+        - "traefik.http.routers.kairos-mcp.tls=true"
+        - "traefik.http.routers.kairos-mcp.tls.certresolver=letsencrypt"
+        - "traefik.http.services.kairos-mcp.loadbalancer.server.port=3333"
+
+networks:
+  easypanel-kairos:
+    external: true
+
+volumes:
+  kairos_runtime:
+
+secrets:
+  kairos_mcp_api_key:
+    external: true
+  kairos_drive_sa:
+    external: true
+  kairos_git_url:
+    external: true

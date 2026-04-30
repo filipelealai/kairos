@@ -28,6 +28,7 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [3](../epics/epic-3-governanca-e-versionamento.md) | Governança e Versionamento | In Progress |
 | [4](../epics/epic-4-novos-escopos.md) | Novos Escopos | In Progress |
 | [5](../epics/epic-5-arquitetura-do-framework.md) | Arquitetura do Framework | In Progress |
+| [6](../epics/epic-6-kairos-como-servico.md) | Kairos como Serviço — Acesso Multi-usuário via MCP | In Progress |
 
 ## Nomenclatura
 
@@ -86,3 +87,5 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [5.35](5.35.story.md) | update: cold-prospecting — conformar squad ao framework v3.11.x | Draft |
 | [4.3](4.3.story.md) | Implementar squad client-onboarding | Draft |
 | [4.4](4.4.story.md) | Especializar templates de contrato por tipo de serviço | Draft |
+| [6.1](6.1.story.md) | Kairos MCP Server v1 — Implementação (Código + Docker + Docs) | In Review |
+| [6.2](6.2.story.md) | Kairos MCP Server v1 — Deploy, Integração e Validação | Draft |
