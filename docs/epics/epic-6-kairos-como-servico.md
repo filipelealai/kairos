@@ -153,4 +153,5 @@ A v1 foi dividida em duas stories durante a execução por uma razão prática: 
 | 2026-04-29 | Story 6.1 iniciada — Epic In Progress |
 | 2026-04-29 | Story 6.1 Fase 1 concluída — código MCP + Docker + docs do time + plano de deploy. Smoke test local OK. Fase 2 (deploy efetivo + Service Account + validação) aguarda ações do usuário. |
 | 2026-04-29 | Story 6.1 re-escopada — split em 6.1 (Implementação: código + Docker + docs, agora In Review) + 6.2 (Deploy, Integração e Validação, em Draft). Plano v2/v3/v4 renumerado para 6.3/6.4/6.5. |
+| 2026-04-30 | Story 6.1 Done (gate PASS confirmado, push-dual concluído). Story 6.2 *implement iniciado — status → In Progress. |
 | 2026-04-29 | Story 6.1 concluída — *pre-push: gate PASS confirmado, status → Done |

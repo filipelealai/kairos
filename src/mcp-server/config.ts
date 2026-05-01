@@ -30,7 +30,7 @@ const Schema = z.object({
   KAIROS_SYNC_INTERVAL_SECONDS: z.coerce.number().int().positive().default(60),
   KAIROS_SYNC_BRANCH: z.string().default("filipe-instance"),
   KAIROS_SYNC_REMOTE_URL: z.string().optional(),
-  GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON: z.string().optional(),
+  GOOGLE_DRIVE_OAUTH_JSON: z.string().optional(),
   GOOGLE_DRIVE_ROOT_FOLDER_ID: z.string().optional(),
   LOG_LEVEL: z.enum(["debug", "info", "warn", "error"]).default("info"),
 });
@@ -50,5 +50,5 @@ export function loadConfig(): Config {
 }
 
 export function isDriveEnabled(cfg: Config): boolean {
-  return Boolean(cfg.GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON && cfg.GOOGLE_DRIVE_ROOT_FOLDER_ID);
+  return Boolean(cfg.GOOGLE_DRIVE_OAUTH_JSON && cfg.GOOGLE_DRIVE_ROOT_FOLDER_ID);
 }

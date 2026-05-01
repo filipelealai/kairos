@@ -88,4 +88,4 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [4.3](4.3.story.md) | Implementar squad client-onboarding | Draft |
 | [4.4](4.4.story.md) | Especializar templates de contrato por tipo de serviço | Draft |
 | [6.1](6.1.story.md) | Kairos MCP Server v1 — Implementação (Código + Docker + Docs) | In Review |
-| [6.2](6.2.story.md) | Kairos MCP Server v1 — Deploy, Integração e Validação | Draft |
+| [6.2](6.2.story.md) | Kairos MCP Server v1 — Deploy, Integração e Validação | In Progress |

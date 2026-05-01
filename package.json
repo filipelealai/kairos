@@ -7,7 +7,8 @@
     "agent": "tsx",
     "build": "tsc",
     "mcp": "tsx src/mcp-server/index.ts",
-    "mcp:dev": "tsx watch src/mcp-server/index.ts"
+    "mcp:dev": "tsx watch src/mcp-server/index.ts",
+    "authorize-drive": "tsx src/mcp-server/scripts/authorize-drive.ts"
   },
   "keywords": [],
   "author": "filipelealweb",

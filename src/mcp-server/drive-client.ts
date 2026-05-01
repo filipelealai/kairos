@@ -9,28 +9,43 @@ interface DriveClient {
   uploadFile(opts: { folderPath: string; filename: string; content: string }): Promise<string>;
 }
 
+interface OAuthCredentials {
+  client_id: string;
+  client_secret: string;
+  refresh_token: string;
+}
+
 export async function makeDriveClient(cfg: Config): Promise<DriveClient | null> {
-  if (!cfg.GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON || !cfg.GOOGLE_DRIVE_ROOT_FOLDER_ID) {
+  if (!cfg.GOOGLE_DRIVE_OAUTH_JSON || !cfg.GOOGLE_DRIVE_ROOT_FOLDER_ID) {
     log.warn("Drive client disabled — GOOGLE_DRIVE_* env vars not set");
     return null;
   }
 
-  let credentials: Record<string, unknown>;
+  let credentials: OAuthCredentials;
   try {
-    credentials = JSON.parse(cfg.GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON);
+    credentials = JSON.parse(cfg.GOOGLE_DRIVE_OAUTH_JSON);
   } catch (err) {
-    log.error("Failed to parse GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON", { error: String(err) });
+    log.error("Failed to parse GOOGLE_DRIVE_OAUTH_JSON", { error: String(err) });
     return null;
   }
 
-  const auth = new google.auth.GoogleAuth({
-    credentials,
-    scopes: ["https://www.googleapis.com/auth/drive.file"],
-  });
-  const drive = google.drive({ version: "v3", auth });
+  if (!credentials.client_id || !credentials.client_secret || !credentials.refresh_token) {
+    log.error("GOOGLE_DRIVE_OAUTH_JSON missing required fields (client_id, client_secret, refresh_token)");
+    return null;
+  }
+
+  const oauth2Client = new google.auth.OAuth2(credentials.client_id, credentials.client_secret);
+  oauth2Client.setCredentials({ refresh_token: credentials.refresh_token });
+
+  const drive = google.drive({ version: "v3", auth: oauth2Client });
   const rootId = cfg.GOOGLE_DRIVE_ROOT_FOLDER_ID;
   const folderCache = new Map<string, string>();
   folderCache.set("", rootId);
+
+  log.info("Drive client initialized (OAuth)", {
+    rootFolderId: rootId,
+    clientIdPrefix: credentials.client_id.slice(0, 12) + "...",
+  });
 
   async function ensureFolder(relPath: string): Promise<string> {
     if (folderCache.has(relPath)) return folderCache.get(relPath)!;

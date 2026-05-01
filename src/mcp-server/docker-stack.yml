@@ -10,8 +10,12 @@
 #
 # Secrets (configure antes do deploy):
 #   echo -n "<api-key-32-chars>" | docker secret create kairos_mcp_api_key -
-#   docker secret create kairos_drive_sa /path/to/service-account.json
+#   docker secret create kairos_drive_oauth /path/to/oauth-credentials.json
 #   docker secret create kairos_git_url -   (digite o URL com PAT, depois Ctrl+D)
+#
+# kairos_drive_oauth contém o JSON gerado por `npm run authorize-drive` —
+# tem campos client_id, client_secret e refresh_token. Service Accounts não
+# funcionam pra Drive pessoal sem Workspace pago + Shared Drive.
 #
 version: "3.9"
 
@@ -27,13 +31,13 @@ services:
       KAIROS_SYNC_INTERVAL_SECONDS: "60"
       KAIROS_SYNC_BRANCH: filipe-instance
       KAIROS_MCP_API_KEY_FILE: /run/secrets/kairos_mcp_api_key
-      GOOGLE_DRIVE_SERVICE_ACCOUNT_JSON_FILE: /run/secrets/kairos_drive_sa
+      GOOGLE_DRIVE_OAUTH_JSON_FILE: /run/secrets/kairos_drive_oauth
       KAIROS_SYNC_REMOTE_URL_FILE: /run/secrets/kairos_git_url
       GOOGLE_DRIVE_ROOT_FOLDER_ID: "${GOOGLE_DRIVE_ROOT_FOLDER_ID:-}"
       LOG_LEVEL: info
     secrets:
       - kairos_mcp_api_key
-      - kairos_drive_sa
+      - kairos_drive_oauth
       - kairos_git_url
     volumes:
       - kairos_runtime:/app/kairos-repo
@@ -67,7 +71,7 @@ volumes:
 secrets:
   kairos_mcp_api_key:
     external: true
-  kairos_drive_sa:
+  kairos_drive_oauth:
     external: true
   kairos_git_url:
     external: true
