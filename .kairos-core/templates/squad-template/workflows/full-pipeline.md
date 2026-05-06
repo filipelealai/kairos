@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 3.13.0
 ---
 
 # Workflow: Pipeline Completo — {Squad Name}
@@ -9,9 +9,9 @@ kairos-version: 2.0.0
 
 ```
 @{agent-id-1} *{comando}
-        ↓  gera: {agent-id-1}_{filename}-YYYY-MM-DD.{ext}
+        ↓  gera: {agent-id-1}_{filename}-{INSTANCE}-YYYY-MM-DD.{ext}
 @{agent-id-2} *{comando}
-        ↓  gera: {agent-id-2}_{filename}-YYYY-MM-DD.{ext}
+        ↓  gera: {agent-id-2}_{filename}-{INSTANCE}-YYYY-MM-DD.{ext}
 {sistema externo ou próxima ação}
 ```
 

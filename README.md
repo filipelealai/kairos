@@ -4,7 +4,7 @@
 
 Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura de governança, memória, handoffs, workers agendados e ferramentas de desenvolvimento para criar, evoluir e operar esses squads ao longo do tempo.
 
-**Versão atual:** `3.12.1` — ver [CHANGELOG.md](CHANGELOG.md)
+**Versão atual:** `3.13.0` — ver [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -65,8 +65,9 @@ Exemplos comuns de conteúdo instanciado incluem:
 
 ## Pré-requisitos
 
-- Claude Code instalado
+- Claude CLI ou Claude Desktop App instalado
 - Um software de IDE, como VSCode, instalado (recomendado, opcional)
+- Git instalado (recomendado, opcional)
 - Integrações externas conforme os squads que você configurar — stack, dependências e chaves de API são responsabilidade do usuário (ver [.env.example](.env.example) da sua instância quando aplicável)
 
 ---
@@ -118,11 +119,11 @@ Cada squad define seu próprio pipeline. Exemplo genérico de um pipeline multi-
 
 ```
 @{agente-1} *{comando}
-        ↓  gera: {agente-1}_{output}-YYYY-MM-DD.{ext}
+        ↓  gera: {agente-1}_{output}-{INSTANCE}-YYYY-MM-DD.{ext}
 @{agente-2} *{comando}
-        ↓  gera: {agente-2}_{output}-YYYY-MM-DD.{ext}
+        ↓  gera: {agente-2}_{output}-{INSTANCE}-YYYY-MM-DD.{ext}
 @{agente-3} *{comando}
-        ↓  gera: {agente-3}_{output}-YYYY-MM-DD.{ext}
+        ↓  gera: {agente-3}_{output}-{INSTANCE}-YYYY-MM-DD.{ext}
 (sistema externo de disparo lê os outputs e executa)
 ```
 
@@ -130,13 +131,13 @@ Cada squad define seu próprio pipeline. Exemplo genérico de um pipeline multi-
 
 ```
 @campaign-analyst *analyze
-        ↓  gera: campaign-analyst_campaign-YYYY-MM-DD.md
+        ↓  gera: campaign-analyst_campaign-joão-YYYY-MM-DD.md
 @lead-scorer *score
-        ↓  gera: lead-scorer_scored-leads-YYYY-MM-DD.csv
+        ↓  gera: lead-scorer_scored-leads-joão-YYYY-MM-DD.csv
 @niche-classifier *classify
-        ↓  gera: niche-classifier_niche-map-YYYY-MM-DD.json
+        ↓  gera: niche-classifier_niche-map-joão-YYYY-MM-DD.json
 @email-writer *write 20
-        ↓  gera: email-writer_emails-YYYY-MM-DD.json
+        ↓  gera: email-writer_emails-joão-YYYY-MM-DD.json
 (sistema externo de disparo lê os outputs e executa)
 ```
 
@@ -259,7 +260,7 @@ kairos/
 
 ---
 
-## Desenvolvimento do Kairos
+## Desenvolvimento do Kairos (para contribuidores)
 
 O Kairos usa um modelo de governança próprio para se auto-documentar e evoluir:
 
@@ -271,11 +272,13 @@ O Kairos usa um modelo de governança próprio para se auto-documentar e evoluir
 @kairos *exit              # sai da persona do Kairos, que não pode implementar a si mesmo
 Claude Code, sem persona   # executor move Draft → In Progress → In Review
                            # e adiciona Execution Log na story
-@kairos *review            # valida implementação — gate PASS/RESSALVA/BLOCK
-@kairos *pre-push          # verificações finais
-@kairos *push              # push ao remoto (exclusivo do @kairos)
+@kairos *review {id}       # valida implementação — gate PASS/RESSALVA/BLOCK
+@kairos *version patch\|minor\|major "desc" # versiona as mudanças feitas no framework, para PR (depende de Git)
+@kairos *pre-push          # verificações finais (depende de Git)
+@kairos *push              # push ao remoto privado (exclusivo do @kairos, depende de Git)
+ou PR                      # contribuições no repositório público do Kairos
 ```
-Para abrir um PR e contribuir no repositório público do Kairos, veja [CONTRIBUTING.md](CONTRIBUTING.md).
+Para informações detalhadas de como abrir um PR e contribuir no repositório público do Kairos, veja [CONTRIBUTING.md](CONTRIBUTING.md).
 
 **Versionamento semântico:**
 - `PATCH` — correção, bug fixes, ajuste de instrução, documentação (não exige story)

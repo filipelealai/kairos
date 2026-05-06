@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.10.0
+kairos-version: 3.13.0
 ---
 
 # {id}
@@ -118,7 +118,9 @@ dependencies:
   scripts:
     - src/agents/{id}.{ext}
   data:
-    - data/outputs/{squad}/{tipo}/
+    # Padrão canônico — ver .claude/rules/output-naming.md
+    # {INSTANCE} resolvido em runtime a partir de KAIROS_INSTANCE_NAME (fallback: "default")
+    - data/outputs/{squad}/{tipo}/{id}_{filename}-{INSTANCE}-YYYY-MM-DD.{ext}
 
 autoClaude:
   execution:

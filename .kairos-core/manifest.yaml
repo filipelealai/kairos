@@ -16,6 +16,9 @@ owned_files:
 - path: .claude/rules/ids-principles.md
   layer: L1
   sha256: 483aee002cdeae8b3fa97389c1124f484ec844b550bcfa1d6769c3e2a5b0d60f
+- path: .claude/rules/output-naming.md
+  layer: L3
+  sha256: c558e66e8fbe400c3691e3d259baba88b887bdc50875a7f6468820e49bb3c4f8
 - path: .kairos-core/manifest.yaml
   layer: L2
   sha256: self-referential
@@ -39,7 +42,7 @@ owned_files:
   sha256: 032745c52d0bef8d7e4dba7ea61883bc30f11e18b06ddc8cd194feac44d86cc4
 - path: .kairos-core/tasks/kairos-doctor.md
   layer: L2
-  sha256: 617ec3c67122db03e522a654b4ac8faee5782db5e8d942eba4449527f80afa87
+  sha256: 8bd7677cc8c7ad9e3e80e8d756012240bb31370213b59f2bb472f7ff4a52d514
 - path: .kairos-core/tasks/kairos-help.md
   layer: L2
   sha256: edf202ded6cac23d6da201b8bf4e835dab2038157a1b1c20efdb2ab6cd296ea6
@@ -51,7 +54,7 @@ owned_files:
   sha256: 5d8008d6cdc7cd0776e756e5b26f127b699f887635176dda39135f2d7424069d
 - path: .kairos-core/tasks/kairos-new-squad.md
   layer: L2
-  sha256: 39cacb8f4b75a0832dba5ffdca62cd283eccbbd88558c3ff4a9d2e913321a66e
+  sha256: 717b320f283c69dd75501ee05c1c76ef30fa0495bce8c65de5f9be49eeeaf321
 - path: .kairos-core/tasks/kairos-update-squad.md
   layer: L2
   sha256: b580c7f67f6a4cf035f2dee411c292fb6e4bc9b25c5d71d93b6fb01afc7db333
@@ -69,13 +72,13 @@ owned_files:
   sha256: accdd840df7aa5f9839ffe0743cfeed5eb12f0d1b44a7c0bd50c6cd24dcc547d
 - path: .kairos-core/tasks/kairos-pre-push.md
   layer: L2
-  sha256: 04afb2c77f4438f0d323e1ee892d68f25cd99b911b10dda1edd7e12c9a48168e
+  sha256: 1a5005bce3e68daa6347f106102e8310c4d83bb96ac695150df768f5bcf625d7
 - path: .kairos-core/tasks/kairos-regenerate-squad.md
   layer: L2
   sha256: 75a0a9e427e4eda9d67cc4ff01dd46ee73cdc5f4c27d4222f7b02ee3df63f69b
 - path: .kairos-core/tasks/kairos-push.md
   layer: L2
-  sha256: c342c228049396420b286675e65f4d30e8fbb08a49d4416d2dcc3eafb0e45093
+  sha256: 69e500e599463a527d868f3966ae91a5d870f33cccc5aaffce98533bada90e4a
 - path: .kairos-core/tasks/kairos-review.md
   layer: L2
   sha256: 10e87096e79125552e8bd6bc95d5d328b6d5a7271558a12ecb3a3212f7b48a59
@@ -87,28 +90,28 @@ owned_files:
   sha256: 99398d070c9c927bb44ffe7d32a2885263732c823ce97dfcb5c03df2996e1088
 - path: .kairos-core/tasks/kairos-version-bump.md
   layer: L2
-  sha256: 87f4a31659e87aeeb4a5dd13fb7f53f7e9c49a2bcd00c725e0c6bdb4c92b78a1
+  sha256: c5ab22df107ce397e17a40c92458eb22a80456d7bd345760f3ddd71dd38d7368
 - path: .kairos-core/tasks/kairos-workers.md
   layer: L2
   sha256: 3af1973dfcefe6cec813062b664fa91578b85c2890eb0204e8f84c30d2b5613c
 - path: .kairos-core/templates/agent-template.md
   layer: L2
-  sha256: b30297f0d64784adb288f89cdeee38978b256aa14405290420af85ea58018b8d
+  sha256: e492da97c370fef3102857ed799fd115b5374997b2c906b2b335b737661c3efe
 - path: .kairos-core/templates/story-template.md
   layer: L2
   sha256: 423fb4ff71062f1859a0d62f17fd9df765083afaadd3f7587ce45352abbf974d
 - path: .kairos-core/templates/squad-template/README.md
   layer: L2
-  sha256: 4d6503f5565f88b43211b8533999b6fafdd8d666939e2e67a91d7902a4b2e52e
+  sha256: 27f77173560ea405ff497708f2f78d8eaa44147ed37d387c01f940b00d901120
 - path: .kairos-core/templates/squad-template/squad.yaml
   layer: L2
   sha256: 7bb6f85a5c5bd20e1f465c8c7a1e72cfde603b5998e0932c453406d61f6f4272
 - path: .kairos-core/templates/squad-template/agents/agent-id.yaml
   layer: L2
-  sha256: 3f28a9b1a46a9d71a73f4619e133b42fc94100c916ff1ba5c37011b8c761a7bc
+  sha256: 90cb3239c29fb1c8533c856aaba563afe4d23d15ebe2375d8d3a6ea93fbe1250
 - path: .kairos-core/templates/squad-template/workflows/full-pipeline.md
   layer: L2
-  sha256: 8cb2a1509a68933a515daca27afc205595a2c2197e012bb644bec729689264c2
+  sha256: fe67c17b38b489713b1e996b38a2d5d9f9f6837421fb422b6368ab8adc6c6813
 - path: .claude/rules/agent-handoff.md
   layer: L3
   sha256: 6fa7e77e6cdd80a07554ab6ade34fff3d6b542908b919d44a8fc4b2653653bdf
@@ -132,7 +135,7 @@ owned_files:
   sha256: 9c7edc688996f8bb7366b2839ce67092bf7354bc3422671440de9dbd99009c86
 - path: CHANGELOG.md
   layer: L3
-  sha256: 859c263dae8bef906b9fd0198b22fad8ffb7bd7ed325e07bc9d921e83e6d6f83
+  sha256: 99e175725812f6797c0b63ea236cc75d082be07a023f1c29f4130f9c4f7958a6
 - path: .github/CODEOWNERS
   layer: L3
   sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4
@@ -207,6 +210,8 @@ owned_sections:
 
     '
   owned_sections:
+  - name: framework
+    sha256: de7d2f26ba071dc1fa7398fec6ac0ad224e17a6b3a31eaa269ade2188816dc7f
   - name: ai-providers
     sha256: 17cfee75f3eaeeec92aed708ab19c56e94dbe989b2a154f279f59543c72bb5b7
   - name: automation
