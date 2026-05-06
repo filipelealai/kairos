@@ -1,4 +1,3 @@
 # Runtime do Kairos — gerado em execução, não commitar
-handoffs/*
-logs/*
+*
 !.gitignore

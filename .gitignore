@@ -5,3 +5,9 @@ data/cache/
 *.log
 /.env
 .mcp.json
+
+# Ferramentas externas (não pertencem ao repo Kairos)
+trello-cli/
+
+# Runtime do Kairos (L4 — efêmero, nunca versionar)
+.kairos-core/runtime/*.json
