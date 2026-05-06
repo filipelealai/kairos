@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.13.0] — 2026-05-05
+
+### Adicionado
+- MCP Server v1 deploy e validação em produção; output-naming.md: padrão canônico de nomenclatura com KAIROS_INSTANCE_NAME; guard de Git em tasks de versionamento e push
+
+---
+
 ## [3.12.1] — 2026-04-29
 
 ### Corrigido

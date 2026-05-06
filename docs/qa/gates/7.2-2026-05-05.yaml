@@ -1,0 +1,49 @@
+schema: 2
+story: "7.2"
+story_title: "Tagging automático no *pre-push + backfill one-shot"
+epic: 7
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-05-05T00:00:00-03:00"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ squads/ops/tasks/push-dual.md estendido com Passo 3.5 (tagging automático após push para origin/main)"
+    - "✅ Passo 3.5 inclui: extração de versão do CHANGELOG, validação cruzada com core-config.yaml, verificação de tag existente no remoto, criação e push de v{version}"
+    - "✅ Se versões divergem → HALT com mensagem clara antes do tagging"
+    - "✅ Se tag já existe → HALT com mensagem clara ('bump esquecido?'), sem push"
+    - "✅ Guard de Git adicionado em kairos-version-bump.md (2 menções), kairos-pre-push.md (2 menções) e kairos-push.md (2 menções)"
+    - "✅ Backfill one-shot executado: 24 tags retroativas criadas e pushadas para filipelealweb/kairos (v1.2.0 → v3.12.1), documentadas no Execution Log com commit correspondente"
+    - "✅ Documentação do procedimento de backfill incluída no Execution Log (não vira task permanente)"
+  manual:
+    - "⚠️ Backfill: verificação via git ls-remote --tags origin executada pelo executor e confirmada como 24 tags — estado externo ao repo, não verificável estaticamente pelo *review"
+  gaps: []
+
+files:
+  present:
+    - "✅ squads/ops/tasks/push-dual.md (Passo 3.5 com 3.5.1 e 3.5.2 + Guard de Git)"
+    - "✅ .kairos-core/tasks/kairos-version-bump.md (Guard de Git, 2 menções)"
+    - "✅ .kairos-core/tasks/kairos-pre-push.md (Guard de Git, 2 menções)"
+    - "✅ .kairos-core/tasks/kairos-push.md (Guard de Git, 2 menções)"
+  missing: []
+
+checks:
+  version_bumped: "N/A — bump ocorre em *pre-push, não em *review"
+  changelog_updated: "N/A — bump ocorre em *pre-push, não em *review"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "Backfill (24 tags) é estado externo — verificado pelo executor via git ls-remote mas não verificável estaticamente pelo *review"
+    recommendation: "Aceitar como AC cumprido conforme documentação no Execution Log"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Bump semântico: MINOR (nova capacidade de tagging automático + guards em 4 tasks). Executar *pre-push com tipo MINOR após smoke test de 7.1"
+  - "⚠️ O Passo 3.5 só será exercitado na próxima execução de push-dual — validar na sessão de *push após *pre-push"

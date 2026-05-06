@@ -17,10 +17,10 @@
 
 | Fase | Agente | Comando | Output |
 |------|--------|---------|--------|
-| 1. Extração | @brief-extractor (Brix) | `*extract` | `data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-YYYY-MM-DD.md` |
-| 2. Proposta | @proposal-writer (Pró) | `*write {empresa}` | `data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-YYYY-MM-DD.md` |
-| 3. Contrato | @contract-writer (Jus) | `*draft {empresa}` | `data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-YYYY-MM-DD.md` |
-| 4. Onboarding | @onboarding-writer (Ori) | `*kit {empresa}` | `data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-YYYY-MM-DD.md` |
+| 1. Extração | @brief-extractor (Brix) | `*extract` | `data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md` |
+| 2. Proposta | @proposal-writer (Pró) | `*write {empresa}` | `data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-{INSTANCE}-YYYY-MM-DD.md` |
+| 3. Contrato | @contract-writer (Jus) | `*draft {empresa}` | `data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-{INSTANCE}-YYYY-MM-DD.md` |
+| 4. Onboarding | @onboarding-writer (Ori) | `*kit {empresa}` | `data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-{INSTANCE}-YYYY-MM-DD.md` |
 
 ## Handoff Chain
 

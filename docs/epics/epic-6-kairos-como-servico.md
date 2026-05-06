@@ -33,7 +33,7 @@ A arquitetura é **escalonável por adição, não por modificação**: cada inc
 | Story | Título | Status |
 |-------|--------|--------|
 | [6.1](../stories/6.1.story.md) | Kairos MCP Server v1 — Implementação (Código + Docker + Docs) | Done |
-| [6.2](../stories/6.2.story.md) | Kairos MCP Server v1 — Deploy, Integração e Validação | Draft |
+| [6.2](../stories/6.2.story.md) | Kairos MCP Server v1 — Deploy, Integração e Validação | Done |
 
 ---
 
@@ -154,4 +154,6 @@ A v1 foi dividida em duas stories durante a execução por uma razão prática: 
 | 2026-04-29 | Story 6.1 Fase 1 concluída — código MCP + Docker + docs do time + plano de deploy. Smoke test local OK. Fase 2 (deploy efetivo + Service Account + validação) aguarda ações do usuário. |
 | 2026-04-29 | Story 6.1 re-escopada — split em 6.1 (Implementação: código + Docker + docs, agora In Review) + 6.2 (Deploy, Integração e Validação, em Draft). Plano v2/v3/v4 renumerado para 6.3/6.4/6.5. |
 | 2026-04-30 | Story 6.1 Done (gate PASS confirmado, push-dual concluído). Story 6.2 *implement iniciado — status → In Progress. |
+| 2026-04-30 | Story 6.2 *implement concluído — todos os ACs atendidos (com ressalva de validação UX por membro não-owner como follow-up). Pivot Service Account → OAuth user delegation no meio do ciclo (limitação Google Drive 2024). MCP server em produção em https://kairos.vendoteca.com com 10 agentes operacionais expostos, Drive sync funcional, Claude Desktop end-to-end validado. Status → In Review. |
 | 2026-04-29 | Story 6.1 concluída — *pre-push: gate PASS confirmado, status → Done |
+| 2026-05-05 | Story 6.2 concluída — *pre-push: gate confirmado, status → Done |

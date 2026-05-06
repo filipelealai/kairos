@@ -8,7 +8,7 @@ Entrada: |
   - transcript: conteúdo da transcrição (colar texto, ou "arquivo: {path}") — obrigatório (aceita qualquer ferramenta: Fathom, Fireflies, texto colado manualmente)
   - empresa: nome da empresa — obrigatório (ou inferido da transcrição)
 Saida: |
-  - analysis: data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-YYYY-MM-DD.md
+  - analysis: data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{INSTANCE}-YYYY-MM-DD.md
   - trello_card: card criado/atualizado no board de pipeline
   - followup_draft: rascunho de e-mail de follow-up (incluso na análise)
 Checklist:
@@ -183,7 +183,7 @@ trello-cli --update-card {card-id} --desc "{descrição abaixo}"
 ### Recontato
 {data de recontato} — {motivo do nurture}
 
-**Análise completa:** data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{data}.md
+**Análise completa:** data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{INSTANCE}-{data}.md
 ```
 
 Confirmar ao usuário após executar:
@@ -261,7 +261,7 @@ Obrigado pelo papo de hoje. [Referência específica a algo dito na call — dor
 
 ## Passo 5 — Salvar análise completa
 
-Salvar em: `data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{YYYY-MM-DD}.md`
+Salvar em: `data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{INSTANCE}-{YYYY-MM-DD}.md`
 
 **Estrutura do arquivo de análise:**
 
@@ -333,7 +333,7 @@ Salvar em: `data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}
 Confirmar ao usuário:
 
 ```
-✅ Análise salva: data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{data}.md
+✅ Análise salva: data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{INSTANCE}-{data}.md
 
 📋 Trello: card {criado/atualizado} na lista "{estágio}"
 
@@ -357,7 +357,7 @@ handoff:
   context:
     empresa: "{empresa}"
     estagio: "{estágio}"
-    analysis_file: "data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{data}.md"
+    analysis_file: "data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{INSTANCE}-{data}.md"
     trello_card_id: "{id}"
     followup_gerado: true
   next_action: "*brief próximo lead"

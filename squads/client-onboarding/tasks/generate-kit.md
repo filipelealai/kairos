@@ -9,7 +9,7 @@ Entrada: |
   - empresa: nome da empresa cliente — obrigatório
   - contrato: path do contrato (para referência de escopo e prazo) — opcional
 Saida: |
-  - kit: data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-YYYY-MM-DD.md
+  - kit: data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 Checklist:
   - "[ ] Carregar brief estruturado e contexto do projeto"
   - "[ ] Carregar template de onboarding de squads/client-onboarding/templates/onboarding/"
@@ -260,14 +260,14 @@ Após gerar as seções base, revisar e ajustar:
 ### Salvar o arquivo
 
 ```
-data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-YYYY-MM-DD.md
+data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 ```
 
 ### Confirmar ao usuário
 
 ```
 ✅ Kit de onboarding salvo:
-   data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-YYYY-MM-DD.md
+   data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 
 Seções geradas: {lista das seções incluídas}
 Tipo de projeto detectado: {tipo}

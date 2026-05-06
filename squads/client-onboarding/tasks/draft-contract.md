@@ -9,7 +9,7 @@ Entrada: |
   - brief: path do brief estruturado — obrigatório
   - empresa: nome da empresa cliente — obrigatório
 Saida: |
-  - contrato: data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-YYYY-MM-DD.md
+  - contrato: data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 Checklist:
   - "[ ] Carregar proposta aprovada e brief estruturado"
   - "[ ] Carregar template de contrato de squads/client-onboarding/templates/contract/"
@@ -342,7 +342,7 @@ Após redigir todas as cláusulas:
 ### Salvar o arquivo
 
 ```
-data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-YYYY-MM-DD.md
+data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 ```
 
 ### Gerar handoff (se pipeline continua)
@@ -355,7 +355,7 @@ handoff:
   timestamp: "{ISO 8601}"
   consumed: false
   context:
-    output_file: "data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-YYYY-MM-DD.md"
+    output_file: "data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-{INSTANCE}-YYYY-MM-DD.md"
     empresa: "{empresa}"
     campos_revisar_juridicamente: {N}
     prazo_contrato: "{prazo}"
@@ -368,7 +368,7 @@ Salvar em `.kairos-core/runtime/handoffs/handoff-contract-writer-to-onboarding-w
 
 ```
 ✅ Rascunho de contrato salvo:
-   data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-YYYY-MM-DD.md
+   data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 
 ⚠️ RASCUNHO — {N} campo(s) marcados [REVISAR JURIDICAMENTE].
    Revisar com assessoria jurídica antes de enviar ao cliente para assinatura.

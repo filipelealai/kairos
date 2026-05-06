@@ -1,0 +1,63 @@
+schema: 2
+story: "7.1"
+story_title: "KAIROS_INSTANCE_NAME a nível de framework + naming canônico de outputs"
+epic: 7
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-05-05T00:00:00-03:00"
+quality_score: 95
+reviewer_override_note: "Smoke test executado manualmente pelo usuário — confirmou funcionamento. AC final fechado. Override manual para PASS."
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ .claude/rules/output-naming.md criada: leitura de KAIROS_INSTANCE_NAME, fallback default + warning, padrão canônico {agent}_{tipo}-{INSTANCE}-YYYY-MM-DD.{ext}"
+    - "✅ .env.example: seção KAIROS-MANAGED-START:framework com entrada KAIROS_INSTANCE_NAME e comentário explicativo"
+    - "✅ Templates atualizados com {INSTANCE}: agent-template.md, squad-template/agents/agent-id.yaml (2 menções), squad-template/README.md (3 menções), squad-template/workflows/full-pipeline.md"
+    - "✅ kairos-new-squad.md atualizado para injetar padrão com {INSTANCE} no scaffolding (cobertura de kairos-new-agent.md via interpretação documentada — task não existe no framework)"
+    - "✅ kairos-doctor.md: Check 11 adicionado — WARN quando KAIROS_INSTANCE_NAME ausente/vazio ou não kebab-case"
+    - "✅ Squads existentes atualizados: campaign-lifecycle.md, sales-pipeline-lifecycle.md, client-onboarding-lifecycle.md — todos com {INSTANCE} confirmado"
+    - "✅ Tasks dos squads com {INSTANCE}: cold-prospecting/write-emails.md (1 menção), client-onboarding/draft-contract.md (4 menções) e demais via sed universal"
+    - "✅ .kairos-core/manifest.yaml: entry owned_files para output-naming.md + owned_sections para .env.example seção framework + sha256 recomputados"
+  manual:
+    - "⚠️ Smoke test runtime: rodar agente com KAIROS_INSTANCE_NAME=teste e verificar output com -teste-; rodar sem var e verificar fallback -default- com warning — executor deixou intencionalmente pendente (story kairos-core não executa agentes operacionais)"
+  gaps: []
+
+files:
+  present:
+    - "✅ .claude/rules/output-naming.md"
+    - "✅ .env.example (seção KAIROS-MANAGED-START: framework com KAIROS_INSTANCE_NAME)"
+    - "✅ .kairos-core/manifest.yaml (entry output-naming.md presente)"
+    - "✅ .kairos-core/tasks/kairos-doctor.md (Check 11 com KAIROS_INSTANCE_NAME)"
+    - "✅ .kairos-core/tasks/kairos-new-squad.md (pattern {INSTANCE} injetado)"
+    - "✅ .kairos-core/templates/agent-template.md"
+    - "✅ .kairos-core/templates/squad-template/agents/agent-id.yaml"
+    - "✅ .kairos-core/templates/squad-template/README.md"
+    - "✅ .kairos-core/templates/squad-template/workflows/full-pipeline.md"
+    - "✅ squads/cold-prospecting/rules/campaign-lifecycle.md ({INSTANCE} presente)"
+    - "✅ squads/sales-pipeline/rules/sales-pipeline-lifecycle.md ({INSTANCE} presente)"
+    - "✅ squads/client-onboarding/rules/client-onboarding-lifecycle.md ({INSTANCE} presente)"
+  missing: []
+
+checks:
+  version_bumped: "N/A — bump ocorre em *pre-push, não em *review"
+  changelog_updated: "N/A — bump ocorre em *pre-push, não em *review"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "medium"
+    description: "Smoke test runtime (AC final) não executado — deixado intencionalmente pelo executor: story kairos-core não executa agentes operacionais. O contrato está definido na rule; a materialização runtime é responsabilidade dos scripts em src/agents/ (user-owned)"
+    recommendation: "Executar smoke test manual antes do *pre-push: rodar qualquer agente operacional com e sem KAIROS_INSTANCE_NAME setada e verificar o nome do arquivo gerado"
+  - severity: "low"
+    description: "AC menciona kairos-new-agent.md que não existe no framework. Executor adaptou para kairos-new-squad.md + agent-template.md — cobertura adequada, mas a task *new-agent está ausente"
+    recommendation: "Avaliar abrir story curta para *new-agent se esse comando for planejado; caso contrário, fechar como won't-do e remover a referência na story"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Executar smoke test runtime antes do *pre-push para fechar o AC final — rodar @email-writer *write 1 (ou similar) com KAIROS_INSTANCE_NAME=filipe e verificar nome do arquivo gerado"
+  - "⚠️ Verificar arquivos data/kb.md e data/workflow-chains.yaml do cold-prospecting após transformação por sed (executor sinalizou como área de atenção — podem ter recebido edits indesejados)"
+  - "⚠️ Bump semântico: MINOR (nova rule, novos checks, templates atualizados, squads instanciados adaptados). Executar *pre-push com tipo MINOR"

@@ -76,7 +76,7 @@ commands:
     description: "Sair do modo pre-call"
 
 outputs:
-  - "data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-YYYY-MM-DD.md"
+  - "data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md"
 
 handoff_from: null
 handoff_to: "call-analyst"

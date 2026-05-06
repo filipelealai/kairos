@@ -36,8 +36,8 @@ Execução parcial: permitida — cada agente roda independentemente.
 
 | Agente | Output | Destino |
 |--------|--------|---------|
-| @pre-call | `data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-YYYY-MM-DD.md` | Lido pelo usuário antes da call |
-| @call-analyst | `data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-YYYY-MM-DD.md` | Arquivo + Trello + follow-up draft |
+| @pre-call | `data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md` | Lido pelo usuário antes da call |
+| @call-analyst | `data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{INSTANCE}-YYYY-MM-DD.md` | Arquivo + Trello + follow-up draft |
 
 ## Como Usar
 

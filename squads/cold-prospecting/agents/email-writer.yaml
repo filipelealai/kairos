@@ -61,7 +61,7 @@ commands:
     description: "Sair do modo email-writer"
 
 outputs:
-  - "data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json"
+  - "data/outputs/cold-prospecting/emails/email-writer_emails-{INSTANCE}-YYYY-MM-DD.json"
 
 handoff_from: niche-classifier
 handoff_to: campaign-analyst

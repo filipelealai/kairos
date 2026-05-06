@@ -27,44 +27,95 @@ Essas são responsabilidades do dono do framework, não do uso operacional.
 - **Mac:** baixe em https://claude.ai/download e arraste para Applications
 - **Windows:** baixe em https://claude.ai/download e execute o instalador
 
-Faça login com sua conta Claude (qualquer plano funciona — o servidor não precisa do seu plano para a maior parte do trabalho, mas a geração de texto consome créditos seu).
+Faça login com sua conta Claude (qualquer plano funciona — o servidor não precisa do seu plano para a maior parte do trabalho, mas a geração de texto consome créditos seus).
 
-### 2. Receba a API key do Kairos
+### 2. Instale Node.js (Windows e Mac)
+
+O Claude Desktop atualmente **não suporta servidor MCP remoto via URL diretamente** — precisa de um pequeno bridge local chamado `mcp-remote`, que roda em Node.js. Pode parecer chato mas é uma única instalação.
+
+- **Verifique se já tem Node:** abra o Prompt de Comando (Windows) ou Terminal (Mac) e rode:
+  ```
+  node --version
+  ```
+  Se aparecer `v20.x.x`, `v22.x.x` ou maior, pula pra etapa 3.
+- **Se não tem Node:** baixe o instalador LTS em https://nodejs.org/ e instale com as opções padrão. Depois feche e abra o Prompt/Terminal de novo, repita `node --version` pra confirmar.
+
+### 3. Receba a API key do Kairos
 
 A pessoa responsável pelo Kairos (provavelmente Filipe) vai te passar uma chave de API privada. Guarde-a em um local seguro — ela dá acesso aos squads.
 
-### 3. Configure o servidor MCP no Claude Desktop
+### 4. Configure o servidor MCP no Claude Desktop
 
-Abra o arquivo de configuração do Claude Desktop:
+A forma mais confiável é deixar o próprio app abrir o arquivo de configuração:
 
-- **Mac:** `~/Library/Application Support/Claude/claude_desktop_config.json`
-- **Windows:** `%APPDATA%\Claude\claude_desktop_config.json`
+1. Abra o Claude Desktop
+2. **Settings** (engrenagem, ou `Ctrl+,` no Windows / `Cmd+,` no Mac)
+3. Aba **Developer**
+4. Clique em **Edit Config** — abre o arquivo certo no editor de texto padrão e cria a pasta + arquivo se não existirem
 
-Se o arquivo não existir, crie-o. Cole o conteúdo abaixo (substituindo `COLE_AQUI_SUA_API_KEY` pela chave que você recebeu):
+> Se a aba **Developer** não aparece: vá em `Settings → Help` e habilite "Enable developer mode" (ou atualize o Claude Desktop pra versão ≥ 0.7).
 
+**Substitua todo o conteúdo** do arquivo (o JSON precisa ter um único objeto top-level) pelo abaixo, trocando `COLE_AQUI_SUA_API_KEY` pela chave que você recebeu.
+
+**Windows:**
 ```json
 {
   "mcpServers": {
     "kairos": {
-      "url": "https://kairos.vendoteca.com/mcp",
-      "headers": {
-        "Authorization": "Bearer COLE_AQUI_SUA_API_KEY"
-      }
+      "command": "cmd",
+      "args": [
+        "/c",
+        "npx",
+        "-y",
+        "mcp-remote",
+        "https://kairos.vendoteca.com/mcp",
+        "--header",
+        "Authorization: Bearer COLE_AQUI_SUA_API_KEY"
+      ]
     }
   }
 }
 ```
 
-Salve o arquivo e **feche e reabra o Claude Desktop completamente** (não apenas a janela — saia do app e abra de novo).
+**Mac:**
+```json
+{
+  "mcpServers": {
+    "kairos": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://kairos.vendoteca.com/mcp",
+        "--header",
+        "Authorization: Bearer COLE_AQUI_SUA_API_KEY"
+      ]
+    }
+  }
+}
+```
 
-### 4. Verifique se o servidor está disponível
+Salve o arquivo e **feche e reabra o Claude Desktop completamente** (no Mac, `Cmd+Q`; no Windows, botão direito no ícone da system tray → Quit). A primeira inicialização demora 10-30s porque baixa o pacote `mcp-remote`.
 
-No Claude Desktop, comece uma nova conversa e clique no ícone de "+" ou "/" da caixa de mensagem. Você deve ver uma seção chamada **kairos** com vários prompts disponíveis (um por agente). Por exemplo:
+### 5. Verifique se o servidor está disponível
 
-- `kairos-cold-prospecting-email-writer` — gerar e-mails de prospecção
-- `kairos-client-onboarding-brief-extractor` — extrair brief estruturado
-- `kairos-client-onboarding-proposal-writer` — gerar proposta comercial
-- `kairos-sales-pipeline-pre-call` — preparar brief para call
+No Claude Desktop, abra uma nova conversa e clique no botão **"+"** ao lado da caixa de mensagem. No menu que abrir:
+
+- **Conectores** (Connectors)
+- → **Adicionar do kairos** (Add from kairos) — submenu
+
+Deve aparecer a lista dos 10 agentes operacionais:
+
+- `Kairos-cold-prospecting-campaign-analyst`
+- `Kairos-cold-prospecting-lead-scorer`
+- `Kairos-cold-prospecting-niche-classifier`
+- `Kairos-cold-prospecting-email-writer`
+- `Kairos-sales-pipeline-pre-call`
+- `Kairos-sales-pipeline-call-analyst`
+- `Kairos-client-onboarding-brief-extractor`
+- `Kairos-client-onboarding-proposal-writer`
+- `Kairos-client-onboarding-contract-writer`
+- `Kairos-client-onboarding-onboarding-writer`
 
 Se essa seção não aparecer, veja o **troubleshooting** no fim deste guia.
 
@@ -75,7 +126,7 @@ Se essa seção não aparecer, veja o **troubleshooting** no fim deste guia.
 ### Fluxo padrão
 
 1. **Comece uma nova conversa** no Claude Desktop
-2. **Selecione o prompt do agente** que você quer usar (`/` → `kairos-...`)
+2. Clique no **"+"** ao lado da caixa de mensagem → **Conectores** → **Adicionar do kairos** → selecione o agente que você quer usar
 3. O Claude vai carregar o contexto completo do agente (persona, regras, memória, templates)
 4. **Escreva o que você precisa** em linguagem natural — ex: "preciso de um brief para a empresa ACME, vendem software de RH, conversei com o CEO ontem por WhatsApp e ele disse..."
 5. O Claude vai trabalhar como aquele agente, fazer perguntas se faltar informação, e gerar o output
@@ -126,13 +177,15 @@ O Claude Desktop **não mantém memória entre conversas**. Cada vez que você a
 
 ## Troubleshooting
 
-### O servidor "kairos" não aparece no menu de prompts
+### O servidor "kairos" não aparece em Conectores
 
-1. Verifique se o JSON de config está sintaticamente válido (use https://jsonlint.com)
+1. Verifique se o JSON de config está sintaticamente válido — não pode ter conteúdo antes ou depois do objeto principal (use https://jsonlint.com pra validar)
 2. Confirme que a URL é exatamente `https://kairos.vendoteca.com/mcp`
-3. Confirme que a API key começa com `Bearer ` no header
-4. Feche o Claude Desktop **completamente** (no Mac: Cmd+Q) e reabra
-5. Se ainda assim não aparecer, peça ajuda ao Filipe
+3. Confirme que a API key foi copiada inteira no header `Authorization: Bearer ...`
+4. Confirme que tem Node.js instalado: rode `node --version` no Prompt de Comando — precisa retornar uma versão
+5. Feche o Claude Desktop **completamente** (no Mac: Cmd+Q; no Windows: botão direito system tray → Quit) e reabra. A primeira inicialização demora 10-30s baixando o `mcp-remote`
+6. Confirme em `Settings → Developer` se o servidor `kairos` aparece como "running"
+7. Se ainda assim não aparecer, peça ajuda ao Filipe e mande os logs em `%APPDATA%\Claude\logs\mcp*.log` (Windows) ou `~/Library/Logs/Claude/mcp*.log` (Mac)
 
 ### "401 Unauthorized" ou "servidor não responde"
 

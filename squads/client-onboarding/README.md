@@ -72,10 +72,10 @@ notas de call, documentos copiados, links de documentos).
 
 | Agente | Output | Destino |
 |--------|--------|---------|
-| @brief-extractor | `data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-YYYY-MM-DD.md` | Base para todos os demais |
-| @proposal-writer | `data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-YYYY-MM-DD.md` | Revisão + envio ao cliente |
-| @contract-writer | `data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-YYYY-MM-DD.md` | Revisão jurídica + assinatura |
-| @onboarding-writer | `data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-YYYY-MM-DD.md` | Entrega ao cliente no kickoff |
+| @brief-extractor | `data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md` | Base para todos os demais |
+| @proposal-writer | `data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-{INSTANCE}-YYYY-MM-DD.md` | Revisão + envio ao cliente |
+| @contract-writer | `data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-{INSTANCE}-YYYY-MM-DD.md` | Revisão jurídica + assinatura |
+| @onboarding-writer | `data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-{INSTANCE}-YYYY-MM-DD.md` | Entrega ao cliente no kickoff |
 
 > Todos os outputs MD podem ser convertidos para PDF com `npx md-to-pdf {arquivo.md}` — gera `{arquivo.pdf}` no mesmo diretório. Ferramenta: md-to-pdf v11.6.2 (Puppeteer + Chromium embutido, sem dependências externas).
 

@@ -85,7 +85,7 @@ commands:
     description: "Sair do modo call-analyst"
 
 outputs:
-  - "data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-YYYY-MM-DD.md"
+  - "data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{INSTANCE}-YYYY-MM-DD.md"
   - "Trello card criado/atualizado no board de pipeline"
   - "Rascunho de follow-up email (incluso na análise)"
 

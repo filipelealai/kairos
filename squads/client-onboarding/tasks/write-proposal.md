@@ -8,7 +8,7 @@ Entrada: |
   - brief: path do brief estruturado ou contexto colado — obrigatório
   - empresa: nome da empresa cliente — obrigatório
 Saida: |
-  - proposta: data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-YYYY-MM-DD.md
+  - proposta: data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 Checklist:
   - "[ ] Carregar brief estruturado"
   - "[ ] Carregar template de proposta de squads/client-onboarding/templates/proposal/"
@@ -225,7 +225,7 @@ Após gerar todas as seções, percorrer a proposta e:
 ### Salvar o arquivo
 
 ```
-data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-YYYY-MM-DD.md
+data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 ```
 
 ### Gerar handoff (se pipeline continua)
@@ -238,7 +238,7 @@ handoff:
   timestamp: "{ISO 8601}"
   consumed: false
   context:
-    output_file: "data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-YYYY-MM-DD.md"
+    output_file: "data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-{INSTANCE}-YYYY-MM-DD.md"
     empresa: "{empresa}"
     brief_file: "{path do brief usado}"
     campos_revisar: {N}
@@ -251,7 +251,7 @@ Salvar em `.kairos-core/runtime/handoffs/handoff-proposal-writer-to-contract-wri
 
 ```
 ✅ Proposta salva:
-   data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-YYYY-MM-DD.md
+   data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 
 ⚠️ {N} campo(s) marcados com [REVISAR] — revisar antes de enviar ao cliente.
 

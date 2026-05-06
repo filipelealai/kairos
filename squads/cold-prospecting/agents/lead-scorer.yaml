@@ -57,7 +57,7 @@ commands:
     description: "Sair do modo lead-scorer"
 
 outputs:
-  - "data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv"
+  - "data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-{INSTANCE}-YYYY-MM-DD.csv"
 
 handoff_from: campaign-analyst
 handoff_to: niche-classifier

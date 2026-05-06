@@ -60,7 +60,7 @@ commands:
     description: "Sair do modo onboarding-writer"
 
 outputs:
-  - "data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-YYYY-MM-DD.md"
+  - "data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-{INSTANCE}-YYYY-MM-DD.md"
 
 handoff_from: "contract-writer"
 handoff_to: null

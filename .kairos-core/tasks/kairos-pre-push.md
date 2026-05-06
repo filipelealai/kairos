@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.11.0
+kairos-version: 3.13.0
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -29,6 +29,32 @@ Checklist:
 O `*pre-push` é o centro do pré-voo: trata o gate de review, o bump de versão interativo, o commit e as verificações finais. Deve ser executado antes de cada `*push`.
 
 ## Execução
+
+### Guard de Git
+
+**ANTES de qualquer coisa**, verificar se o Git está disponível:
+
+```bash
+git --version
+```
+
+Se o comando falhar (Git não instalado ou não encontrado no PATH):
+
+```
+🚫 HALT — Git não encontrado.
+
+O *pre-push requer Git para operar. Instale com:
+  • Linux (apt):   sudo apt install git
+  • macOS (brew):  brew install git
+  • Windows:       winget install --id Git.Git -e
+
+Deseja que eu execute a instalação agora? (s/n):
+```
+
+Se `s` (ou `sim`): executar o comando de instalação correspondente ao SO detectado com confirmação explícita antes de rodar.
+Se `n` (ou `não`): HALT — encerrar sem executar nada.
+
+---
 
 ### Passo 0 — *doctor (Health Check Completo)
 

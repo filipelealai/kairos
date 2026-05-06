@@ -36,8 +36,8 @@ pipeline:
 data:
   input_webhook: https://n8n.vendoteca.com/webhook/kairos-leads  # leads do cold-prospecting
   outputs:
-    - data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-YYYY-MM-DD.md
-    - data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-YYYY-MM-DD.md
+    - data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md
+    - data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{INSTANCE}-YYYY-MM-DD.md
   handoffs: .kairos-core/runtime/handoffs/
 
 dependencies:

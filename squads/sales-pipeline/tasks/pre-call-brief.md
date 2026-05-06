@@ -9,7 +9,7 @@ Entrada: |
   - resposta_email: conteúdo da resposta recebida — opcional (colar diretamente)
   - formulario: dados de formulário preenchido pelo lead — opcional
 Saida: |
-  - brief: data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-YYYY-MM-DD.md
+  - brief: data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 Checklist:
   - "[ ] Tentar buscar dados do lead via N8N_LEADS_URL (opcional — prosseguir mesmo se ausente/indisponível)"
   - "[ ] Confirmar dados encontrados com o usuário antes de prosseguir (se webhook respondeu)"
@@ -174,13 +174,13 @@ Gerar o documento seguindo a estrutura abaixo. **Usar apenas dados confirmados �
 
 ## Passo 5 — Salvar o brief
 
-Salvar em: `data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{YYYY-MM-DD}.md`
+Salvar em: `data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{INSTANCE}-{YYYY-MM-DD}.md`
 
 Substituir espaços por hífens no nome da empresa. Ex: `pre-call_brief-Acme-Servicos-2026-04-27.md`
 
 Confirmar ao usuário:
 ```
-✅ Brief gerado: data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{data}.md
+✅ Brief gerado: data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{INSTANCE}-{data}.md
 
 Boa call com {responsavel} da {empresa}.
 — Rex 🔍
@@ -198,7 +198,7 @@ handoff:
   context:
     empresa: "{empresa}"
     contato: "{responsavel}"
-    brief_file: "data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{data}.md"
+    brief_file: "data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{INSTANCE}-{data}.md"
     tom_resposta: "{tom identificado ou 'sem resposta prévia'}"
     score: "{score}"
   next_action: "*analyze após a call"

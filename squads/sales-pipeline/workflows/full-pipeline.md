@@ -14,8 +14,8 @@
 
 | Fase | Agente | Comando | Output |
 |------|--------|---------|--------|
-| 1. Preparação | @pre-call (Rex) | `*brief {lead}` | `data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-YYYY-MM-DD.md` |
-| 2. Análise pós-call | @call-analyst (Cal) | `*analyze {transcrição}` | `data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-YYYY-MM-DD.md` + Trello + follow-up |
+| 1. Preparação | @pre-call (Rex) | `*brief {lead}` | `data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md` |
+| 2. Análise pós-call | @call-analyst (Cal) | `*analyze {transcrição}` | `data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{INSTANCE}-YYYY-MM-DD.md` + Trello + follow-up |
 
 ## Handoff Chain
 

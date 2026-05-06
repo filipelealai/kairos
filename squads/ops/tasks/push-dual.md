@@ -6,6 +6,32 @@
 
 ---
 
+## Guard de Git
+
+**ANTES de qualquer coisa**, verificar se o Git está disponível:
+
+```bash
+git --version
+```
+
+Se o comando falhar (Git não instalado ou não encontrado no PATH):
+
+```
+🚫 HALT — Git não encontrado.
+
+O push-dual requer Git para operar. Instale com:
+  • Linux (apt):   sudo apt install git
+  • macOS (brew):  brew install git
+  • Windows:       winget install --id Git.Git -e
+
+Deseja que eu execute a instalação agora? (s/n):
+```
+
+Se `s` (ou `sim`): executar o comando de instalação correspondente ao SO detectado com confirmação explícita antes de rodar.
+Se `n` (ou `não`): HALT — encerrar sem executar nada.
+
+---
+
 ## Guard Obrigatório
 
 **ANTES de qualquer coisa**, verificar o estado de sessão (herdado de `kairos-push.md`):
@@ -201,6 +227,67 @@ git push origin main
 
 ---
 
+### Passo 3.5 — Tagging automático
+
+**Objetivo:** materializar a versão semver do Kairos como tag Git no remoto público (`origin/main`), permitindo que `*update` (Story 7.3) puxe versões estáveis em vez de HEAD.
+
+Executar **somente após** push bem-sucedido para `origin/main` no Passo 3.
+
+#### 3.5.1 — Extrair versão atual
+
+```bash
+# Versão do CHANGELOG (entrada mais recente)
+VERSION_CHANGELOG=$(grep -m1 '^## \[' CHANGELOG.md | sed 's/## \[//;s/\].*//')
+
+# Versão do core-config.yaml
+VERSION_CONFIG=$(grep '^version:' .kairos-core/core-config.yaml | awk '{print $2}')
+```
+
+#### 3.5.2 — Validação cruzada
+
+Comparar `VERSION_CHANGELOG` com `VERSION_CONFIG`:
+
+- Se divergem → **HALT:**
+  ```
+  🚫 HALT — Divergência de versão antes de criar tag:
+    CHANGELOG.md:        v{VERSION_CHANGELOG}
+    core-config.yaml:    v{VERSION_CONFIG}
+  Execute *version para sincronizar antes de continuar.
+  ```
+- Se coincidem → prosseguir com `TAG=v{VERSION_CHANGELOG}`
+
+#### 3.5.3 — Verificar se tag já existe no remoto
+
+```bash
+git ls-remote --tags origin "refs/tags/${TAG}"
+```
+
+- Se a tag já existe no remoto → **HALT:**
+  ```
+  ⚠️  Tag ${TAG} já existe em origin. Bump esquecido?
+  Se esta é uma versão nova, rode *version e *pre-push novamente.
+  Push concluído sem novo tagging.
+  ```
+  (não é um erro fatal — o push do código já ocorreu com sucesso)
+- Se não existe → prosseguir
+
+#### 3.5.4 — Criar e pushar a tag
+
+```bash
+# Criar tag apontando para o commit recém-pushado (HEAD de origin/main)
+git tag "${TAG}"
+
+# Pushar a tag para origin
+git push origin "${TAG}"
+```
+
+Confirmar:
+```
+✅ Tag ${TAG} criada e pushada para origin/main
+```
+
+---
+
 ### Passo 4 — Retornar para filipe-instance
 
 ```bash
@@ -233,6 +320,7 @@ filipe-instance (trabalho)
        git checkout filipe-instance -- {sync_files}         ← Passo 2a (derivado do manifest)
        {reconstruir owned_sections}                         ← Passo 2b (derivado do manifest)
        git add -A + git commit + git push origin main       → kairos (público, framework puro)
+       git tag v{version} + git push origin v{version}     ← Passo 3.5 (tagging automático)
        git checkout filipe-instance
 ```
 
@@ -248,3 +336,6 @@ filipe-instance (trabalho)
 | Remote `origin` não tem permissão de push | HALT — verificar autenticação do `gh` CLI |
 | Arquivo de manifest não encontrado | HALT — executar `*doctor` para diagnóstico |
 | `git show filipe-instance:.kairos-core/manifest.yaml` falha | HALT — verificar se branch `filipe-instance` existe e manifest está commitado |
+| Versão do CHANGELOG diverge de `core-config.yaml` | HALT — executar `*version` para sincronizar antes de continuar |
+| Tag `v{version}` já existe em `origin` | HALT com aviso ("bump esquecido?") — push do código já foi concluído |
+| `git push origin ${TAG}` sem permissão | Verificar autenticação do `gh` CLI e se a tag é permitida em `origin` |

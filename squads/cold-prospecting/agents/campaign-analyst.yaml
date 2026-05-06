@@ -57,7 +57,7 @@ commands:
     description: "Sair do modo campaign-analyst"
 
 outputs:
-  - "data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md"
+  - "data/outputs/cold-prospecting/reports/campaign-analyst_campaign-{INSTANCE}-YYYY-MM-DD.md"
 
 handoff_from: email-writer
 handoff_to: lead-scorer

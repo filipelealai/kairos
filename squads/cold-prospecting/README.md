@@ -34,10 +34,10 @@ Após cada fase, o agente gera um handoff em `.kairos-core/runtime/handoffs/`. O
 
 | Fase | Arquivo |
 |------|---------|
-| Análise | `data/outputs/cold-prospecting/reports/campaign-analyst_campaign-YYYY-MM-DD.md` |
-| Scoring | `data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-YYYY-MM-DD.csv` |
-| Nichos | `data/outputs/cold-prospecting/reports/niche-classifier_niche-map-YYYY-MM-DD.json` |
-| E-mails | `data/outputs/cold-prospecting/emails/email-writer_emails-YYYY-MM-DD.json` |
+| Análise | `data/outputs/cold-prospecting/reports/campaign-analyst_campaign-{INSTANCE}-YYYY-MM-DD.md` |
+| Scoring | `data/outputs/cold-prospecting/reports/lead-scorer_scored-leads-{INSTANCE}-YYYY-MM-DD.csv` |
+| Nichos | `data/outputs/cold-prospecting/reports/niche-classifier_niche-map-{INSTANCE}-YYYY-MM-DD.json` |
+| E-mails | `data/outputs/cold-prospecting/emails/email-writer_emails-{INSTANCE}-YYYY-MM-DD.json` |
 
 ---
 

@@ -59,6 +59,7 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | [3.28](../stories/3.28.story.md) | Refatoração de data-flow.md e agent-standards.md | Done |
 | [3.29](../stories/3.29.story.md) | Elicitação Propósito-First em *new-squad, *update-squad, *new-story e *new-epic | Done |
 | [3.30](../stories/3.30.story.md) | Pre-Push Passo 4: Corrigir Resolução de Path e Reordenar Antes do Commit | Done |
+| [3.31](../stories/3.31.story.md) | Refatoração: Separação de Responsabilidades entre *pre-push, *push e *version | Draft |
 
 ---
 
@@ -110,3 +111,4 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | 2026-04-26 | Story 3.30 criada — falso positivo no Passo 4 e reordenação antes do commit |
 | 2026-04-26 | Story 3.30 concluída — In Review |
 | 2026-04-26 | Story 3.30 Done — gate PASS, *pre-push v3.11.0 |
+| 2026-05-05 | Story 3.31 criada — separação de responsabilidades entre *pre-push, *push e *version |

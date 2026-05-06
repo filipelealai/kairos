@@ -10,12 +10,16 @@
 @call-analyst *analyze {transcrição}
 ```
 
+> **Nomenclatura de outputs:** todos os arquivos seguem o padrão canônico
+> `{agente}_{tipo}-{INSTANCE}-YYYY-MM-DD.{ext}`, onde `{INSTANCE}` vem de
+> `KAIROS_INSTANCE_NAME` (fallback `default`). Ver `.claude/rules/output-naming.md`.
+
 ## Fases e Responsáveis
 
 | Fase | Agente | Comando | Output |
 |------|--------|---------|--------|
-| 1. Brief | @pre-call (Rex) | `*brief` | `data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-YYYY-MM-DD.md` |
-| 2. Análise | @call-analyst (Cal) | `*analyze` | análise + Trello + follow-up draft |
+| 1. Brief | @pre-call (Rex) | `*brief` | `data/outputs/sales-pipeline/briefs/pre-call_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md` |
+| 2. Análise | @call-analyst (Cal) | `*analyze` | `data/outputs/sales-pipeline/analyses/call-analyst_analysis-{empresa}-{INSTANCE}-YYYY-MM-DD.md` + Trello + follow-up draft |
 
 ## Handoff Chain
 

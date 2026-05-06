@@ -1,0 +1,68 @@
+schema: 2
+story: "6.2"
+story_title: "Kairos MCP Server v1 — Deploy, Integração e Validação"
+epic: 6
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-05-05T00:00:00-03:00"
+quality_score: 90
+reviewer_override_note: "Story não terá continuação — vale apenas como log histórico. Rollback (docker stack rm) será exercitado em oportunidade futura. Todos os ACs técnicos validados em produção. Override manual para PASS pelo usuário."
+execution_log_found: true
+self_reviewed: true
+self_review_note: "Story implementada e revisada pelo mesmo agente (@kairos) — validação estrutural (ACs, arquivos), não independente."
+
+ac_coverage:
+  covered:
+    - "✅ GitHub PAT criado (fine-grained Contents:Read) e validado via curl 200 + clone na VPS"
+    - "✅ Autenticação OAuth do Google Drive configurada (pivot de SA → OAuth user delegation, refresh token gerado via workaround WSL2, pasta-raiz criada)"
+    - "✅ API key MCP gerada e armazenada em local seguro pelo usuário"
+    - "✅ Docker secrets criados na VPS (kairos_mcp_api_key, kairos_drive_oauth, kairos_git_url confirmados via docker secret ls)"
+    - "✅ Imagem kairos-mcp:latest buildada na VPS (buildada 2x — SA e OAuth)"
+    - "✅ Stack kairos deployado via docker stack deploy — 1/1 replicas, logs confirmam clone + 10 agentes + Drive OAuth + listening"
+    - "✅ HTTPS via Traefik+Cloudflare (curl /health → 200, TLS válido)"
+    - "✅ Smoke test em produção (401 sem auth, initialize → protocolVersion 2025-06-18 + capabilities, prompts/list → 10 prompts operacionais, 0 governança)"
+    - "✅ Sincronização periódica validada (reset --hard reverteu modificação manual em ≤70s)"
+    - "✅ team-setup.md atualizado com mcp-remote bridge, Node.js requirement, caminho + → Conectores, troubleshooting expandido"
+    - "✅ mcp-deploy.md: passo 3 reescrito (SA → OAuth), passo 5 atualizado, rollback documentado"
+    - "✅ Plano de rollback documentado em mcp-deploy.md (parcialmente exercitado durante redeploy OAuth)"
+  manual:
+    - "⚠️ Validação end-to-end com Claude Desktop — realizada pelo owner (Filipe) como proxy do time; pipeline @brief-extractor executou, tools save_output e write_handoff OK, arquivo confirmado no Drive. AC cumprido tecnicamente, mas por owner e não por membro não-técnico do time — UX onboarding por não-owner fica como follow-up async"
+  gaps: []
+
+files:
+  present:
+    - "✅ src/mcp-server/scripts/authorize-drive.ts"
+    - "✅ squads/ops/tasks/mcp-deploy.md (13 menções OAuth)"
+    - "✅ squads/team-setup.md (5 menções mcp-remote)"
+    - "✅ src/mcp-server/drive-client.ts (9 menções OAuth/refresh_token)"
+    - "✅ src/mcp-server/config.ts (GOOGLE_DRIVE_OAUTH_JSON presente)"
+  missing: []
+
+checks:
+  version_bumped: "N/A — type:instance nunca gera bump semântico"
+  changelog_updated: "N/A — type:instance nunca gera bump semântico"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "medium"
+    description: "Story auto-revisada pelo mesmo agente que implementou (@kairos via *implement) — validação é estrutural, não independente"
+    recommendation: "Aceitar como RESSALVA conforme padrão estabelecido para stories type:instance via *implement"
+  - severity: "medium"
+    description: "AC de validação end-to-end com membro não-owner cumprido por proxy (Filipe/owner). UX onboarding por membro não-técnico ainda não realizado"
+    recommendation: "Entregar team-setup.md + API key para um membro não-técnico do time e capturar feedback — follow-up async, não bloqueador"
+  - severity: "low"
+    description: "Rollback completo (docker stack rm total + redeploy do zero) não testado destrutivamente — apenas rollback parcial exercitado durante troca SA→OAuth"
+    recommendation: "Testar na próxima oportunidade de mudança no stack"
+  - severity: "low"
+    description: "TLS end-to-end não auditável (Cloudflare termina TLS; origin pode ser HTTP cleartext dependendo do modo SSL no CF)"
+    recommendation: "Avaliar Cloudflare Origin Certificates ou DNS-01 para v2 se TLS auditável for requisito"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Promover ao KB: 'Service Accounts não funcionam para Google Drive pessoal sem Workspace pago + Shared Drive (mudança Google 2024). Solução padrão: OAuth user delegation com refresh token offline + Desktop app type.'"
+  - "⚠️ Promover ao KB: 'Claude Desktop não suporta url+headers MCP remoto direto — exige bridge mcp-remote (npx). Config: command:cmd /c npx -y mcp-remote URL (Windows) ou command:npx ... (Mac). UI de prompts: + → Conectores → Adicionar de [server], não /menu.'"
+  - "⚠️ Adicionar seção Estado externo da VPS no mcp-deploy.md: Traefik config file + rede overlay recriada manualmente — estado não rastreável por git, necessário para DR/migração"

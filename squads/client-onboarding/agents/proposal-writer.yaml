@@ -59,7 +59,7 @@ commands:
     description: "Sair do modo proposal-writer"
 
 outputs:
-  - "data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-YYYY-MM-DD.md"
+  - "data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-{INSTANCE}-YYYY-MM-DD.md"
 
 handoff_from: "brief-extractor"
 handoff_to: "contract-writer"

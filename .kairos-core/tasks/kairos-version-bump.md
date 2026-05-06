@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.1.3
+kairos-version: 3.13.0
 task: Kairos Version Bump
 responsavel: "@kairos"
 responsavel_type: agent
@@ -26,6 +26,32 @@ Checklist:
 ---
 
 # *version — Bump de Versão Semântica
+
+## Guard de Git
+
+**ANTES de qualquer coisa**, verificar se o Git está disponível:
+
+```bash
+git --version
+```
+
+Se o comando falhar (Git não instalado ou não encontrado no PATH):
+
+```
+🚫 HALT — Git não encontrado.
+
+O *version requer Git para operar. Instale com:
+  • Linux (apt):   sudo apt install git
+  • macOS (brew):  brew install git
+  • Windows:       winget install --id Git.Git -e
+
+Deseja que eu execute a instalação agora? (s/n):
+```
+
+Se `s` (ou `sim`): executar o comando de instalação correspondente ao SO detectado com confirmação explícita antes de rodar.
+Se `n` (ou `não`): HALT — encerrar sem executar nada.
+
+---
 
 ## Validação
 

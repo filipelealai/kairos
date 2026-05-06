@@ -43,10 +43,10 @@ pipeline:
 data:
   input: manual  # texto livre, brief, notas de call, docs do cliente
   outputs:
-    - data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-YYYY-MM-DD.md
-    - data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-YYYY-MM-DD.md
-    - data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-YYYY-MM-DD.md
-    - data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-YYYY-MM-DD.md
+    - data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md
+    - data/outputs/client-onboarding/proposals/proposal-writer_proposal-{empresa}-{INSTANCE}-YYYY-MM-DD.md
+    - data/outputs/client-onboarding/contracts/contract-writer_contract-{empresa}-{INSTANCE}-YYYY-MM-DD.md
+    - data/outputs/client-onboarding/onboarding/onboarding-writer_kit-{empresa}-{INSTANCE}-YYYY-MM-DD.md
   handoffs: .kairos-core/runtime/handoffs/
 
 templates:

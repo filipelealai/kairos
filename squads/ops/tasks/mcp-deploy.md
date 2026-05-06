@@ -1,6 +1,6 @@
 # mcp-deploy — Deploy do Kairos MCP Server na VPS
 
-Plano de execução da **Fase 2** da Story 6.1. A Fase 1 (código + Dockerfile + docs) está concluída no repo. Esta task descreve os passos de deploy efetivo na VPS, configuração de Service Account e validação end-to-end.
+Plano de execução da **Fase 2** da Story 6.1 / Story 6.2. A Fase 1 (código + Dockerfile + docs) foi concluída na 6.1. Esta task descreve os passos de deploy efetivo na VPS, configuração de OAuth do Google Drive e validação end-to-end (Story 6.2).
 
 **Pré-requisitos:**
 - Story 6.1 com Fase 1 marcada como concluída no Execution Log
@@ -36,7 +36,9 @@ https://<TOKEN>@github.com/filipelealweb/kairos-pessoal.git
 
 ---
 
-## Passo 3 — Criar Service Account no Google Cloud
+## Passo 3 — Configurar OAuth do Google Drive
+
+> **Nota arquitetural:** Service Accounts não funcionam para Drive pessoal. Desde 2024, a Google bloqueou SAs de criar arquivos em "My Drive" comum (SA não tem storage quota). A solução é usar **OAuth user delegation** com refresh token offline — o servidor age como um usuário real com quota normal. Isso só requer rodar um fluxo de autorização **uma vez** num browser local. Para Workspace pago com Shared Drive, SA voltaria a ser viável, mas não é o caso desta instância.
 
 ### 3.1 — Criar projeto (se não houver)
 
@@ -49,29 +51,68 @@ https://<TOKEN>@github.com/filipelealweb/kairos-pessoal.git
 2. Selecionar o projeto correto no dropdown do topo
 3. Clicar em **Enable**
 
-### 3.3 — Criar Service Account
+### 3.3 — Configurar OAuth Consent Screen
 
-1. https://console.cloud.google.com/iam-admin/serviceaccounts
-2. **Create Service Account**
-3. Nome: `kairos-mcp-server`
-4. ID será gerado automaticamente: `kairos-mcp-server@{projeto}.iam.gserviceaccount.com`
-5. **Create and continue** → pular concessão de roles (não precisa) → **Done**
+1. https://console.cloud.google.com/apis/credentials/consent
+2. **User Type:** External → **Create**
+3. **App name:** `Kairos MCP Server`
+4. **User support email:** seu email
+5. **Developer contact information:** seu email
+6. **Save and continue**
+7. **Scopes:** pular → **Save and continue**
+8. **Test users:** **+ Add users** → adicionar o email da conta dona da pasta do Drive → **Save and continue**
+9. **Back to dashboard**
 
-### 3.4 — Gerar chave JSON
+### 3.4 — Criar OAuth Client ID
 
-1. Clicar na Service Account criada
-2. Aba **Keys** → **Add Key** → **Create new key**
-3. Tipo: **JSON** → **Create**
-4. Arquivo `.json` será baixado — **guardar em local seguro**
-5. Esse arquivo NUNCA pode ir para o repo
+1. https://console.cloud.google.com/apis/credentials
+2. **+ Create credentials** → **OAuth client ID**
+3. **Application type:** **Desktop app** (importante — não escolher Web)
+4. **Name:** `kairos-mcp-authorize`
+5. **Create**
+6. **Download JSON** — salvar como `client_secret.json` em local seguro
 
-### 3.5 — Compartilhar pasta do Drive com a Service Account
+### 3.5 — Criar pasta no Google Drive + capturar folder ID
 
-1. Criar (ou usar existente) pasta no Google Drive: ex `Kairos Outputs`
-2. Botão direito → **Share** → adicionar e-mail da Service Account (o `kairos-mcp-server@...iam.gserviceaccount.com`)
-3. Permissão: **Editor**
-4. **Send** (sem notificação)
-5. Copiar o **ID da pasta** da URL: `https://drive.google.com/drive/folders/<ID-AQUI>`
+1. https://drive.google.com → **+ New** → **New folder** → nome ex `Kairos Outputs`
+2. Abrir a pasta — copiar o **ID** da URL (parte depois de `/folders/`):
+   ```
+   https://drive.google.com/drive/folders/<FOLDER-ID-AQUI>
+   ```
+3. Guardar o folder ID — vai como env var `GOOGLE_DRIVE_ROOT_FOLDER_ID` no deploy
+
+> Não é mais necessário compartilhar a pasta com nenhum outro e-mail — com OAuth, o servidor age como o próprio dono da pasta.
+
+### 3.6 — Rodar o fluxo de autorização (uma vez)
+
+Em uma máquina com browser (pode ser a mesma do desenvolvimento local):
+
+```bash
+# A partir do repo Kairos clonado localmente
+npm install   # se ainda não tiver instalado
+npm run authorize-drive -- /caminho/para/client_secret.json
+```
+
+O script:
+1. Imprime uma URL longa começando com `https://accounts.google.com/o/oauth2/...`
+2. Abre essa URL no browser
+3. Login com a conta dona da pasta do Drive
+4. Tela "Google hasn't verified this app" → **Advanced** → **Go to Kairos MCP Server (unsafe)** (é seu próprio app)
+5. **Allow** acesso ao Drive
+6. Browser redireciona pra `http://localhost:54321/callback?code=...`
+7. **Se ver "ERR_CONNECTION_REFUSED":** o callback não foi capturado pelo listener (comum em WSL2 Windows quando o browser tá em outro contexto). Workaround: copiar o `code=...` da URL do browser e rodar manualmente:
+   ```bash
+   curl -X POST https://oauth2.googleapis.com/token \
+     -d "code=<CODE-DA-URL>" \
+     -d "client_id=<CLIENT-ID>" \
+     -d "client_secret=<CLIENT-SECRET>" \
+     -d "redirect_uri=http://localhost:54321/callback" \
+     -d "grant_type=authorization_code"
+   ```
+   E pegar o `refresh_token` do JSON retornado.
+8. O script imprime um JSON com `client_id`, `client_secret`, `refresh_token` — guardar em 1Password
+
+Esse JSON vira o secret `kairos_drive_oauth` no Swarm (passo 5 abaixo).
 
 ---
 
@@ -97,8 +138,8 @@ echo -n "<api-key-gerada-no-passo-4>" | docker secret create kairos_mcp_api_key 
 echo -n "https://<github-pat>@github.com/filipelealweb/kairos-pessoal.git" | \
   docker secret create kairos_git_url -
 
-# Service Account JSON (substituir pelo path do arquivo baixado no passo 3.4)
-docker secret create kairos_drive_sa /caminho/local/service-account.json
+# OAuth credentials JSON (gerado no passo 3.6 — { client_id, client_secret, refresh_token })
+docker secret create kairos_drive_oauth /caminho/local/oauth-credentials.json
 
 # Verificar
 docker secret ls | grep kairos
@@ -246,7 +287,7 @@ docker stack rm kairos
 docker rmi kairos-mcp:latest
 
 # Remover secrets se quiser regenerar
-docker secret rm kairos_mcp_api_key kairos_drive_sa kairos_git_url
+docker secret rm kairos_mcp_api_key kairos_drive_oauth kairos_git_url
 ```
 
 A pasta no Google Drive e o repo no GitHub não são afetados pelo rollback.

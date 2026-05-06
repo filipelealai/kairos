@@ -8,7 +8,7 @@ Entrada: |
   - material: texto livre do cliente (brief, notas de call, docs) — obrigatório
   - empresa: nome da empresa cliente — obrigatório
 Saida: |
-  - brief estruturado: data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-YYYY-MM-DD.md
+  - brief estruturado: data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 Checklist:
   - "[ ] Receber material do cliente (texto livre, notas, docs)"
   - "[ ] Identificar e extrair: empresa, setor, dores, objetivos, escopo esperado"
@@ -195,7 +195,7 @@ Os campos abaixo precisam ser confirmados com o usuário antes de gerar a propos
 ### Salvar o arquivo
 
 ```
-data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-YYYY-MM-DD.md
+data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 ```
 
 ### Gerar handoff (se pipeline continua)
@@ -210,7 +210,7 @@ handoff:
   timestamp: "{ISO 8601}"
   consumed: false
   context:
-    output_file: "data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-YYYY-MM-DD.md"
+    output_file: "data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md"
     empresa: "{empresa}"
     campos_ausentes: {N}
     escopo_resumido: "{1-2 linhas do escopo}"
@@ -223,7 +223,7 @@ Salvar em `.kairos-core/runtime/handoffs/handoff-brief-extractor-to-proposal-wri
 
 ```
 ✅ Brief estruturado salvo:
-   data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-YYYY-MM-DD.md
+   data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md
 
 Campos extraídos: {N_preenchidos}/{N_total}
 Campos ausentes críticos: {lista_ou_nenhum}

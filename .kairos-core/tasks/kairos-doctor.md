@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.11.0
+kairos-version: 3.13.0
 id: kairos-doctor
 title: Health Check do Framework Kairos
 agent: kairos
@@ -60,7 +60,7 @@ Para cada arquivo `squads/*/agents/*.yaml` encontrado no filesystem:
 
 Para cada arquivo `squads/*/agents/*.yaml` que tem persona correspondente (`.claude/commands/kairos/agents/{id}.md`):
 - [ ] Ler a primeira linha da persona e verificar se contém o marcador `<!-- kairos-generated-from: ... sha:{sha256} -->`
-  - Se a primeira linha **não contém** o marcador → ignorar silenciosamente (persona pré-5.33, sem SHA rastreável)
+  - Se a primeira linha **não contém** o marcador → ignorar silenciosamente (persona legado, sem SHA rastreável)
   - Se contém o marcador:
     - Extrair o path do YAML e o SHA do marcador
     - Calcular SHA atual do arquivo YAML: `sha256sum squads/{squad}/agents/{id}.yaml | cut -d' ' -f1`
@@ -148,6 +148,16 @@ Para cada entrada em `owned_sections[*]` do tipo `env_sections`:
 
 > SHAs de `owned_sections` são verificados com WARN (não FAIL) — drift indica conteúdo
 > framework-owned que foi modificado localmente; operável mas requer atenção do *pre-push.
+
+**11. Identificação da Instância**
+
+- [ ] `.env` existe e contém `KAIROS_INSTANCE_NAME` definido com valor não-vazio
+  → ⚠️ WARN "KAIROS_INSTANCE_NAME ausente ou vazio em .env — outputs vão usar fallback `default`. Configure para evitar colisão em equipe (ver `.claude/rules/output-naming.md`)" se ausente/vazio
+  → ⚠️ WARN "KAIROS_INSTANCE_NAME contém caracteres fora de kebab-case: {valor}" se o valor tem espaço, maiúscula ou caractere especial
+  → PASS silencioso se válido
+
+> Este check é WARN — o framework opera normalmente em modo solo com fallback `default`.
+> O objetivo é alertar usuários em time que ainda não configuraram a variável.
 
 ---
 

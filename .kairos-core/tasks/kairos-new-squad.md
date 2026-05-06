@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.11.0
+kairos-version: 3.13.0
 task: Kairos New Squad
 responsavel: "@kairos"
 responsavel_type: agent
@@ -288,6 +288,8 @@ data:
   {se arquivo:   input_file: {path}}
   {se api:       input_api: {endpoint}}
   outputs:
+    # Padrão canônico — ver .claude/rules/output-naming.md
+    # Cada path deve seguir: data/outputs/{squad}/{tipo}/{agent}_{filename}-{INSTANCE}-YYYY-MM-DD.{ext}
     {lista de paths com formato}
   handoffs: .kairos-core/runtime/handoffs/
 
@@ -404,7 +406,9 @@ commands:
     description: "Sair do modo {id}"
 
 outputs:
-  - "data/outputs/{squad_name}/{tipo}/{id}_{filename}-YYYY-MM-DD.{ext}"
+  # Padrão canônico — ver .claude/rules/output-naming.md
+  # {INSTANCE} resolvido em runtime a partir de KAIROS_INSTANCE_NAME (fallback: "default")
+  - "data/outputs/{squad_name}/{tipo}/{id}_{filename}-{INSTANCE}-YYYY-MM-DD.{ext}"
 
 handoff_from: "{agente-anterior-id}"  # null se primeiro no pipeline
 handoff_to: "{próximo-agente-id}"     # null se último no pipeline

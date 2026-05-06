@@ -58,7 +58,7 @@ commands:
     description: "Sair do modo brief-extractor"
 
 outputs:
-  - "data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-YYYY-MM-DD.md"
+  - "data/outputs/client-onboarding/briefs/brief-extractor_brief-{empresa}-{INSTANCE}-YYYY-MM-DD.md"
 
 handoff_from: null
 handoff_to: "proposal-writer"
