@@ -6,6 +6,11 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.14.0] — 2026-05-06
+
+### Adicionado
+- *update e *configure-cloud: update automático do framework e cloud sync via symlink
+
 ## [3.13.0] — 2026-05-05
 
 ### Adicionado

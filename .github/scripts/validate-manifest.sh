@@ -8,8 +8,9 @@
 #   4. .md with kairos-owned: true frontmatter not in owned_files (WARN)
 #   5. KAIROS-MANAGED markers paired + no orphans in owned_sections markdown_blocks
 #   6. sync_files paths exist
+#   7. owned_sections json_keys — file exists, valid JSON, owned_keys present (WARN)
 #
-# Stack: bash + yq (mikefarah/yq v4) + sha256sum + grep
+# Stack: bash + yq (mikefarah/yq v4) + sha256sum + grep + python3
 # Exit: 0 = all mandatory checks passed (warnings allowed); 1 = any FAIL
 
 set -uo pipefail
@@ -70,6 +71,11 @@ fi
 
 if ! command -v sha256sum &>/dev/null; then
   echo "❌ FATAL: sha256sum não encontrado"
+  exit 1
+fi
+
+if ! command -v python3 &>/dev/null; then
+  echo "❌ FATAL: python3 não encontrado (requerido para validação json_keys)"
   exit 1
 fi
 
@@ -183,6 +189,41 @@ while IFS= read -r path; do
     pass "sync_files[$path] — existe"
   fi
 done < <(yq -r '.sync_files[].path' "$MANIFEST")
+
+# ── Check 7: owned_sections json_keys — existência + JSON válido + owned_keys ──
+
+section "owned_sections json_keys — existência + JSON válido + owned_keys"
+
+while IFS= read -r path; do
+  if [ ! -f "$path" ]; then
+    fail "owned_sections/json_keys[$path] — arquivo não encontrado"
+    continue
+  fi
+
+  if ! python3 -c "import json, sys; json.load(open(sys.argv[1]))" "$path" 2>/dev/null; then
+    fail "owned_sections/json_keys[$path] — JSON inválido"
+    continue
+  fi
+
+  pass "owned_sections/json_keys[$path] — existe e é JSON válido"
+
+  owned_keys=$(SECTION_PATH="$path" yq -r \
+    '.owned_sections[] | select(.type == "json_keys" and .path == strenv(SECTION_PATH)) | .owned_keys[]' \
+    "$MANIFEST")
+
+  while IFS= read -r key; do
+    [ -z "$key" ] && continue
+    present=$(python3 -c \
+      "import json,sys; d=json.load(open(sys.argv[1])); print('yes' if sys.argv[2] in d else 'no')" \
+      "$path" "$key" 2>/dev/null)
+    if [ "$present" = "yes" ]; then
+      pass "owned_sections/json_keys[$path] — owned_key '$key' presente"
+    else
+      warn "owned_sections/json_keys[$path] — owned_key '$key' ausente no arquivo"
+    fi
+  done <<< "$owned_keys"
+
+done < <(yq -r '.owned_sections[] | select(.type == "json_keys") | .path' "$MANIFEST")
 
 # ── Resultado ─────────────────────────────────────────────────────────────────
 

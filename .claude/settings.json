@@ -1,13 +1,19 @@
 {
   "permissions": {
-    "allow": [
-      "Bash(npx tsx *)",
-      "Bash(npm run *)",
-      "Bash(cat data/*)",
-      "Bash(ls *)"
-    ]
+    "allow": []
   },
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/kairos-version-check.cjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
     "PreToolUse": [
       {
         "hooks": [

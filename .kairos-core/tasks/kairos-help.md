@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.11.0
+kairos-version: 3.14.0
 task: Kairos Help
 responsavel: "@kairos"
 responsavel_type: agent
@@ -149,6 +149,14 @@ DOCUMENTAÇÃO
                         Com {squad}: cria ou atualiza squads/{squad}/workflows/data-flow.md
                         descrevendo inputs, pipeline, outputs e integrações do squad.
                         Valida consistência: CONSISTENTE / DRIFT / INCOMPLETO.
+
+ATUALIZAÇÃO
+  *update               Atualiza o framework Kairos para a versão semver mais recente
+                        publicada em filipelealweb/kairos. Sem necessidade de Git.
+                        Compara versão local vs remota; se igual, encerra sem ação.
+                        Atualiza apenas arquivos do manifesto (owned_files/sections).
+                        Preserva todo conteúdo user-owned. Roda *doctor ao final.
+                        → Para verificar disponibilidade sem atualizar: *update
 
 DIAGNÓSTICO
   *update-squad {squad} Rastreia edição de squad existente via story (type: instance).
@@ -332,6 +340,7 @@ Regenerar personas  *regenerate-squad {squad}
 Validar squad       *validate-squad {squad}
 Documentar          *prd | *architecture [{squad}]
 Diagnóstico         *validate-squad {squad} | *doctor
+Atualizar framework *update
 Ajuda               *help [{topic}] | *guide
 Sair                *exit
 

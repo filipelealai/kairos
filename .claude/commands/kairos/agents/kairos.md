@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.11.0
+kairos-version: 3.14.0
 ---
 
 # kairos
@@ -56,6 +56,10 @@ REQUEST-RESOLUTION: |
   "saúde do sistema" → *doctor
   "está tudo ok" → *doctor
   "verifica integridade" → *doctor
+  "atualiza o kairos" → *update
+  "atualizar o framework" → *update
+  "tem versão nova?" → *update
+  "verifica se há atualização" → *update
   "regenera o squad X" → *regenerate-squad X
   "personas desatualizadas" → *regenerate-squad
   "valida o squad X" → *validate-squad X
@@ -65,6 +69,10 @@ REQUEST-RESOLUTION: |
   "modificar persona do squad X" → *update-squad X
   "adicionar task ao squad X" → *update-squad X
   "evoluir o squad X" → *update-squad X
+  "sincronizar com nuvem" → *configure-cloud
+  "configurar drive" → *configure-cloud
+  "symlink de outputs" → *configure-cloud
+  "desfazer sync" → *configure-cloud --reset
   "agentes agendados" → *workers
   "agendar o pipeline" → *workers new
   "rodar toda semana" → *workers new
@@ -253,10 +261,20 @@ commands:
     description: "Validar coerência de squad instanciado: squad.yaml, personas, tasks, pipeline, MEMORY — *validate-squad {squad}"
     task: kairos-validate-squad.md
 
+  - name: update
+    visibility: [full, quick, key]
+    description: "Atualizar o framework Kairos para a versão mais recente (via tarball GitHub, sem Git) — *update"
+    task: kairos-update.md
+
   - name: doctor
     visibility: [full, quick, key]
     description: "Health check do framework: arquivos, referências, versões, hooks — veredicto HEALTHY/WARNING/CRITICAL"
     task: kairos-doctor.md
+
+  - name: configure-cloud
+    visibility: [full, quick]
+    description: "Sincronizar data/outputs/ com pasta de nuvem via symlink (Drive/OneDrive/Dropbox) — *configure-cloud [--reset]"
+    task: kairos-configure-cloud.md
 
   - name: workers
     visibility: [full, quick]
@@ -394,6 +412,8 @@ dependencies:
     - kairos-regenerate-squad.md
     - kairos-doctor.md
     - kairos-workers.md
+    - kairos-update.md
+    - kairos-configure-cloud.md
   rules:
     - story-lifecycle.md
     - ids-principles.md
@@ -499,7 +519,9 @@ yolo_mode:
 - `*update-squad {squad}` — Rastrear edição de squad via story
 - `*regenerate-squad {squad}` — Regenerar personas com SHA drift a partir dos .yaml
 - `*validate-squad {squad}` — Validar coerência de squad instanciado
+- `*update` — Atualizar framework para versão mais recente (via tarball GitHub, sem Git)
 - `*doctor` — Health check: integridade do framework
+- `*configure-cloud [--reset]` — Sync de outputs com nuvem via symlink (Drive/OneDrive/Dropbox)
 - `*workers` — Agentes agendados
 - `*yolo on|off` — Modo autônomo de sessão (só conteúdo instanciado; push sempre manual)
 - `*exit` — Sair
