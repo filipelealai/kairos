@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.13.0
+kairos-version: 3.14.0
 id: kairos-doctor
 title: Health Check do Framework Kairos
 agent: kairos
@@ -146,6 +146,18 @@ Para cada entrada em `owned_sections[*]` do tipo `env_sections`:
 - [ ] Calcular SHA do conteúdo interno (excluindo linhas de marker) e comparar com o registrado
   → ⚠️ WARN "drift de SHA na seção {nome} de {path}" se divergir
 
+Para cada entrada em `owned_sections[*]` do tipo `json_keys`:
+
+- [ ] Verificar que o arquivo é JSON válido (parse sem erros)
+  → ❌ FAIL "JSON inválido em {path}" se o parse falhar
+- [ ] Para cada chave em `owned_keys`: verificar que a chave existe no JSON raiz
+  → ⚠️ WARN "chave gerenciada '{chave}' ausente em {path}" se não existir
+  (ausência pode indicar versão antiga ou edição manual — operável mas requer atenção)
+- [ ] Se `sha256_by_key` declarado no manifesto: para cada chave com SHA registrado,
+  serializar o valor atual com `json.dumps(value, sort_keys=True, separators=(',', ':'))`,
+  calcular sha256 e comparar com o registrado
+  → ⚠️ WARN "drift de SHA na chave '{chave}' de {path}" se divergir
+
 > SHAs de `owned_sections` são verificados com WARN (não FAIL) — drift indica conteúdo
 > framework-owned que foi modificado localmente; operável mas requer atenção do *pre-push.
 
@@ -158,6 +170,18 @@ Para cada entrada em `owned_sections[*]` do tipo `env_sections`:
 
 > Este check é WARN — o framework opera normalmente em modo solo com fallback `default`.
 > O objetivo é alertar usuários em time que ainda não configuraram a variável.
+
+**12. Cloud Sync (opcional)**
+
+Se `.kairos-core/runtime/cloud-sync.json` existe E `configured: true`:
+
+- [ ] `data/outputs` é um symlink (`test -L data/outputs`)
+  → ❌ FAIL "cloud-sync.json indica sync ativo mas data/outputs não é um symlink — rodar `@kairos *configure-cloud` para reconfigurar"
+- [ ] O symlink aponta para um caminho que existe e é gravável
+  → ⚠️  WARN "symlink data/outputs/ → {target} quebrado ou sem permissão de escrita — rodar `@kairos *configure-cloud` para reconfigurar"
+  → ✅ PASS silencioso se tudo OK
+
+> Este check é silencioso quando `cloud-sync.json` não existe ou tem `configured: false` — ausência de sync é estado normal.
 
 ---
 

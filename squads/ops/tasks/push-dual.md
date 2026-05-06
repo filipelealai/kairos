@@ -191,6 +191,29 @@ Caso contrário, ler o arquivo de `filipe-instance` e escrever em `main` uma ver
 
 Caso contrário, escrever no arquivo em `main` **apenas** os blocos gerenciados (na mesma ordem declarada no manifest), sem conteúdo user-owned. Seções não declaradas no manifest **não** vão para `main`.
 
+##### Tipo `json_keys`
+
+**Verificar skip:**
+1. Construir mentalmente a versão que seria escrita em `main` (apenas owned_keys + placeholders para demais chaves).
+2. Comparar com o conteúdo atual do arquivo em `main`.
+3. Se idêntico → `→ skip: conteúdo managed sem mudança` — não reprocessar.
+
+Caso contrário:
+1. Parse do JSON de `filipe-instance`
+2. Construir o JSON para `main` com:
+   - As `owned_keys` declaradas no manifesto — copiadas integralmente de `filipe-instance`
+   - Demais chaves top-level conhecidas — substituídas por placeholder vazio (ex: `"permissions": {"allow": []}`)
+   - Chaves fora das owned_keys e fora dos placeholders — omitidas
+3. Serializar como JSON formatado (indent 2 espaços) e escrever no arquivo em `main`
+
+Exemplo para `.claude/settings.json` (owned_keys: `[hooks]`):
+```json
+{
+  "permissions": {"allow": []},
+  "hooks": { ... }
+}
+```
+
 ##### Resumo ao final do Passo 2b
 
 ```

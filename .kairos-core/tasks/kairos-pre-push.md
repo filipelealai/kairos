@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.13.0
+kairos-version: 3.14.0
 task: Kairos Pre-Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -335,6 +335,15 @@ Para cada entrada em `owned_sections`, atualizar os SHAs por bloco/chave/seção
   - Extraia o conteúdo interno entre `# KAIROS-MANAGED-START: {nome}` e `# KAIROS-MANAGED-END: {nome}` (excluindo as linhas de marker)
   - Calcule `sha256` do conteúdo interno
   - Se divergir do `sha256` registrado → atualize o campo no manifesto
+
+**json_keys (ex: .claude/settings.json):**
+- Para cada entrada com `sha256_by_key` declarado no manifesto:
+  - Parse do JSON do arquivo local
+  - Para cada `owned_key` em `owned_keys`:
+    - Serializar o valor atual: `json.dumps(value, sort_keys=True, separators=(',', ':'))`
+    - Calcular `sha256` da string serializada
+    - Se divergir do `sha256_by_key[chave]` → atualizar o campo no manifesto
+- Se a entrada não tiver `sha256_by_key` → skip
 
 #### Confirmação
 

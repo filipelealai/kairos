@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.5.1
+kairos-version: 3.14.0
 ---
 
 # Ownership — Fronteira Framework / Usuário
@@ -84,10 +84,16 @@ Presente antes da instalação do Kairos. Não listado no manifesto.
 
 Arquivos como `CLAUDE.md`, `.claude/settings.json`, `.kairos-core/core-config.yaml` contêm conteúdo framework E conteúdo usuário.
 
-**Mecanismos de marcação:**
+**Mecanismos de marcação por tipo declarado no manifesto:**
 
-- **Markdown:** blocos `<!-- KAIROS-MANAGED-START: {nome} -->` ... `<!-- KAIROS-MANAGED-END: {nome} -->`. Tudo dentro é framework; tudo fora é usuário.
-- **YAML/JSON:** o manifesto declara `owned_keys` — listas de chaves top-level ou paths dot-notation que são framework. Chaves fora dessa lista são user-owned.
+| Tipo | Arquivo-alvo | Mecanismo |
+|------|-------------|-----------|
+| `markdown_blocks` | Arquivos Markdown | Blocos `<!-- KAIROS-MANAGED-START: {nome} -->` ... `<!-- KAIROS-MANAGED-END: {nome} -->`. Tudo dentro é framework; tudo fora é usuário. |
+| `yaml_keys` | Arquivos YAML | O manifesto declara `owned_keys` — lista de chaves top-level que são framework. Chaves fora são user-owned. SHA tracking por chave via `sha256_by_key`. |
+| `env_sections` | Arquivos `.env` | Blocos `# KAIROS-MANAGED-START: {nome}` ... `# KAIROS-MANAGED-END: {nome}`. SHA tracking por seção. |
+| `json_keys` | Arquivos JSON | O manifesto declara `owned_keys` — lista de chaves top-level que são framework. Chaves fora são user-owned. SHA tracking via `sha256_by_key` (sem marcadores no arquivo — ownership declarado puramente no manifesto). Exemplo: `.claude/settings.json` com `owned_keys: [hooks]` — a seção `permissions` é user-owned. |
+
+**Por que `json_keys` não usa marcadores no arquivo:** JSON puro não suporta comentários, e Claude Code valida `settings.json` como JSON estrito (rejeita JSONC). O ownership é declarado inteiramente no manifesto, sem modificar o arquivo gerenciado.
 
 **Regra:** um update **nunca** modifica conteúdo fora dos blocos/keys declarados, mesmo que a ferramenta seja tecnicamente capaz.
 
@@ -123,7 +129,7 @@ Arquivos markdown de framework **devem** ter frontmatter:
 ```yaml
 ---
 kairos-owned: true
-kairos-version: {versão em que foi shipped}
+kairos-version: 3.14.0
 ---
 ```
 

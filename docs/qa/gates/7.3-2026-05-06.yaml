@@ -1,0 +1,67 @@
+schema: 2
+story: "7.3"
+story_title: "@kairos *update + SessionStart hook de version-check"
+epic: 7
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-05-06T20:48:00Z"
+quality_score: 93
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: .kairos-core/tasks/kairos-update.md criada com fluxo completo (11 passos, consulta API GitHub, comparação semver, download tarball, leitura manifesto remoto, update de owned_files e owned_sections, limpeza, *doctor, relatório)"
+    - "✅ AC2: *update incluído em *help (seção ATUALIZAÇÃO + cheat sheet), kairos.md (commands, REQUEST-RESOLUTION, Comandos Rápidos, dependencies)"
+    - "✅ AC3: HATLs documentados em kairos-update.md (falha de rede, drift pré-update, conflito em owned_section, *doctor crítico após update) — seção dedicada 'Condições de HALT'"
+    - "✅ AC4: *update não escreve em CHANGELOG.md — documentado explicitamente na task (linha 180)"
+    - "✅ AC5: core-config.yaml tem campo update_source: https://github.com/filipelealweb/kairos"
+    - "✅ AC6: Persona kairos.md tem comando *update (commands com visibility full/quick/key, task: kairos-update.md)"
+    - "✅ AC7: .claude/hooks/kairos-version-check.cjs criado (5.9K) — API GitHub, cache 1h em runtime/version-check.json, comparação semver, tolerância a offline, aviso canônico"
+    - "✅ AC8: Manifesto registra kairos-update.md e kairos-version-check.cjs como owned_files (L2) com sha256"
+    - "✅ AC9: Smoke test passou com *doctor: WARNING não-bloqueante — confirmado no Execution Log rodada 2; drift em settings.json expôs ausência de json_keys, que foi implementado na mesma rodada"
+    - "✅ AC10: Tipo json_keys implementado — manifest.yaml (type: json_keys), kairos-update.md (Passo 7), kairos-doctor.md (Check 10), kairos-pre-push.md (Passo 2.7b), squads/ops/tasks/push-dual.md (Passo 2b), ownership.md (tabela)"
+    - "✅ AC11: settings.json movido de owned_files para owned_sections com type: json_keys, owned_keys: [hooks] no manifest.yaml — seção permissions é user-owned"
+    - "✅ AC12: kairos-update.md Passo 7 cobre json_keys (parse JSON local + remoto, merge owned_keys, preservação de chaves user-owned)"
+    - "✅ AC13: kairos-doctor.md Check 10 cobre json_keys (JSON válido, owned_key presente; sem SHA tracking em v1)"
+    - "✅ AC14: kairos-pre-push.md Passo 2.7b cobre json_keys (skip de SHA sync documentado com justificativa)"
+    - "✅ AC15: push-dual.md Passo 2b cobre json_keys (owned_keys + permissions placeholder para main)"
+    - "✅ AC16: ownership.md documenta json_keys como quarto tipo de owned_sections (tabela de mecanismos)"
+    - "✅ AC17: validate-manifest.sh Check 7 cobre json_keys: preflight python3, existência do arquivo, JSON válido (FAIL), owned_keys presentes (WARN); sha atualizado no manifesto"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-update.md (7.1K)"
+    - "✅ .claude/hooks/kairos-version-check.cjs (5.9K)"
+    - "✅ .kairos-core/core-config.yaml — campo update_source presente"
+    - "✅ .claude/settings.json — hook SessionStart com kairos-version-check.cjs"
+    - "✅ .kairos-core/manifest.yaml — owned_files e owned_sections atualizados"
+    - "✅ .claude/rules/ownership.md — json_keys documentado"
+    - "✅ .kairos-core/tasks/kairos-doctor.md — Check 10 json_keys"
+    - "✅ .kairos-core/tasks/kairos-pre-push.md — Passo 2.7b json_keys"
+    - "✅ squads/ops/tasks/push-dual.md — Passo 2b json_keys"
+    - "✅ .github/scripts/validate-manifest.sh — Check 7 json_keys"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — versão 3.13.0 não foi bumped para cobrir esta story MINOR; esperado — bump ocorre via *pre-push após este gate"
+  changelog_updated: "⚠️ RESSALVA — entrada de CHANGELOG pendente pelo mesmo motivo; nenhuma entrada de 7.3 encontrada em [3.13.0]"
+  story_file_consistent: "✅ PASS — Status In Review, Epic 7, Tipo kairos-core, dois Execution Logs completos; ACs todos [x]"
+  files_exist: "✅ PASS — todos os arquivos declarados nos Execution Logs verificados presentes"
+  no_broken_references: "✅ PASS — referências a kairos-update.md, kairos-version-check.cjs, settings.json e ownership.md verificadas"
+  execution_log_present: "✅ PASS — dois Execution Logs presentes com decisões, arquivos e pendências declaradas"
+
+issues:
+  - severity: "low"
+    description: "version_bumped e changelog_updated pendentes — esperado neste ponto do fluxo (pré *pre-push)"
+    recommendation: "Executar *version minor 'acrescentado *update, SessionStart hook e tipo json_keys' → *pre-push → *push"
+  - severity: "low"
+    description: "update_source em core-config.yaml está fora dos owned_keys do manifesto — user-owned por default-deny. Executor levantou a questão no Execution Log (nota para @kairos)"
+    recommendation: "Manter user-owned por ora — permite que instâncias fork apontem para forks próprios sem drift de manifesto. Revisar se necessário em versão futura."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Considerar adicionar update_source como owned_key em versão futura se o risco de instâncias fork apontarem para fonte errada for confirmado como problema real"
+  - "⚠️ SHA tracking para json_keys (v2) — documentado como pendência intencional; considerar quando mais arquivos json_keys existirem"

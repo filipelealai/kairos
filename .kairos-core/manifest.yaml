@@ -6,7 +6,7 @@ owned_files:
   sha256: 4af46b55b0c0166affb35b71cf99433c2dbf78d147b8b13506da3a3893d495c4
 - path: .claude/rules/ownership.md
   layer: L1
-  sha256: a264a0fe7fae7f6e3a40e13bbcb2b5a66c81b074d50c37803b26a494a8a02115
+  sha256: 2b99d76a7bdbc2f7aa53840e1eadb5f533a8a0abbd18557bbfd911f821c344fe
 - path: .claude/rules/agent-authority.md
   layer: L1
   sha256: de49653412492a1e83a71d6e10c1f446899502a40976499eccfd23c88a48e1a9
@@ -24,16 +24,16 @@ owned_files:
   sha256: self-referential
 - path: .claude/commands/kairos/agents/kairos.md
   layer: L2
-  sha256: a39a39c438a9fef033f0f2e3b988798f0bef428c3fb67c20a2a48a6c9db3d893
+  sha256: 08e580fddefef4fd5d1d3fb55f403c030d67b0235f1c776b0a17cdf1edae31fd
 - path: .claude/hooks/kairos-code-intel.cjs
   layer: L2
   sha256: 84edddf2f613f3f32eddb422e2d8db60dcc00e5846141f52fa56fbf431be6203
 - path: .claude/hooks/kairos-precompact.cjs
   layer: L2
   sha256: 41e1ef7c965c6cee85dbb6d70232890f96a3f25e4227ffe7b536ca673c0fd79f
-- path: .claude/settings.json
+- path: .claude/hooks/kairos-version-check.cjs
   layer: L2
-  sha256: a335ad246714c2101798b58527c66c8f63f91d582a59660cdc410ee808a7bf01
+  sha256: 806b34fbc3d8947e0c82c0ea5abe8a1118d6b0d1610977614b675d0a6525276e
 - path: .kairos-core/data/workers.yaml
   layer: L2
   sha256: 9add36be14b4d1b81dfbf23d858e4ae7dcbaf2600be5a23ae3bc8a9a79842deb
@@ -42,10 +42,10 @@ owned_files:
   sha256: 032745c52d0bef8d7e4dba7ea61883bc30f11e18b06ddc8cd194feac44d86cc4
 - path: .kairos-core/tasks/kairos-doctor.md
   layer: L2
-  sha256: 8bd7677cc8c7ad9e3e80e8d756012240bb31370213b59f2bb472f7ff4a52d514
+  sha256: 0074dfd640859508c5b6aea35d2d4274129f5b41e6925febf2cc1a78dd5a7940
 - path: .kairos-core/tasks/kairos-help.md
   layer: L2
-  sha256: edf202ded6cac23d6da201b8bf4e835dab2038157a1b1c20efdb2ab6cd296ea6
+  sha256: 9aef391fee203af31e55e3cb0bf73dc3497b79f3efb60cb3c8ff0189b64bb849
 - path: .kairos-core/tasks/kairos-kb.md
   layer: L2
   sha256: b1fc8b5bea931e503b9030cb3da4487d1322bcec0b8086a6957b73e0e8a8797e
@@ -72,13 +72,16 @@ owned_files:
   sha256: accdd840df7aa5f9839ffe0743cfeed5eb12f0d1b44a7c0bd50c6cd24dcc547d
 - path: .kairos-core/tasks/kairos-pre-push.md
   layer: L2
-  sha256: 1a5005bce3e68daa6347f106102e8310c4d83bb96ac695150df768f5bcf625d7
+  sha256: 685db9752b61f589d57c72632d35fe52600828a3909cf760ca162afc11367ed5
 - path: .kairos-core/tasks/kairos-regenerate-squad.md
   layer: L2
   sha256: 75a0a9e427e4eda9d67cc4ff01dd46ee73cdc5f4c27d4222f7b02ee3df63f69b
 - path: .kairos-core/tasks/kairos-push.md
   layer: L2
   sha256: 69e500e599463a527d868f3966ae91a5d870f33cccc5aaffce98533bada90e4a
+- path: .kairos-core/tasks/kairos-update.md
+  layer: L2
+  sha256: 46a5a30079dbdec9cc25ffc38f50d1d21a6da6ae47fd3df015130a296c462c53
 - path: .kairos-core/tasks/kairos-review.md
   layer: L2
   sha256: 10e87096e79125552e8bd6bc95d5d328b6d5a7271558a12ecb3a3212f7b48a59
@@ -91,6 +94,9 @@ owned_files:
 - path: .kairos-core/tasks/kairos-version-bump.md
   layer: L2
   sha256: c5ab22df107ce397e17a40c92458eb22a80456d7bd345760f3ddd71dd38d7368
+- path: .kairos-core/tasks/kairos-configure-cloud.md
+  layer: L2
+  sha256: 8102acabdaf8445c19b43bf04d2dd15c0431b8c035d586b6caf330a3602bce0c
 - path: .kairos-core/tasks/kairos-workers.md
   layer: L2
   sha256: 3af1973dfcefe6cec813062b664fa91578b85c2890eb0204e8f84c30d2b5613c
@@ -135,7 +141,7 @@ owned_files:
   sha256: 9c7edc688996f8bb7366b2839ce67092bf7354bc3422671440de9dbd99009c86
 - path: CHANGELOG.md
   layer: L3
-  sha256: 99e175725812f6797c0b63ea236cc75d082be07a023f1c29f4130f9c4f7958a6
+  sha256: 83ff7778269f655b9d3417ed594fad1c1adcb9de3c76d43363c4dd1bdf6e061c
 - path: .github/CODEOWNERS
   layer: L3
   sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4
@@ -153,7 +159,7 @@ owned_files:
   sha256: eb1f7eac27de5727e2ab76b1d99c9dcc4c79433b5d475e4e09047d76bd7c205f
 - path: .github/scripts/validate-manifest.sh
   layer: L3
-  sha256: a104f5d8be8799fd7e290b374d59ba7c856cb1ba77ec0c379697be38be219bfe
+  sha256: f5910ebce8b341043fc84ded8a02b6b8f0d1155545ae345a6381709f7ac3ed70
 sync_files:
 - path: README.md
   layer: L3
@@ -174,6 +180,14 @@ sync_files:
 - path: squads/.gitkeep
   layer: L3
 owned_sections:
+- path: .claude/settings.json
+  type: json_keys
+  owned_keys: [hooks]
+  layer: L2
+  sha_method: "json.dumps(value, sort_keys=True, separators=(',', ':'))"
+  sha256_by_key:
+    hooks: 3ba24515dda7d66bc4dfd0a3a963c8e1c5e82ab5d981975c2aa3b8fd47285bb8
+  notes: "permissions é user-owned (skills update-config / fewer-permission-prompts escrevem aqui). hooks é framework-owned."
 - path: CLAUDE.md
   type: markdown_blocks
   blocks:
