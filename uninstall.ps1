@@ -33,6 +33,9 @@ function Write-Err  { param($msg) Write-Host "  $([char]0x274C)  $msg" -Foregrou
 function Write-Info { param($msg) Write-Host "  -> $msg" -ForegroundColor Cyan }
 
 # --- Verificar que estamos na pasta correta ------------------------------------
+$installDir = (Get-Location).Path
+$scriptPath = $MyInvocation.ScriptName
+
 $ManifestPath = ".kairos-core\manifest.yaml"
 if (-not (Test-Path $ManifestPath)) {
     Write-Err "manifest.yaml não encontrado em '$(Get-Location)'."
@@ -275,17 +278,15 @@ foreach ($entry in $sectionEntries) {
     }
 }
 
-# --- Remover sync_files (apenas se nuke_all) ----------------------------------
-if ($NukeAll) {
-    Write-Info "Removendo sync_files..."
-    $syncPaths = Get-SyncFilePaths $manifestContent
-    foreach ($relPath in $syncPaths) {
-        $relPathWin = $relPath.Replace('/', '\')
-        if ($KeepOutputs -and $relPathWin.StartsWith('data\outputs')) { continue }
-        if (Test-Path $relPathWin -PathType Leaf) {
-            Remove-Item $relPathWin -Force
-            $deletedFiles++
-        }
+# --- Remover sync_files (sempre — são conteúdo instalado pelo framework) ------
+Write-Info "Removendo sync_files..."
+$syncPaths = Get-SyncFilePaths $manifestContent
+foreach ($relPath in $syncPaths) {
+    $relPathWin = $relPath.Replace('/', '\')
+    if ($KeepOutputs -and $relPathWin.StartsWith('data\outputs')) { continue }
+    if (Test-Path $relPathWin -PathType Leaf) {
+        Remove-Item $relPathWin -Force
+        $deletedFiles++
     }
 }
 
@@ -355,3 +356,15 @@ Write-Host ""
 Write-Host "   Para reinstalar, execute install.ps1 novamente."
 Write-Host ""
 Read-Host "  Pressione Enter para sair"
+
+# --- Auto-delete do script + pasta vazia --------------------------------------
+if ($scriptPath -and (Test-Path $scriptPath)) {
+    Remove-Item $scriptPath -Force -ErrorAction SilentlyContinue
+}
+$remaining = @(Get-ChildItem $installDir -ErrorAction SilentlyContinue)
+if ($remaining.Count -eq 0) {
+    $parentDir = Split-Path $installDir -Parent
+    Set-Location $parentDir
+    Remove-Item $installDir -Force -ErrorAction SilentlyContinue
+    Write-Ok "Pasta '$(Split-Path $installDir -Leaf)' removida (ficou vazia)."
+}
