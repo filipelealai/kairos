@@ -220,7 +220,8 @@ function Remove-ManagedSections {
             if ($dict.Count -eq 0) {
                 Remove-Item $filePath -Force; Write-Info "Removido (ficou vazio): $filePath"; return
             }
-            [System.IO.File]::WriteAllText($filePath, ($dict | ConvertTo-Json -Depth 20) + "`n", [System.Text.Encoding]::UTF8)
+            $absPath = if ([System.IO.Path]::IsPathRooted($filePath)) { $filePath } else { Join-Path (Get-Location).Path $filePath }
+            [System.IO.File]::WriteAllText($absPath, ($dict | ConvertTo-Json -Depth 20) + "`n", [System.Text.Encoding]::UTF8)
         } catch { Write-Warn "Nao foi possivel processar JSON: $filePath" }
 
     } elseif ($sectionType -eq 'yaml_keys') {
