@@ -188,7 +188,7 @@ $dirInput = $dirInput.TrimEnd('\').TrimEnd('/')
 $dirInput = [System.Environment]::ExpandEnvironmentVariables($dirInput)
 
 if (Test-Path $dirInput) {
-    $items = Get-ChildItem $dirInput -ErrorAction SilentlyContinue
+    $items = @(Get-ChildItem $dirInput -ErrorAction SilentlyContinue)
     if ($items.Count -gt 0) {
         Write-Host ""
         Write-Warn "A pasta '$dirInput' já existe e não está vazia."
@@ -272,10 +272,17 @@ if (-not (Test-Path $ManifestPath)) {
 
 Write-Info "Instalando arquivos do framework (via manifest.yaml)..."
 
-# Extrair paths do manifesto com regex simples
-$manifestContent = Get-Content $ManifestPath -Raw
-$pathMatches = [regex]::Matches($manifestContent, '(?m)^\s*-\s*path:\s*(.+)$')
-$relPaths = $pathMatches | ForEach-Object { $_.Groups[1].Value.Trim() }
+# Extrair paths apenas de owned_files e owned_sections (não sync_files)
+$manifestLines = Get-Content $ManifestPath
+$relPaths = [System.Collections.Generic.List[string]]::new()
+$currentSection = ''
+foreach ($line in $manifestLines) {
+    $trimmed = $line.TrimEnd()
+    if ($trimmed -match '^(\w[\w_-]*):\s*$') { $currentSection = $Matches[1] }
+    if ($currentSection -in @('owned_files','owned_sections') -and $trimmed -match '^\s*-\s*path:\s*(.+)$') {
+        $relPaths.Add($Matches[1].Trim())
+    }
+}
 
 $installCount = 0
 foreach ($relPath in $relPaths) {
