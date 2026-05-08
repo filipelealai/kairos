@@ -175,7 +175,7 @@ Formato esperado em `main`:
 3. Se idêntico → `→ skip: conteúdo managed sem mudança` — não reprocessar.
 
 Caso contrário, ler o arquivo de `filipe-instance` e escrever em `main` uma versão com:
-- Campos top-level (`version`, `installedAt`, `updatedAt`) — copiados integralmente
+- Campos top-level (`version`, `installedAt`, `updatedAt`, `update_source`, `devLoadAlwaysFiles`) — copiados integralmente
 - Seções declaradas em `owned_keys` (lidas do manifest) — copiadas integralmente
 - Seção `project` — substituída por placeholders: `owner: "{owner}"`, `name: "{project-name}"`, `scope: personal`
 - Seção `agents` — substituída por placeholder: `squads: {}`
