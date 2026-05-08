@@ -173,7 +173,8 @@ function Get-SyncFilePaths {
     $inSync = $false
     foreach ($line in ($content -split "`n")) {
         if ($line -match '^sync_files:') { $inSync = $true; continue }
-        if ($inSync -and ($line -match '^notes:')) { $inSync = $false }
+        if ($inSync -and ($line -match '^owned_sections:|^notes:')) { $inSync = $false }
+        if ($inSync -and ($line -match '^[A-Za-z_][A-Za-z0-9_]*:' -and $line -notmatch '^sync_files:')) { $inSync = $false }
         if ($inSync -and ($line -match '^\s*-\s*path:\s*(.+)')) {
             $paths += $Matches[1].Trim()
         }
@@ -278,15 +279,17 @@ foreach ($entry in $sectionEntries) {
     }
 }
 
-# --- Remover sync_files (sempre — são conteúdo instalado pelo framework) ------
-Write-Info "Removendo sync_files..."
-$syncPaths = Get-SyncFilePaths $manifestContent
-foreach ($relPath in $syncPaths) {
-    $relPathWin = $relPath.Replace('/', '\')
-    if ($KeepOutputs -and $relPathWin.StartsWith('data\outputs')) { continue }
-    if (Test-Path $relPathWin -PathType Leaf) {
-        Remove-Item $relPathWin -Force
-        $deletedFiles++
+# --- Remover sync_files (apenas se nuke_all) ---------------------------------
+if ($NukeAll) {
+    Write-Info "Removendo sync_files..."
+    $syncPaths = Get-SyncFilePaths $manifestContent
+    foreach ($relPath in $syncPaths) {
+        $relPathWin = $relPath.Replace('/', '\')
+        if ($KeepOutputs -and $relPathWin.StartsWith('data\outputs')) { continue }
+        if (Test-Path $relPathWin -PathType Leaf) {
+            Remove-Item $relPathWin -Force
+            $deletedFiles++
+        }
     }
 }
 
