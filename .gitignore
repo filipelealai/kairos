@@ -2,14 +2,9 @@ node_modules/
 dist/
 .env
 data/cache/
-data/outputs
-data/outputs/
 *.log
 /.env
 .mcp.json
-
-# Ferramentas externas instanciadas (user-owned, não pertencem ao framework)
-src/tools/trello-cli/
 
 # Runtime do Kairos (L4 — efêmero, nunca versionar)
 .kairos-core/runtime/*.json
