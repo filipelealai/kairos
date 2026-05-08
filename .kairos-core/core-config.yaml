@@ -1,11 +1,13 @@
-version: 3.15.0
+version: 3.15.1
 installedAt: '2026-04-06T00:00:00.000Z'
 updatedAt: '2026-05-08T20:44:00.000Z'
+
 update_source: https://github.com/filipelealweb/kairos
-devLoadAlwaysFiles:
-- .kairos-core/docs/agent-standards.md
-- .kairos-core/docs/data-flow.md
-- docs/scope.md
+
+agents:
+  master: kairos
+  squads: {}
+
 framework:
   tasksLocation: .kairos-core/tasks/
   agentsLocation: .kairos-core/agents/
@@ -22,25 +24,21 @@ framework:
   constitutionFile: .kairos-core/constitution.md
   kbFile: .kairos-core/data/kairos-kb.md
   workersFile: .kairos-core/data/workers.yaml
+
 runtime:
   handoffsLocation: .kairos-core/runtime/handoffs/
   outputsLocation: data/outputs/
-  reportsLocation: data/outputs/cold-prospecting/reports/
-  emailsLocation: data/outputs/cold-prospecting/emails/
+
 versioning:
   scheme: semver
   bump_rules:
-    MAJOR: Novo escopo/squad adicionado OU breaking change em agente existente
-    MINOR: "Novo agente, nova task, nova rule ou expans\xE3o significativa de capacidade"
-    PATCH: "Corre\xE7\xE3o de bug, atualiza\xE7\xE3o de MEMORY.md, ajuste de instru\xE7\
-      \xE3o de task/rule"
-  story_required_for:
-  - MAJOR
-  - MINOR
+    MAJOR: "Novo escopo/squad adicionado OU breaking change em agente existente"
+    MINOR: "Novo agente, nova task, nova rule ou expansão significativa de capacidade"
+    PATCH: "Correção de bug, atualização de MEMORY.md, ajuste de instrução de task/rule"
+  story_required_for: [MAJOR, MINOR]
   authority: kairos
-project:
-  owner: '{owner}'
-  name: '{project-name}'
-  scope: personal
-agents:
-  squads: {}
+
+devLoadAlwaysFiles:
+  - .kairos-core/docs/agent-standards.md
+  - .kairos-core/docs/data-flow.md
+  - docs/scope.md
