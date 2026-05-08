@@ -8,6 +8,8 @@ Obrigado por contribuir! O Kairos é um framework de orquestração de agentes d
 
 O núcleo do Kairos é composto por markdown, YAML e CJS com docs, rules, tasks e templates — **não exige stack para contribuir**.
 
+> **Git é obrigatório para contribuir.** O Kairos funciona sem Git para uso normal (instalação, atualização, trabalho operacional), mas para abrir PRs e contribuir com o framework você precisa do Git instalado.
+
 ```bash
 git clone https://github.com/filipelealweb/kairos
 cd kairos
@@ -163,7 +165,5 @@ Roadmap informativo de suporte multi-stack:
 |--------|--------|
 | Núcleo (markdown + YAML + CJS) | Estável |
 | Estrutura multi-stack (`src/agents/ts/`, `src/agents/python/`, `src/tools/ts/`, `src/tools/python/` etc.) | Planejado (migração futura) |
-| CLI `npx install kairos` | Planejado |
-| Publicação `@kairos/core` no npm | Planejado |
 
 Contribuições são bem-vindas — abra uma issue para discutir antes de implementar.

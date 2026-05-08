@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.14.0
+kairos-version: 3.15.0
 task: Kairos Help
 responsavel: "@kairos"
 responsavel_type: agent
@@ -119,22 +119,25 @@ DESENVOLVIMENTO
                         Cria story com type: instance e prefixo update: no título.
                         → *update-squad sem argumento: lista squads disponíveis.
 
-VERSIONAMENTO E PUSH
+VERSIONAMENTO E PUSH  [Git obrigatório para os comandos desta seção]
   *version {tipo} "{desc}"
                         Bump de versão semântica avulso. Tipos: patch | minor | major.
                         Valida que existe story justificando MINOR e MAJOR.
                         Atualiza core-config.yaml e CHANGELOG.md.
                         → Uso avulso (ex: patch rápido sem story associada).
                           No ciclo normal, o bump ocorre dentro do *pre-push.
+                        → Git obrigatório.
 
   *pre-push             Pré-voo completo: verifica gate de review (MINOR/MAJOR), executa
                         bump de versão interativo (pergunta tipo e aplica), realiza commit
                         dos changes relevantes, spot check de referências, consistência
                         final (core-config vs CHANGELOG). Seta pre_push_passed=true na sessão.
                         → Obrigatório antes de *push. Substitui *version no ciclo normal.
+                        → Git obrigatório.
 
   *push                 git push ao remoto. EXCLUSIVO do @kairos.
                         RECUSA se *pre-push não passou na sessão atual.
+                        → Git obrigatório.
 
 DOCUMENTAÇÃO
   *prd                  Cria ou atualiza docs/scope.md (o PRD do Kairos).
@@ -150,7 +153,7 @@ DOCUMENTAÇÃO
                         descrevendo inputs, pipeline, outputs e integrações do squad.
                         Valida consistência: CONSISTENTE / DRIFT / INCOMPLETO.
 
-ATUALIZAÇÃO
+ATUALIZAÇÃO E COLABORAÇÃO
   *update               Atualiza o framework Kairos para a versão semver mais recente
                         publicada em filipelealweb/kairos. Sem necessidade de Git.
                         Compara versão local vs remota; se igual, encerra sem ação.
@@ -158,12 +161,25 @@ ATUALIZAÇÃO
                         Preserva todo conteúdo user-owned. Roda *doctor ao final.
                         → Para verificar disponibilidade sem atualizar: *update
 
-DIAGNÓSTICO
-  *update-squad {squad} Rastreia edição de squad existente via story (type: instance).
-                        Elicita aspecto modificado (persona, task, pipeline, regra,
-                        integração), descrição e ACs. Gera story com prefixo update:.
-                        → Omitir {squad}: lista squads disponíveis.
+  *configure-cloud      Configura sync de outputs via symlink para pasta de nuvem
+  [--reset]             (Google Drive Desktop, OneDrive, Dropbox, iCloud).
+                        Zero OAuth — delega o sync ao app do seu provedor.
+                        Cria symlink data/outputs/ → {pasta sincronizada}.
+                        → --reset: remove o symlink e restaura pasta local.
+                        → *doctor valida integridade do symlink após configuração.
 
+  *export-squad {squad} Empacota um squad completo (agentes, tasks, MEMORY.md,
+                        personas, env patch, dependências) em arquivo único
+                        kairos-squad-{nome}-{versão}.tar.gz (ou .zip).
+                        Distribuível por qualquer canal sem dependência de Git.
+
+  *import-squad {arquivo} Instala squad de arquivo na instância local.
+                        Valida checksum e versão de framework de origem.
+                        Se squad existe: oferece atualizar / sobrescrever / renomear.
+                        Aplica patch de env em .env.example (fora de seções managed).
+                        Valida dependências externas (CLIs) por SO. Roda *doctor ao final.
+
+DIAGNÓSTICO
   *regenerate-squad {squad}
                         Regenera personas em .claude/commands/kairos/agents/ para
                         agentes cujo squads/{squad}/agents/*.yaml foi editado
@@ -334,13 +350,15 @@ Novo planejamento   *new-epic → *new-story → *validate-story {id}
 Implementar squad   *new-squad → *implement [{id}]
 Implementar inst.   *implement [{id}]   (type: instance — @kairos executa)
 Revisar entrega     *review [{id}]
-Publicar            *pre-push → *push   (*version disponível para uso avulso)
+Publicar [Git]      *pre-push → *push   (*version disponível para uso avulso)
 Evoluir squad       *update-squad {squad}
 Regenerar personas  *regenerate-squad {squad}
 Validar squad       *validate-squad {squad}
 Documentar          *prd | *architecture [{squad}]
 Diagnóstico         *validate-squad {squad} | *doctor
-Atualizar framework *update
+Atualizar framework *update            (sem Git — baixa tarball do GitHub)
+Cloud sync          *configure-cloud   (sync outputs via app de nuvem)
+Compartilhar squad  *export-squad {squad} | *import-squad {arquivo}
 Ajuda               *help [{topic}] | *guide
 Sair                *exit
 
@@ -349,7 +367,7 @@ Topics de *help:
   commands    Referência completa de comandos
   stories     Como stories funcionam (estados, executor, Execution Log)
   versioning  Regras de versionamento semântico
-  push        Fluxo de push e guards
+  push        Fluxo de push e guards [Git obrigatório]
   squads      O que são squads, como criar (*new-squad), evoluir (*update-squad) e o campo type
   review      Diferença entre *validate-story e *review, gates
 ```

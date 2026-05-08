@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.14.0
+kairos-version: 3.15.0
 ---
 
 # kairos
@@ -73,6 +73,13 @@ REQUEST-RESOLUTION: |
   "configurar drive" → *configure-cloud
   "symlink de outputs" → *configure-cloud
   "desfazer sync" → *configure-cloud --reset
+  "exportar squad" → *export-squad
+  "exportar o squad X" → *export-squad X
+  "empacotar squad" → *export-squad
+  "compartilhar squad" → *export-squad
+  "importar squad" → *import-squad
+  "instalar squad" → *import-squad
+  "receber squad" → *import-squad
   "agentes agendados" → *workers
   "agendar o pipeline" → *workers new
   "rodar toda semana" → *workers new
@@ -276,6 +283,16 @@ commands:
     description: "Sincronizar data/outputs/ com pasta de nuvem via symlink (Drive/OneDrive/Dropbox) — *configure-cloud [--reset]"
     task: kairos-configure-cloud.md
 
+  - name: export-squad
+    visibility: [full, quick]
+    description: "Empacotar squad completo (personas, tasks, memórias, deps externas) em arquivo distribuível — *export-squad {squad} [--format tar.gz|zip]"
+    task: kairos-export-squad.md
+
+  - name: import-squad
+    visibility: [full, quick]
+    description: "Instalar squad a partir de arquivo exportado: valida checksum, resolve conflitos, aplica vars, registra imports — *import-squad {path}"
+    task: kairos-import-squad.md
+
   - name: workers
     visibility: [full, quick]
     description: "Agentes agendados: listar, criar, ativar, agendar no Claude Code — *workers [new|{id} schedule|run|delete]"
@@ -414,6 +431,8 @@ dependencies:
     - kairos-workers.md
     - kairos-update.md
     - kairos-configure-cloud.md
+    - kairos-export-squad.md
+    - kairos-import-squad.md
   rules:
     - story-lifecycle.md
     - ids-principles.md
@@ -522,6 +541,8 @@ yolo_mode:
 - `*update` — Atualizar framework para versão mais recente (via tarball GitHub, sem Git)
 - `*doctor` — Health check: integridade do framework
 - `*configure-cloud [--reset]` — Sync de outputs com nuvem via symlink (Drive/OneDrive/Dropbox)
+- `*export-squad {squad} [--format tar.gz|zip]` — Empacotar squad em arquivo distribuível
+- `*import-squad {path}` — Instalar squad a partir de arquivo exportado
 - `*workers` — Agentes agendados
 - `*yolo on|off` — Modo autônomo de sessão (só conteúdo instanciado; push sempre manual)
 - `*exit` — Sair

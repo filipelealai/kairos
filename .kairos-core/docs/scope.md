@@ -1,12 +1,12 @@
 ---
 kairos-owned: true
-kairos-version: 3.10.0
+kairos-version: 3.15.0
 ---
 
 # Kairos — Escopo e Arquitetura do Framework
 
-**Versão:** 2.0
-**Atualizado em:** 2026-04-26
+**Versão:** 3.0
+**Atualizado em:** 2026-05-06
 
 ---
 
@@ -54,6 +54,9 @@ Claude Code na conversa principal (constrói e mantém o Kairos)
 - Gerencia workers agendados via `*workers`
 - Valida squads e stories via `*validate-squad` e `*validate-story`
 - Inspeciona saúde do framework via `*doctor`
+- Atualiza o framework via `*update` (sem necessidade de Git)
+- Configura sync de outputs para nuvem via `*configure-cloud`
+- Exporta e importa squads via `*export-squad` / `*import-squad`
 - Modo autônomo de sessão via `*yolo` (afeta apenas stories `type: instance`; push sempre manual)
 
 **Agentes de squad — Operacionais:**
@@ -131,34 +134,43 @@ O workflow `validate-manifest` (`.github/workflows/validate-manifest.yml`) valid
 
 ## Comandos do @kairos
 
-| Comando | Descrição |
-|---------|-----------|
-| `*help` | Lista comandos disponíveis |
-| `*status` | Versão atual, squads ativos, stories em andamento |
-| `*new-story` | Cria nova story de desenvolvimento |
-| `*new-epic` | Cria novo epic |
-| `*new-squad` | Scaffolda novo squad completo |
-| `*update-squad` | Atualiza estrutura de squad existente |
-| `*validate-squad` | Valida integridade de um squad |
-| `*validate-story` | Valida se uma story está bem formada |
-| `*implement` | Implementa story `type: instance` |
-| `*implement all` | Implementa todas as stories `type: instance` pendentes |
-| `*review` | Emite gate de qualidade (PASS/RESSALVA/BLOCK) |
-| `*pre-push` | Executa doctor, review, version bump e prepara commit |
-| `*push` | Executa git push após *pre-push |
-| `*version` | Bump de versão semântica |
-| `*architecture` | Gera ou atualiza documentação de arquitetura |
-| `*prd` | Gerencia o PRD do framework |
-| `*workers` | Gerencia workers agendados |
-| `*kb` | Adiciona ou consulta o Knowledge Base do framework |
-| `*doctor` | Inspeciona saúde e integridade do framework |
-| `*yolo on/off` | Liga/desliga modo autônomo de sessão (apenas `type: instance`) |
+| Comando | Descrição | Depende de Git? |
+|---------|-----------|------|
+| `*help` | Lista comandos disponíveis | — |
+| `*status` | Versão atual, squads ativos, stories em andamento | — |
+| `*new-story` | Cria nova story de desenvolvimento | — |
+| `*new-epic` | Cria novo epic | — |
+| `*new-squad` | Scaffolda novo squad completo | — |
+| `*update-squad` | Atualiza estrutura de squad existente | — |
+| `*validate-squad` | Valida integridade de um squad | — |
+| `*validate-story` | Valida se uma story está bem formada | — |
+| `*implement` | Implementa story `type: instance` | — |
+| `*implement all` | Implementa todas as stories `type: instance` pendentes | — |
+| `*review` | Emite gate de qualidade (PASS/RESSALVA/BLOCK) | — |
+| `*update` | Atualiza o framework Kairos (sem Git) | — |
+| `*configure-cloud` | Configura o sync de outputs via symlink para nuvem | — |
+| `*export-squad` | Empacota squad em arquivo distribuível | — |
+| `*import-squad` | Instala squad de arquivo na instância | — |
+| `*architecture` | Gera ou atualiza documentação de arquitetura | — |
+| `*prd` | Gerencia o PRD do framework | — |
+| `*workers` | Gerencia workers agendados | — |
+| `*kb` | Adiciona ou consulta o Knowledge Base do framework | — |
+| `*doctor` | Inspeciona saúde e integridade do framework | — |
+| `*yolo on/off` | Liga/desliga modo autônomo de sessão (apenas `type: instance`) | — |
+| `*version` | Bump de versão semântica | **Git** |
+| `*pre-push` | Executa doctor, review, version bump e prepara commit | **Git** |
+| `*push` | Executa git push após *pre-push | **Git** |
+
+> Comandos **Git** são exclusivos para usuários que mantêm repositório Git (contribuidores ou quem faz push para repo privado).
 
 ---
 
 ## Estrutura de Diretórios
 
 ```
+install.sh / install.ps1     # Instaladores interativos (L2) — Linux/Mac/WSL e Windows
+uninstall.sh / uninstall.ps1 # Desinstaladores (L2) — preservam conteúdo user-owned
+
 .github/
   workflows/       # CI: validate-manifest e outros
   ISSUE_TEMPLATE/  # Templates de PR/Issue
@@ -166,18 +178,18 @@ O workflow `validate-manifest` (`.github/workflows/validate-manifest.yml`) valid
 
 .claude/
   commands/kairos/agents/  # Personas completas (YAML-in-Markdown)
-  hooks/                   # PreCompact e PreToolUse hooks
-  rules/                   # Rules cross-cutting (lifecycle, authority, handoff, layers)
+  hooks/                   # PreCompact, PreToolUse e SessionStart hooks, que o Kairos usa
+  rules/                   # Rules cross-cutting (lifecycle, authority, handoff, layers, output-naming)
 
 .kairos-core/
   agents/       # Memória persistente por agente (MEMORY.md)
   tasks/        # Tasks de governança (kairos-*) e operacionais (squad-*)
   data/         # kairos-kb.md, workers.yaml, dados de configuração
-  docs/         # Documentação do framework: scope.md, data-flow.md, agent-standards.md
+  docs/         # Documentação do framework: scope.md, data-flow.md, agent-standards.md, install.md
   templates/    # Scaffolds para squads e agentes
   constitution.md  # Princípios não-negociáveis (L1)
   manifest.yaml    # Fonte autoritativa de ownership (L1)
-  runtime/      # Handoffs e logs (L4, gitignored)
+  runtime/      # Handoffs, logs e cloud-sync.json (L4, gitignored)
 
 docs/
   stories/     # Stories de desenvolvimento do framework
@@ -186,14 +198,18 @@ docs/
 
 squads/
   {squad}/
-    squad.yaml      # Manifesto do squad
-    agents/         # Definições leves dos agentes
-    tasks/          # Tasks operacionais do squad
-    workflows/      # Pipeline documentado
-    rules/          # Regras específicas do squad
+    squad.yaml          # Manifesto do squad (inclui external_dependencies)
+    agents/             # Definições leves dos agentes
+    tasks/              # Tasks operacionais do squad
+    workflows/          # Pipeline documentado
+    rules/              # Regras específicas do squad (lifecycle, authority, memory-imports)
+
+data/outputs/  # Outputs dos agentes — pode ser symlink para pasta de nuvem via *configure-cloud
+               # Formato de nome: {agent}_{tipo}-{INSTANCE}-YYYY-MM-DD.{ext}
+               # {INSTANCE} vem de KAIROS_INSTANCE_NAME (.env)
 ```
 
-> `src/` não faz parte do framework. É conteúdo do usuário: scripts de agentes, ferramentas e utilitários são definidos pela instância em linguagem e stack de sua escolha. Ver constituição VI.25 e story 5.25.
+> `src/` não faz parte do framework. É conteúdo do usuário: scripts de agentes, ferramentas e utilitários são definidos pela instância em linguagem e stack de sua escolha. Ver constituição VI.25.
 
 ---
 
@@ -214,3 +230,4 @@ squads/
 |--------|------|---------|
 | 1.0 | 2026-04-16 | Criação inicial — escopo e arquitetura do framework (story 3.7) |
 | 2.0 | 2026-04-26 | Reescrita para v3.9.x: seção Stack de Referência removida; src/ removido do diagrama; .github/, docs/qa/gates/, docs/epics/ adicionados; comandos do @kairos atualizados; modelo de dois executores; CI/CD; workers; modo yolo (story 5.31) |
+| 3.0 | 2026-05-06 | Epic 7: instaladores, *update, *configure-cloud, *export-squad/*import-squad, KAIROS_INSTANCE_NAME, output naming; coluna Git na tabela de comandos; install.md; cloud-sync.json; SessionStart hook; external_dependencies em squad.yaml |

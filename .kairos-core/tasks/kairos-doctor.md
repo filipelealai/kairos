@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.14.0
+kairos-version: 3.15.0
 id: kairos-doctor
 title: Health Check do Framework Kairos
 agent: kairos
@@ -170,6 +170,25 @@ Para cada entrada em `owned_sections[*]` do tipo `json_keys`:
 
 > Este check é WARN — o framework opera normalmente em modo solo com fallback `default`.
 > O objetivo é alertar usuários em time que ainda não configuraram a variável.
+
+**13. Dependências Externas de Squads (external_dependencies)**
+
+Para cada squad listado em `core-config.yaml → agents.squads` (ou inferido dos diretórios em `squads/`):
+
+1. Ler `squads/{squad}/squad.yaml`
+2. Se o campo `external_dependencies` não existir → pular (squad legado, sem declaração)
+3. Para cada entrada em `external_dependencies` com `type: cli`:
+   - Executar o comando de detecção:
+     - Unix/WSL: `which {name}` ou `detection.unix` declarado
+     - Windows: `Get-Command {name}` ou `detection.windows` declarado
+   - Se encontrado → PASS silencioso (exceto se `optional: true` → ainda PASS silencioso)
+   - Se **não encontrado** e `optional: false`:
+     → ⚠️ WARN "{squad}: dependência obrigatória '{name}' não encontrada — {purpose}. Instalar: {install.npm | install.linux | install.mac | install.windows — conforme SO detectado}"
+   - Se **não encontrado** e `optional: true`:
+     → ⚠️ WARN "(opcional) {squad}: '{name}' não encontrado — {purpose}. {install.note se existir}"
+4. Para cada entrada com `type: service` → PASS silencioso (serviço remoto, sem check local possível)
+
+> Este check é WARN — dependências ausentes não bloqueiam o framework, mas impedem que o squad funcione corretamente.
 
 **12. Cloud Sync (opcional)**
 

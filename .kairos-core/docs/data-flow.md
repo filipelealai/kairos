@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.10.0
+kairos-version: 3.15.0
 ---
 
 # Fluxo de Dados — Kairos
@@ -65,15 +65,21 @@ Leitura é **read-only** do ponto de vista do Kairos — escrita em sistemas ext
 
 ### Outputs de Agente
 
-Outputs seguem o padrão:
+Outputs seguem o padrão canônico (definido em `.claude/rules/output-naming.md`):
 
 ```
-data/outputs/{squad}/{tipo}/{agent-id}_{descricao}-YYYY-MM-DD.{ext}
+data/outputs/{squad}/{tipo}/{agent-id}_{tipo-curto}-{INSTANCE}-YYYY-MM-DD.{ext}
 ```
 
-`{tipo}` é definido pelo squad — não é uma convenção do framework. Cada squad declara seus tipos de output em `squads/{squad}/workflows/data-flow.md`.
+Onde:
+- `{INSTANCE}` vem de `KAIROS_INSTANCE_NAME` no `.env` (fallback: `default`)
+- `{tipo}` é definido pelo squad — não é uma convenção do framework
 
-Idempotência por data: regerar no mesmo dia sobrescreve o arquivo anterior (constituição IV.13).
+O segmento `{INSTANCE}` garante que dois membros do time rodando o mesmo agente no mesmo dia gerem arquivos com nomes distintos, sem colisão. Ver `.claude/rules/output-naming.md` para regras completas de normalização e fallback.
+
+Idempotência por data: regerar no mesmo dia (mesma instância) sobrescreve o arquivo anterior (constituição IV.13).
+
+Cada squad declara seus tipos de output em `squads/{squad}/workflows/data-flow.md`.
 
 ### Pipeline e workflow-chains
 
