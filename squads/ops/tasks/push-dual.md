@@ -92,7 +92,7 @@ Executar `git show filipe-instance:.kairos-core/manifest.yaml` e extrair:
 Antes de sincronizar, identificar arquivos que estão em `main` mas não fazem mais parte do manifest.
 
 1. Executar `git ls-files` para obter todos os arquivos tracked em `main`
-2. Para cada arquivo tracked que **não** esteja em `manifest_all_paths`:
+2. Para cada arquivo tracked que **não** esteja em `manifest_all_paths` e que **não** seja uma exceção protegida (como `.gitignore`, que vive em `main` com regras base mas é metadado na instância):
 
 ```bash
 git rm <arquivo>

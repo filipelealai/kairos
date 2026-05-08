@@ -188,8 +188,6 @@ sync_files:
   layer: L3
 - path: CODE_OF_CONDUCT.md
   layer: L3
-- path: .gitignore
-  layer: L3
 - path: LICENSE
   layer: L3
 - path: .kairos-core/runtime/.gitignore
