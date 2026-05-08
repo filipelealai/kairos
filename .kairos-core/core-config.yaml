@@ -1,15 +1,8 @@
-version: 3.15.0
+version: 3.15.1
 installedAt: '2026-04-06T00:00:00.000Z'
 updatedAt: '2026-05-08T20:44:00.000Z'
 
 update_source: https://github.com/filipelealweb/kairos
-
-project:
-  name: kairos
-  type: claude-code-orchestrator
-  owner: Filipe Leal
-  scope: personal  # personal | team
-  description: "Framework de orquestração de agentes de IA construído sobre o Claude Code"
 
 agents:
   master: kairos
@@ -47,8 +40,6 @@ framework:
 runtime:
   handoffsLocation: .kairos-core/runtime/handoffs/
   outputsLocation: data/outputs/
-  reportsLocation: data/outputs/cold-prospecting/reports/
-  emailsLocation: data/outputs/cold-prospecting/emails/
 
 versioning:
   scheme: semver

@@ -177,7 +177,6 @@ Formato esperado em `main`:
 Caso contrário, ler o arquivo de `filipe-instance` e escrever em `main` uma versão com:
 - Campos top-level (`version`, `installedAt`, `updatedAt`, `update_source`, `devLoadAlwaysFiles`) — copiados integralmente
 - Seções declaradas em `owned_keys` (lidas do manifest) — copiadas integralmente
-- Seção `project` — substituída por placeholders: `owner: "{owner}"`, `name: "{project-name}"`, `scope: personal`
 - Seção `agents` — substituída por placeholder: `squads: {}`
 - Demais campos fora das seções acima — omitidos
 
