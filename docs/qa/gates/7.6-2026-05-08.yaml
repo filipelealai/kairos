@@ -1,0 +1,90 @@
+schema: 2
+story: "7.6"
+story_title: "Installer / Uninstaller cross-platform + docs"
+epic: 7
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-05-08T20:27:00Z"
+quality_score: 92
+execution_log_found: true
+review_note: "Gate anterior (RESSALVA) invalidado — arquivos de doc estavam ausentes por regressão de branch (commit 7fa9d16 preso em test/7.6-smoke, não mergeado em filipe-instance). Após reintegração seletiva dos 17 arquivos, todos os ACs verificados."
+
+ac_coverage:
+  covered:
+    # --- Instalador ---
+    - "✅ AC: Banner ASCII de boas-vindas + texto humano — install.sh (445 linhas) e install.ps1 (498 linhas)"
+    - "✅ AC: Detecta SO automaticamente"
+    - "✅ AC: WSL2 detection/redirect — install.ps1 com lógica WSL"
+    - "✅ AC: Windows sem WSL2 segue PowerShell nativo"
+    - "✅ AC: Valida pré-requisito Claude Code"
+    - "✅ AC: Pergunta opcional Git"
+    - "✅ AC: Pergunta pasta de instalação"
+    - "✅ AC: Consulta tag semver + baixa tarball via API GitHub"
+    - "✅ AC: Lê manifest.yaml e copia seletivamente"
+    - "✅ AC: Elicitação user-friendly KAIROS_INSTANCE_NAME"
+    - "✅ AC: Gera .env a partir de .env.example"
+    - "✅ AC: Não registra hooks manualmente"
+    - "✅ AC: Tela final com resumo + instruções"
+    # --- Desinstalador ---
+    - "✅ AC: Desinstalador — Banner, confirmação, lê manifest"
+    - "✅ AC: Desinstalador — perguntas de preservação (outputs, .env, tudo)"
+    - "✅ AC: Desinstalador — deleta owned_files, limpa owned_sections (md, json_keys, yaml_keys, env_sections)"
+    - "✅ AC: Desinstalador — sync_files removidos apenas se 'apagar tudo'"
+    - "✅ AC: Desinstalador — walk bottom-up pastas vazias"
+    - "✅ AC: Desinstalador — resumo impresso"
+    # --- Documentação ---
+    - "✅ AC: .kairos-core/docs/install.md cross-platform (301 linhas)"
+    - "✅ AC: Manifesto registra install/uninstall scripts + install.md como owned_files (7 refs)"
+    - "✅ AC: UX amigável em todas as etapas"
+    - "✅ AC: Smoke tests — 4 cenários validados (IA + manual + tarball em branch teste) — 31/31 ACs checked"
+    # --- Atualizações de docs ---
+    - "✅ AC: README.md — seção Instalação reescrita com curl one-liner"
+    - "✅ AC: README.md — nova seção 'Colaboração em equipe'"
+    - "✅ AC: README.md — indicação 'Git-first, mas funciona sem Git'"
+    - "✅ AC: README.md — tabela de Comandos com coluna 'Depende de Git?' + novos comandos (*update, *configure-cloud, *export-squad, *import-squad)"
+    - "✅ AC: README.md — estrutura do repositório atualizada com install/uninstall scripts, install.md"
+    - "✅ AC: CLAUDE.md — bloco kairos-core: install.sh/ps1, uninstall.sh/ps1, install.md na árvore"
+    - "✅ AC: CLAUDE.md — tabela Regras Cross-Cutting inclui output-naming.md"
+    - "✅ AC: CONTRIBUTING.md — nota sobre Git obrigatório para contribuição"
+    - "✅ AC: scope.md — referências a novos comandos e estrutura (12 refs)"
+    - "✅ AC: data-flow.md — token {INSTANCE} presente (3 refs)"
+    - "✅ AC: kairos-help.md — configure-cloud, export-squad, import-squad, *update (19 refs)"
+    - "✅ AC: *configure-cloud integrado — instalador instrui sobre cloud sync (decisão documentada no Execution Log)"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ install.sh (445 linhas)"
+    - "✅ install.ps1 (498 linhas)"
+    - "✅ uninstall.sh (435 linhas)"
+    - "✅ uninstall.ps1 (468 linhas)"
+    - "✅ .kairos-core/docs/install.md (301 linhas)"
+    - "✅ .kairos-core/tasks/kairos-export-squad.md"
+    - "✅ .kairos-core/tasks/kairos-import-squad.md"
+    - "✅ .kairos-core/manifest.yaml (7 novas entradas)"
+    - "✅ .kairos-core/tasks/kairos-help.md"
+    - "✅ .kairos-core/docs/scope.md"
+    - "✅ .kairos-core/docs/data-flow.md"
+    - "✅ README.md (completo)"
+    - "✅ CLAUDE.md (completo)"
+    - "✅ CONTRIBUTING.md"
+    - "✅ docs/stories/7.6.story.md"
+    - "✅ docs/epics/epic-7-kairos-colaborativo-local.md"
+  missing: []
+
+checks:
+  version_bumped: "N/A — version bump fora de escopo desta story (será feito via *version ao final do epic)"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS — Status In Review, Epic 7, Complexidade XG, Tipo kairos-core"
+  files_exist: "✅ PASS — todos os 16 arquivos declarados presentes"
+  no_broken_references: "✅ PASS — referências a stories 7.1-7.5, manifest.yaml, tasks verificadas"
+  execution_log_present: "✅ PASS — Execution Log detalhado com arquivos, decisões, 5 bugs documentados, Change Log"
+  ac_coverage: "✅ PASS — 31/31 ACs marcados como [x], 0 pendentes"
+
+issues: []
+blocking_issues: []
+
+recommendations:
+  - "Executar *version minor ao final do epic para bump e CHANGELOG"
+  - "Executar *pre-push → *push para levar ao remoto"

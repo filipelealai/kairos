@@ -43,8 +43,8 @@ O MCP server do Epic 6 não é descontinuado por esta entrega — coexiste em pa
 | [7.2](../stories/7.2.story.md) | Tagging automático no `*pre-push` + backfill one-shot | Done |
 | [7.3](../stories/7.3.story.md) | `@kairos *update` + SessionStart hook de version-check | Done |
 | [7.4](../stories/7.4.story.md) | Cloud sync via symlink + `@kairos *configure-cloud` | Done |
-| [7.5](../stories/7.5.story.md) | `@kairos *export-squad` / `*import-squad` + dependências externas | Draft |
-| [7.6](../stories/7.6.story.md) | Installer / Uninstaller cross-platform + docs | Draft |
+| [7.5](../stories/7.5.story.md) | `@kairos *export-squad` / `*import-squad` + dependências externas | Done |
+| [7.6](../stories/7.6.story.md) | Installer / Uninstaller cross-platform + docs | Done |
 
 ---
 
@@ -91,3 +91,9 @@ O MCP server do Epic 6 não é descontinuado por esta entrega — coexiste em pa
 | 2026-05-06 | Story 7.4 iniciada — In Progress |
 | 2026-05-06 | Story 7.4 concluída — In Review |
 | 2026-05-06 | Stories 7.3 e 7.4 — *pre-push: gate confirmado, status → Done |
+| 2026-05-06 | Story 7.5 iniciada — In Progress |
+| 2026-05-06 | Story 7.5 concluída — In Review |
+| 2026-05-06 | Story 7.6 iniciada — In Progress |
+| 2026-05-06 | Story 7.6 concluída — In Review |
+| 2026-05-08 | Story 7.6 — smoke tests concluídos (4 cenários ✅: IA + manual + tarball em branch de teste); status In Review confirmado |
+| 2026-05-08 | *pre-push: gate confirmado para 7.5 e 7.6 — status → Done; version bump 3.14.0 → 3.15.0 |

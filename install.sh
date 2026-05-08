@@ -230,25 +230,29 @@ fi
 
 info "Instalando arquivos do framework (via manifest.yaml)..."
 
-# Extrair paths de owned_files e owned_sections usando python3 ou grep
+# Extrair paths apenas de owned_files e owned_sections (não sync_files)
 extract_paths() {
   local manifest="$1"
   if command -v python3 &>/dev/null; then
     python3 - <<PYEOF
-import re, sys
+import sys
 paths = []
 with open('${manifest}') as f:
-    content = f.read()
-# Find all "- path:" entries
-for m in re.finditer(r'^\s*-\s*path:\s*(.+)$', content, re.MULTILINE):
-    p = m.group(1).strip()
-    if not p.startswith('#'):
-        paths.append(p)
+    lines = f.readlines()
+section = None
+for line in lines:
+    stripped = line.rstrip()
+    if stripped and not stripped[0].isspace() and stripped.endswith(':'):
+        section = stripped.rstrip(':')
+    if section in ('owned_files', 'owned_sections') and stripped.lstrip().startswith('- path:'):
+        p = stripped.split('- path:')[1].strip()
+        if p:
+            paths.append(p)
 for p in paths:
     print(p)
 PYEOF
   else
-    grep -E '^\s*-\s*path:' "$manifest" | sed 's/.*path: //' | tr -d "'"
+    awk '/^owned_files:|^owned_sections:/{p=1} /^sync_files:|^notes:/{p=0} p && /- path:/{gsub(/.*path: /,""); print}' "$manifest"
   fi
 }
 
@@ -377,10 +381,10 @@ if [[ "${do_cloud,,}" == "s" ]]; then
   if [[ -z "$CLOUD_PATH" ]]; then
     warn "Nenhum caminho informado — pulando cloud sync."
     warn "Configure depois com: @kairos *configure-cloud"
-  elif [[ ! -d "$CLOUD_PATH" ]]; then
-    warn "Pasta não encontrada: $CLOUD_PATH"
-    warn "Crie a pasta no seu app de nuvem e configure depois: @kairos *configure-cloud"
   else
+    if [[ ! -d "$CLOUD_PATH" ]]; then
+      mkdir -p "$CLOUD_PATH"
+    fi
     OUTPUTS_DIR="${INSTALL_DIR}/data/outputs"
     # Remover symlink ou diretório vazio existente
     if [[ -L "$OUTPUTS_DIR" ]]; then

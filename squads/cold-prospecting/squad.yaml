@@ -58,6 +58,16 @@ dependencies:
     - n8n webhook (kairos-leads)
     - Google Sheets (via n8n)
 
+external_dependencies:
+  - name: n8n
+    type: service
+    optional: false
+    purpose: "Webhook endpoint para ingestão de leads do Google Sheets"
+    detection:
+      unix: "curl -sf ${N8N_BASE_URL:-http://localhost:5678}/healthz > /dev/null 2>&1"
+      windows: "Invoke-WebRequest -Uri \"${env:N8N_BASE_URL}/healthz\" -UseBasicParsing -ErrorAction Stop"
+    note: "Requer instância n8n acessível. Configurar N8N_LEADS_URL no .env com a URL do webhook kairos-leads."
+
 tags:
   - cold-prospecting
   - email-marketing

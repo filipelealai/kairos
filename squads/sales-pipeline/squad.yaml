@@ -48,6 +48,23 @@ dependencies:
     - "Fathom (transcrição de calls)"
     - "Google Sheets via cold-prospecting webhook (dados de leads)"
 
+external_dependencies:
+  - name: trello-cli
+    type: cli
+    optional: false
+    purpose: "Gerenciamento do pipeline de deals no Trello (mover cards, listar listas)"
+    detection:
+      unix: "which trello-cli"
+      windows: "Get-Command trello-cli -ErrorAction Stop"
+    install:
+      npm: "npm install -g trello-cli"
+      note: "Após instalar, configurar auth: trello-cli set-auth. Requer TRELLO_API_KEY e TRELLO_TOKEN no .env."
+  - name: fathom
+    type: service
+    optional: false
+    purpose: "Transcrição automática de calls de vendas para análise pelo @call-analyst"
+    note: "Serviço externo (fathom.video). Requer conta ativa e transcrições exportadas como texto."
+
 tags:
   - sales-pipeline
   - kairos

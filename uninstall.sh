@@ -17,6 +17,10 @@ warn() { echo -e "  ${YELLOW}⚠️${RESET}   $*"; }
 err()  { echo -e "  ${RED}❌${RESET}  $*"; }
 info() { echo -e "  ${BLUE}→${RESET}  $*"; }
 
+# ─── Caminhos absolutos salvos antes de qualquer cd ──────────────────────────
+SCRIPT_PATH="$(realpath "$0" 2>/dev/null || readlink -f "$0" 2>/dev/null || echo "$(pwd)/uninstall.sh")"
+INSTALL_DIR_ABS="$(pwd)"
+
 # ─── Verificar que estamos na pasta correta ────────────────────────────────────
 MANIFEST=".kairos-core/manifest.yaml"
 if [[ ! -f "$MANIFEST" ]]; then
@@ -197,9 +201,8 @@ for line in content.split('\n'):
     if line.startswith('sync_files:'):
         in_sync = True
         continue
-    if in_sync and (line.startswith('notes:') or (not line.startswith(' ') and line and not line.startswith('#'))):
-        if not line.startswith(' ') and line.strip():
-            in_sync = False
+    if in_sync and line and line[0].isalpha():
+        in_sync = False
     if in_sync:
         m = re.match(r'\s*-\s*path:\s*(.+)', line)
         if m:
@@ -336,19 +339,19 @@ while IFS='|' read -r rel_path stype keys; do
   fi
 done <<< "$OWNED_SECTIONS_LIST"
 
-# ─── Remover sync_files (apenas se nuke_all) ──────────────────────────────────
-if [[ "$NUKE_ALL" == "true" ]]; then
-  info "Removendo sync_files..."
-  while IFS= read -r rel_path; do
-    [[ -z "$rel_path" ]] && continue
-    if [[ "$KEEP_OUTPUTS" == "true" ]] && [[ "$rel_path" == data/outputs* ]]; then
-      continue
-    fi
-    if [[ -f "$rel_path" ]]; then
-      rm -f "$rel_path"
-      DELETED_FILES=$((DELETED_FILES + 1))
-    fi
-  done <<< "$SYNC_FILES_LIST"
+# ─── Remover sync_files (sempre — são conteúdo do framework instalado) ────────
+while IFS= read -r rel_path; do
+  [[ -z "$rel_path" ]] && continue
+  if [[ -f "$rel_path" ]]; then
+    rm -f "$rel_path"
+    DELETED_FILES=$((DELETED_FILES + 1))
+  fi
+done <<< "$SYNC_FILES_LIST"
+
+# ─── Remover .env se o usuário não quer preservar ─────────────────────────────
+if [[ "$KEEP_ENV" != "true" ]] && [[ -f ".env" ]]; then
+  rm -f ".env"
+  DELETED_FILES=$((DELETED_FILES + 1))
 fi
 
 # ─── Apagar tudo se nuke_all ──────────────────────────────────────────────────
@@ -375,11 +378,9 @@ fi
 # ─── Remover pastas vazias (bottom-up) ───────────────────────────────────────
 if [[ "$NUKE_ALL" == "false" ]]; then
   # Remover symlinks antes de testar pastas vazias (symlink impede rmdir)
+  # Symlink não é dado — o conteúdo está no destino. Remove sempre.
   while IFS= read -r sym; do
     [[ -z "$sym" ]] && continue
-    if [[ "$KEEP_OUTPUTS" == "true" ]] && [[ "$sym" == ./data/outputs || "$sym" == ./data/outputs/* ]]; then
-      continue
-    fi
     rm -f "$sym"
     DELETED_FILES=$((DELETED_FILES + 1))
   done < <(find . -mindepth 1 -type l 2>/dev/null)
@@ -420,3 +421,15 @@ echo ""
 echo "   Para reinstalar: bash install.sh"
 echo "   (ou: curl -fsSL https://raw.githubusercontent.com/filipelealweb/kairos/main/install.sh | bash)"
 echo ""
+
+# ─── Auto-deleção do script ───────────────────────────────────────────────────
+if [[ -f "$SCRIPT_PATH" ]]; then
+  rm -f "$SCRIPT_PATH"
+fi
+
+# ─── Remover pasta do projeto se ficou vazia ──────────────────────────────────
+PARENT_DIR="$(dirname "$INSTALL_DIR_ABS")"
+if [[ -z "$(ls -A "$INSTALL_DIR_ABS" 2>/dev/null)" ]]; then
+  cd "$PARENT_DIR"
+  rmdir "$INSTALL_DIR_ABS" 2>/dev/null && ok "Pasta '$(basename "$INSTALL_DIR_ABS")' removida (ficou vazia)."
+fi

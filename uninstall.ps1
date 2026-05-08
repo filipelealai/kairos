@@ -109,6 +109,22 @@ Write-Host ""
 # --- Extrair paths do manifesto -----------------------------------------------
 $manifestContent = Get-Content $ManifestPath -Raw
 
+function Get-AbsolutePath {
+    param([string]$filePath)
+    if ([System.IO.Path]::IsPathRooted($filePath)) { return $filePath }
+    return Join-Path (Get-Location).Path $filePath
+}
+
+function Read-TextUtf8 {
+    param([string]$filePath)
+    return [System.IO.File]::ReadAllText((Get-AbsolutePath $filePath), [System.Text.Encoding]::UTF8)
+}
+
+function Write-TextUtf8 {
+    param([string]$filePath, [string]$content)
+    [System.IO.File]::WriteAllText((Get-AbsolutePath $filePath), $content, [System.Text.Encoding]::UTF8)
+}
+
 function Get-OwnedFilePaths {
     param([string]$content)
     $paths = @()
@@ -182,6 +198,73 @@ function Get-SyncFilePaths {
     return $paths
 }
 
+function Format-JsonStable {
+    param([string]$Json)
+
+    $sb = [System.Text.StringBuilder]::new()
+    $indent = 0
+    $inString = $false
+    $escaped = $false
+
+    for ($i = 0; $i -lt $Json.Length; $i++) {
+        $ch = $Json[$i]
+
+        if ($escaped) {
+            [void]$sb.Append($ch)
+            $escaped = $false
+            continue
+        }
+        if ($ch -eq '\') {
+            [void]$sb.Append($ch)
+            if ($inString) { $escaped = $true }
+            continue
+        }
+        if ($ch -eq '"') {
+            [void]$sb.Append($ch)
+            $inString = -not $inString
+            continue
+        }
+        if ($inString) {
+            [void]$sb.Append($ch)
+            continue
+        }
+
+        if (($ch -eq '{' -and ($i + 1) -lt $Json.Length -and $Json[$i + 1] -eq '}') -or
+            ($ch -eq '[' -and ($i + 1) -lt $Json.Length -and $Json[$i + 1] -eq ']')) {
+            [void]$sb.Append("$ch$($Json[$i + 1])")
+            $i++
+            continue
+        }
+
+        switch ($ch) {
+            { $_ -eq '{' -or $_ -eq '[' } {
+                [void]$sb.Append($ch)
+                $indent++
+                [void]$sb.Append("`n" + (' ' * ($indent * 2)))
+                continue
+            }
+            { $_ -eq '}' -or $_ -eq ']' } {
+                $indent--
+                [void]$sb.Append("`n" + (' ' * ($indent * 2)) + $ch)
+                continue
+            }
+            ',' {
+                [void]$sb.Append(",`n" + (' ' * ($indent * 2)))
+                continue
+            }
+            ':' {
+                [void]$sb.Append(": ")
+                continue
+            }
+            default {
+                if (-not [char]::IsWhiteSpace($ch)) { [void]$sb.Append($ch) }
+            }
+        }
+    }
+
+    return $sb.ToString()
+}
+
 function Remove-ManagedSections {
     param(
         [string]$filePath,
@@ -191,41 +274,45 @@ function Remove-ManagedSections {
     if (-not (Test-Path $filePath)) { return }
 
     if ($sectionType -eq 'markdown_blocks' -or $filePath -like '*.md') {
-        $content = Get-Content $filePath -Raw
-        $cleaned = [regex]::Replace(
-            $content,
-            '<!-- KAIROS-MANAGED-START:[^>]+ -->[\s\S]*?<!-- KAIROS-MANAGED-END:[^>]+ -->\r?\n?',
-            ''
-        )
+        $lines = (Read-TextUtf8 $filePath) -split '\r?\n'
+        $result = [System.Collections.Generic.List[string]]::new()
+        $inBlock = $false
+        foreach ($line in $lines) {
+            if ($line -match '<!--\s*KAIROS-MANAGED-START:') { $inBlock = $true; continue }
+            if ($line -match '<!--\s*KAIROS-MANAGED-END:')   { $inBlock = $false; continue }
+            if (-not $inBlock) { $result.Add($line) }
+        }
+        $cleaned = ($result -join "`n").Trim()
         if ([string]::IsNullOrWhiteSpace($cleaned)) {
             Remove-Item $filePath -Force; Write-Info "Removido (ficou vazio): $filePath"; return
         }
-        Set-Content $filePath $cleaned -NoNewline
+        Write-TextUtf8 $filePath ($cleaned + "`n")
 
     } elseif ($sectionType -eq 'env_sections') {
-        $content = Get-Content $filePath -Raw
-        $cleaned = [regex]::Replace(
-            $content,
-            '# KAIROS-MANAGED-START:[^\r\n]*\r?\n[\s\S]*?# KAIROS-MANAGED-END:[^\r\n]*\r?\n?',
-            ''
-        )
+        $lines = (Read-TextUtf8 $filePath) -split '\r?\n'
+        $result = [System.Collections.Generic.List[string]]::new()
+        $inBlock = $false
+        foreach ($line in $lines) {
+            if ($line -match '#\s*KAIROS-MANAGED-START:') { $inBlock = $true; continue }
+            if ($line -match '#\s*KAIROS-MANAGED-END:')   { $inBlock = $false; continue }
+            if (-not $inBlock) { $result.Add($line) }
+        }
+        $cleaned = ($result -join "`n").Trim()
         if ([string]::IsNullOrWhiteSpace($cleaned)) {
             Remove-Item $filePath -Force; Write-Info "Removido (ficou vazio): $filePath"; return
         }
-        Set-Content $filePath $cleaned -NoNewline
+        Write-TextUtf8 $filePath ($cleaned + "`n")
 
     } elseif ($sectionType -eq 'json_keys' -and $ownedKeys.Count -gt 0) {
         try {
-            $json = Get-Content $filePath -Raw | ConvertFrom-Json
-            $dict = [ordered]@{}
-            $json.PSObject.Properties | ForEach-Object {
-                if ($_.Name -notin $ownedKeys) { $dict[$_.Name] = $_.Value }
-            }
-            if ($dict.Count -eq 0) {
+            $json = Read-TextUtf8 $filePath | ConvertFrom-Json
+            $remainingKeys = @($json.PSObject.Properties.Name | Where-Object { $_ -notin $ownedKeys })
+            if ($remainingKeys.Count -eq 0) {
                 Remove-Item $filePath -Force; Write-Info "Removido (ficou vazio): $filePath"; return
             }
-            $absPath = if ([System.IO.Path]::IsPathRooted($filePath)) { $filePath } else { Join-Path (Get-Location).Path $filePath }
-            [System.IO.File]::WriteAllText($absPath, ($dict | ConvertTo-Json -Depth 20) + "`n", [System.Text.Encoding]::UTF8)
+            $newObj = $json | Select-Object $remainingKeys
+            $formattedJson = Format-JsonStable ($newObj | ConvertTo-Json -Depth 20 -Compress)
+            Write-TextUtf8 $filePath ($formattedJson + "`n")
         } catch { Write-Warn "Nao foi possivel processar JSON: $filePath" }
 
     } elseif ($sectionType -eq 'yaml_keys') {
@@ -233,7 +320,7 @@ function Remove-ManagedSections {
     }
 
     # Se ficou vazio após qualquer processamento
-    if ((Test-Path $filePath) -and [string]::IsNullOrWhiteSpace((Get-Content $filePath -Raw))) {
+    if ((Test-Path $filePath) -and [string]::IsNullOrWhiteSpace((Read-TextUtf8 $filePath))) {
         Remove-Item $filePath -Force; Write-Info "Removido (ficou vazio): $filePath"
     }
 }
@@ -291,6 +378,12 @@ if ($NukeAll) {
             $deletedFiles++
         }
     }
+}
+
+# --- Remover .env se o usuário não quer preservar -----------------------------
+if (-not $KeepEnv -and (Test-Path '.env' -PathType Leaf)) {
+    Remove-Item '.env' -Force
+    $deletedFiles++
 }
 
 # --- Apagar tudo se nuke_all --------------------------------------------------
@@ -369,5 +462,7 @@ if ($remaining.Count -eq 0) {
     $parentDir = Split-Path $installDir -Parent
     Set-Location $parentDir
     Remove-Item $installDir -Force -ErrorAction SilentlyContinue
-    Write-Ok "Pasta '$(Split-Path $installDir -Leaf)' removida (ficou vazia)."
+    if (-not (Test-Path $installDir)) {
+        Write-Ok "Pasta '$(Split-Path $installDir -Leaf)' removida (ficou vazia)."
+    }
 }

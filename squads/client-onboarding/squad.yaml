@@ -59,6 +59,20 @@ dependencies:
   external:
     - "PDF renderer: pandoc | md-to-pdf | puppeteer (a definir na story de implementação)"
 
+external_dependencies:
+  - name: pandoc
+    type: cli
+    optional: true
+    purpose: "Conversão de Markdown para PDF (propostas, contratos, kits de onboarding)"
+    detection:
+      unix: "which pandoc"
+      windows: "Get-Command pandoc -ErrorAction Stop"
+    install:
+      linux: "sudo apt install pandoc"
+      mac: "brew install pandoc"
+      windows: "winget install --id JohnMacFarlane.Pandoc -e"
+      note: "Alternativas: md-to-pdf (npm), puppeteer (Node.js). Pandoc é recomendado por ser leve e sem dependência de browser."
+
 integrations:
   pdf:
     status: pending

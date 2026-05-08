@@ -6,10 +6,19 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [3.15.0] — 2026-05-08
+
+### Adicionado
+- *export-squad e *import-squad para distribuição de squads por arquivo; installer e uninstaller cross-platform
+
+---
+
 ## [3.14.0] — 2026-05-06
 
 ### Adicionado
 - *update e *configure-cloud: update automático do framework e cloud sync via symlink
+
+---
 
 ## [3.13.0] — 2026-05-05
 

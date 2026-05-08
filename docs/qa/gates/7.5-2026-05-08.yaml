@@ -1,0 +1,49 @@
+schema: 2
+story: "7.5"
+story_title: "*export-squad / *import-squad + dependências externas"
+epic: 7
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-05-08T20:37:00Z"
+quality_score: 90
+execution_log_found: true
+review_note: "Todos os ACs verificados após implementação do campo external_dependencies nos 3 squad.yaml. Gate anterior RESSALVA corrigido."
+
+ac_coverage:
+  covered:
+    - "✅ AC: kairos-export-squad.md — criada (166 linhas), empacota squad completo em tar.gz/zip com export-manifest.yaml + checksum + patch de env"
+    - "✅ AC: kairos-import-squad.md — criada (238 linhas), fluxo completo: validação, conflito (atualizar/sobrescrever/renomear), patch de env, imports em CLAUDE.md, external_dependencies, *doctor ao final"
+    - "✅ AC: external_dependencies nos squad.yaml — cold-prospecting (n8n service), sales-pipeline (trello-cli cli + fathom service), client-onboarding (pandoc cli optional)"
+    - "✅ AC: Persona @kairos — 17 refs a export-squad/import-squad (commands, REQUEST-RESOLUTION, dependencies.tasks, Comandos Rápidos)"
+    - "✅ AC: kairos-doctor.md — Check 13 adicionado (external_dependencies, type: cli → WARN se ausente)"
+    - "✅ AC: Manifesto — kairos-export-squad.md e kairos-import-squad.md registrados como owned_files L2"
+    - "✅ AC: Smoke test — simulação de fluxo A→B documentado no Execution Log"
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-export-squad.md (166 linhas)"
+    - "✅ .kairos-core/tasks/kairos-import-squad.md (238 linhas)"
+    - "✅ squads/cold-prospecting/squad.yaml (external_dependencies: n8n service)"
+    - "✅ squads/sales-pipeline/squad.yaml (external_dependencies: trello-cli cli + fathom service)"
+    - "✅ squads/client-onboarding/squad.yaml (external_dependencies: pandoc cli optional)"
+    - "✅ .claude/commands/kairos/agents/kairos.md (17 refs export/import)"
+    - "✅ .kairos-core/tasks/kairos-doctor.md (check 13)"
+    - "✅ .kairos-core/manifest.yaml (2 entries)"
+  missing: []
+
+checks:
+  version_bumped: "N/A — version bump será feito via *pre-push"
+  changelog_updated: "N/A"
+  story_file_consistent: "✅ PASS — Status In Review, Epic 7, Complexidade G, Tipo kairos-core"
+  files_exist: "✅ PASS — 8/8 arquivos presentes"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+  ac_coverage: "✅ PASS — 7/7 ACs cobertos"
+
+issues: []
+blocking_issues: []
+
+recommendations:
+  - "Continuar *pre-push normalmente"

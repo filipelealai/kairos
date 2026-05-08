@@ -2,6 +2,8 @@ node_modules/
 dist/
 .env
 data/cache/
+data/outputs
+data/outputs/
 *.log
 /.env
 .mcp.json

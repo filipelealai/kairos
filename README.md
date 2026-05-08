@@ -4,7 +4,7 @@
 
 Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura de governança, memória, handoffs, workers agendados e ferramentas de desenvolvimento para criar, evoluir e operar esses squads ao longo do tempo.
 
-**Versão atual:** `3.14.0` — ver [CHANGELOG.md](CHANGELOG.md)
+**Versão atual:** `3.15.0` — ver [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -65,22 +65,47 @@ Exemplos comuns de conteúdo instanciado incluem:
 
 ## Pré-requisitos
 
-- Claude CLI ou Claude Desktop App instalado
-- Um software de IDE, como VSCode, instalado (recomendado, opcional)
-- Git instalado (recomendado, opcional)
-- Integrações externas conforme os squads que você configurar — stack, dependências e chaves de API são responsabilidade do usuário (ver [.env.example](.env.example) da sua instância quando aplicável)
+| Requisito | Status |
+|-----------|--------|
+| Claude Code (CLI ou aba "Claude Code" do Claude Desktop) | **Obrigatório** |
+| Git | Opcional — apenas para contribuir com o framework ou usar `*push` |
+| App de nuvem (Google Drive Desktop, OneDrive, Dropbox) | Opcional — para sync de outputs com o time |
 
 ---
 
 ## Instalação
 
+### Sem Git (recomendado para usuários)
+
+**Linux / macOS / WSL:**
+
 ```bash
-git clone <repo>
+curl -fsSL https://raw.githubusercontent.com/filipelealweb/kairos/main/install.sh | bash
+```
+
+**Windows (PowerShell):**
+
+```powershell
+Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/filipelealweb/kairos/main/install.ps1" -OutFile "$env:TEMP\install-kairos.ps1"
+& "$env:TEMP\install-kairos.ps1"
+```
+
+O instalador guia você pelo processo: detecta o SO, valida pré-requisitos, pergunta onde instalar, solicita seu nome de instância e gera o `.env`. Sem Git necessário.
+
+Para instruções completas, troubleshooting e setup de cloud sync, ver [`.kairos-core/docs/install.md`](.kairos-core/docs/install.md).
+
+### Com Git (contribuidores)
+
+```bash
+git clone https://github.com/filipelealweb/kairos
 cd kairos
 cp .env.example .env
 ```
 
 Edite `.env` com as variáveis relevantes para seus squads (ver [.env.example](.env.example) para a lista).
+
+Para instruções completas sobre como contribuir e abrir PRs, ver [`CONTRIBUTING.md`](CONTRIBUTING.md).
 
 ---
 
@@ -181,31 +206,76 @@ Para ativar, basta mencionar o agente pelo nome. Cada agente tem comandos com pr
 
 ---
 
+## Colaboração em equipe
+
+O Kairos suporta times onde cada pessoa roda sua própria instância local. Dois mecanismos de colaboração plug-and-play:
+
+### Outputs identificáveis por instância
+
+Cada membro configura seu `KAIROS_INSTANCE_NAME` no `.env`. Os outputs gerados carregam esse identificador no nome do arquivo:
+
+```
+data/outputs/cold-prospecting/emails/email-writer_emails-joao-2026-05-05.json
+data/outputs/cold-prospecting/emails/email-writer_emails-maria-2026-05-05.json
+```
+
+Dois membros rodando o mesmo agente no mesmo dia não colidem.
+
+### Sync de outputs via app de nuvem
+
+Pode ser configurado automaticamente no instalador, ou manualmente depois:
+
+```
+@kairos *configure-cloud
+```
+
+Cria um symlink `data/outputs/ → /Drive/Equipe/Kairos Outputs/`. A partir daí, todos os outputs aparecem automaticamente na nuvem compartilhada — via Google Drive Desktop, OneDrive ou Dropbox. Zero OAuth necessário.
+
+### Squads compartilháveis em arquivo único
+
+Squads podem ser compartilhados via exportação e importação. Ao exportar, o squad levará consigo suas memórias, personas, tasks e dependências que precisa para funcionar.
+
+```
+@kairos *export-squad {nome-do-squad}   # gera kairos-squad-{nome}-{versão}.tar.gz
+@kairos *import-squad {arquivo.tar.gz}  # instala na instância destino
+```
+
+Envie o arquivo por e-mail, Drive, pendrive, WhatsApp (ou por que meio preferir). O importador valida as dependências disponíveis e faltantes, e configura tudo automaticamente no lugar.
+
+---
+
 ## @kairos — Governança do framework
 
 `@kairos` é o agente que governa como o próprio Kairos evolui. Não faz trabalho operacional — planeja, valida e versiona o sistema.
 
 Comandos principais:
 
-| Comando | O que faz |
-|---------|-----------|
-| `*status` | Versão, squads, stories abertas, último gate |
-| `*roadmap` | O que está em Draft / In Progress / In Review |
-| `*new-epic` | Cria novo epic via elicitação guiada |
-| `*new-story` | Cria nova story de desenvolvimento |
-| `*new-squad` | Scaffolda novo squad completo |
-| `*validate-story {id}` | Valida formato e qualidade da story |
-| `*validate-squad {squad}` | Valida formato e consistência geral de um squad |
-| `*update-squad {squad}` | Atualiza um squad existente |
-| `*regenerate-squad {squad}` | Regenera personas desatualizadas a partir dos `.yaml` de agentes (SHA drift) |
-| `*implement {id}` | Implementa story de desenvolvimento |
-| `*review {id}` | Valida implementação — gate PASS / RESSALVA / BLOCK |
-| `*version patch\|minor\|major "desc"` | Bump de versão semântica |
-| `*pre-push` | Verificações antes do push ou PR |
-| `*push` | git push — exclusivo, requer *pre-push PASS |
-| `*prd` | Cria ou atualiza `docs/scope.md` |
-| `*architecture [{squad}]` | Audita consistência entre docs e código — framework geral (sem argumento) ou squad específico |
-| `*help [{topic}]` | Ajuda completa com fluxos e exemplos |
+| Comando | O que faz | Depende de Git? |
+|---------|-----------|------|
+| `*status` | Versão, squads, stories abertas, último gate | — |
+| `*roadmap` | O que está em Draft / In Progress / In Review | — |
+| `*new-epic` | Cria novo epic via elicitação guiada | — |
+| `*new-story` | Cria nova story de desenvolvimento | — |
+| `*new-squad` | Scaffolda novo squad completo | — |
+| `*validate-story {id}` | Valida formato e qualidade da story | — |
+| `*validate-squad {squad}` | Valida formato e consistência geral de um squad | — |
+| `*update-squad {squad}` | Atualiza um squad existente | — |
+| `*regenerate-squad {squad}` | Regenera personas desatualizadas a partir dos `.yaml` de agentes (SHA drift) | — |
+| `*implement {id}` | Implementa story de desenvolvimento | — |
+| `*review {id}` | Valida implementação — gate PASS / RESSALVA / BLOCK | — |
+| `*configure-cloud` | Configura o sync de outputs via symlink para Google Drive / OneDrive / Dropbox | — |
+| `*export-squad {squad}` | Empacota squad completo em arquivo distribuível | — |
+| `*import-squad {arquivo}` | Instala squad de arquivo na instância local | — |
+| `*update` | Atualiza o framework para a versão mais recente (sem Git) | — |
+| `*doctor` | Health check do framework — arquivos, hooks, ownership | — |
+| `*prd` | Cria ou atualiza `docs/scope.md` | — |
+| `*architecture [{squad}]` | Audita consistência entre docs e código | — |
+| `*help [{topic}]` | Ajuda completa com fluxos e exemplos | — |
+| `*version patch\|minor\|major "desc"` | Bump de versão semântica | **Git** |
+| `*pre-push` | Verificações antes do push ou PR | **Git** |
+| `*push` | git push — exclusivo, requer `*pre-push` PASS | **Git** |
+
+> Comandos marcados com **Git** dependem de Git instalado e são voltados para contribuidores do framework ou quem mantém repo privado.
 
 ---
 
@@ -213,21 +283,25 @@ Comandos principais:
 
 ```
 kairos/
+├── install.sh / install.ps1     # Instaladores interativos (Linux/Mac/WSL e Windows)
+├── uninstall.sh / uninstall.ps1 # Desinstaladores (preservam conteúdo user-owned)
+│
 ├── src/
 │   └── agents/          # Scripts e ferramentas utilizados por agentes e squads (user-owned)
 │
 ├── data/
-│   └── outputs/         # Outputs dos agentes
+│   └── outputs/         # Outputs dos agentes (pode ser symlink para nuvem via *configure-cloud)
 │       └── {squad}/
-│           └── {tipo}/  # Relatórios, outputs e dados gerados por agentes, divididos por tipo e agente
+│           └── {tipo}/  # Relatórios, outputs e dados gerados por agentes — nomeados com {INSTANCE}
 │
 ├── squads/
 │   └── {squad}/
-│       ├── squad.yaml           # Manifesto do squad
+│       ├── squad.yaml           # Manifesto do squad (inclui external_dependencies)
 │       ├── README.md
 │       ├── agents/              # Definições leves dos agentes
 │       ├── tasks/               # Tasks específicas do squad
-│       └── workflows/           # Pipeline documentado
+│       ├── workflows/           # Pipeline documentado
+│       └── rules/               # Regras específicas do squad
 │
 ├── docs/
 │   ├── epics/                   # Epic files
@@ -240,7 +314,7 @@ kairos/
 ├── .claude/
 │   ├── commands/kairos/agents/  # Personas completas dos agentes (YAML-in-Markdown)
 │   ├── rules/                   # Regras cross-cutting (lifecycle, handoff, authority...)
-│   └── hooks/                   # Hooks do Claude Code (PreCompact, PreToolUse)
+│   └── hooks/                   # Hooks do Claude Code usados pelo Kairos (PreCompact, PreToolUse, SessionStart)
 │
 ├── .kairos-core/
 │   ├── constitution.md          # Princípios não-negociáveis do framework (L1)
@@ -250,6 +324,7 @@ kairos/
 │   ├── tasks/                   # Definições de tasks executáveis
 │   ├── data/                    # KB, workers registry e dados de configuração
 │   ├── docs/                    # Documentação de arquitetura e escopo do Kairos
+│   │   └── install.md           # Guia completo de instalação e troubleshooting
 │   ├── runtime/                 # Handoffs e logs de execução (conteúdo gitignored)
 │   └── templates/               # Templates do Kairos para criação de agentes, squads, stories etc.
 │
@@ -257,6 +332,22 @@ kairos/
 ├── CLAUDE.md                    # Instruções para o Claude Code, contendo seções gerenciadas pelo Kairos
 └── .env.example
 ```
+
+---
+
+## Git-first, mas funciona sem Git
+
+O Kairos é "Git-first" no sentido de que usa Git internamente para versionamento e push, e funciona melhor num time que trabalhe utilizando um repositório central no GitHub (ou outra ferramenta), e sigam boas práticas de commit e merge — mas **não exige Git do usuário final** para instalação, uso ou atualização.
+
+| Operação | Git necessário? |
+|----------|----------------|
+| Instalar o Kairos | **Não** — use `install.sh` / `install.ps1` |
+| Usar agentes e squads | **Não** |
+| Atualizar o framework (`*update`) | **Não** |
+| Compartilhar squads (`*export-squad` / `*import-squad`) | **Não** |
+| Sync de outputs com a nuvem (`*configure-cloud`) | **Não** |
+| Versionar e fazer push para repo privado | **Sim** (`*push`, `*pre-push`, `*version`) |
+| Contribuir com o framework público | **Sim** (abrir PR no GitHub) |
 
 ---
 
@@ -276,7 +367,7 @@ Claude Code, sem persona   # executor move Draft → In Progress → In Review
 @kairos *version patch\|minor\|major "desc" # versiona as mudanças feitas no framework, para PR (depende de Git)
 @kairos *pre-push          # verificações finais (depende de Git)
 @kairos *push              # push ao remoto privado (exclusivo do @kairos, depende de Git)
-ou PR                      # contribuições no repositório público do Kairos
+PR                         # contribuições no repositório público do Kairos
 ```
 Para informações detalhadas de como abrir um PR e contribuir no repositório público do Kairos, veja [CONTRIBUTING.md](CONTRIBUTING.md).
 
@@ -297,6 +388,7 @@ Para informações detalhadas de como abrir um PR e contribuir no repositório p
 | [.kairos-core/docs/scope.md](.kairos-core/docs/scope.md) | PRD do framework Kairos — escopo, arquitetura, objetivos, restrições, stack |
 | [.kairos-core/docs/agent-standards.md](.kairos-core/docs/agent-standards.md) | Como criar e estruturar novos agentes |
 | [.kairos-core/docs/data-flow.md](.kairos-core/docs/data-flow.md) | Fluxo completo de dados, estrutura, formatos de output |
+| [.kairos-core/docs/install.md](.kairos-core/docs/install.md) | Guia completo de instalação, cloud sync, troubleshooting e desinstalação |
 | [CHANGELOG.md](CHANGELOG.md) | Histórico de versões |
 | [CLAUDE.md](CLAUDE.md) | Instruções e contexto para o Claude Code |
 

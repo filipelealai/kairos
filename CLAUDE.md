@@ -110,7 +110,7 @@ Stories em `docs/stories/` = log, histórico e desenvolvimento criados e gerenci
 .claude/
   commands/kairos/agents/  # Personas completas dos agentes (YAML-in-Markdown)
   rules/                   # Regras cross-cutting (lifecycle, handoff, authority...)
-  hooks/                   # Hooks do Claude Code (PreCompact, PreToolUse)
+  hooks/                   # Hooks do Claude Code que o Kairos usa (PreCompact, PreToolUse, SessionStart)
 
 .kairos-core/
   constitution.md          # Princípios não-negociáveis do framework (L1)
@@ -120,11 +120,15 @@ Stories em `docs/stories/` = log, histórico e desenvolvimento criados e gerenci
   tasks/                   # Definições de tasks executáveis
   data/                    # KB, workers registry e dados de configuração
   docs/                    # Documentação de arquitetura e escopo do Kairos
+    install.md             # Guia de instalação, cloud sync, troubleshooting
   runtime/                 # Handoffs e logs de execução (conteúdo gitignored)
   templates/               # Templates do Kairos para criação de agentes, squads, stories etc.
 
-src/agents/  # Scripts e ferramentas (user-owned, linguagem definida pela instância)
-data/        # Outputs dos agentes (reports, emails, etc.)
+src/agents/    # Scripts e ferramentas (user-owned, linguagem definida pela instância)
+data/outputs/  # Outputs dos agentes (pode ser symlink para nuvem via *configure-cloud)
+
+install.sh   install.ps1     # Instaladores interativos (Linux/Mac/WSL e Windows)
+uninstall.sh uninstall.ps1   # Desinstaladores (preservam conteúdo user-owned)
 ```
 
 ## Regras Cross-Cutting
@@ -138,6 +142,7 @@ data/        # Outputs dos agentes (reports, emails, etc.)
 | `framework-layers.md` | Camadas L1–L4 de imutabilidade do framework |
 | `ownership.md` | Modelo de ownership framework/usuário e contrato de update |
 | `external-integrations.md` | Skills → MCPs → scripts — hierarquia e diretrizes de integração com sistemas externos |
+| `output-naming.md` | Padrão canônico de nomenclatura de outputs por instância (`KAIROS_INSTANCE_NAME`) |
 
 Rules específicas de squad vivem em `squads/{squad}/rules/` e são carregadas pelos imports abaixo (seção user-owned).
 

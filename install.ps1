@@ -1,4 +1,4 @@
-#Requires -Version 5.1
+﻿#Requires -Version 5.1
 # Kairos - Instalador Interativo (Windows PowerShell nativo)
 # Instala o framework Kairos sem necessidade de Git.
 #
@@ -18,11 +18,12 @@ param(
 
 # Auto-fix encoding: GitHub CDN entrega .ps1 sem BOM; PS 5.1 leria como Windows-1252.
 # Se não há BOM, adiciona e reinicia — a segunda execução lê como UTF-8 corretamente.
-if ($MyInvocation.ScriptName -and [System.IO.File]::Exists($MyInvocation.ScriptName)) {
-    $raw = [System.IO.File]::ReadAllBytes($MyInvocation.ScriptName)
+$ScriptFile = if ($PSCommandPath) { $PSCommandPath } elseif ($MyInvocation.MyCommand.Path) { $MyInvocation.MyCommand.Path } else { $MyInvocation.ScriptName }
+if ($ScriptFile -and [System.IO.File]::Exists($ScriptFile)) {
+    $raw = [System.IO.File]::ReadAllBytes($ScriptFile)
     if (-not ($raw.Length -ge 3 -and $raw[0] -eq 0xEF -and $raw[1] -eq 0xBB -and $raw[2] -eq 0xBF)) {
-        [System.IO.File]::WriteAllBytes($MyInvocation.ScriptName, ([byte[]](0xEF,0xBB,0xBF) + $raw))
-        & $MyInvocation.ScriptName @PSBoundParameters
+        [System.IO.File]::WriteAllBytes($ScriptFile, ([byte[]](0xEF,0xBB,0xBF) + $raw))
+        & $ScriptFile @PSBoundParameters
         exit
     }
 }
