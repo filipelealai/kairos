@@ -8,9 +8,11 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ## [3.15.1] - 2026-05-08
 
-### Changed
+### Corrigido
 - core-config: remoção da seção `project`, redundante frente ao `KAIROS_INSTANCE_NAME` em `.env`.
 - core-config: limpeza de leaks de instância (`reportsLocation` e `emailsLocation`) do bloco framework-owned `runtime`.
+
+---
 
 ## [3.15.0] — 2026-05-08
 
