@@ -105,7 +105,7 @@ cp .env.example .env
 
 Edite `.env` com as variáveis relevantes para seus squads (ver [.env.example](.env.example) para a lista).
 
-Para instruções completas sobre como contribuir e abrir PRs, ver [`CONTRIBUTING.md`](CONTRIBUTING.md).
+Para instruções completas sobre como contribuir e abrir PRs, ver [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ---
 
@@ -364,7 +364,7 @@ O Kairos usa um modelo de governança próprio para se auto-documentar e evoluir
 Claude Code, sem persona   # executor move Draft → In Progress → In Review
                            # e adiciona Execution Log na story
 @kairos *review {id}       # valida implementação — gate PASS/RESSALVA/BLOCK
-@kairos *version patch\|minor\|major "desc" # versiona as mudanças feitas no framework, para PR (depende de Git)
+@kairos *version patch|minor|major "desc" # versiona as mudanças feitas no framework, para PR (depende de Git)
 @kairos *pre-push          # verificações finais (depende de Git)
 @kairos *push              # push ao remoto privado (exclusivo do @kairos, depende de Git)
 PR                         # contribuições no repositório público do Kairos
@@ -372,9 +372,9 @@ PR                         # contribuições no repositório público do Kairos
 Para informações detalhadas de como abrir um PR e contribuir no repositório público do Kairos, veja [CONTRIBUTING.md](CONTRIBUTING.md).
 
 **Versionamento semântico:**
-- `PATCH` — correção, bug fixes, ajuste de instrução, documentação (não exige story)
-- `MINOR` — novo comando, nova task, nova rule, nova capacidade, modificações em arquivos L2 (exige story)
-- `MAJOR` — novo escopo, breaking change, mudança de arquitetura, modificações em arquivos L1 (exige story)
+- `PATCH` — Correção, bug fixes, ajuste de instrução, documentação (não exige story)
+- `MINOR` — Novo comando, nova task, nova rule, nova capacidade ou expansão significativa de capacidade (exige story)
+- `MAJOR` — Novo escopo, breaking change, mudança de arquitetura, modificações em arquivos L1 (exige story)
 
 **Stories** em `docs/stories/` rastreiam o desenvolvimento do **framework Kairos** e do conteúdo instanciado (quando modificado/criado pelo Kairos), servindo como backlog do que fazer, e logs do que está sendo feito ou do que foi feito — não são outputs operacionais dos agentes/squads. Outputs gerados por agentes vão para `data/outputs/`.
 

@@ -44,9 +44,9 @@ runtime:
 versioning:
   scheme: semver
   bump_rules:
-    MAJOR: "Novo escopo/squad adicionado OU breaking change em agente existente"
-    MINOR: "Novo agente, nova task, nova rule ou expansão significativa de capacidade"
-    PATCH: "Correção de bug, atualização de MEMORY.md, ajuste de instrução de task/rule"
+    MAJOR: "Novo escopo, breaking change, mudança de arquitetura, modificações em arquivos L1"
+    MINOR: "Novo comando, nova task, nova rule, nova capacidade ou expansão significativa de capacidade"
+    PATCH: "Correção de bugs, ajuste de instrução, documentação"
   story_required_for: [MAJOR, MINOR]
   authority: kairos
 

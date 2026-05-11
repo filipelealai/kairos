@@ -5,7 +5,7 @@ kairos-version: 3.15.0
 
 # Kairos — Escopo e Arquitetura do Framework
 
-**Versão:** 3.0
+**Versão:** 4.0
 **Atualizado em:** 2026-05-06
 
 ---
@@ -119,16 +119,16 @@ Arquivos mistos usam blocos `<!-- KAIROS-MANAGED-START -->` (markdown) ou `owned
 ### Versionamento Semântico
 
 ```
-PATCH  — correção, ajuste de instrução, MEMORY.md
-MINOR  — novo agente, nova task, nova rule (exige story)
-MAJOR  — novo squad, breaking change (exige story)
+PATCH  — correção de bugs, ajuste de instrução, documentação
+MINOR  — novo comando, nova task, nova rule, nova capacidade ou expansão significativa de capacidade (exige story)
+MAJOR  — novo escopo, breaking change, mudança de arquitetura, modificações em arquivos L1 (exige story)
 ```
 
 Autoridade exclusiva de versionamento: `@kairos *version` / `@kairos *pre-push`.
 
 ### CI/CD
 
-O workflow `validate-manifest` (`.github/workflows/validate-manifest.yml`) valida a integridade do manifesto em PRs para `origin/main`, bloqueando contribuições que violem a fronteira framework/usuário (story 5.19).
+O workflow `validate-manifest` (`.github/workflows/validate-manifest.yml`) valida a integridade do manifesto em PRs para `origin/main`, bloqueando contribuições que violem a fronteira framework/usuário.
 
 ---
 
@@ -228,6 +228,7 @@ data/outputs/  # Outputs dos agentes — pode ser symlink para pasta de nuvem vi
 
 | Versão | Data | Mudança |
 |--------|------|---------|
-| 1.0 | 2026-04-16 | Criação inicial — escopo e arquitetura do framework (story 3.7) |
-| 2.0 | 2026-04-26 | Reescrita para v3.9.x: seção Stack de Referência removida; src/ removido do diagrama; .github/, docs/qa/gates/, docs/epics/ adicionados; comandos do @kairos atualizados; modelo de dois executores; CI/CD; workers; modo yolo (story 5.31) |
+| 1.0 | 2026-04-16 | Criação inicial — escopo e arquitetura do framework |
+| 2.0 | 2026-04-26 | Reescrita para v3.9.x: seção Stack de Referência removida; src/ removido do diagrama; .github/, docs/qa/gates/, docs/epics/ adicionados; comandos do @kairos atualizados; modelo de dois executores; CI/CD; workers; modo yolo |
 | 3.0 | 2026-05-06 | Epic 7: instaladores, *update, *configure-cloud, *export-squad/*import-squad, KAIROS_INSTANCE_NAME, output naming; coluna Git na tabela de comandos; install.md; cloud-sync.json; SessionStart hook; external_dependencies em squad.yaml |
+| 4.0 | 2026-05-08 | Remoção de referências instanciadas a stories; ajuste do versionamento semântico |

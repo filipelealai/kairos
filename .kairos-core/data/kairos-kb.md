@@ -110,7 +110,7 @@ kairos-version: 3.7.0
 | ID de agente | `kebab-case` | `email-writer` |
 | Persona (nome) | `PascalCase` | `Eva` |
 | Task file | `kebab-case.md` | `write-emails.md` |
-| Output file | `{agent-id}_{tipo}-YYYY-MM-DD.{ext}` | `lead-scorer_scored-leads-2026-04-14.csv` |
+| Output file | `{agent-id}_{tipo}-{INSTANCE}-YYYY-MM-DD.{ext}` | `lead-scorer_scored-leads-joao-2026-04-14.csv` |
 | Story file | `{epic}.{N}.story.md` | `5.1.story.md` |
 | Epic file | `epic-{N}-{slug}.md` | `epic-5-arquitetura-do-framework.md` |
 | Handoff file | `handoff-{from}-to-{to}-{ts}.yaml` | `handoff-agent-a-to-agent-b-20260414.yaml` |
@@ -155,9 +155,9 @@ kairos-version: 3.7.0
 
 | Tipo | Quando | Story obrigatória? |
 |------|--------|-------------------|
-| PATCH | Bug fix, ajuste de instrução, atualização de MEMORY | Não |
-| MINOR | Novo agente, task, rule ou squad | Sim |
-| MAJOR | Novo squad/escopo, breaking change | Sim |
+| PATCH | Correção de bugs, ajuste de instrução, documentação | Não |
+| MINOR | Novo comando, nova task, nova rule, nova capacidade ou expansão significativa de capacidade | Sim |
+| MAJOR | Novo escopo, breaking change, mudança de arquitetura, modificações em arquivos L1 | Sim |
 
 ### Ownership
 
@@ -170,4 +170,4 @@ kairos-version: 3.7.0
 
 ---
 
-*Última atualização: 2026-04-24*
+*Última atualização: 2026-05-08*
