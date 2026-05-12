@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.15.0
+kairos-version: 4.0.0
 task: Kairos Help
 responsavel: "@kairos"
 responsavel_type: agent
@@ -120,23 +120,24 @@ DESENVOLVIMENTO
                         → *update-squad sem argumento: lista squads disponíveis.
 
 VERSIONAMENTO E PUSH  [Git obrigatório para os comandos desta seção]
-  *version {tipo} "{desc}"
-                        Bump de versão semântica avulso. Tipos: patch | minor | major.
+  *version {tipo}       Bump de versão semântica. Tipos: patch | minor | major.
+                        Passo 1: *doctor (bloqueia se CRITICAL ou WARN de integridade).
                         Valida que existe story justificando MINOR e MAJOR.
-                        Atualiza core-config.yaml e CHANGELOG.md.
-                        → Uso avulso (ex: patch rápido sem story associada).
-                          No ciclo normal, o bump ocorre dentro do *pre-push.
+                        Atualiza core-config.yaml, CHANGELOG.md, README.md, frontmatters e SHAs.
+                        → Standalone ou embutido no *push (modo dev).
                         → Git obrigatório.
 
-  *pre-push             Pré-voo completo: verifica gate de review (MINOR/MAJOR), executa
-                        bump de versão interativo (pergunta tipo e aplica), realiza commit
-                        dos changes relevantes, spot check de referências, consistência
-                        final (core-config vs CHANGELOG). Seta pre_push_passed=true na sessão.
-                        → Obrigatório antes de *push. Substitui *version no ciclo normal.
+  *pre-push             Validação pura: verifica gate de review (type:kairos-core) e
+                        spot check de referências. Idempotente — sem commit, sem bump.
+                        Seta pre_push_passed=true na sessão.
+                        → Obrigatório antes de *push (somente se há story type:kairos-core
+                        In Review).
                         → Git obrigatório.
 
-  *push                 git push ao remoto. EXCLUSIVO do @kairos.
-                        RECUSA se *pre-push não passou na sessão atual.
+  *push                 Orquestrador de release: *doctor (via *version), drift de persona,
+                        prompt modo dev → *version inline, transição Done, commit, push.
+                        EXCLUSIVO do @kairos. RECUSA se story é mudança de framework 
+                        (type:kairos-core) e *pre-push não passou na sessão.
                         → Git obrigatório.
 
 DOCUMENTAÇÃO

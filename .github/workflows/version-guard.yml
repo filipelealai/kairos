@@ -1,0 +1,27 @@
+name: Version Guard
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  version-guard:
+    name: Kairos Version Guard
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install yq
+        run: |
+          pip install yq
+
+      - name: Run version-guard.sh
+        env:
+          BASE: origin/main
+        run: |
+          bash .github/scripts/version-guard.sh

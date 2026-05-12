@@ -143,9 +143,9 @@ Versão atual: ver `.kairos-core/core-config.yaml`
 Histórico: `CHANGELOG.md`
 
 Regras:
-- **PATCH** — correção, bug fixes, ajuste de instrução, documentação
-- **MINOR** — novo agente, nova task, nova rule, nova capacidade
-- **MAJOR** — novo escopo, breaking change, mudança de arquitetura, modificações em arquivos L1
+- **PATCH** — Correção de bugs, ajuste de instrução, documentação
+- **MINOR** — Novo comando, nova task, nova rule, nova capacidade ou expansão significativa de capacidade
+- **MAJOR** — Novo escopo, breaking change, mudança de arquitetura, modificações em arquivos L1
 
-Autoridade para versionar: `@kairos *version` e `@kairos *pre-push`
+Autoridade para versionar: `@kairos *version` (standalone ou via modo dev no `*push`)
 <!-- KAIROS-MANAGED-END: kairos-core -->

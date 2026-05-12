@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.3.1
+kairos-version: 4.0.0
 ---
 
 # Story Lifecycle — Protocolo do Executor
@@ -40,7 +40,19 @@ Draft → In Progress → In Review → Done
 | `Draft` | Criada, aguardando execução | @kairos cria |
 | `In Progress` | Executor iniciou o trabalho | Executor seta ao começar |
 | `In Review` | Implementação concluída, aguarda @kairos *review | Executor seta ao terminar |
-| `Done` | *pre-push confirmou gate PASS/RESSALVA e executou commit | *pre-push transita antes do commit |
+| `Done` | Implementação validada e aceita | Ver "Caminhos para Done" abaixo |
+
+### Caminhos para Done
+
+O caminho para Done depende do tipo da story:
+
+| Tipo | Caminho | Quem transita |
+|------|---------|---------------|
+| `type: kairos-core` | `In Review` → `*push` Passo 1 (após gate PASS/RESSALVA no Passo 0d) | `*push` transita antes do commit |
+| `type: instance` | `In Review` → prompt Done em `*implement` ou `*review` (após PASS/RESSALVA) | `*implement` ou `*review` transitam diretamente |
+| `type: instance` (fallback) | `In Review` → `*push` Passo 1 (se usuário respondeu `n` ao prompt ou não usou `*review`) | `*push` transitaria, mas pula se já Done |
+
+**Regra:** stories `type: instance` podem ser marcadas como Done sem passar pelo pipeline Git. `*push` detecta se a story já está Done e pula a transição — incluindo os arquivos normalmente no commit.
 
 ---
 
@@ -121,7 +133,7 @@ A seção `## Execution Log` deve ser adicionada **antes** do `## Change Log` da
 ## O que NÃO fazer
 
 - **Não** apenas marcar checkboxes e mover o status sem adicionar o Execution Log
-- **Não** mover diretamente para `Done` — apenas `@kairos *review` pode fazer isso
+- **Não** mover diretamente para `Done` sem passar pelo fluxo correto (prompt em `*implement`/`*review` para type:instance, ou `*push` para type:kairos-core)
 - **Não** deixar a story em `Draft` após começar o trabalho
 - **Não** omitir decisões ou desvios do plano original da story
 - **Não** escrever "implementado conforme story" sem detalhar o que foi feito
@@ -216,17 +228,36 @@ Ao escrever a seção `### Decisões tomadas`, seja específico sobre alternativ
 
 ---
 
-## Responsabilidade do *pre-push na transição In Review → Done
+## Responsabilidade de Cada Comando na Transição Done
+
+### Stories `type: kairos-core`
 
 `*review` emite o gate (PASS/RESSALVA/BLOCK) mas **não** move a story para Done.
 
-Quando `*pre-push` confirma gate PASS ou RESSALVA (Passo 1) e executa o commit (Passo 3):
+Quando `*push` confirma gate PASS ou RESSALVA (Passo 0d) e executa o commit (Passo 2):
 - Atualiza a story para `Done` e adiciona entrada no Change Log antes do commit
 - Marca a story no epic como Done
 
-**BLOCK**: `*review` move a story de volta para `In Progress`, atualiza o epic e aguarda nova rodada de implementação pelo executor. O executor deve corrigir os issues e mover para `In Review` novamente antes de rodar `*review` de novo.
-
-Entrada adicionada pelo *pre-push ao mover para Done:
+Entrada adicionada pelo `*push` ao mover para Done:
 ```markdown
-| {data} | *pre-push: gate confirmado — status → Done |
+| {data} | *push: gate confirmado — status → Done |
 ```
+
+### Stories `type: instance`
+
+Ao final de `*implement` ou de `*review` com PASS/RESSALVA, um prompt Done é exibido:
+```
+📋 Marcar story {id} como Done? (s/n)
+```
+
+Se o usuário responde `s`, a transição Done é executada imediatamente — **sem depender de Git**.
+Se responde `n`, a story permanece `In Review` e pode ser marcada como Done via `*push` depois.
+
+Entrada adicionada ao mover para Done via prompt:
+```markdown
+| {data} | Marcada como Done via *{implement|review} |
+```
+
+### BLOCK (qualquer tipo)
+
+`*review` move a story de volta para `In Progress`, atualiza o epic e aguarda nova rodada de implementação. O executor deve corrigir os issues e mover para `In Review` novamente antes de rodar `*review` de novo.

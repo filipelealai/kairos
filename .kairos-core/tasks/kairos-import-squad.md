@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.15.0
+kairos-version: 4.0.0
 id: kairos-import-squad
 title: Importar Squad de Arquivo Distribuível
 agent: kairos
@@ -192,11 +192,29 @@ Para cada entrada em `external_dependencies` do `export-manifest.yaml`:
 
 **Se `optional: true`:** prefixar output com `(opcional)` e não bloquear nem exibir como WARN
 
-### Passo 9 — Health check final
+### Passo 9 — Sincronização de personas
+
+**Objetivo:** garantir que personas geradas de YAMLs do squad importado estejam atualizadas com o conteúdo dos YAMLs do pacote — cobre o gap de drift introduzido antes do Check 3b do doctor ser movido para *push.
+
+Invocar `*regenerate-squad {nome-do-squad-importado}` (carregar `kairos-regenerate-squad.md` e executar inline):
+
+- Se regeneração bem-sucedida: confirmar `✓ Personas do squad '{nome}' sincronizadas`
+- Se `kairos-regenerate-squad.md` não estiver disponível: emitir WARN e prosseguir:
+  ```
+  ⚠️  *regenerate-squad não disponível — personas podem estar desatualizadas.
+  Rode *regenerate-squad {nome} manualmente após o import.
+  ```
+- Se regeneração falhar: emitir WARN e prosseguir (não bloquear o import):
+  ```
+  ⚠️  Falha na regeneração de personas: {detalhe do erro}
+  Rode *regenerate-squad {nome} manualmente.
+  ```
+
+### Passo 10 — Health check final
 
 Rodar `*doctor` ao final da importação.
 
-### Passo 10 — Output final
+### Passo 11 — Output final
 
 ```
 ✅ Squad '{nome}' importado com sucesso.
@@ -235,4 +253,4 @@ Para ativar o squad: @{agente-principal-do-squad}
 
 Sem handoff. Import é operação pontual.
 
-Após completar: rodar `*doctor` (Passo 9) e exibir resultado consolidado.
+Após completar: sincronizar personas (Passo 9), rodar `*doctor` (Passo 10) e exibir resultado consolidado (Passo 11).

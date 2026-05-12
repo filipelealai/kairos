@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.10.0
+kairos-version: 4.0.0
 task: Kairos Implement
 responsavel: "@kairos"
 responsavel_type: agent
@@ -300,17 +300,59 @@ Após implementar todos os ACs, adicionar a seção `## Execution Log` na story,
 
 ---
 
-## Passo 7 — Confirmação final
+## Passo 7 — Confirmação final e prompt Done
+
+Exibir sempre (para qualquer tipo de story):
 
 ```
 ✅ Implementação concluída — Story {id}: {título}
 
 ACs implementados: {N}/{total}
 Arquivos criados/modificados: {lista resumida}
-
-Story movida para In Review.
-Rode `*review {id}` para validar e gerar o gate.
 ```
+
+**Somente para stories `type: instance`** (ou sem campo `type` — tratar como `instance`),
+exibir em seguida:
+
+```
+💡 Opcional: rode *review {id} para validar a implementação
+OU
+📋 Marcar story {id} como Done? (s/n)
+```
+
+Aguardar resposta:
+
+- **Se `s`:** executar **Lógica de Transição Done** (ver seção abaixo) e exibir:
+  ```
+  ✅ Story {id} marcada como Done.
+
+  Próximo: *push (quando quiser commitar) | continuar com outro comando
+  ```
+- **Se `n`:** story permanece `In Review` — sem mensagem adicional.
+
+**Para stories `type: kairos-core`:** não exibir o prompt Done. Exibir apenas:
+
+```
+Story movida para In Review.
+Próximo: *review {id} → *version → *pre-push → *push
+```
+
+---
+
+## Lógica de Transição Done
+
+Reutilizável: chamada por `*implement`, `*review` e `*yolo` ao confirmar marcação como Done.
+
+1. Atualizar campo `**Status:**` na story: `In Review` → `Done`
+2. Adicionar entrada no Change Log da story:
+   ```
+   | {data} | Marcada como Done via *{comando} |
+   ```
+3. Abrir `docs/epics/epic-{N}-*.md` — localizar a linha da story na tabela de Stories e atualizar a célula de status de `In Review → Done`
+4. Adicionar entrada no Change Log do epic:
+   ```
+   | {data} | Story {id} marcada como Done via *{comando} |
+   ```
 
 ---
 

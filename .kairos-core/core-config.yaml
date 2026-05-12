@@ -1,13 +1,10 @@
-version: 3.15.1
+version: 4.0.0
 installedAt: '2026-04-06T00:00:00.000Z'
-updatedAt: '2026-05-08T20:44:00.000Z'
-
+updatedAt: '2026-05-11T00:00:00.000Z'
 update_source: https://github.com/filipelealweb/kairos
-
 agents:
   master: kairos
   squads: {}
-
 framework:
   tasksLocation: .kairos-core/tasks/
   agentsLocation: .kairos-core/agents/
@@ -24,21 +21,22 @@ framework:
   constitutionFile: .kairos-core/constitution.md
   kbFile: .kairos-core/data/kairos-kb.md
   workersFile: .kairos-core/data/workers.yaml
-
 runtime:
   handoffsLocation: .kairos-core/runtime/handoffs/
   outputsLocation: data/outputs/
-
 versioning:
   scheme: semver
   bump_rules:
-    MAJOR: "Novo escopo/squad adicionado OU breaking change em agente existente"
-    MINOR: "Novo agente, nova task, nova rule ou expansão significativa de capacidade"
-    PATCH: "Correção de bug, atualização de MEMORY.md, ajuste de instrução de task/rule"
-  story_required_for: [MAJOR, MINOR]
+    MAJOR: Novo escopo, breaking change, mudança de arquitetura, modificações em arquivos
+      L1
+    MINOR: Novo comando, nova task, nova rule, nova capacidade ou expansão significativa
+      de capacidade
+    PATCH: Correção de bugs, ajuste de instrução, documentação
+  story_required_for:
+  - MAJOR
+  - MINOR
   authority: kairos
-
 devLoadAlwaysFiles:
-  - .kairos-core/docs/agent-standards.md
-  - .kairos-core/docs/data-flow.md
-  - docs/scope.md
+- .kairos-core/docs/agent-standards.md
+- .kairos-core/docs/data-flow.md
+- docs/scope.md

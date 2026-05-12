@@ -19,9 +19,12 @@ Para validar suas mudanças localmente, ative o `@kairos` no Claude Code e execu
 
 ```
 @kairos *pre-push
+@kairos *push
 ```
 
-O `*pre-push` executa o health check completo do framework (`*doctor`), verifica o gate de review, realiza o bump de versão se necessário e prepara o commit. Se retornar PASS, seu PR está apto a ser enviado.
+O `*pre-push` é validação pura: verifica se stories `type: kairos-core` têm gate aprovado e realiza spot check de referências. É idempotente.
+
+O `*push` é o orquestrador de release: executa `*doctor` (via `*version`), detecta drift de persona, oferece prompt "modo dev" para bump de versão se aplicável, faz a transição Done das stories, commita e faz push. Se retornar PASS, seu PR está apto a ser enviado.
 
 ---
 
@@ -35,7 +38,8 @@ Arquivos em `.kairos-core/tasks/`, `.claude/rules/`, `.kairos-core/templates/` e
 
 - Abra uma issue descrevendo o problema ou melhoria
 - Implemente a mudança
-- Execute `@kairos *pre-push` para validar
+- Execute `@kairos *pre-push` para validar gate e referências
+- Execute `@kairos *push` para versionar (se necessário), commitar e fazer push
 - Abra um PR contra `main`
 
 ### 2. Novo squad ou agente
@@ -47,7 +51,7 @@ Squads e agentes são conteúdo de instância — criados pelo `@kairos *new-squ
 Para mudanças que impactam o núcleo (novas camadas, protocolo de handoff, modelo de autoridade), o fluxo é:
 
 ```
-@kairos *new-story → implementação com o Claude Code → @kairos *review → @kairos *pre-push → PR
+@kairos *new-story → @kairos *validate-story → implementação com o Claude Code → @kairos *review → @kairos *pre-push → @kairos *push → PR
 ```
 
 NOTA: Idealmente, `@kairos *push` só é utilizado para fazer push em branches e repos do usuário, como para salvar todo o Kairos **com** o seu conteúdo instanciado.
@@ -130,11 +134,14 @@ Antes de contribuir com mudanças estruturais, leia [`.claude/rules/ownership.md
 ## Validação local
 
 ```
-@kairos *pre-push    # health check completo (*doctor), gate de review, versionamento e commit
-@kairos *review      # gate de qualidade da story (se aplicável)
+@kairos *review {id} # gate de qualidade da story (se aplicável — antes do *pre-push)
+@kairos *pre-push    # valida gate de review (type:kairos-core) e referências — idempotente
+@kairos *push        # orquestrador: *doctor/*version, drift, modo dev, transição Done, commit, push
 ```
 
-`*pre-push` retorna PASS ou BLOCK. PRs com BLOCK não são aceitos sem resolução dos issues.
+`*pre-push` retorna PASS ou BLOCK. `*push` executa o cycle completo. PRs com BLOCK não são aceitos sem resolução dos issues.
+
+O CI `version-guard` (`.github/workflows/version-guard.yml`) verifica automaticamente bump, frontmatter, CHANGELOG e gate de review para qualquer PR com arquivos de framework.
 
 ---
 
