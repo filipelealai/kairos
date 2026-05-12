@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.0.0
+kairos-version: 4.2.0
 ---
 
 # kairos
@@ -372,7 +372,8 @@ push_system:
   push_steps:
     - doctor_via_version: "Passo 0a — *doctor executado internamente pelo *version"
     - persona_drift: "Passo 0b — detecta drift de persona, invoca *regenerate-squad se necessário"
-    - modo_dev: "Passo 0c — prompt de bump pendente (scope=framework), invoca *version inline se 's'"
+    - modo_contribuidor: "Passo 0c — prompt de bump pendente quando há story type:kairos-core In Review (scope=framework), invoca *version inline se 's'. 'Modo contribuidor' = quem contribui upstream com o Kairos público; para uso local/fork, bump é opcional."
+    - prompt_intencao: "Passo 0c-bis — quando scope=framework e NÃO há story type:kairos-core In Review, pergunta intenção: (c) Contribuidor → BLOCK com instruções de story retroativa; (l) Local → warning persistente no commit + prossegue; (a) Abortar"
     - gate_check: "Passo 0d — gate pre_push_passed para stories type:kairos-core In Review"
     - done_transition: "Passo 1 — transição In Review → Done para stories com gate_ok"
     - commit: "Passo 2 — commit dos changes relevantes"

@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.0.0
+kairos-version: 4.2.0
 ---
 
 ## Resumo
@@ -28,7 +28,7 @@ kairos-version: 4.0.0
 **Se há story `type: kairos-core` associada:**
 - [ ] `@kairos *review {id}` retornou PASS ou RESSALVA
 - [ ] `@kairos *version` executado (bump de versão com `*doctor` como Passo 1)
-  - Pode ser executado standalone ou via prompt "modo dev" no `*push`
+  - Pode ser executado standalone ou via prompt "modo contribuidor" no `*push`
 - [ ] `CHANGELOG.md` atualizado com a nova versão
 - [ ] Frontmatter `kairos-owned: true` + `kairos-version` presentes nos novos arquivos framework (se aplicável)
 

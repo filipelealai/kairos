@@ -10,7 +10,8 @@
 #   6. sync_files paths exist
 #   7. owned_sections json_keys — file exists, valid JSON, owned_keys present (WARN)
 #
-# Stack: bash + yq (mikefarah/yq v4) + sha256sum + grep + python3
+# Stack: bash + yq (mikefarah/yq v4) + sha256sum + grep
+#        (mikefarah/yq também parseia JSON via -p json — sem necessidade de python3/jq)
 # Exit: 0 = all mandatory checks passed (warnings allowed); 1 = any FAIL
 
 set -uo pipefail
@@ -71,11 +72,6 @@ fi
 
 if ! command -v sha256sum &>/dev/null; then
   echo "❌ FATAL: sha256sum não encontrado"
-  exit 1
-fi
-
-if ! command -v python3 &>/dev/null; then
-  echo "❌ FATAL: python3 não encontrado (requerido para validação json_keys)"
   exit 1
 fi
 
@@ -200,7 +196,7 @@ while IFS= read -r path; do
     continue
   fi
 
-  if ! python3 -c "import json, sys; json.load(open(sys.argv[1]))" "$path" 2>/dev/null; then
+  if ! yq -p json '.' "$path" >/dev/null 2>&1; then
     fail "owned_sections/json_keys[$path] — JSON inválido"
     continue
   fi
@@ -213,10 +209,8 @@ while IFS= read -r path; do
 
   while IFS= read -r key; do
     [ -z "$key" ] && continue
-    present=$(python3 -c \
-      "import json,sys; d=json.load(open(sys.argv[1])); print('yes' if sys.argv[2] in d else 'no')" \
-      "$path" "$key" 2>/dev/null)
-    if [ "$present" = "yes" ]; then
+    present=$(KEY_NAME="$key" yq -p json 'has(env(KEY_NAME))' "$path" 2>/dev/null)
+    if [ "$present" = "true" ]; then
       pass "owned_sections/json_keys[$path] — owned_key '$key' presente"
     else
       warn "owned_sections/json_keys[$path] — owned_key '$key' ausente no arquivo"

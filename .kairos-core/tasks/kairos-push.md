@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.0.0
+kairos-version: 4.2.0
 task: Kairos Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -16,7 +16,8 @@ Checklist:
   - "[ ] Verificar pre_push_passed (somente se scope=framework e há story type:kairos-core In Review)"
   - "[ ] Passo 0a: *doctor (apenas via *version — somente em scope=framework)"
   - "[ ] Passo 0b: Detectar drift de persona (sempre, independente de escopo)"
-  - "[ ] Passo 0c: Prompt modo dev + *version inline (somente em scope=framework)"
+  - "[ ] Passo 0c: Prompt modo contribuidor + *version inline (somente em scope=framework)"
+  - "[ ] Passo 0c-bis: Prompt de intenção (scope=framework sem story type:kairos-core In Review)"
   - "[ ] Passo 0d: Gate pre_push_passed (somente se há story type:kairos-core In Review)"
   - "[ ] Passo 1: Transição Done (stories com gate_ok)"
   - "[ ] Passo 2: Commit"
@@ -142,9 +143,9 @@ Para cada arquivo `squads/*/agents/*.yaml` encontrado no filesystem:
 
 ---
 
-### Passo 0c — Prompt "Modo Dev" (somente scope=framework)
+### Passo 0c — Prompt "Modo Contribuidor" (somente scope=framework)
 
-**Objetivo:** detectar se há bump de versão pendente e oferecer ao usuário a oportunidade de versionar antes de commitar.
+**Objetivo:** detectar se há bump de versão pendente e oferecer ao usuário a oportunidade de versionar antes de commitar. "Modo contribuidor" comunica que essa governança serve para quem contribui upstream com o Kairos público — para uso local/fork pessoal o bump é opcional (ver Passo 0c-bis).
 
 Se scope=instance-only: pular este passo.
 
@@ -160,8 +161,8 @@ Para cada story em `In Review` com `type: kairos-core`:
 Se há bump pendente detectado:
 
 ```
-⚠️  Modo dev detectado: há stories type:kairos-core sem bump desde o último release
-(obrigatório para contribuir com o framework; opcional para uso próprio).
+⚠️  Modo contribuidor detectado: há stories type:kairos-core sem bump desde o último release
+(obrigatório para contribuir com o Kairos público; opcional para uso local/fork pessoal).
 
 Stories pendentes: {id1}[, {id2}, ...]
 
@@ -177,6 +178,66 @@ Se `s` (ou `sim`):
 Se `n` (ou `não`): registrar aviso internamente e continuar normalmente — sem BLOCK.
 
 Se não há bump pendente: confirmar `✓ Passo 0c — sem bump pendente`.
+
+---
+
+### Passo 0c-bis — Prompt de Intenção (scope=framework sem story type:kairos-core In Review)
+
+**Objetivo:** fechar o loophole em que mudanças em arquivos de framework (declarados no manifesto) seriam empurradas sem story `type:kairos-core`, sem gate de `*review` e sem `pre_push_passed`. Quando esse cenário é detectado, perguntar explicitamente a intenção do usuário.
+
+**Condições para executar este passo:**
+- scope = framework, **e**
+- **não** há nenhuma story `type:kairos-core` com Status `In Review`
+
+Caso contrário (scope=instance-only, ou há story `type:kairos-core` In Review): pular este passo. Confirmação: `⏭  Passo 0c-bis — não aplicável`.
+
+**Detecção dos arquivos de framework modificados:** reaproveitar a lista construída no Pré-check (cruzamento de `git diff/git status` com `owned_files[].path` e `owned_sections[].path` do manifesto).
+
+**Exibir prompt:**
+
+```
+Detectei modificação em arquivos do framework Kairos (listados no manifesto):
+  - {arquivo 1}
+  - {arquivo 2}
+  - ...
+
+Estas mudanças são para contribuir com o Kairos público (upstream) ou
+são apenas para seu uso local/fork?
+
+(c) Contribuidor — exige story type:kairos-core + gate PASS/RESSALVA + pre_push_passed
+(l) Local apenas — segue sem story/gate (sua responsabilidade; será barrado pelo CI se PR for aberto)
+(a) Abortar push
+```
+
+Aguardar resposta. Tratamento (case-insensitive):
+
+- **`c` / `contribuidor`** → **BLOCK** com instruções de story retroativa:
+  ```
+  🚫 Push recusado — modo contribuidor exige story type:kairos-core + gate + pre_push_passed.
+
+  Como as mudanças já foram feitas, crie uma story retroativa:
+
+  1. @kairos *new-story type=kairos-core
+     → descrever o que foi modificado e a motivação
+  2. Marcar a story como In Review e preencher Execution Log
+     com o que foi feito (arquivos, decisões, pendências)
+  3. @kairos *review
+     → obter gate PASS/RESSALVA
+  4. @kairos *pre-push
+     → validar e marcar pre_push_passed
+  5. *push novamente
+  ```
+  HALT — não continuar.
+
+- **`l` / `local`** → registrar `local_intent = true` na sessão e prosseguir. O Passo 2 (Commit) deve injetar o seguinte warning persistente na mensagem de commit (no corpo, após o subject):
+  ```
+  ⚠️  framework files modified outside contributor flow
+  ```
+  Confirmação imediata após resposta: `⚠️  Modo local — prosseguindo com warning no commit. Sua responsabilidade.`
+
+- **`a` / `abortar`** → abortar `*push` sem modificar Git/arquivos. Mensagem: `⏹  *push abortado pelo usuário (Passo 0c-bis).` HALT.
+
+- **Qualquer outra resposta** (vazia, inválida, fora de `c`/`l`/`a`) → repergunta exibindo o mesmo prompt até receber resposta válida. Não assumir default.
 
 ---
 
@@ -254,8 +315,10 @@ Para cada story com `gate_ok = true` (gate PASS ou RESSALVA confirmado no Passo 
       - Execute `git add` nos arquivos relevantes (excluindo `.kairos-core/runtime/`, `data/`, `node_modules/`)
       - Construa a mensagem de commit:
         - Subject: `{type}: {descrição derivada} v{version}`
-        - Se há stories com gate_ok: adicionar corpo estendido: `Stories: {story-id1}[, {story-id2}, ...]`
-      - Execute `git commit` passando subject + corpo via heredoc (se houver stories) ou apenas subject
+        - Corpo estendido (concatenar linhas abaixo conforme aplicável, separadas por linha em branco):
+          - Se há stories com gate_ok: `Stories: {story-id1}[, {story-id2}, ...]`
+          - Se `local_intent = true` na sessão (Passo 0c-bis): `⚠️  framework files modified outside contributor flow`
+      - Execute `git commit` passando subject + corpo via heredoc (se houver corpo) ou apenas subject
       - Confirme: `✓ Commit realizado`
    e. Se `n` (ou `não`):
       **BLOCK:**

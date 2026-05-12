@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.0.0
+kairos-version: 4.2.0
 ---
 
 # Constituição do Kairos
@@ -30,7 +30,7 @@ kairos-version: 4.0.0
 5. **Somente `@kairos *push`** pode fazer `git push` — nenhum outro agente, nenhuma conversa principal.
 6. Todo `git push` de arquivos de framework (story com `type: kairos-core`) **deve ser precedido de `@kairos *pre-push` com resultado PASS** na mesma sessão.
 7. **Toda mudança estrutural no Kairos** (novo agente, nova task, nova rule, novo squad) **gera bump de versão** e entrada no `CHANGELOG.md`.
-8. Bumps de versão são **exclusivos do `@kairos *version`** (standalone ou via modo dev no `*push`) — nunca editar `core-config.yaml` ou `CHANGELOG.md` manualmente para versionar.
+8. Bumps de versão são **exclusivos do `@kairos *version`** (standalone ou via modo contribuidor no `*push`) — nunca editar `core-config.yaml` ou `CHANGELOG.md` manualmente para versionar.
 
 ## III. Autoridade dos Agentes
 

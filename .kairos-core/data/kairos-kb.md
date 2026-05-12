@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.7.0
+kairos-version: 4.2.0
 ---
 
 # Kairos Knowledge Base
@@ -170,4 +170,18 @@ kairos-version: 3.7.0
 
 ---
 
-*Última atualização: 2026-05-08*
+## Modo contribuidor vs uso local
+
+Quando `*push` detecta mudanças em arquivos do framework (listados no manifesto) **sem** story `type:kairos-core` In Review, pergunta a intenção do usuário (Passo 0c-bis):
+
+- **Contribuidor** → BLOCK até criar story retroativa + gate `*review` + `*pre-push` PASS. É o caminho exigido para PRs ao Kairos público.
+- **Local** → warning persistente no commit (`⚠️  framework files modified outside contributor flow`) + prossegue. Quem usa Kairos como fork local tem liberdade total mas assume responsabilidade.
+- **Abortar** → encerra o `*push` sem mudanças.
+
+Razão: governança obrigatória (story + gate + bump) só faz sentido para quem está contribuindo upstream. Antes desta decisão, havia um loophole — quem mexia direto em arquivos de framework sem criar story pulava todos os guards de governança. O prompt torna a intenção explícita.
+
+O termo "modo contribuidor" substituiu o termo anterior "modo dev" para deixar claro que esse fluxo serve para contribuir upstream com o Kairos público — não é um modo de desenvolvimento genérico.
+
+---
+
+*Última atualização: 2026-05-12*

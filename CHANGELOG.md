@@ -6,6 +6,14 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [4.2.0] — 2026-05-12
+
+### Adicionado
+- Passo 0c-bis em *push: prompt de intenção Contribuidor/Local/Abortar quando scope=framework sem story kairos-core In Review; Passo 0c renomeado para "modo contribuidor"; warning `⚠️ framework files modified outside contributor flow` injetado no commit quando local_intent=true (stories 3.34, push-dual herdado)
+- Auditoria .github/: yq padronizado para mikefarah em version-guard.yml e validate-manifest.yml; Check D em version-guard.sh agora exige status Done (não apenas In Review) + backstop CI para PRs com arquivos framework sem story kairos-core; .github/README.md criado com governança CI; CONTRIBUTING.md atualizado com deps locais (story 3.35)
+
+---
+
 ## [4.1.0] — 2026-05-12
 
 ### Mudado

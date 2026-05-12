@@ -8,7 +8,7 @@
 #   A. Bump: core-config.yaml version foi bumped em relação a main
 #   B. Frontmatter: arquivos framework modificados têm kairos-version atualizado
 #   C. CHANGELOG: versão mais recente em CHANGELOG.md bate com core-config.yaml
-#   D. Gate: stories type:kairos-core modificadas no PR têm gate PASS/RESSALVA
+#   D. Gate: stories type:kairos-core modificadas no PR têm status Done + gate PASS/RESSALVA
 #
 # Pula todos os checks se a interseção entre arquivos do PR e paths do manifest for vazia.
 #
@@ -30,7 +30,10 @@ info()  { echo "ℹ️  $1"; }
 # ─── Verificar dependências ───────────────────────────────────────────────────
 
 if ! command -v yq &>/dev/null; then
-  echo "❌ HALT — 'yq' não encontrado. Instale com: pip install yq ou brew install yq"
+  echo "❌ HALT — 'yq' (mikefarah/yq v4) não encontrado."
+  echo "   CI: o workflow .github/workflows/version-guard.yml instala via mikefarah/yq action."
+  echo "   Local: instale o Go binary — https://github.com/mikefarah/yq#install"
+  echo "          (ex.: brew install yq | snap install yq | go install github.com/mikefarah/yq/v4@latest)"
   exit 1
 fi
 
@@ -137,13 +140,18 @@ else
   pass "C" "CHANGELOG.md ($CHANGELOG_VERSION) sincronizado com core-config.yaml ($VERSION_CURRENT)"
 fi
 
-# ─── Check D: Gate de review para stories type:kairos-core ───────────────────
+# ─── Check D: Status Done + Gate de review para stories type:kairos-core ─────
+#
+# Backstop rígido: o fluxo esperado é *push mover a story para Done antes do commit.
+# In Review no PR indica que o usuário pulou *push (ou usou "modo Local" da Story 3.34)
+# e está empurrando mudanças de framework sem completar o ciclo de governança.
 
 GATES_DIR="docs/qa/gates"
 STORIES_DIR="docs/stories"
 
 # Identificar stories type:kairos-core modificadas no PR
-KAIROS_CORE_STORIES_WITHOUT_GATE=0
+KAIROS_CORE_STORIES_FAILED=0
+KAIROS_CORE_STORIES_FOUND=0
 
 while IFS= read -r f; do
   # Apenas story files modificados no PR
@@ -160,14 +168,20 @@ while IFS= read -r f; do
     continue
   fi
 
-  # Verificar status
-  story_status=$(grep -m1 '^\*\*Status:\*\*' "$f" | sed 's/\*\*Status:\*\*[[:space:]]*//')
-  if [ "$story_status" != "In Review" ] && [ "$story_status" != "Done" ]; then
-    continue
-  fi
+  KAIROS_CORE_STORIES_FOUND=$((KAIROS_CORE_STORIES_FOUND + 1))
 
   # Extrair ID da story (basename sem .story.md)
   story_id=$(basename "$f" .story.md)
+
+  # Verificar status — DEVE ser Done (não basta In Review)
+  story_status=$(grep -m1 '^\*\*Status:\*\*' "$f" | sed 's/\*\*Status:\*\*[[:space:]]*//')
+  if [ "$story_status" != "Done" ]; then
+    echo "  ❌ CHECK D — Story $story_id (type:kairos-core) com status '$story_status', exigido 'Done'."
+    echo "     Rode: @kairos *push (move a story para Done após o commit)."
+    KAIROS_CORE_STORIES_FAILED=$((KAIROS_CORE_STORIES_FAILED + 1))
+    ERRORS=$((ERRORS + 1))
+    continue
+  fi
 
   # Verificar se há gate PASS ou RESSALVA
   gate_found=0
@@ -185,14 +199,18 @@ while IFS= read -r f; do
 
   if [ "$gate_found" -eq 0 ]; then
     echo "  ❌ CHECK D — Story $story_id (type:kairos-core) sem gate PASS/RESSALVA. Rode: @kairos *review $story_id"
-    KAIROS_CORE_STORIES_WITHOUT_GATE=$((KAIROS_CORE_STORIES_WITHOUT_GATE + 1))
+    KAIROS_CORE_STORIES_FAILED=$((KAIROS_CORE_STORIES_FAILED + 1))
     ERRORS=$((ERRORS + 1))
   fi
 
 done <<< "$PR_FILES"
 
-if [ "$KAIROS_CORE_STORIES_WITHOUT_GATE" -eq 0 ]; then
-  pass "D" "Todas as stories type:kairos-core no PR têm gate PASS/RESSALVA (ou não há stories kairos-core)"
+# Backstop adicional: arquivos framework modificados sem nenhuma story kairos-core no PR.
+# Sinaliza fluxo "Local" da Story 3.34 — não bloqueia se já há falha em A/C, mas registra.
+if [ "$KAIROS_CORE_STORIES_FOUND" -eq 0 ]; then
+  fail "D" "Arquivos de framework modificados no PR sem nenhuma story type:kairos-core associada. Crie story retroativa (modo contribuidor)."
+elif [ "$KAIROS_CORE_STORIES_FAILED" -eq 0 ]; then
+  pass "D" "Todas as stories type:kairos-core no PR estão Done com gate PASS/RESSALVA"
 fi
 
 # ─── Resultado final ──────────────────────────────────────────────────────────

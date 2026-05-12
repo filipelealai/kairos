@@ -16,9 +16,11 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Install yq
-        run: |
-          pip install yq
+      # mikefarah/yq via action oficial (Go binary cross-platform, sem runtime extra).
+      # Estratégia @latest deliberada — alinhada com validate-manifest.yml. Se um bump
+      # major do yq quebrar a sintaxe, voltar a pin específico documentando o motivo.
+      - name: Setup yq
+        uses: mikefarah/yq@latest
 
       - name: Run version-guard.sh
         env:

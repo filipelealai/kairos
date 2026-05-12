@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.0.0
+kairos-version: 4.2.0
 task: Kairos Version Bump
 responsavel: "@kairos"
 responsavel_type: agent
@@ -31,7 +31,7 @@ Checklist:
 
 # *version — Bump de Versão Semântica
 
-Autoridade única de bump de versão do Kairos. Pode ser executado standalone (`@kairos *version`) ou embutido no `*push` via prompt "modo dev".
+Autoridade única de bump de versão do Kairos. Pode ser executado standalone (`@kairos *version`) ou embutido no `*push` via prompt "modo contribuidor".
 
 ## Guard de Git
 
@@ -277,6 +277,6 @@ Exiba:
 {Se chamado standalone:}
 Próximo passo: @kairos *pre-push → @kairos *push
 
-{Se chamado embutido em *push (modo dev):}
+{Se chamado embutido em *push (modo contribuidor):}
 → Bump concluído — retomando *push
 ```

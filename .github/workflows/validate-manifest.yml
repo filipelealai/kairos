@@ -16,8 +16,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # mikefarah/yq via action oficial. Estratégia @latest deliberada — alinhada
+      # com version-guard.yml. Se um bump major quebrar a sintaxe, voltar a pin
+      # específico documentando o motivo.
       - name: Setup yq
-        uses: mikefarah/yq@v4.44.6
+        uses: mikefarah/yq@latest
 
       - name: Run manifest validation
         run: bash .github/scripts/validate-manifest.sh

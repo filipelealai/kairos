@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.0.0
+kairos-version: 4.2.0
 task: Kairos Help
 responsavel: "@kairos"
 responsavel_type: agent
@@ -124,7 +124,7 @@ VERSIONAMENTO E PUSH  [Git obrigatório para os comandos desta seção]
                         Passo 1: *doctor (bloqueia se CRITICAL ou WARN de integridade).
                         Valida que existe story justificando MINOR e MAJOR.
                         Atualiza core-config.yaml, CHANGELOG.md, README.md, frontmatters e SHAs.
-                        → Standalone ou embutido no *push (modo dev).
+                        → Standalone ou embutido no *push (modo contribuidor).
                         → Git obrigatório.
 
   *pre-push             Validação pura: verifica gate de review (type:kairos-core) e
@@ -135,9 +135,16 @@ VERSIONAMENTO E PUSH  [Git obrigatório para os comandos desta seção]
                         → Git obrigatório.
 
   *push                 Orquestrador de release: *doctor (via *version), drift de persona,
-                        prompt modo dev → *version inline, transição Done, commit, push.
+                        prompt modo contribuidor → *version inline, prompt de intenção
+                        (Contribuidor/Local/Abortar) quando há mudanças de framework sem
+                        story type:kairos-core In Review, transição Done, commit, push.
                         EXCLUSIVO do @kairos. RECUSA se story é mudança de framework 
                         (type:kairos-core) e *pre-push não passou na sessão.
+
+                        Modo contribuidor: ativa quando você modifica arquivos do framework
+                        e quer contribuir upstream para o Kairos público. Exige story
+                        type:kairos-core + gate *review + *pre-push PASS. Para uso
+                        local/fork pessoal, o push prossegue sem gate (com warning).
                         → Git obrigatório.
 
 DOCUMENTAÇÃO

@@ -4,7 +4,7 @@
 
 Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura de governança, memória, handoffs, workers agendados e ferramentas de desenvolvimento para criar, evoluir e operar esses squads ao longo do tempo.
 
-**Versão atual:** `4.1.0` — ver [CHANGELOG.md](CHANGELOG.md)
+**Versão atual:** `4.2.0` — ver [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -273,7 +273,7 @@ Comandos principais:
 | `*help [{topic}]` | Ajuda completa com fluxos e exemplos | — |
 | `*version patch\|minor\|major` | Bump de versão semântica (com *doctor como Passo 1); somente para `type: kairos-core` | **Git** |
 | `*pre-push` | Valida gate de review (type:kairos-core) e referências — idempotente | **Git** |
-| `*push` | Orquestrador de releases de framework e de instância. Framework: doctor via *version, modo dev e transição Done (type:kairos-core); framework ou instância: verifica drift de agentes, commit e push. Pula transição Done para stories `type: instance` já marcadas via `*implement`/`*review` | **Git** |
+| `*push` | Orquestrador de releases de framework e de instância. Framework: doctor via *version, modo contribuidor e transição Done (type:kairos-core); framework ou instância: verifica drift de agentes, commit e push. Pula transição Done para stories `type: instance` já marcadas via `*implement`/`*review`. Quando há mudanças de framework sem story `type:kairos-core` In Review, pergunta intenção (Contribuidor/Local/Abortar) | **Git** |
 
 > Comandos marcados com **Git** dependem de Git instalado e são voltados para contribuidores do framework ou quem mantém repo privado.
 
@@ -365,7 +365,7 @@ Claude Code, sem persona   # executor move Draft → In Progress → In Review
                            # e adiciona Execution Log na story
 @kairos *review {id}       # valida implementação — gate PASS/RESSALVA/BLOCK
 @kairos *pre-push          # valida gate de review e referências (depende de Git)
-@kairos *push              # orquestrador: doctor/drift/modo dev→*version/Done/commit/push (depende de Git)
+@kairos *push              # orquestrador: doctor/drift/modo contribuidor→*version/Done/commit/push (depende de Git)
 PR                         # contribuições no repositório público do Kairos
 ```
 Para informações detalhadas de como abrir um PR e contribuir no repositório público do Kairos, veja [CONTRIBUTING.md](CONTRIBUTING.md).

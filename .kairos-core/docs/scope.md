@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.0.0
+kairos-version: 4.2.0
 ---
 
 # Kairos — Escopo e Arquitetura do Framework
@@ -124,7 +124,7 @@ MINOR  — novo comando, nova task, nova rule, nova capacidade ou expansão sign
 MAJOR  — novo escopo, breaking change, mudança de arquitetura, modificações em arquivos L1 (exige story)
 ```
 
-Autoridade exclusiva de versionamento: `@kairos *version` (standalone ou embutido no `*push` via modo dev).
+Autoridade exclusiva de versionamento: `@kairos *version` (standalone ou embutido no `*push` via modo contribuidor).
 
 ### CI/CD
 
@@ -161,7 +161,7 @@ O workflow `version-guard` (`.github/workflows/version-guard.yml`) é o gate can
 | `*yolo on/off` | Liga/desliga modo autônomo de sessão (apenas `type: instance`; encadeia `*implement`; pipeline de release separado) | — |
 | `*version` | Bump de versão semântica (com *doctor como Passo 1) | **Git** |
 | `*pre-push` | Valida gate de review (type:kairos-core) e spot check | **Git** |
-| `*push` | Orquestrador de release: doctor, drift, modo dev e transição Done (type:kairos-core); commit e push. Pula transição Done para stories `type: instance` já marcadas via `*implement`/`*review` | **Git** |
+| `*push` | Orquestrador de release: doctor, drift, modo contribuidor e transição Done (type:kairos-core); commit e push. Pula transição Done para stories `type: instance` já marcadas via `*implement`/`*review` | **Git** |
 
 > Comandos **Git** são exclusivos para usuários que mantêm repositório Git (contribuidores ou quem faz push para repo privado).
 

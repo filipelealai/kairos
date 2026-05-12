@@ -24,7 +24,9 @@ Para validar suas mudanças localmente, ative o `@kairos` no Claude Code e execu
 
 O `*pre-push` é validação pura: verifica se stories `type: kairos-core` têm gate aprovado e realiza spot check de referências. É idempotente.
 
-O `*push` é o orquestrador de release: executa `*doctor` (via `*version`), detecta drift de persona, oferece prompt "modo dev" para bump de versão se aplicável, faz a transição Done das stories, commita e faz push. Se retornar PASS, seu PR está apto a ser enviado.
+O `*push` é o orquestrador de release: executa `*doctor` (via `*version`), detecta drift de persona, oferece prompt "modo contribuidor" para bump de versão se aplicável, pergunta a intenção (Contribuidor/Local/Abortar) quando há mudanças de framework sem story `type:kairos-core` In Review, faz a transição Done das stories, commita e faz push. Se retornar PASS, seu PR está apto a ser enviado.
+
+**Modo contribuidor:** ativa quando você modifica arquivos do framework e quer contribuir upstream para o Kairos público. Exige story `type:kairos-core` + gate `*review` + `*pre-push` PASS. Para uso local/fork pessoal, o push prossegue sem gate (com warning no commit).
 
 ---
 
@@ -136,12 +138,31 @@ Antes de contribuir com mudanças estruturais, leia [`.claude/rules/ownership.md
 ```
 @kairos *review {id} # gate de qualidade da story (se aplicável — antes do *pre-push)
 @kairos *pre-push    # valida gate de review (type:kairos-core) e referências — idempotente
-@kairos *push        # orquestrador: *doctor/*version, drift, modo dev, transição Done, commit, push
+@kairos *push        # orquestrador: *doctor/*version, drift, modo contribuidor, prompt de intenção, transição Done, commit, push
 ```
 
 `*pre-push` retorna PASS ou BLOCK. `*push` executa o cycle completo. PRs com BLOCK não são aceitos sem resolução dos issues.
 
-O CI `version-guard` (`.github/workflows/version-guard.yml`) verifica automaticamente bump, frontmatter, CHANGELOG e gate de review para qualquer PR com arquivos de framework.
+O CI `version-guard` (`.github/workflows/version-guard.yml`) verifica automaticamente bump, frontmatter, CHANGELOG e **status `Done` + gate de review** para qualquer PR com arquivos de framework. Ver [`.github/README.md`](.github/README.md) para a lista completa de checks que bloqueiam merge.
+
+### Dependências para checks locais
+
+Rodar os scripts de CI localmente (`.github/scripts/validate-manifest.sh`, `.github/scripts/version-guard.sh`) exige:
+
+| Ferramenta | Mínimo | Instalação |
+|------------|--------|------------|
+| `bash` | 4+ | nativo em Linux/macOS/WSL |
+| `git` | 2.20+ | https://git-scm.com |
+| `mikefarah/yq` | v4 | `brew install yq` · `snap install yq` · `go install github.com/mikefarah/yq/v4@latest` · binários em https://github.com/mikefarah/yq/releases |
+| `sha256sum`, `grep`, `awk`, `sed`, `sort`, `basename` | — | coreutils (nativos) |
+
+> **Importante:** o `yq` exigido é o [`mikefarah/yq`](https://github.com/mikefarah/yq) (Go binary). O [`python-yq` de Andrey Kislyuk](https://github.com/kislyuk/yq) (instalável via `pip install yq`) **não é compatível** com a sintaxe usada nos scripts. Validação rápida:
+>
+> ```bash
+> yq --version   # deve imprimir "yq (https://github.com/mikefarah/yq/) version v4.x.x"
+> ```
+>
+> Nenhum runtime adicional (Python, Ruby, Node) é necessário para rodar os checks de CI localmente.
 
 ---
 
