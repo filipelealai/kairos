@@ -75,10 +75,10 @@ owned_files:
   sha256: 438329ca7b6a3fc06e679ed3af653a830ca67a3bf4ca77ba943ea1187543d5d4
 - path: .kairos-core/tasks/kairos-regenerate-squad.md
   layer: L2
-  sha256: 75a0a9e427e4eda9d67cc4ff01dd46ee73cdc5f4c27d4222f7b02ee3df63f69b
+  sha256: a54f117a9b641565a31c8bf9bdbfce9ad1ceb51494b959b3f8d6f567b13d5524
 - path: .kairos-core/tasks/kairos-push.md
   layer: L2
-  sha256: d4401ee0d704ac59fe7980adb2774702ed61f16b9ae3303a65fd142cde9c4f0e
+  sha256: a811ea80fc4b69196e62800a65ad431b3f75117c195313ea72aee2d5619df617
 - path: .kairos-core/tasks/kairos-update.md
   layer: L2
   sha256: 46a5a30079dbdec9cc25ffc38f50d1d21a6da6ae47fd3df015130a296c462c53
@@ -87,7 +87,7 @@ owned_files:
   sha256: 546416b45d6d44206ef54bd25d0e6ed2744f026f364aea99ba6adb6955d67ffc
 - path: .kairos-core/tasks/kairos-status.md
   layer: L2
-  sha256: 4d606218c83f9029288d5e5676f198b526439483b65ca86bbfbb35f353167829
+  sha256: 8af56621e87804e0a5c1ba92bd083396cf5d21f9ca21ddaa2209695d02e3faf2
 - path: .kairos-core/tasks/kairos-validate-story.md
   layer: L2
   sha256: 99398d070c9c927bb44ffe7d32a2885263732c823ce97dfcb5c03df2996e1088
@@ -96,7 +96,7 @@ owned_files:
   sha256: 1e0d225f1dac8a644786c76580f259f9eab3f9986c662a6763e34902a58c3bee
 - path: .kairos-core/tasks/kairos-configure-cloud.md
   layer: L2
-  sha256: ba073b7797f94aa001f350b5ca93a780cee2a385067b889ff4cffc151c223c62
+  sha256: 4257ba67812550a7facd1fe91151a57411a91b82c54d90d93166010b4731b761
 - path: .kairos-core/tasks/kairos-export-squad.md
   layer: L2
   sha256: 9cff5a6c3b5dc8ba3bb8cadd6e7616bea95e37a0ef825d2a5aeb819629547f7d
@@ -129,7 +129,7 @@ owned_files:
   sha256: 6fa7e77e6cdd80a07554ab6ade34fff3d6b542908b919d44a8fc4b2653653bdf
 - path: .claude/rules/story-lifecycle.md
   layer: L3
-  sha256: bf9ba1d088528ccfea83178828ba017ce9a3cbed66524cbdc052a88da614e3c7
+  sha256: 3d766de9f1d3301006de3525845a40a0bcd0889505acc81bb565a3e59b8251c3
 - path: .claude/rules/external-integrations.md
   layer: L3
   sha256: e1505c45309fdc5e35ae3cf0407bedde104c33a233ebf0d26ab143ccba25e662
@@ -162,7 +162,7 @@ owned_files:
   sha256: 8db23a6c2ac4dd55d011c0fc79c16f5b268b8875a3d85df33b451cc4b1fb65db
 - path: CHANGELOG.md
   layer: L3
-  sha256: d0e5dd500570b173e4795bc742bc44ba7f4414d3eb2e8a00b3de28efe078d469
+  sha256: 3bfe119be45ea91835c2f7a07641d010766b2cabf97e445c4a53a1e726ef6822
 - path: .github/CODEOWNERS
   layer: L3
   sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4
@@ -241,9 +241,9 @@ owned_sections:
   - versioning
   sha_method: 'yaml.dump({key: value}, sort_keys=False)'
   sha256_by_key:
-    framework: ad6c0f935b1e9b995d9b919bf51f55259193950ad0bb0ce2723ddea64ff8172f
-    runtime: 0bf1dd004cabf147627d46a50c54ad9dae140226a602aeb7dc0d8faf24832eef
-    versioning: fe3e43dfb258b55f74dcdcfd2bcfdbea6b1b54d9dc7f85ed40b712edb77e20e1
+    framework: 14a51f4874b5c58668e56cde5e4e0e9eb1ed2b850a9c5379b5755ce318016d73
+    runtime: ad55b07b13649bc9ef47ed92d15a435e617b66f2c0ece22d1632836c01e2abe6
+    versioning: dfc0513489c8b6c1e3738031c7de30b10e29957b1a718754f5608e5f134b8cee
 - path: .env.example
   type: env_sections
   notes: 'Categorias shipped pelo framework (ai-providers, automation, database,
@@ -255,7 +255,7 @@ owned_sections:
     '
   owned_sections:
   - name: framework
-    sha256: de7d2f26ba071dc1fa7398fec6ac0ad224e17a6b3a31eaa269ade2188816dc7f
+    sha256: 4b19d295a9601e33bd1d4d45064a92a501a4f571c23baee51cbadad3a8de306a
   - name: ai-providers
     sha256: 17cfee75f3eaeeec92aed708ab19c56e94dbe989b2a154f279f59543c72bb5b7
   - name: automation

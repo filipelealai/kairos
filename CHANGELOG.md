@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [4.2.1] — 2026-05-12
+
+### Corrigido
+- kairos-push: coibir bypass de epoch check no Passo 0c via comparação de versão semver; especificar uso de `git log` (não `stat`) para calcular epochs
+
+---
+
 ## [4.2.0] — 2026-05-12
 
 ### Adicionado

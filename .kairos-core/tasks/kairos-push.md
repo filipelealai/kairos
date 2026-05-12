@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.2.0
+kairos-version: 4.2.1
 task: Kairos Push
 responsavel: "@kairos"
 responsavel_type: agent
@@ -157,6 +157,8 @@ Para cada story em `In Review` com `type: kairos-core`:
     → Se vazio: `epoch_changelog = 0`
   - Se `epoch_changelog > epoch_gate` → bump já feito → skip
   - Caso contrário → bump pendente para esta story
+
+**CRÍTICO — sem atalhos:** a única condição de skip é `epoch_changelog > epoch_gate` medido via `git log` (não `stat`, não mtime de filesystem). Coincidência de versão semver entre CHANGELOG e `core-config.yaml` **não** é condição de skip e **nunca** substitui esta comparação. Qualquer raciocínio adicional que não seja este cálculo de epoch deve ser descartado.
 
 Se há bump pendente detectado:
 
