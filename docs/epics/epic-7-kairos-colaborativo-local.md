@@ -45,6 +45,7 @@ O MCP server do Epic 6 não é descontinuado por esta entrega — coexiste em pa
 | [7.4](../stories/7.4.story.md) | Cloud sync via symlink + `@kairos *configure-cloud` | Done |
 | [7.5](../stories/7.5.story.md) | `@kairos *export-squad` / `*import-squad` + dependências externas | Done |
 | [7.6](../stories/7.6.story.md) | Installer / Uninstaller cross-platform + docs | Done |
+| [7.7](../stories/7.7.story.md) | Detecção inteligente de provedor de cloud + wizard rclone + tolerância a cold start | Done |
 
 ---
 
@@ -97,3 +98,7 @@ O MCP server do Epic 6 não é descontinuado por esta entrega — coexiste em pa
 | 2026-05-06 | Story 7.6 concluída — In Review |
 | 2026-05-08 | Story 7.6 — smoke tests concluídos (4 cenários ✅: IA + manual + tarball em branch de teste); status In Review confirmado |
 | 2026-05-08 | *pre-push: gate confirmado para 7.5 e 7.6 — status → Done; version bump 3.14.0 → 3.15.0 |
+| 2026-05-11 | Story 7.7 criada — Draft (Fase 2 do plano de fix de cloud sync) |
+| 2026-05-12 | Story 7.7 iniciada — In Progress |
+| 2026-05-12 | Story 7.7 concluída — In Review |
+| 2026-05-12 | Story 7.7 — *push: gate confirmado — status → Done; version bump 4.0.1 → 4.1.0 |

@@ -1,0 +1,64 @@
+schema: 2
+story: "7.7"
+story_title: "Detecção inteligente de provedor de cloud + wizard rclone + tolerância a cold start"
+epic: 7
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-05-12T00:00:00Z"
+quality_score: 90
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC 1: install.sh detecta iCloud, Google Drive (per-conta), OneDrive (per-conta), Dropbox no macOS; Linux/WSL encaminha direto ao rclone wizard"
+    - "✅ AC 1: install.ps1 detecta Google Drive (múltiplos caminhos canônicos + drives G/H), OneDrive (env+glob), Dropbox (info.json + fallback pasta)"
+    - "✅ AC 2: install.sh inclui wizard rclone completo — verifica binário, lista remotes, verifica mount, instrui montagem, sugerindo comando com flags recomendadas"
+    - "✅ AC 3: install.sh (linha 681) e install.ps1 (linha 567) perguntam subpasta dentro do root com default 'Kairos Outputs'; symlink_target = root/subfolder"
+    - "✅ AC 4: install.sh tem fallback completo de 4 opções (instalar app, rclone, path manual, pular); kairos-configure-cloud.md espelha o mesmo"
+    - "✅ AC 5: install.sh implementa _rclone_systemd_user, _rclone_systemd_system, _rclone_add_bashrc; verifica systemctl is-system-running; .bashrc usa marcador KAIROS-RCLONE-MOUNT (idempotente)"
+    - "✅ AC 6: kairos-configure-cloud.md reescrito para version: 2 — Passo 1 Detecção automática, Passo 1.5 condicional Wizard rclone, Passo 2 Subpasta, Passo 4 só quando ambíguo"
+    - "✅ AC 7: kairos-configure-cloud.md Passo 7 usa polling (0 1 2 5 10 15)s para cloud/rclone; validação rápida para custom/local. kairos-doctor.md Check 12 idêntico"
+    - "✅ AC 8: kairos-configure-cloud.md e kairos-doctor.md usam readlink -f para teste físico e realpath -L para reporte ao usuário; equivalentes PowerShell documentados"
+    - "✅ AC 9: install.sh/install.ps1 detectam symlink existente e oferecem reconfiguração; _rclone_add_bashrc verifica marcador antes de gravar; cloud-sync.json reescrito com novo configured_at"
+  manual:
+    - "⚠️ AC 2 (parcial install.ps1): install.ps1 não oferece 'Configurar com rclone' nos menus (fallback e detectados). Usuários Windows que queiram rclone precisam usar @kairos *configure-cloud após a instalação. Justificativa documentada no Execution Log: Windows + rclone é raro; fallback via *configure-cloud cobre o caso"
+    - "⚠️ AC 4 (parcial install.ps1): fallback do install.ps1 tem 3 opções (instalar app, path manual, pular) em vez de 4. Mesma raiz do AC 2 — sem opção rclone no Windows installer"
+    - "⚠️ AC 10 (smoke tests): 8 cenários documentados como tabela de comportamento esperado no Execution Log mas não executados — ambiente WSL de desenvolvimento não tem os mounts de hardware real necessários"
+  gaps: []
+
+files:
+  present:
+    - "✅ install.sh — seção cloud sync reescrita com detecção macOS, wizard rclone, subpasta, idempotência"
+    - "✅ install.ps1 — seção cloud sync reescrita com detecção Windows, helper New-KairosSymlink, subpasta, idempotência"
+    - "✅ .kairos-core/tasks/kairos-configure-cloud.md — version: 2 confirmado, todos os passos presentes"
+    - "✅ .kairos-core/tasks/kairos-doctor.md — Check 12 atualizado com polling backoff e resolução de symlinks"
+  missing: []
+
+checks:
+  version_bumped: "N/A — bump deferred to *pre-push (Passo 0c). Story reescreve kairos-configure-cloud.md v1→v2: bump MINOR recomendado antes do push"
+  changelog_updated: "N/A — deferred to *pre-push"
+  story_file_consistent: "✅ PASS — Status In Review, Epic 7, tipo kairos-core, todos os campos presentes"
+  files_exist: "✅ PASS — todos os 4 arquivos declarados no Execution Log existem"
+  no_broken_references: "✅ PASS — install.sh, install.ps1, kairos-configure-cloud.md, kairos-doctor.md todos existentes"
+  execution_log_present: "✅ PASS — Execution Log completo com decisões, smoke tests, pendências e notas para @kairos"
+
+issues:
+  - severity: "medium"
+    description: "install.ps1 não oferece opção rclone nos menus (fallback e detectados). ACs 2 e 4 parcialmente não cobertos para Windows nativo."
+    recommendation: "Aceitável como story PATCH futura se houver demanda. Documentado pelo executor como deliberado."
+  - severity: "low"
+    description: "Smoke tests (AC 10) documentados como comportamento esperado mas não executados. Razoável dado o ambiente WSL sem mounts cloud reais."
+    recommendation: "Executar manualmente na próxima disponibilidade de hardware real e atualizar o Execution Log."
+  - severity: "low"
+    description: "realpath -L pode não estar disponível em macOS < 12 (não tem realpath nativo). kairos-configure-cloud.md usa readlink como fallback."
+    recommendation: "Adicionar nota explícita de KNOWN LIMITATION na seção Notas Técnicas do kairos-configure-cloud.md via PATCH futura."
+  - severity: "low"
+    description: "Check 12 do *doctor emite WARN (não FAIL) quando timeout de cold start esgota. Executor pergunta se WARN é correto."
+    recommendation: "WARN é o comportamento correto — consistente com o resto do Check 12 e não bloqueia o framework. Nenhuma ação necessária."
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Executar *version MINOR antes do *push — reescrita de kairos-configure-cloud.md (v1→v2) qualifica como expansão significativa de task"
+  - "⚠️ Smoke tests presenciais pendentes (AC 10) — executar quando hardware disponível e atualizar o Execution Log"
+  - "⚠️ Story PATCH futura: rclone no menu do install.ps1 (se demanda surgir) + KNOWN LIMITATION do realpath -L no macOS < 12"

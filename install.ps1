@@ -383,74 +383,22 @@ Write-Ok ".env criado com KAIROS_INSTANCE_NAME=$instanceNorm"
 Write-Host ""
 
 # --- Cloud sync (opcional) ----------------------------------------------------
-Write-Host "  -----------------------------------------------------" -ForegroundColor DarkGray
-Write-Host "  Sincronização de outputs com a nuvem (opcional)"
-Write-Host "  -----------------------------------------------------" -ForegroundColor DarkGray
-Write-Host ""
-Write-Host "  O Kairos pode sincronizar os outputs dos agentes para"
-Write-Host "  uma pasta compartilhada via OneDrive, Google Drive Desktop"
-Write-Host "  ou Dropbox. Zero OAuth - usa o app do seu provedor."
-Write-Host ""
-$doCloud = Read-Host "  Quer configurar o sync de outputs agora? [s/N]"
-
-if ($doCloud -match '^[Ss]') {
-    Write-Host ""
-    Write-Host "  Qual provedor de cloud você está usando?"
-    Write-Host "    1) Google Drive   2) OneDrive   3) Dropbox"
-    Write-Host "    4) iCloud         5) rclone     6) Outro/Custom"
-    Write-Host ""
-    $cloudProviderChoice = Read-Host "  Escolha [1-6]"
-
-    switch ($cloudProviderChoice) {
-        '1' { $cloudProvider = "Google Drive"; $cloudPathExample = "C:\Users\Voce\Google Drive\Meu Drive\Kairos Outputs" }
-        '2' { $cloudProvider = "OneDrive";     $cloudPathExample = "C:\Users\Voce\OneDrive\Kairos Outputs" }
-        '3' { $cloudProvider = "Dropbox";      $cloudPathExample = "C:\Users\Voce\Dropbox\Kairos Outputs" }
-        '4' { $cloudProvider = "iCloud";       $cloudPathExample = "C:\Users\Voce\iCloudDrive\Kairos Outputs" }
-        '5' { $cloudProvider = "rclone";       $cloudPathExample = "C:\rclone\gdrive\Kairos Outputs" }
-        default { $cloudProvider = "custom";   $cloudPathExample = "C:\caminho\absoluto\para\pasta" }
-    }
-
-    Write-Host ""
-    Write-Host "  Certifique-se de que o app do seu provedor está instalado e sincronizando:"
-    Write-Host "    OneDrive:             já incluído no Windows"
-    Write-Host "    Google Drive Desktop: https://drive.google.com/drive/download"
-    Write-Host "    Dropbox:              https://www.dropbox.com/install"
-    Write-Host "    rclone:               https://rclone.org/install/ (com mount ativo)"
-    Write-Host ""
-    Write-Host "  Informe o caminho da pasta compartilhada com o time"
-    Write-Host "  (será criada automaticamente se não existir)."
-    Write-Host ""
-    $cloudPath = Read-Host "  Caminho (ex: $cloudPathExample)"
-
-    if ([string]::IsNullOrWhiteSpace($cloudPath)) {
-        Write-Warn "Nenhum caminho informado - pulando cloud sync."
-        Write-Warn "Configure depois com: @kairos *configure-cloud"
-    } else {
-        if (-not (Test-Path $cloudPath -PathType Container)) {
-            New-Item -ItemType Directory -Path $cloudPath -Force -ErrorAction SilentlyContinue | Out-Null
-        }
-        if (-not (Test-Path $cloudPath -PathType Container)) {
-            Write-Warn "Não foi possível criar a pasta: $cloudPath"
-            Write-Warn "Configure depois: @kairos *configure-cloud"
-        } else {
-            $outputsPath = Join-Path $dirInput "data\outputs"
-            if (Test-Path $outputsPath) {
-                Remove-Item $outputsPath -Recurse -Force -ErrorAction SilentlyContinue
-            }
-            $cloudSyncSuccess = $false
-            try {
-                New-Item -ItemType SymbolicLink -Path $outputsPath -Target $cloudPath -ErrorAction Stop | Out-Null
-                Write-Ok "Cloud sync configurado: data\outputs -> $cloudPath"
-                $cloudSyncSuccess = $true
-            } catch {
-                Write-Host ""
-                Write-Warn "Criar symlink requer permissão de administrador."
-                $elevate = Read-Host "  Tentar novamente com permissão elevada? [S/n]"
-                if ([string]::IsNullOrEmpty($elevate) -or $elevate -match '^[Ss]') {
-                    $ep = $outputsPath -replace "'","''"
-                    $cp = $cloudPath   -replace "'","''"
-                    $rf = (Join-Path $env:TEMP "kairos-sym.txt") -replace "'","''"
-                    $symlinkScript = @"
+# Helper: criar symlink com elevação se necessário
+function New-KairosSymlink {
+    param([string]$LinkPath, [string]$TargetPath)
+    $result = $false
+    try {
+        New-Item -ItemType SymbolicLink -Path $LinkPath -Target $TargetPath -ErrorAction Stop | Out-Null
+        $result = $true
+    } catch {
+        Write-Host ""
+        Write-Warn "Criar symlink requer permissão de administrador."
+        $elevate = Read-Host "  Tentar novamente com permissão elevada? [S/n]"
+        if ([string]::IsNullOrEmpty($elevate) -or $elevate -match '^[Ss]') {
+            $ep = $LinkPath   -replace "'","''"
+            $cp = $TargetPath -replace "'","''"
+            $rf = (Join-Path $env:TEMP "kairos-sym.txt") -replace "'","''"
+            $symlinkScript = @"
 `$ErrorActionPreference = 'Stop'
 try {
     if (Test-Path '$ep') { Remove-Item -Path '$ep' -Recurse -Force }
@@ -460,26 +408,201 @@ try {
     `$_.Exception.Message | Out-File '$rf' -Encoding UTF8
 }
 "@
-                    $encoded = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($symlinkScript))
-                    Start-Process powershell -Verb RunAs -Wait -ArgumentList "-NoProfile", "-EncodedCommand", $encoded
-                    $symResultFile = Join-Path $env:TEMP "kairos-sym.txt"
-                    $elevResult = if (Test-Path $symResultFile) { (Get-Content $symResultFile -Raw).Trim() } else { '' }
-                    Remove-Item $symResultFile -ErrorAction SilentlyContinue
-                    if ($elevResult -eq 'OK' -and (Test-Path $outputsPath)) {
-                        Write-Ok "Cloud sync configurado: data\outputs -> $cloudPath"
-                        $cloudSyncSuccess = $true
-                    } elseif (-not [string]::IsNullOrEmpty($elevResult) -and $elevResult -ne 'OK') {
-                        Write-Warn "Erro ao criar symlink: $elevResult"
-                        Write-Warn "Configure depois: @kairos *configure-cloud"
-                    } else {
-                        Write-Warn "Não foi possível criar o symlink. Configure depois: @kairos *configure-cloud"
-                    }
+            $encoded = [Convert]::ToBase64String([System.Text.Encoding]::Unicode.GetBytes($symlinkScript))
+            Start-Process powershell -Verb RunAs -Wait -ArgumentList "-NoProfile", "-EncodedCommand", $encoded
+            $symResultFile = Join-Path $env:TEMP "kairos-sym.txt"
+            $elevResult = if (Test-Path $symResultFile) { (Get-Content $symResultFile -Raw).Trim() } else { '' }
+            Remove-Item $symResultFile -ErrorAction SilentlyContinue
+            if ($elevResult -eq 'OK' -and (Test-Path $LinkPath)) {
+                $result = $true
+            } elseif (-not [string]::IsNullOrEmpty($elevResult) -and $elevResult -ne 'OK') {
+                Write-Warn "Erro ao criar symlink: $elevResult"
+            } else {
+                Write-Warn "Não foi possível criar o symlink."
+            }
+        }
+    }
+    return $result
+}
+
+Write-Host "  -----------------------------------------------------" -ForegroundColor DarkGray
+Write-Host "  Sincronização de outputs com a nuvem (opcional)"
+Write-Host "  -----------------------------------------------------" -ForegroundColor DarkGray
+Write-Host ""
+Write-Host "  O Kairos pode sincronizar os outputs dos agentes para"
+Write-Host "  uma pasta compartilhada. Zero OAuth - usa o app nativo"
+Write-Host "  do seu provedor."
+Write-Host ""
+$doCloud = Read-Host "  Quer configurar o sync de outputs agora? [s/N]"
+
+$cloudMode     = "skip"
+$cloudRoot     = ""
+$cloudProvider = ""
+
+if ($doCloud -match '^[Ss]') {
+
+    # --- Detectar provedores Windows ---
+    $detectedNames     = [System.Collections.Generic.List[string]]::new()
+    $detectedRoots     = [System.Collections.Generic.List[string]]::new()
+    $detectedProviders = [System.Collections.Generic.List[string]]::new()
+
+    # Google Drive
+    $gdCandidates = @(
+        (Join-Path $env:USERPROFILE "Google Drive\Meu Drive"),
+        (Join-Path $env:USERPROFILE "Google Drive\My Drive"),
+        "G:\Meu Drive", "G:\My Drive",
+        "H:\Meu Drive", "H:\My Drive"
+    )
+    foreach ($p in $gdCandidates) {
+        if (Test-Path $p -PathType Container) {
+            $detectedNames.Add("Google Drive ($p)")
+            $detectedRoots.Add($p)
+            $detectedProviders.Add("Google Drive")
+            break
+        }
+    }
+
+    # OneDrive
+    $odEnv = $env:OneDrive
+    if (-not [string]::IsNullOrEmpty($odEnv) -and (Test-Path $odEnv -PathType Container)) {
+        $detectedNames.Add("OneDrive ($odEnv)")
+        $detectedRoots.Add($odEnv)
+        $detectedProviders.Add("OneDrive")
+    } else {
+        $odCandidates = @(Get-Item (Join-Path $env:USERPROFILE "OneDrive*") -ErrorAction SilentlyContinue)
+        foreach ($od in $odCandidates) {
+            if (Test-Path $od.FullName -PathType Container) {
+                $detectedNames.Add("OneDrive ($($od.Name))")
+                $detectedRoots.Add($od.FullName)
+                $detectedProviders.Add("OneDrive")
+                break
+            }
+        }
+    }
+
+    # Dropbox
+    $dbInfo = Join-Path $env:LOCALAPPDATA "Dropbox\info.json"
+    if (Test-Path $dbInfo) {
+        try {
+            $dbData = Get-Content $dbInfo -Raw | ConvertFrom-Json
+            $dbPath = $dbData.personal.path
+            if (-not [string]::IsNullOrEmpty($dbPath) -and (Test-Path $dbPath -PathType Container)) {
+                $detectedNames.Add("Dropbox ($dbPath)")
+                $detectedRoots.Add($dbPath)
+                $detectedProviders.Add("Dropbox")
+            }
+        } catch { }
+    } elseif (Test-Path (Join-Path $env:USERPROFILE "Dropbox") -PathType Container) {
+        $dbPath = Join-Path $env:USERPROFILE "Dropbox"
+        $detectedNames.Add("Dropbox ($dbPath)")
+        $detectedRoots.Add($dbPath)
+        $detectedProviders.Add("Dropbox")
+    }
+
+    # --- Menu de escolha ---
+    Write-Host ""
+    if ($detectedNames.Count -eq 0) {
+        Write-Host "  Nenhum app de nuvem detectado automaticamente."
+        Write-Host ""
+        Write-Host "  1) Instalar app de nuvem e executar este instalador novamente"
+        Write-Host "  2) Informar path manualmente"
+        Write-Host "  3) Pular - configurar depois com: @kairos *configure-cloud"
+        Write-Host ""
+        $ch = Read-Host "  Escolha [1-3]"
+        switch ($ch) {
+            '1' {
+                Write-Host ""
+                Write-Info "Instale um dos apps abaixo e execute este instalador novamente:"
+                Write-Host "    OneDrive:             ja incluido no Windows"
+                Write-Host "    Google Drive Desktop: https://drive.google.com/drive/download" -ForegroundColor Cyan
+                Write-Host "    Dropbox:              https://www.dropbox.com/install" -ForegroundColor Cyan
+                $cloudMode = "skip"
+            }
+            '2' { $cloudMode = "manual" }
+            default { $cloudMode = "skip" }
+        }
+    } else {
+        Write-Host "  Apps de nuvem detectados:"
+        Write-Host ""
+        for ($i = 0; $i -lt $detectedNames.Count; $i++) {
+            Write-Host "  $($i+1)) $($detectedNames[$i])"
+        }
+        $mnIdx = $detectedNames.Count + 1
+        $skIdx = $detectedNames.Count + 2
+        Write-Host "  $mnIdx) Outro/Custom (informar path manualmente)"
+        Write-Host "  $skIdx) Pular - configurar depois com: @kairos *configure-cloud"
+        Write-Host ""
+        $ch = Read-Host "  Escolha [1-$skIdx]"
+        $chInt = 0
+        if ([int]::TryParse($ch, [ref]$chInt) -and $chInt -ge 1 -and $chInt -le $detectedNames.Count) {
+            $cloudMode     = "detected"
+            $cloudRoot     = $detectedRoots[$chInt - 1]
+            $cloudProvider = $detectedProviders[$chInt - 1]
+        } elseif ($ch -eq "$mnIdx") {
+            $cloudMode = "manual"
+        } else {
+            $cloudMode = "skip"
+        }
+    }
+
+    # --- Path manual ---
+    if ($cloudMode -eq "manual") {
+        Write-Host ""
+        $cloudRoot = Read-Host "  Caminho absoluto da pasta sincronizada"
+        $cloudRoot = $cloudRoot.TrimEnd('\').TrimEnd('/')
+        if ([string]::IsNullOrWhiteSpace($cloudRoot)) {
+            Write-Warn "Nenhum caminho informado - pulando."
+            $cloudMode = "skip"
+        } else {
+            $cloudProvider = "custom"
+            $cloudMode = "detected"
+        }
+    }
+
+    # --- Subpasta + symlink ---
+    if ($cloudMode -eq "detected" -and -not [string]::IsNullOrEmpty($cloudRoot)) {
+        Write-Host ""
+        Write-Host "  Qual nome de subpasta usar dentro de:"
+        Write-Host "  $cloudRoot"
+        $subfolder = Read-Host "  [Kairos Outputs]"
+        if ([string]::IsNullOrWhiteSpace($subfolder)) { $subfolder = "Kairos Outputs" }
+        $cloudPath = Join-Path $cloudRoot $subfolder
+
+        if (-not (Test-Path $cloudPath -PathType Container)) {
+            New-Item -ItemType Directory -Path $cloudPath -Force -ErrorAction SilentlyContinue | Out-Null
+        }
+
+        $outputsPath  = Join-Path $dirInput "data\outputs"
+        $skipSymlink  = $false
+
+        $existingItem = Get-Item $outputsPath -ErrorAction SilentlyContinue
+        if ($existingItem -and $existingItem.Attributes -band [System.IO.FileAttributes]::ReparsePoint) {
+            $oldTarget = $existingItem.Target
+            if ($oldTarget -eq $cloudPath) {
+                Write-Ok "Symlink já aponta para $cloudPath - mantendo."
+                $skipSymlink = $true
+            } else {
+                Write-Warn "data\outputs já é um symlink (-> $oldTarget)."
+                $reconf = Read-Host "  Reconfigurar para $cloudPath? [s/N]"
+                if ($reconf -match '^[Ss]') {
+                    Remove-Item $outputsPath -Force -ErrorAction SilentlyContinue
                 } else {
-                    Write-Warn "Configure depois: @kairos *configure-cloud"
+                    $skipSymlink = $true
+                    Write-Warn "Mantendo symlink anterior. Configure com: @kairos *configure-cloud"
                 }
             }
+        } elseif (Test-Path $outputsPath -PathType Container) {
+            $children = @(Get-ChildItem $outputsPath -ErrorAction SilentlyContinue)
+            foreach ($c in $children) {
+                Move-Item $c.FullName $cloudPath -ErrorAction SilentlyContinue
+            }
+            Remove-Item $outputsPath -Recurse -Force -ErrorAction SilentlyContinue
+        }
 
-            if ($cloudSyncSuccess) {
+        if (-not $skipSymlink) {
+            $symlinkOk = New-KairosSymlink -LinkPath $outputsPath -TargetPath $cloudPath
+            if ($symlinkOk) {
+                Write-Ok "Cloud sync configurado: data\outputs -> $cloudPath"
                 $runtimeDir = Join-Path $dirInput ".kairos-core\runtime"
                 New-Item -ItemType Directory -Path $runtimeDir -Force -ErrorAction SilentlyContinue | Out-Null
                 $cloudSyncState = [ordered]@{
@@ -488,8 +611,10 @@ try {
                     provider       = $cloudProvider
                     configured_at  = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
                 }
-                $cloudSyncJson = $cloudSyncState | ConvertTo-Json -Depth 3
-                Set-Content -Path (Join-Path $runtimeDir "cloud-sync.json") -Value $cloudSyncJson -Encoding UTF8
+                Set-Content -Path (Join-Path $runtimeDir "cloud-sync.json") `
+                    -Value ($cloudSyncState | ConvertTo-Json -Depth 3) -Encoding UTF8
+            } else {
+                Write-Warn "Configure depois: @kairos *configure-cloud"
             }
         }
     }

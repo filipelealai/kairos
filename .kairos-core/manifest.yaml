@@ -1,5 +1,5 @@
-kairos_version: 4.0.0
-generated_at: '2026-05-11'
+kairos_version: 4.1.0
+generated_at: '2026-05-12'
 owned_files:
 - path: .kairos-core/constitution.md
   layer: L1
@@ -42,7 +42,7 @@ owned_files:
   sha256: 032745c52d0bef8d7e4dba7ea61883bc30f11e18b06ddc8cd194feac44d86cc4
 - path: .kairos-core/tasks/kairos-doctor.md
   layer: L2
-  sha256: 30262896e967b2060fdcb36702394ca6b85526a1e95fac65d18de1af3b532cd0
+  sha256: 09e9f3e7a29869fb415154d94df3ec2ef75397ebebe439cd72d3178e1b5e464b
 - path: .kairos-core/tasks/kairos-help.md
   layer: L2
   sha256: b8b04ac87bfad2104b51aefc951b6a59d3a83eff73eda2d493e643a20ad7e1e8
@@ -96,7 +96,7 @@ owned_files:
   sha256: 489875d22f6e9feb38cde87d0ed6d7c4915f4d0ce34daeb98cd95e581f1d1af6
 - path: .kairos-core/tasks/kairos-configure-cloud.md
   layer: L2
-  sha256: 8102acabdaf8445c19b43bf04d2dd15c0431b8c035d586b6caf330a3602bce0c
+  sha256: ba073b7797f94aa001f350b5ca93a780cee2a385067b889ff4cffc151c223c62
 - path: .kairos-core/tasks/kairos-export-squad.md
   layer: L2
   sha256: 9cff5a6c3b5dc8ba3bb8cadd6e7616bea95e37a0ef825d2a5aeb819629547f7d
@@ -147,10 +147,10 @@ owned_files:
   sha256: 2aeaab3a30dd4f494ba225939d2a25c98ce212f0de927c99c48317d349d21c90
 - path: install.sh
   layer: L2
-  sha256: fcf01c633dc5168463684677f828aab4ffd66a77fecc28d5935c78095bbc4401
+  sha256: 2ed6401ecc6aed357c1dc315ab1129c49ed9ef4815c570a729d9bc195bf0595f
 - path: install.ps1
   layer: L2
-  sha256: 1d2fd98f67a6aab7c5c133a9834c1af1a9aeaffc375a6647ff6c6801bc849190
+  sha256: dbe23decfdfd9061447700bd691192f8ff36876780dd0702fb80bd3b3a11e1c1
 - path: uninstall.sh
   layer: L2
   sha256: 85d680bd5d200c3af06a63a3a88911be821d099d7658cf1fe20dd4c6834fd926
@@ -162,7 +162,7 @@ owned_files:
   sha256: 8db23a6c2ac4dd55d011c0fc79c16f5b268b8875a3d85df33b451cc4b1fb65db
 - path: CHANGELOG.md
   layer: L3
-  sha256: 28372e9cae0a132c4108f297b284740feb46ae2b97461f4e9806b019104c93f7
+  sha256: 17ad437a3ab1e58d8a6c69a38b9b5de55dceb5797f80db2af0c97f895f125291
 - path: .github/CODEOWNERS
   layer: L3
   sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4

@@ -90,3 +90,4 @@ Cada epic tem arquivo dedicado em `docs/epics/`:
 | [6.1](6.1.story.md) | Kairos MCP Server v1 — Implementação (Código + Docker + Docs) | In Review |
 | [6.2](6.2.story.md) | Kairos MCP Server v1 — Deploy, Integração e Validação | In Review |
 | [3.31](3.31.story.md) | Refatoração: Separação de Responsabilidades entre *pre-push, *push e *version | Draft |
+| [7.7](7.7.story.md) | Detecção inteligente de provedor de cloud + wizard rclone + tolerância a cold start | Draft |
