@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.0.0
+kairos-version: 4.1.0
 id: kairos-doctor
 title: Health Check do Framework Kairos
 agent: kairos
@@ -184,9 +184,46 @@ Se `.kairos-core/runtime/cloud-sync.json` existe E `configured: true`:
 
 - [ ] `data/outputs` é um symlink (`test -L data/outputs`)
   → ❌ FAIL "cloud-sync.json indica sync ativo mas data/outputs não é um symlink — rodar `@kairos *configure-cloud` para reconfigurar"
-- [ ] O symlink aponta para um caminho que existe e é gravável
-  → ⚠️  WARN "symlink data/outputs/ → {target} quebrado ou sem permissão de escrita — rodar `@kairos *configure-cloud` para reconfigurar"
+
+- [ ] O symlink resolve para um caminho acessível e gravável
+
+  Ler o campo `provider` do JSON. Determinar estratégia de validação:
+
+  **Provedores cloud / rclone** — usar polling com backoff quando `provider` for `rclone:*` ou um dos provedores reconhecidos (`Google Drive`, `OneDrive`, `Dropbox`, `iCloud`):
+
+  Resolver destino físico com `readlink -f data/outputs` (ou `Resolve-Path` no PS).
+  Tentar escrever e ler arquivo de teste. Sequência de espera entre tentativas: `1s → 2s → 5s → 10s → 15s` (total ≤ 30s):
+
+  ```bash
+  _delays=(0 1 2 5 10 15)
+  _ok=false
+  for _d in "${_delays[@]}"; do
+    [ "$_d" -gt 0 ] && sleep "$_d"
+    if echo "kairos-doctor-test" > data/outputs/.doctor-test 2>/dev/null \
+       && grep -q "kairos-doctor-test" data/outputs/.doctor-test 2>/dev/null; then
+      rm -f data/outputs/.doctor-test
+      _ok=true
+      break
+    fi
+  done
+  ```
+
+  Tick de sucesso em qualquer tentativa → PASS silencioso imediato.
+
+  Se todas as tentativas falharem (janela de 30s esgotada):
+  → ⚠️ WARN "symlink data/outputs/ → {target} não acessível após 30s (provável cold start do mount) — verifique o mount ou reconfigure com `@kairos *configure-cloud`"
+
+  **custom / paths locais** — validação rápida (sem polling):
+
+  ```bash
+  echo "kairos-doctor-test" > data/outputs/.doctor-test \
+    && rm -f data/outputs/.doctor-test
+  ```
+
+  → ⚠️ WARN "symlink data/outputs/ → {target} quebrado ou sem permissão de escrita — rodar `@kairos *configure-cloud` para reconfigurar" se falhar
   → ✅ PASS silencioso se tudo OK
+
+  **Resolução para reporte ao usuário:** usar `realpath -L data/outputs` (preserva o caminho do symlink, não substitui pelo target) ou `(Get-Item data\outputs).Target` no PS. Nunca exibir o path físico resolvido em lugar do target declarado.
 
 > Este check é silencioso quando `cloud-sync.json` não existe ou tem `configured: false` — ausência de sync é estado normal.
 

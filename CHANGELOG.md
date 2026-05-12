@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [4.1.0] — 2026-05-12
+
+### Mudado
+- kairos-configure-cloud.md reescrita v1→v2: detecção automática de provedor, wizard rclone, subpasta, tolerância a cold start
+
+---
+
 ## [4.0.1] - 2026-05-11
 
 ### Mudado

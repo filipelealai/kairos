@@ -352,90 +352,385 @@ ok ".env criado com KAIROS_INSTANCE_NAME=${INSTANCE_NAME}"
 echo ""
 
 # ─── Cloud sync (opcional) ────────────────────────────────────────────────────
+
+# Helpers de persistência rclone
+_rclone_add_bashrc() {
+  local remote="$1" mount_pt="$2"
+  local marker="# KAIROS-RCLONE-MOUNT"
+  if grep -q "$marker" "${HOME}/.bashrc" 2>/dev/null; then
+    info "Bloco rclone já existe em ~/.bashrc — não duplicando."
+  else
+    cat >> "${HOME}/.bashrc" <<BASHBLOCK
+
+${marker}
+if ! mount 2>/dev/null | grep -qE "type fuse\.rclone.*${mount_pt}|${mount_pt}.*fuse\.rclone"; then
+  mkdir -p "${mount_pt}"
+  rclone mount "${remote}": "${mount_pt}" \\
+    --vfs-cache-mode writes --dir-cache-time 5s \\
+    --poll-interval 5s --daemon 2>/dev/null || true
+fi
+${marker}-END
+BASHBLOCK
+    ok "Bloco rclone adicionado ao ~/.bashrc"
+    warn "Nota: ~/.bashrc só executa em terminais interativos — não funciona com hooks/cron."
+  fi
+}
+
+_rclone_systemd_user() {
+  local remote="$1" mount_pt="$2"
+  local unit="rclone-kairos-${remote}.service"
+  local udir="${HOME}/.config/systemd/user"
+  mkdir -p "$udir"
+  cat > "${udir}/${unit}" <<UNIT
+[Unit]
+Description=rclone mount — kairos ${remote}
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStartPre=/bin/mkdir -p ${mount_pt}
+ExecStart=/usr/bin/rclone mount ${remote}: ${mount_pt} --vfs-cache-mode writes --dir-cache-time 5s --poll-interval 5s
+ExecStop=/bin/fusermount -uz ${mount_pt}
+Restart=on-failure
+
+[Install]
+WantedBy=default.target
+UNIT
+  systemctl --user daemon-reload 2>/dev/null || true
+  systemctl --user enable "$unit" 2>/dev/null && systemctl --user start "$unit" 2>/dev/null || true
+  ok "systemd --user unit criado e habilitado: ${unit}"
+}
+
+_rclone_systemd_system() {
+  local remote="$1" mount_pt="$2"
+  local unit="rclone-kairos-${remote}.service"
+  sudo tee "/etc/systemd/system/${unit}" > /dev/null <<UNIT
+[Unit]
+Description=rclone mount — kairos ${remote}
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=${USER}
+ExecStartPre=/bin/mkdir -p ${mount_pt}
+ExecStart=/usr/bin/rclone mount ${remote}: ${mount_pt} --vfs-cache-mode writes --dir-cache-time 5s --poll-interval 5s
+ExecStop=/bin/fusermount -uz ${mount_pt}
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
+UNIT
+  sudo systemctl daemon-reload 2>/dev/null || true
+  sudo systemctl enable "$unit" 2>/dev/null && sudo systemctl start "$unit" 2>/dev/null || true
+  ok "systemd system unit criado e habilitado: ${unit}"
+}
+
 echo "   ─────────────────────────────────────────────────────"
 echo "   Sincronização de outputs com a nuvem (opcional)"
 echo "   ─────────────────────────────────────────────────────"
 echo ""
-echo "   O Kairos pode sincronizar os outputs gerados pelos agentes"
-echo "   automaticamente para uma pasta compartilhada com o time"
-echo "   via Google Drive Desktop, OneDrive ou Dropbox."
-echo "   Zero OAuth — o sync é delegado ao app do seu provedor."
+echo "   O Kairos pode sincronizar os outputs dos agentes para"
+echo "   uma pasta compartilhada. Zero OAuth — usa o app nativo"
+echo "   do seu provedor ou rclone."
 echo ""
 read -rp "   Quer configurar o sync de outputs agora? [s/N] → " do_cloud </dev/tty
 
+CLOUD_MODE="skip"
+CLOUD_ROOT=""
+CLOUD_PROVIDER=""
+
 if [[ "${do_cloud,,}" == "s" ]]; then
-  echo ""
-  echo "   Qual provedor de cloud você está usando?"
-  echo "     1) Google Drive   2) OneDrive   3) Dropbox"
-  echo "     4) iCloud         5) rclone     6) Outro/Custom"
-  echo ""
-  read -rp "   Escolha [1-6] → " cloud_provider_choice </dev/tty
 
-  case "$cloud_provider_choice" in
-    1) CLOUD_PROVIDER="Google Drive"; CLOUD_PATH_EXAMPLE="~/Google Drive/Meu Drive/Kairos Outputs" ;;
-    2) CLOUD_PROVIDER="OneDrive";     CLOUD_PATH_EXAMPLE="~/OneDrive/Kairos Outputs" ;;
-    3) CLOUD_PROVIDER="Dropbox";      CLOUD_PATH_EXAMPLE="~/Dropbox/Kairos Outputs" ;;
-    4) CLOUD_PROVIDER="iCloud";       CLOUD_PATH_EXAMPLE="~/Library/Mobile Documents/com~apple~CloudDocs/Kairos Outputs" ;;
-    5) CLOUD_PROVIDER="rclone";       CLOUD_PATH_EXAMPLE="~/gdrive/Kairos Outputs" ;;
-    *) CLOUD_PROVIDER="custom";       CLOUD_PATH_EXAMPLE="/caminho/absoluto/para/pasta" ;;
-  esac
+  # --- Detectar provedores por OS ---
+  DETECTED_NAMES=()
+  DETECTED_ROOTS=()
+  DETECTED_PROVIDERS=()
 
-  echo ""
-  echo "   Certifique-se de que o app do seu provedor está instalado e sincronizando:"
-  echo "   • Google Drive Desktop → https://drive.google.com/drive/download"
-  echo "   • OneDrive             → disponível para Mac/Linux; já incluído no Windows"
-  echo "   • Dropbox              → https://www.dropbox.com/install"
-  echo "   • rclone               → https://rclone.org/install/ (com mount ativo)"
-  echo ""
-  echo "   Informe o caminho da pasta compartilhada com o time"
-  echo "   (a pasta já deve existir no seu computador)."
-  echo ""
-  read -rp "   Caminho (ex: ${CLOUD_PATH_EXAMPLE}): " CLOUD_PATH </dev/tty
-  # Expandir ~ manualmente
-  CLOUD_PATH="${CLOUD_PATH/#\~/$HOME}"
-  CLOUD_PATH="${CLOUD_PATH%/}"
-
-  if [[ -z "$CLOUD_PATH" ]]; then
-    warn "Nenhum caminho informado — pulando cloud sync."
-    warn "Configure depois com: @kairos *configure-cloud"
-  else
-    if [[ ! -d "$CLOUD_PATH" ]]; then
-      mkdir -p "$CLOUD_PATH"
+  if [[ "$OS" == "mac" ]]; then
+    _icloud="${HOME}/Library/Mobile Documents/com~apple~CloudDocs"
+    if [[ -d "$_icloud" ]]; then
+      DETECTED_NAMES+=("iCloud Drive")
+      DETECTED_ROOTS+=("$_icloud")
+      DETECTED_PROVIDERS+=("iCloud")
     fi
-    OUTPUTS_DIR="${INSTALL_DIR}/data/outputs"
-    # Remover symlink ou diretório vazio existente
-    if [[ -L "$OUTPUTS_DIR" ]]; then
-      rm "$OUTPUTS_DIR"
-    elif [[ -d "$OUTPUTS_DIR" ]]; then
-      CONTENT=$(ls -A "$OUTPUTS_DIR" 2>/dev/null)
-      if [[ -n "$CONTENT" ]]; then
-        mv "$OUTPUTS_DIR"/* "$CLOUD_PATH/" 2>/dev/null || true
+    for _gd in "${HOME}/Library/CloudStorage/GoogleDrive-"*/; do
+      [[ -d "$_gd" ]] || continue
+      _acct=$(basename "$_gd" | sed 's/^GoogleDrive-//')
+      DETECTED_NAMES+=("Google Drive (${_acct})")
+      DETECTED_ROOTS+=("${_gd%/}")
+      DETECTED_PROVIDERS+=("Google Drive")
+    done
+    if [[ -d "${HOME}/Google Drive" ]]; then
+      DETECTED_NAMES+=("Google Drive")
+      DETECTED_ROOTS+=("${HOME}/Google Drive")
+      DETECTED_PROVIDERS+=("Google Drive")
+    fi
+    for _od in "${HOME}/Library/CloudStorage/OneDrive-"*/; do
+      [[ -d "$_od" ]] || continue
+      _acct=$(basename "$_od" | sed 's/^OneDrive-//')
+      DETECTED_NAMES+=("OneDrive (${_acct})")
+      DETECTED_ROOTS+=("${_od%/}")
+      DETECTED_PROVIDERS+=("OneDrive")
+    done
+    if [[ -d "${HOME}/OneDrive" ]]; then
+      DETECTED_NAMES+=("OneDrive")
+      DETECTED_ROOTS+=("${HOME}/OneDrive")
+      DETECTED_PROVIDERS+=("OneDrive")
+    fi
+    for _db in "${HOME}/Dropbox" "${HOME}/Library/CloudStorage/Dropbox"; do
+      if [[ -d "$_db" ]]; then
+        DETECTED_NAMES+=("Dropbox")
+        DETECTED_ROOTS+=("$_db")
+        DETECTED_PROVIDERS+=("Dropbox")
+        break
       fi
-      rmdir "$OUTPUTS_DIR" 2>/dev/null || rm -rf "$OUTPUTS_DIR"
-    fi
-    if ln -s "$CLOUD_PATH" "$OUTPUTS_DIR" 2>/dev/null; then
-      ok "Cloud sync configurado: data/outputs → $CLOUD_PATH"
+    done
+  fi
+  # Linux/WSL: sem detecção de apps nativos
 
-      # Gravar estado em .kairos-core/runtime/cloud-sync.json
-      RUNTIME_DIR="${INSTALL_DIR}/.kairos-core/runtime"
-      mkdir -p "$RUNTIME_DIR"
-      CLOUD_TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-      # Escapar aspas e backslashes do path para inserir em JSON
-      CLOUD_PATH_JSON="${CLOUD_PATH//\\/\\\\}"
-      CLOUD_PATH_JSON="${CLOUD_PATH_JSON//\"/\\\"}"
-      cat > "${RUNTIME_DIR}/cloud-sync.json" <<EOF
-{
-  "configured": true,
-  "symlink_target": "${CLOUD_PATH_JSON}",
-  "provider": "${CLOUD_PROVIDER}",
-  "configured_at": "${CLOUD_TIMESTAMP}"
-}
-EOF
+  # --- Menu de escolha ---
+  if [[ "$OS" == "linux" ]] || [[ "$OS" == "wsl" ]]; then
+    echo ""
+    echo "   Em Linux/WSL o sync é feito via rclone (mount FUSE)."
+    echo ""
+    echo "   1) Configurar com rclone"
+    echo "   2) Pular — configurar depois com: @kairos *configure-cloud"
+    echo ""
+    read -rp "   Escolha [1-2] → " _ch </dev/tty
+    [[ "$_ch" == "1" ]] && CLOUD_MODE="rclone" || CLOUD_MODE="skip"
+
+  elif [[ ${#DETECTED_NAMES[@]} -eq 0 ]]; then
+    echo ""
+    echo "   Nenhum app de nuvem detectado automaticamente."
+    echo ""
+    echo "   1) Instalar app de nuvem e executar este script novamente"
+    echo "   2) Configurar com rclone"
+    echo "   3) Informar path manualmente"
+    echo "   4) Pular — configurar depois com: @kairos *configure-cloud"
+    echo ""
+    read -rp "   Escolha [1-4] → " _ch </dev/tty
+    case "$_ch" in
+      1)
+        echo ""
+        info "Instale um dos apps abaixo e execute este script novamente:"
+        echo "   • Google Drive Desktop → https://drive.google.com/drive/download"
+        echo "   • OneDrive             → https://www.microsoft.com/pt-br/microsoft-365/onedrive"
+        echo "   • Dropbox              → https://www.dropbox.com/install"
+        echo "   • iCloud Drive         → incluso no macOS — abra Ajustes do Sistema"
+        CLOUD_MODE="skip"
+        ;;
+      2) CLOUD_MODE="rclone" ;;
+      3) CLOUD_MODE="manual" ;;
+      *) CLOUD_MODE="skip" ;;
+    esac
+
+  else
+    echo ""
+    echo "   Apps de nuvem detectados:"
+    echo ""
+    for _i in "${!DETECTED_NAMES[@]}"; do
+      echo "   $((_i+1))) ${DETECTED_NAMES[$_i]}"
+    done
+    _rc_idx=$(( ${#DETECTED_NAMES[@]} + 1 ))
+    _mn_idx=$(( ${#DETECTED_NAMES[@]} + 2 ))
+    _sk_idx=$(( ${#DETECTED_NAMES[@]} + 3 ))
+    echo "   ${_rc_idx}) Configurar com rclone"
+    echo "   ${_mn_idx}) Outro/Custom (informar path manualmente)"
+    echo "   ${_sk_idx}) Pular — configurar depois com: @kairos *configure-cloud"
+    echo ""
+    read -rp "   Escolha [1-${_sk_idx}] → " _ch </dev/tty
+    if [[ "$_ch" =~ ^[0-9]+$ ]] && (( _ch >= 1 && _ch <= ${#DETECTED_NAMES[@]} )); then
+      CLOUD_MODE="detected"
+      CLOUD_ROOT="${DETECTED_ROOTS[$((_ch-1))]}"
+      CLOUD_PROVIDER="${DETECTED_PROVIDERS[$((_ch-1))]}"
+    elif [[ "$_ch" == "$_rc_idx" ]]; then
+      CLOUD_MODE="rclone"
+    elif [[ "$_ch" == "$_mn_idx" ]]; then
+      CLOUD_MODE="manual"
     else
-      warn "Não foi possível criar o symlink."
-      warn "Configure depois com: @kairos *configure-cloud"
+      CLOUD_MODE="skip"
     fi
   fi
+
+  # --- Wizard rclone ---
+  if [[ "$CLOUD_MODE" == "rclone" ]]; then
+    if ! command -v rclone &>/dev/null; then
+      echo ""
+      warn "rclone não encontrado."
+      echo ""
+      if [[ "$OS" == "mac" ]]; then
+        echo "   Instale com: brew install rclone"
+      else
+        echo "   Instale com: curl https://rclone.org/install.sh | sudo bash"
+      fi
+      echo ""
+      echo "   Após instalar, execute este script novamente ou:"
+      echo "   configure depois com: @kairos *configure-cloud"
+      CLOUD_MODE="skip"
+    else
+      _remotes=$(rclone listremotes 2>/dev/null | sed 's/:$//' || true)
+      if [[ -z "$_remotes" ]]; then
+        echo ""
+        warn "Nenhum remote rclone configurado."
+        echo ""
+        echo "   Execute: rclone config"
+        echo "   (OAuth interativo — siga as instruções na tela)"
+        echo ""
+        echo "   Após configurar, use: @kairos *configure-cloud"
+        CLOUD_MODE="skip"
+      else
+        echo ""
+        echo "   Remotes rclone disponíveis:"
+        _remote_arr=()
+        _ri=1
+        while IFS= read -r _r; do
+          echo "   ${_ri}) ${_r}"
+          _remote_arr+=("$_r")
+          _ri=$((_ri+1))
+        done <<< "$_remotes"
+        echo ""
+        read -rp "   Escolha o remote [1-$((_ri-1))] → " _rc </dev/tty
+
+        if [[ "$_rc" =~ ^[0-9]+$ ]] && (( _rc >= 1 && _rc <= ${#_remote_arr[@]} )); then
+          RCLONE_REMOTE="${_remote_arr[$((_rc-1))]}"
+          _mount_line=$(mount 2>/dev/null | grep -E 'type fuse\.rclone' | grep -i "${RCLONE_REMOTE}" | head -1 || true)
+          if [[ -z "$_mount_line" ]]; then
+            echo ""
+            warn "Nenhum mount ativo para '${RCLONE_REMOTE}'."
+            echo ""
+            echo "   Para montar, execute em outro terminal:"
+            echo "   mkdir -p ~/rclone/${RCLONE_REMOTE}"
+            echo "   rclone mount ${RCLONE_REMOTE}: ~/rclone/${RCLONE_REMOTE} \\"
+            echo "     --vfs-cache-mode writes --dir-cache-time 5s \\"
+            echo "     --poll-interval 5s --daemon"
+            echo ""
+            read -rp "   Pressione Enter após montar (Ctrl+C para cancelar) → " </dev/tty
+            _mount_line=$(mount 2>/dev/null | grep -E 'type fuse\.rclone' | grep -i "${RCLONE_REMOTE}" | head -1 || true)
+          fi
+
+          if [[ -n "$_mount_line" ]]; then
+            CLOUD_ROOT=$(echo "$_mount_line" | awk '{print $3}')
+            CLOUD_PROVIDER="rclone:${RCLONE_REMOTE}"
+            CLOUD_MODE="detected"
+            echo ""
+            ok "Mount ativo: ${CLOUD_ROOT}"
+
+            # Persistência
+            echo ""
+            if systemctl is-system-running &>/dev/null 2>&1; then
+              echo "   systemd detectado. Deseja persistir o mount?"
+              echo "   1) systemd --user (sem sudo, recomendado)"
+              echo "   2) system-wide (com sudo)"
+              echo "   3) Pular"
+              read -rp "   Escolha [1-3] → " _persist </dev/tty
+              if   [[ "$_persist" == "1" ]]; then _rclone_systemd_user   "$RCLONE_REMOTE" "$CLOUD_ROOT"
+              elif [[ "$_persist" == "2" ]]; then _rclone_systemd_system "$RCLONE_REMOTE" "$CLOUD_ROOT"
+              fi
+            else
+              echo "   systemd não está ativo."
+              echo "   1) Adicionar ao ~/.bashrc (apenas terminais interativos)"
+              echo "   2) Ver instruções para habilitar systemd no WSL"
+              echo "   3) Pular"
+              read -rp "   Escolha [1-3] → " _persist </dev/tty
+              if [[ "$_persist" == "1" ]]; then
+                _rclone_add_bashrc "$RCLONE_REMOTE" "$CLOUD_ROOT"
+              elif [[ "$_persist" == "2" ]]; then
+                echo ""
+                info "Para habilitar systemd no WSL:"
+                echo "   1. Edite /etc/wsl.conf (como root) e adicione:"
+                echo "      [boot]"
+                echo "      systemd=true"
+                echo "   2. No Windows: wsl --shutdown"
+                echo "   3. Reabra o WSL e execute: @kairos *configure-cloud"
+              fi
+            fi
+          else
+            warn "Mount ainda não detectado. Configure depois: @kairos *configure-cloud"
+            CLOUD_MODE="skip"
+          fi
+        else
+          warn "Escolha inválida — pulando rclone."
+          CLOUD_MODE="skip"
+        fi
+      fi
+    fi
+  fi
+
+  # --- Path manual ---
+  if [[ "$CLOUD_MODE" == "manual" ]]; then
+    echo ""
+    read -rp "   Caminho absoluto da pasta sincronizada → " CLOUD_ROOT </dev/tty
+    CLOUD_ROOT="${CLOUD_ROOT/#\~/$HOME}"
+    CLOUD_ROOT="${CLOUD_ROOT%/}"
+    if [[ -z "$CLOUD_ROOT" ]]; then
+      warn "Nenhum caminho informado — pulando."
+      CLOUD_MODE="skip"
+    else
+      CLOUD_PROVIDER="custom"
+      CLOUD_MODE="detected"
+    fi
+  fi
+
+  # --- Subpasta + symlink ---
+  if [[ "$CLOUD_MODE" == "detected" ]] && [[ -n "$CLOUD_ROOT" ]]; then
+    echo ""
+    echo "   Qual nome de subpasta usar dentro de:"
+    echo "   ${CLOUD_ROOT}"
+    read -rp "   [Kairos Outputs] → " _subfolder </dev/tty
+    _subfolder="${_subfolder:-Kairos Outputs}"
+    CLOUD_PATH="${CLOUD_ROOT}/${_subfolder}"
+
+    [[ ! -d "$CLOUD_PATH" ]] && mkdir -p "$CLOUD_PATH"
+
+    OUTPUTS_DIR="${INSTALL_DIR}/data/outputs"
+    _skip_symlink=false
+
+    if [[ -L "$OUTPUTS_DIR" ]]; then
+      _old=$(readlink -f "$OUTPUTS_DIR" 2>/dev/null || readlink "$OUTPUTS_DIR")
+      if [[ "$_old" == "$CLOUD_PATH" ]]; then
+        ok "Symlink já aponta para ${CLOUD_PATH} — mantendo."
+        _skip_symlink=true
+      else
+        warn "data/outputs já é um symlink (→ ${_old})."
+        read -rp "   Reconfigurar para ${CLOUD_PATH}? [s/N] → " _reconf </dev/tty
+        if [[ "${_reconf,,}" == "s" ]]; then
+          rm "$OUTPUTS_DIR"
+        else
+          _skip_symlink=true
+          warn "Mantendo symlink anterior. Configure com: @kairos *configure-cloud"
+        fi
+      fi
+    elif [[ -d "$OUTPUTS_DIR" ]]; then
+      _content=$(ls -A "$OUTPUTS_DIR" 2>/dev/null)
+      [[ -n "$_content" ]] && mv "${OUTPUTS_DIR}"/* "${CLOUD_PATH}/" 2>/dev/null || true
+      rmdir "$OUTPUTS_DIR" 2>/dev/null || rm -rf "$OUTPUTS_DIR"
+    fi
+
+    if [[ "$_skip_symlink" == "false" ]]; then
+      if ln -s "$CLOUD_PATH" "$OUTPUTS_DIR" 2>/dev/null; then
+        ok "Cloud sync configurado: data/outputs → ${CLOUD_PATH}"
+        RUNTIME_DIR="${INSTALL_DIR}/.kairos-core/runtime"
+        mkdir -p "$RUNTIME_DIR"
+        _ts=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+        _pj="${CLOUD_PATH//\\/\\\\}"; _pj="${_pj//\"/\\\"}"
+        _pvj="${CLOUD_PROVIDER//\"/\\\"}"
+        cat > "${RUNTIME_DIR}/cloud-sync.json" <<EOF
+{
+  "configured": true,
+  "symlink_target": "${_pj}",
+  "provider": "${_pvj}",
+  "configured_at": "${_ts}"
+}
+EOF
+      else
+        warn "Não foi possível criar o symlink."
+        warn "Configure depois com: @kairos *configure-cloud"
+      fi
+    fi
+  fi
+
 fi
 echo ""
 
@@ -469,7 +764,7 @@ echo "     @kairos *status      → ver estado do sistema"
 echo "     @kairos *help        → todos os comandos disponíveis"
 echo "     @kairos *new-squad   → criar seu primeiro squad"
 echo ""
-if [[ "${do_cloud,,}" == "s" ]]; then
+if [[ "${CLOUD_MODE:-skip}" == "skip" ]] && [[ "${do_cloud,,}" == "s" ]]; then
   echo "   Quando o Claude Code estiver aberto:"
   echo "     @kairos *configure-cloud  → configurar sync com a nuvem"
   echo ""
