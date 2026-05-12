@@ -1,0 +1,56 @@
+schema: 2
+story: "3.32"
+story_title: "Atualização do YOLO Mode para Nova Arquitetura de Release"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-05-11T00:00:00Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos.md seção autonomous_behavior reescrita — itens 4-8 com encadeamento *implement automático por tipo de comando. Verificado no arquivo carregado pelo Skill."
+    - "✅ AC2: *new-story YOLO → identifica intenção → gera story → encadeia *implement → relatório → prompt Done. Coberto pelo autonomous_behavior item 4."
+    - "✅ AC3: *new-squad YOLO → scaffolda squad → encadeia *implement da story auto-criada → relatório → prompt Done. Coberto pelo autonomous_behavior item 4."
+    - "✅ AC4: *implement YOLO → executa sem confirmações → relatório → prompt Done (sem sugestão de *review). Coberto pelo autonomous_behavior item 4 e item 6."
+    - "✅ AC5: *update-squad YOLO → cria story instance → encadeia *implement → relatório → prompt Done. Coberto pelo autonomous_behavior item 4."
+    - "✅ AC6: *workers YOLO — sem elicitação/confirmações; se auto-cria story: encadeia *implement → prompt Done; se só lista: relatório simples. Coberto pelo item 5."
+    - "✅ AC7: Remoção de encadeamento *review, *pre-push no YOLO — autonomous_behavior item 7: 'Sem encadeamento de *review ou *pre-push — pipeline de release é decisão manual do usuário'. Verificado."
+    - "✅ AC8: Tratamento de BLOCK removido — sem *review no YOLO, não há gate, não há retry. Decorre do item 7."
+    - "✅ AC9: Prompt Done após *implement (direto ou encadeado) — autonomous_behavior item 6 com format de relatório ⚡ YOLO. Verificado."
+    - "✅ AC10: Se s: executar Lógica de Transição Done. Item 6 corrigido em review para referenciar kairos-implement.md explicitamente (4 passos: status, CL story, status epic, CL epic). Corrigido via @kairos."
+    - "✅ AC11: Se n: story permanece In Review; avisa 'Story permanece em aberto'. Coberto pelo item 6, sub-item 'Se n'."
+    - "✅ AC12: Prompt Done sem sugestão de *review — design explícito do YOLO (pula review). Verificado no item 6."
+    - "✅ AC13: Aviso *yolo on reescrito — 'O que muda': encadeamento *implement + prompt Done; 'O que NÃO muda': pipeline de release separado. Verificado no commands.*yolo on do kairos.md."
+    - "✅ AC14: Relatório formatado '⚡ YOLO: {comando} concluído' + prompt Done + aviso nenhum commit. Verificado no autonomous_behavior item 6."
+    - "✅ AC15: affected_commands sem mudança (new-squad, workers, new-story:instance, implement, update-squad). Verificado."
+    - "✅ AC16: framework_protection sem mudança — stories type:kairos-core imunes ao YOLO. Verificado."
+    - "✅ AC17: response_indicator sem mudança — ⚡ YOLO ON no início de cada resposta. Verificado."
+    - "✅ AC18: scope.md atualizado com novo modelo YOLO. Confirmado pelo Execution Log."
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .claude/commands/kairos/agents/kairos.md (seções yolo_mode.commands.*yolo on e yolo_mode.autonomous_behavior)"
+    - "✅ .kairos-core/docs/scope.md"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — MINOR sem bump; esperado no mesmo ciclo de release que 3.31 e 3.33"
+  changelog_updated: "⚠️ RESSALVA — mesma razão"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations: []
+
+post_review_fixes:
+  - file: ".claude/commands/kairos/agents/kairos.md"
+    description: "autonomous_behavior item 6 corrigido: 'Se s' agora referencia 'Lógica de Transição Done (definida em kairos-implement.md)' com os 4 passos explícitos, em vez de descrever 3 passos inline. Corrigido por @kairos durante o review."

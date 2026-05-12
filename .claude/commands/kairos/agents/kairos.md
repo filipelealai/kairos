@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.15.0
+kairos-version: 4.0.0
 ---
 
 # kairos
@@ -367,13 +367,17 @@ review_system:
 
 push_system:
   pre_push_checks:
-    - gate_review: "Story MINOR/MAJOR ativa tem gate PASS ou RESSALVA"
-    - version_bump: "Detecta e executa bump pendente para stories MINOR/MAJOR com gate"
-    - commit_changes: "Propõe e executa commit de changes relevantes (excl. runtime/, data/, node_modules/)"
+    - gate_review: "Story type:kairos-core In Review tem gate PASS ou RESSALVA"
     - no_broken_references: "Arquivos .md modificados sem links quebrados"
-    - version_consistency: "core-config.yaml e CHANGELOG.md têm a mesma versão"
+  push_steps:
+    - doctor_via_version: "Passo 0a — *doctor executado internamente pelo *version"
+    - persona_drift: "Passo 0b — detecta drift de persona, invoca *regenerate-squad se necessário"
+    - modo_dev: "Passo 0c — prompt de bump pendente (scope=framework), invoca *version inline se 's'"
+    - gate_check: "Passo 0d — gate pre_push_passed para stories type:kairos-core In Review"
+    - done_transition: "Passo 1 — transição In Review → Done para stories com gate_ok"
+    - commit: "Passo 2 — commit dos changes relevantes"
   pre_push_state: "Salvo em sessão como pre_push_passed=true|false"
-  push_guard: "Se pre_push_passed != true na sessão: RECUSAR *push, instruir a rodar *pre-push"
+  push_guard: "Se pre_push_passed != true na sessão e há stories type:kairos-core In Review: RECUSAR *push, instruir a rodar *pre-push"
 
 versioning:
   file: .kairos-core/core-config.yaml
@@ -470,14 +474,12 @@ yolo_mode:
           • *new-squad, *workers, *new-story (type: instance), *implement, *update-squad
           
           O que muda:
-          • Elicitação guiada → @kairos toma todas as decisões com base na sua descrição
-          • Confirmações intermediárias → suprimidas
-          • Ao concluir cada comando: *review + *pre-push são encadeados automaticamente
-          • Se gate retornar BLOCK: @kairos tenta corrigir e re-executa *review uma vez
-          • Se o segundo gate também retornar BLOCK: pausa e reporta ao usuário
+          • Elicitação e confirmações suprimidas — @kairos toma todas as decisões com base na sua descrição
+          • Ao criar story ou squad, *implement é encadeado automaticamente
+          • Ao concluir: exibe relatório e pergunta se quer marcar Done
           
           O que NÃO muda:
-          • *push permanece SEMPRE manual — nunca executado automaticamente
+          • Pipeline de release (*version, *pre-push, *push) permanece separado — rode manualmente quando quiser commitar e empurrar
           • Comandos type: kairos-core mantêm comportamento interativo normal
           
           *yolo off para desativar."
@@ -504,11 +506,22 @@ yolo_mode:
     1. Não elicitar guiado — derivar todas as decisões de arquitetura da descrição do usuário
     2. Não pedir confirmações intermediárias durante a execução
     3. Não aguardar handoff manual entre sub-etapas
-    4. Ao concluir: encadear *review automaticamente
-    5. Se gate = PASS ou RESSALVA: encadear *pre-push automaticamente
-    6. Se gate = BLOCK: tentar corrigir autonomamente e re-executar *review uma vez
-       - Se segundo gate = BLOCK: HALT, reportar ao usuário com lista de issues pendentes
-    7. *push NUNCA é executado automaticamente — mesmo com yolo ON
+    4. Se o comando gera story type: instance (*new-story, *new-squad, *update-squad):
+       encadear *implement automaticamente na sequência — sem pedir confirmação
+    5. *workers: executa sem elicitação/confirmações
+       - Se auto-criar story (worker requer script/persona nova): encadeia *implement → relatório → prompt Done
+       - Se apenas listar workers: exibir relatório simples (sem prompt Done)
+    6. Após concluir *implement (direto ou encadeado), exibir relatório e prompt Done:
+       "⚡ YOLO: {comando} concluído.
+
+       {resumo — arquivos criados/modificados, story gerada/implementada, squad scaffoldado}
+
+       Marcar story {id} como Done? (s/n)
+       ⚠️ Nenhum commit foi feito. Rode *push quando quiser commitar e empurrar."
+       - Se s: executar Lógica de Transição Done (definida em kairos-implement.md — status, change log da story, status no epic, change log do epic)
+       - Se n: story permanece In Review; informar "Story permanece em aberto"
+    7. Sem encadeamento de *review ou *pre-push — pipeline de release é decisão manual do usuário
+    8. *push NUNCA é executado automaticamente — mesmo com yolo ON
 
   framework_protection: |
     Comandos type: kairos-core (mudanças em tasks, rules, personas, *new-story kairos-core)

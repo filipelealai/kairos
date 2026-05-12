@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.15.0
+kairos-version: 4.0.0
 ---
 
 # Kairos — Escopo e Arquitetura do Framework
@@ -57,7 +57,7 @@ Claude Code na conversa principal (constrói e mantém o Kairos)
 - Atualiza o framework via `*update` (sem necessidade de Git)
 - Configura sync de outputs para nuvem via `*configure-cloud`
 - Exporta e importa squads via `*export-squad` / `*import-squad`
-- Modo autônomo de sessão via `*yolo` (afeta apenas stories `type: instance`; push sempre manual)
+- Modo autônomo de sessão via `*yolo` (afeta apenas stories `type: instance`; encadeia `*implement` automaticamente; pipeline de release separado)
 
 **Agentes de squad — Operacionais:**
 - Criados via `@kairos *new-squad`
@@ -124,11 +124,13 @@ MINOR  — novo comando, nova task, nova rule, nova capacidade ou expansão sign
 MAJOR  — novo escopo, breaking change, mudança de arquitetura, modificações em arquivos L1 (exige story)
 ```
 
-Autoridade exclusiva de versionamento: `@kairos *version` / `@kairos *pre-push`.
+Autoridade exclusiva de versionamento: `@kairos *version` (standalone ou embutido no `*push` via modo dev).
 
 ### CI/CD
 
 O workflow `validate-manifest` (`.github/workflows/validate-manifest.yml`) valida a integridade do manifesto em PRs para `origin/main`, bloqueando contribuições que violem a fronteira framework/usuário.
+
+O workflow `version-guard` (`.github/workflows/version-guard.yml`) é o gate canônico de versionamento: verifica bump (Check A), frontmatter `kairos-version` (Check B), sincronização do CHANGELOG (Check C) e gate de review para stories `type: kairos-core` (Check D). Pula todos os checks se nenhum arquivo de framework constar no PR.
 
 ---
 
@@ -144,9 +146,9 @@ O workflow `validate-manifest` (`.github/workflows/validate-manifest.yml`) valid
 | `*update-squad` | Atualiza estrutura de squad existente | — |
 | `*validate-squad` | Valida integridade de um squad | — |
 | `*validate-story` | Valida se uma story está bem formada | — |
-| `*implement` | Implementa story `type: instance` | — |
+| `*implement` | Implementa story `type: instance`; oferece marcar Done diretamente ao concluir | — |
 | `*implement all` | Implementa todas as stories `type: instance` pendentes | — |
-| `*review` | Emite gate de qualidade (PASS/RESSALVA/BLOCK) | — |
+| `*review` | Emite gate de qualidade (PASS/RESSALVA/BLOCK); para `type: instance` oferece marcar Done sem Git | — |
 | `*update` | Atualiza o framework Kairos (sem Git) | — |
 | `*configure-cloud` | Configura o sync de outputs via symlink para nuvem | — |
 | `*export-squad` | Empacota squad em arquivo distribuível | — |
@@ -156,10 +158,10 @@ O workflow `validate-manifest` (`.github/workflows/validate-manifest.yml`) valid
 | `*workers` | Gerencia workers agendados | — |
 | `*kb` | Adiciona ou consulta o Knowledge Base do framework | — |
 | `*doctor` | Inspeciona saúde e integridade do framework | — |
-| `*yolo on/off` | Liga/desliga modo autônomo de sessão (apenas `type: instance`) | — |
-| `*version` | Bump de versão semântica | **Git** |
-| `*pre-push` | Executa doctor, review, version bump e prepara commit | **Git** |
-| `*push` | Executa git push após *pre-push | **Git** |
+| `*yolo on/off` | Liga/desliga modo autônomo de sessão (apenas `type: instance`; encadeia `*implement`; pipeline de release separado) | — |
+| `*version` | Bump de versão semântica (com *doctor como Passo 1) | **Git** |
+| `*pre-push` | Valida gate de review (type:kairos-core) e spot check | **Git** |
+| `*push` | Orquestrador de release: doctor, drift, modo dev e transição Done (type:kairos-core); commit e push. Pula transição Done para stories `type: instance` já marcadas via `*implement`/`*review` | **Git** |
 
 > Comandos **Git** são exclusivos para usuários que mantêm repositório Git (contribuidores ou quem faz push para repo privado).
 
@@ -232,3 +234,4 @@ data/outputs/  # Outputs dos agentes — pode ser symlink para pasta de nuvem vi
 | 2.0 | 2026-04-26 | Reescrita para v3.9.x: seção Stack de Referência removida; src/ removido do diagrama; .github/, docs/qa/gates/, docs/epics/ adicionados; comandos do @kairos atualizados; modelo de dois executores; CI/CD; workers; modo yolo |
 | 3.0 | 2026-05-06 | Epic 7: instaladores, *update, *configure-cloud, *export-squad/*import-squad, KAIROS_INSTANCE_NAME, output naming; coluna Git na tabela de comandos; install.md; cloud-sync.json; SessionStart hook; external_dependencies em squad.yaml |
 | 4.0 | 2026-05-08 | Remoção de referências instanciadas a stories; ajuste do versionamento semântico |
+| 5.0 | 2026-05-11 | Story 3.31: refatoração *pre-push/*push/*version; CI version-guard; separação de responsabilidades |

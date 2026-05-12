@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.3.1
+kairos-version: 4.0.0
 task: Kairos Review
 responsavel: "@kairos"
 responsavel_type: agent
@@ -55,11 +55,13 @@ Construa o path: `docs/stories/{story_id}.story.md`
 - Se não encontrar → **BLOCK imediato**: "Story {story_id} não encontrada."
 
 Leia o arquivo completo. Extraia:
-- **Título**, **Status**, **Epic**, **Complexidade**
+- **Título**, **Status**, **Epic**, **Complexidade**, **Tipo** (`type: instance` ou `type: kairos-core`)
 - **Critérios de aceite** (lista de ACs com checkboxes)
 - **Arquivos Esperados** / **File List** (se presente)
 - **Execution Log** (se presente — seção adicionada pelo executor)
 - **Escopo** declarado
+
+Se o campo `**Tipo:**` estiver ausente: tratar como `type: instance` (compatibilidade retroativa).
 
 ---
 
@@ -225,9 +227,7 @@ recommendations:
 
 ### Passo 9 — Exibir resultado
 
-> ⛔ **PROIBIDO:** `*review` **nunca** transita a story para Done.
-> A transição `In Review → Done` é responsabilidade **exclusiva** do `*pre-push`.
-> Após PASS ou RESSALVA, aguardar `*version` + `*pre-push` + `*push` — não mover a story.
+> **Nota sobre transição Done:** para stories `type: kairos-core`, `*review` **nunca** transita para Done — isso é exclusivo do pipeline `*push`. Para stories `type: instance` (ou sem campo `type`), o prompt Done é exibido ao final de PASS ou RESSALVA.
 
 **Cabeçalho sempre exibido:**
 ```
@@ -252,7 +252,7 @@ Reviewed: {data}
   ✅ no_broken_references
 ```
 
-**Se PASS:**
+**Se PASS — story `type: kairos-core`:**
 ```
 ━━━ RESULTADO ━━━
 ✅ GATE PASS — implementação validada.
@@ -261,7 +261,26 @@ Gate salvo em: docs/qa/gates/{story_id}-{data}.yaml
 Próximo passo: *version {tipo} "descrição" → *pre-push → *push
 ```
 
-**Se RESSALVA:**
+**Se PASS — story `type: instance` (ou sem campo `type`):**
+```
+━━━ RESULTADO ━━━
+✅ GATE PASS — implementação validada.
+
+Gate salvo em: docs/qa/gates/{story_id}-{data}.yaml
+
+📋 Marcar story {id} como Done? (s/n)
+```
+
+Aguardar resposta:
+- **Se `s`:** executar **Lógica de Transição Done** (definida em `kairos-implement.md`) e exibir:
+  ```
+  ✅ Story {id} marcada como Done.
+
+  Próximo: *push (quando quiser commitar) | continuar com outro comando
+  ```
+- **Se `n`:** story permanece `In Review` — sem mensagem adicional.
+
+**Se RESSALVA — story `type: kairos-core`:**
 ```
 ━━━ RESULTADO ━━━
 ⚠️ GATE RESSALVA — implementação aceita com observações.
@@ -274,6 +293,22 @@ Gate conta como PASS para fins de *pre-push, mas as ressalvas devem ser endereç
 Gate salvo em: docs/qa/gates/{story_id}-{data}.yaml
 Próximo passo: *version {tipo} "descrição" → *pre-push → *push
 ```
+
+**Se RESSALVA — story `type: instance` (ou sem campo `type`):**
+```
+━━━ RESULTADO ━━━
+⚠️ GATE RESSALVA — implementação aceita com observações.
+
+Ressalvas (não bloqueantes):
+  ⚠️ {ressalva 1}
+  ⚠️ {ressalva 2}
+
+Gate salvo em: docs/qa/gates/{story_id}-{data}.yaml
+
+📋 Marcar story {id} como Done? (s/n)
+```
+
+Aguardar resposta (mesma lógica do PASS acima).
 
 **Se BLOCK:**
 ```
@@ -298,3 +333,5 @@ Após exibir o resultado BLOCK, executar as transições de status:
    ```markdown
    | {data} | Story {id}: gate BLOCK — retornou para In Progress |
    ```
+
+> Para BLOCK: nunca exibir o prompt Done, independente do tipo da story.

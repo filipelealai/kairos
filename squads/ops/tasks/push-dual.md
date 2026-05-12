@@ -32,19 +32,22 @@ Se `n` (ou `não`): HALT — encerrar sem executar nada.
 
 ---
 
-## Guard Obrigatório
+## Guard Condicional (herdado de `kairos-push.md`)
 
-**ANTES de qualquer coisa**, verificar o estado de sessão (herdado de `kairos-push.md`):
+Após o pré-check de escopo, verificar `pre_push_passed` **apenas** quando scope=framework e há story `type:kairos-core` In Review:
 
 ```
-SE pre_push_passed != true na sessão atual:
-  RECUSAR com:
-  "🚫 Push recusado. *pre-push não foi executado ou retornou BLOCK nesta sessão.
-   Execute *pre-push primeiro e certifique-se de que retorna PASS."
-  HALT — não continuar
+SE scope = framework
+  E há story type:kairos-core com Status "In Review"
+  E pre_push_passed != true na sessão atual:
+    RECUSAR com:
+    "🚫 Push recusado. *pre-push não foi executado ou retornou BLOCK nesta sessão.
+     Execute *pre-push primeiro e certifique-se de que retorna PASS."
+    HALT — não continuar
 ```
 
 Se `*pre-push` foi rodado em outra sessão (não a atual), tratar como não executado.
+Se scope=instance-only ou não há story `type:kairos-core` In Review: prosseguir sem verificar `pre_push_passed`.
 
 ---
 
@@ -55,6 +58,66 @@ Após o guard passar, verificar:
 1. Branch atual é `filipe-instance` — se não, HALT e informar o usuário
 2. `git status` está limpo (sem uncommitted changes) — se não, HALT
 3. Remotes `origin` e `private` estão configurados — verificar com `git remote -v`
+
+---
+
+## Pré-check — Detectar Escopo (herdado de kairos-push.md)
+
+Execute:
+
+```bash
+git diff HEAD --name-only
+git diff --cached --name-only
+git status --porcelain
+```
+
+Leia `.kairos-core/manifest.yaml` → `owned_files[].path` e `owned_sections[].path`.
+
+- **scope = framework** — ao menos um arquivo modificado consta no manifest
+- **scope = instance-only** — nenhum arquivo modificado consta no manifest
+
+---
+
+## Passos de Pré-Release (herdados de kairos-push.md)
+
+Executar os mesmos passos de pré-release que `kairos-push.md` antes de fazer o push:
+
+### Passo 0a — *doctor (somente scope=framework)
+
+Executado automaticamente pelo `*version` no Passo 0c. Se scope=instance-only: pular.
+
+### Passo 0b — Detectar Drift de Persona (sempre)
+
+Para cada `squads/*/agents/*.yaml` com marcador `<!-- kairos-generated-from: ... sha:{sha} -->`:
+- Comparar SHA atual do YAML com o SHA do marcador
+- Se divergir: invocar `*regenerate-squad {squad}`
+- Se `*regenerate-squad` não estiver disponível: emitir WARN (não bloquear)
+- Se regeneração falhar: emitir WARN (não bloquear)
+
+### Passo 0c — Prompt "Modo Dev" + *version inline (somente scope=framework)
+
+Verificar bump pendente usando epoch de gate vs epoch do CHANGELOG. Se bump pendente:
+```
+⚠️  Modo dev: há stories type:kairos-core sem bump.
+Deseja versionar agora? (s/n):
+```
+Se `s`: perguntar tipo e invocar `*version` inline.
+
+### Passo 0d — Gate Pre-Push (somente se há story type:kairos-core In Review)
+
+Verificar gate PASS/RESSALVA para stories `type: kairos-core` In Review. BLOCK se ausente.
+
+### Passo 1 — Transição Done
+
+Para cada story com `gate_ok = true`:
+1. `**Status:** In Review` → `**Status:** Done`
+2. Atualizar epic: `In Review` → `Done`
+3. Entrada no Change Log: `| {data} | *push: gate confirmado — status → Done |`
+
+### Passo 2 — Commit
+
+Se há mudanças não commitadas: exibir mensagem sugerida, aguardar confirmação, commitar.
+Se usuário recusar: BLOCK.
 
 ---
 
@@ -223,6 +286,30 @@ Passo 2b concluído:
 
 ---
 
+### Passo 0e — Version Guard (antes do push para origin/main)
+
+**Objetivo:** garantir que o conteúdo de framework que vai para `origin/main` está corretamente versionado.
+
+Executar **antes** do commit/push para `origin/main`:
+
+```bash
+bash .github/scripts/version-guard.sh
+```
+
+Se o script retornar exit code não-zero → **BLOCK:**
+```
+🚫 BLOCK — version-guard.sh falhou:
+  {output do script}
+
+Corrija os issues e rode *push novamente.
+```
+
+Se o script retornar exit code 0 → confirmar: `✓ Passo 0e — version-guard.sh PASS`
+
+> Se a interseção `files_pr ∩ paths_manifest` for vazia (apenas mudanças de instância chegaram a main), o script retorna 0 automaticamente (pula todos os checks).
+
+---
+
 ### Passo 3 — Commit e push para origin/main
 
 ```bash
@@ -251,7 +338,7 @@ git push origin main
 
 ### Passo 3.5 — Tagging automático
 
-**Objetivo:** materializar a versão semver do Kairos como tag Git no remoto público (`origin/main`), permitindo que `*update` (Story 7.3) puxe versões estáveis em vez de HEAD.
+**Objetivo:** materializar a versão semver do Kairos como tag Git no remoto público (`origin/main`), permitindo que `*update` puxe versões estáveis em vez de HEAD.
 
 Executar **somente após** push bem-sucedido para `origin/main` no Passo 3.
 
@@ -320,10 +407,6 @@ git checkout filipe-instance
 
 ### Passo 5 — Pós-push (herdado de `kairos-push.md`)
 
-Se havia story com status `In Review` cujo gate está PASS/RESSALVA:
-- Informar: "Story {id} tem gate PASS. Deseja atualizar o status para Done? (s/n)"
-- Se confirmado: atualizar `**Status:**` para `Done` e adicionar entrada no Change Log
-
 Resetar `pre_push_passed = false` em sessão (força novo `*pre-push` no próximo ciclo).
 
 ---
@@ -333,6 +416,12 @@ Resetar `pre_push_passed = false` em sessão (força novo `*pre-push` no próxim
 ```
 filipe-instance (trabalho)
     │
+    ├─ Pré-checks (0a-0d): escopo, drift, modo dev, gate
+    │
+    ├─ Passo 1: transição Done (stories type:kairos-core com gate_ok)
+    │
+    ├─ Passo 2: commit (se há mudanças não commitadas)
+    │
     ├─ git push private filipe-instance      → kairos-pessoal (privado, completo)
     │
     └─ git checkout main
@@ -341,6 +430,7 @@ filipe-instance (trabalho)
        git checkout filipe-instance -- {owned_files}        ← Passo 2a (derivado do manifest)
        git checkout filipe-instance -- {sync_files}         ← Passo 2a (derivado do manifest)
        {reconstruir owned_sections}                         ← Passo 2b (derivado do manifest)
+       bash .github/scripts/version-guard.sh                ← Passo 0e (version guard)
        git add -A + git commit + git push origin main       → kairos (público, framework puro)
        git tag v{version} + git push origin v{version}     ← Passo 3.5 (tagging automático)
        git checkout filipe-instance
@@ -361,3 +451,4 @@ filipe-instance (trabalho)
 | Versão do CHANGELOG diverge de `core-config.yaml` | HALT — executar `*version` para sincronizar antes de continuar |
 | Tag `v{version}` já existe em `origin` | HALT com aviso ("bump esquecido?") — push do código já foi concluído |
 | `git push origin ${TAG}` sem permissão | Verificar autenticação do `gh` CLI e se a tag é permitida em `origin` |
+| `version-guard.sh` retorna não-zero | BLOCK — corrigir issues reportados e rodar *push novamente |

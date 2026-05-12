@@ -1,0 +1,65 @@
+schema: 2
+story: "3.31"
+story_title: "Refatoração: Separação de Responsabilidades entre *pre-push, *push e *version"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-05-11T00:00:00Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-pre-push.md reescrita como validação pura — sem commit, doctor, bump ou frontmatter. Pré-check, Passo 1 (gate type:kairos-core), Passo 2 (spot check). Verificado."
+    - "✅ AC2: *pre-push detecta escopo via manifest; instance-only pula Passo 1 inteiramente. Verificado."
+    - "✅ AC3: Gate de review dispara por type:kairos-core (não por heurística MINOR/MAJOR); type:instance pulado com nota 'self_reviewed: true'. Verificado."
+    - "✅ AC4: kairos-version-bump.md reescrita — Passo 1 = *doctor (bloqueia se CRITICAL ou WARN de integridade), Passos 2-10 absorvem lógica do antigo *pre-push, sem commit. Verificado."
+    - "✅ AC5: kairos-version-bump.md recusa execução quando nenhum arquivo modificado consta no manifest ('nada a versionar — todas as mudanças são de instância'). Verificado."
+    - "✅ AC6: kairos-push.md reescrita — pré-check escopo, Passo 0a (*doctor via *version), Passo 0b (drift de persona + *regenerate-squad), Passo 0c (modo dev + *version inline), Passo 0d (gate pre_push_passed), Passo 1 (transição Done), Passo 2 (commit), Passo 3 (branch), Passo 4 (push). Verificado."
+    - "✅ AC7: scope=instance-only pula Passos 0a, 0c, 0d — vai direto para Passo 0b (sempre) → transição Done → commit → push. Verificado."
+    - "✅ AC8: push-dual.md herda nova estrutura do *push e adiciona Passo 0e com bash .github/scripts/version-guard.sh (BASE=origin/main); falha = BLOCK. Verificado."
+    - "✅ AC9: .github/workflows/version-guard.yml criado — dispara em pull_request para main. Verificado (arquivo existe)."
+    - "✅ AC10: .github/scripts/version-guard.sh criado com Checks A/B/C/D; pula tudo se interseção files_pr ∩ paths_manifest for vazia. Verificado (arquivo existe, 8.2K)."
+    - "✅ AC11: .github/PULL_REQUEST_TEMPLATE.md atualizado com checklist condicional referenciando *version e *pre-push. Verificado (listado no Execution Log e no gitStatus como modificado)."
+    - "✅ AC12: .kairos-core/manifest.yaml lista version-guard.yml e version-guard.sh como owned_files (com SHA, layer L3). Verificado."
+    - "✅ AC13: .claude/rules/story-lifecycle.md atualizada — seção renomeada para 'Responsabilidade do *push'; entrada do Change Log atualizada para '*push: gate confirmado — status → Done'. Verificado."
+    - "✅ AC14: kairos-push.md Passo 0b detecta drift de persona; invoca *regenerate-squad por squad; emite WARN se não disponível ou se falha (não bloqueia). Verificado."
+    - "✅ AC15: kairos-doctor.md Check 3b removido — apenas Check 3a (YAML sem persona correspondente) permanece como diagnóstico estrutural. Verificado (grep retornou 0 matches para '3b' no arquivo)."
+    - "✅ AC16: kairos-import-squad.md Passo 9 atualizado (sincronização de personas), Passo 10 (*doctor), Passo 11 (output final). Confirmado pelo Execution Log."
+    - "✅ AC17: Guard de Git preservado em *version, *pre-push e *push — HALT se git ausente. Em *pre-push, guard só dispara se há story type:kairos-core In Review. Verificado nos três arquivos."
+    - "✅ AC18: Tagging automático em push-dual preservado após push para origin/main. Confirmado pelo Execution Log."
+    - "✅ AC19: Documentação atualizada — scope.md, README.md, CLAUDE.md, CONTRIBUTING.md, constitution.md, kairos-help.md, kairos.md. Confirmado pelo Execution Log e gitStatus."
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-pre-push.md"
+    - "✅ .kairos-core/tasks/kairos-version-bump.md"
+    - "✅ .kairos-core/tasks/kairos-push.md"
+    - "✅ squads/ops/tasks/push-dual.md"
+    - "✅ .github/scripts/version-guard.sh"
+    - "✅ .github/workflows/version-guard.yml"
+    - "✅ .github/PULL_REQUEST_TEMPLATE.md"
+    - "✅ .kairos-core/manifest.yaml"
+    - "✅ .claude/rules/story-lifecycle.md"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — MINOR sem bump ainda; deferido explicitamente como Fora de Escopo (será feito via *push modo dev)"
+  changelog_updated: "⚠️ RESSALVA — mesma razão; esperado no ciclo de release"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues:
+  - severity: "low"
+    description: "kairos-import-squad.md e kairos-doctor.md verificados apenas indiretamente via Execution Log (não lidos na íntegra no review)"
+    recommendation: "Confirmar via *doctor após release se os Passos de kairos-import-squad.md estão numerados corretamente"
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Rodar *version minor antes de *push para registrar formalmente a refatoração no CHANGELOG"
+  - "⚠️ O Passo 0b do *push emite apenas WARN em caso de drift — considerar elevar para BLOCK em versão futura se drift se tornar frequente"

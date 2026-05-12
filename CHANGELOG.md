@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [4.0.0] - 2026-05-11
+
+### Mudado
+- refatoração das responsabilidades de *pre-push, *version e *push; atualização do YOLO mode para nova arquitetura de release; transição Done para stories type:instance em *implement e *review
+
+---
+
 ## [3.15.1] - 2026-05-08
 
 ### Corrigido

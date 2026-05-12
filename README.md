@@ -4,7 +4,7 @@
 
 Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura de governança, memória, handoffs, workers agendados e ferramentas de desenvolvimento para criar, evoluir e operar esses squads ao longo do tempo.
 
-**Versão atual:** `3.15.1` — ver [CHANGELOG.md](CHANGELOG.md)
+**Versão atual:** `4.0.0` — ver [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -261,8 +261,8 @@ Comandos principais:
 | `*validate-squad {squad}` | Valida formato e consistência geral de um squad | — |
 | `*update-squad {squad}` | Atualiza um squad existente | — |
 | `*regenerate-squad {squad}` | Regenera personas desatualizadas a partir dos `.yaml` de agentes (SHA drift) | — |
-| `*implement {id}` | Implementa story de desenvolvimento | — |
-| `*review {id}` | Valida implementação — gate PASS / RESSALVA / BLOCK | — |
+| `*implement {id}` | Implementa story de desenvolvimento; oferece marcar Done para stories `type: instance` | — |
+| `*review {id}` | Valida implementação — gate PASS / RESSALVA / BLOCK; oferece marcar Done para stories `type: instance` | — |
 | `*configure-cloud` | Configura o sync de outputs via symlink para Google Drive / OneDrive / Dropbox | — |
 | `*export-squad {squad}` | Empacota squad completo em arquivo distribuível | — |
 | `*import-squad {arquivo}` | Instala squad de arquivo na instância local | — |
@@ -271,9 +271,9 @@ Comandos principais:
 | `*prd` | Cria ou atualiza `docs/scope.md` | — |
 | `*architecture [{squad}]` | Audita consistência entre docs e código | — |
 | `*help [{topic}]` | Ajuda completa com fluxos e exemplos | — |
-| `*version patch\|minor\|major "desc"` | Bump de versão semântica | **Git** |
-| `*pre-push` | Verificações antes do push ou PR | **Git** |
-| `*push` | git push — exclusivo, requer `*pre-push` PASS | **Git** |
+| `*version patch\|minor\|major` | Bump de versão semântica (com *doctor como Passo 1); somente para `type: kairos-core` | **Git** |
+| `*pre-push` | Valida gate de review (type:kairos-core) e referências — idempotente | **Git** |
+| `*push` | Orquestrador de releases de framework e de instância. Framework: doctor via *version, modo dev e transição Done (type:kairos-core); framework ou instância: verifica drift de agentes, commit e push. Pula transição Done para stories `type: instance` já marcadas via `*implement`/`*review` | **Git** |
 
 > Comandos marcados com **Git** dependem de Git instalado e são voltados para contribuidores do framework ou quem mantém repo privado.
 
@@ -355,7 +355,7 @@ O Kairos é "Git-first" no sentido de que usa Git internamente para versionament
 
 O Kairos usa um modelo de governança próprio para se auto-documentar e evoluir:
 
-**Ciclo típico de auto-desenvolvimento:**
+**Ciclo típico de auto-desenvolvimento do framework:**
 ```
 @kairos *new-epic          # planejar conjunto de trabalho
 @kairos *new-story [{id}]  # detalhar uma unidade de trabalho
@@ -364,9 +364,8 @@ O Kairos usa um modelo de governança próprio para se auto-documentar e evoluir
 Claude Code, sem persona   # executor move Draft → In Progress → In Review
                            # e adiciona Execution Log na story
 @kairos *review {id}       # valida implementação — gate PASS/RESSALVA/BLOCK
-@kairos *version patch|minor|major "desc" # versiona as mudanças feitas no framework, para PR (depende de Git)
-@kairos *pre-push          # verificações finais (depende de Git)
-@kairos *push              # push ao remoto privado (exclusivo do @kairos, depende de Git)
+@kairos *pre-push          # valida gate de review e referências (depende de Git)
+@kairos *push              # orquestrador: doctor/drift/modo dev→*version/Done/commit/push (depende de Git)
 PR                         # contribuições no repositório público do Kairos
 ```
 Para informações detalhadas de como abrir um PR e contribuir no repositório público do Kairos, veja [CONTRIBUTING.md](CONTRIBUTING.md).

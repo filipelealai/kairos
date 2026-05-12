@@ -59,9 +59,9 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | [3.28](../stories/3.28.story.md) | Refatoração de data-flow.md e agent-standards.md | Done |
 | [3.29](../stories/3.29.story.md) | Elicitação Propósito-First em *new-squad, *update-squad, *new-story e *new-epic | Done |
 | [3.30](../stories/3.30.story.md) | Pre-Push Passo 4: Corrigir Resolução de Path e Reordenar Antes do Commit | Done |
-| [3.31](../stories/3.31.story.md) | Refatoração: Separação de Responsabilidades entre *pre-push, *push e *version | Draft |
-| [3.32](../stories/3.32.story.md) | Atualização do YOLO Mode para Nova Arquitetura de Release | Draft |
-| [3.33](../stories/3.33.story.md) | Transição Done para Stories de Instância em *implement e *review | Draft |
+| [3.31](../stories/3.31.story.md) | Refatoração: Separação de Responsabilidades entre *pre-push, *push e *version | Done |
+| [3.32](../stories/3.32.story.md) | Atualização do YOLO Mode para Nova Arquitetura de Release | Done |
+| [3.33](../stories/3.33.story.md) | Transição Done para Stories de Instância em *implement e *review | Done |
 
 ---
 
@@ -114,5 +114,14 @@ Este epic cobre a camada de meta-governança: o `@kairos`, o sistema de versão 
 | 2026-04-26 | Story 3.30 concluída — In Review |
 | 2026-04-26 | Story 3.30 Done — gate PASS, *pre-push v3.11.0 |
 | 2026-05-05 | Story 3.31 criada — separação de responsabilidades entre *pre-push, *push e *version |
+| 2026-05-11 | Story 3.31 iniciada — In Progress |
+| 2026-05-11 | Story 3.31 concluída — In Review |
 | 2026-05-08 | Story 3.32 criada — atualização do YOLO mode para nova arquitetura de release (complementar à 3.31) |
+| 2026-05-11 | Story 3.32 iniciada — In Progress |
+| 2026-05-11 | Story 3.32 concluída — In Review |
 | 2026-05-08 | Story 3.33 criada — transição Done desacoplada do Git para stories instance (*implement e *review) |
+| 2026-05-11 | Story 3.33 iniciada — In Progress |
+| 2026-05-11 | Story 3.33 concluída — In Review |
+| 2026-05-11 | Story 3.31 concluída — Done (v4.0.0) |
+| 2026-05-11 | Story 3.32 concluída — Done (v4.0.0) |
+| 2026-05-11 | Story 3.33 concluída — Done (v4.0.0) |

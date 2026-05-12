@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.15.0
+kairos-version: 4.0.0
 id: kairos-doctor
 title: Health Check do Framework Kairos
 agent: kairos
@@ -55,18 +55,6 @@ Para cada arquivo `squads/*/agents/*.yaml` encontrado no filesystem:
 - [ ] Extrair `id` do campo `id:` no arquivo `.yaml`
 - [ ] Verificar se `.claude/commands/kairos/agents/{id}.md` existe
   → ⚠️ WARN "YAML sem persona: squads/{squad}/agents/{id}.yaml definido mas .claude/commands/kairos/agents/{id}.md não existe — rodar *new-squad ou gerar persona manualmente" se ausente
-
-**3b. SHA Drift — Persona desatualizada em relação ao YAML**
-
-Para cada arquivo `squads/*/agents/*.yaml` que tem persona correspondente (`.claude/commands/kairos/agents/{id}.md`):
-- [ ] Ler a primeira linha da persona e verificar se contém o marcador `<!-- kairos-generated-from: ... sha:{sha256} -->`
-  - Se a primeira linha **não contém** o marcador → ignorar silenciosamente (persona legado, sem SHA rastreável)
-  - Se contém o marcador:
-    - Extrair o path do YAML e o SHA do marcador
-    - Calcular SHA atual do arquivo YAML: `sha256sum squads/{squad}/agents/{id}.yaml | cut -d' ' -f1`
-    - Comparar com o SHA no marcador
-    - Se divergir → ⚠️ WARN "drift de persona: squads/{squad}/agents/{id}.yaml foi editado desde a última geração — rodar *regenerate-squad {squad} para atualizar"
-    - Se igual → PASS silencioso (sem output)
 
 **4. Tasks Referenciadas**
 

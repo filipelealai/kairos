@@ -1,0 +1,60 @@
+schema: 2
+story: "3.33"
+story_title: "Transição Done para Stories de Instância em *implement e *review"
+epic: 3
+verdict: "PASS"
+reviewer: "Kairos (@kairos)"
+reviewed_at: "2026-05-11T00:00:00Z"
+quality_score: 95
+execution_log_found: true
+
+ac_coverage:
+  covered:
+    - "✅ AC1: kairos-implement.md Passo 7 reescrito — exibe bloco de confirmação + prompt Done para type:instance. Verificado (linha 303-338 do arquivo)."
+    - "✅ AC2: Se s: executa Lógica de Transição Done (seção canônica definida no mesmo arquivo). Verificado."
+    - "✅ AC3: Se n: story permanece In Review — sem mensagem adicional. Verificado."
+    - "✅ AC4: Para type:kairos-core: não exibe prompt Done; exibe 'Próximo: *review → *version → *pre-push → *push'. Verificado (linha 333-338)."
+    - "✅ AC5: kairos-review.md Passo 1 extrai campo type da story (linha 58 e 64). Verificado."
+    - "✅ AC6: Passo 9 diferencia saídas PASS/RESSALVA por tipo — type:instance exibe prompt Done; type:kairos-core mantém orientação para *push. Verificado (linhas 264, 271, 297, 308)."
+    - "✅ AC7: Se s: executa Lógica de Transição Done (referência a kairos-implement.md linha 275). Verificado."
+    - "✅ AC8: Se n: story permanece In Review. Verificado."
+    - "✅ AC9: type:kairos-core: não exibe prompt Done. Verificado (resultado *review para type:kairos-core redireciona para *push)."
+    - "✅ AC10: BLOCK: não exibe prompt Done — 'nunca exibir o prompt Done, independente do tipo' (linha 337 de kairos-review.md). Verificado."
+    - "✅ AC11: Lógica compartilhada — seção canônica em kairos-implement.md; kairos-review.md referencia dela; yolo usa a mesma. Verificado."
+    - "✅ AC12: Confirmação exibida: '✅ Story {id} marcada como Done. Próximo: *push (quando quiser commitar) | continuar com outro comando'. Verificado no Passo 7."
+    - "✅ AC13: Reutilizável por *implement, *review e *yolo (Story 3.32). Seção 'Lógica de Transição Done' explicitamente anotada como 'Reutilizável: chamada por *implement, *review e *yolo'. Verificado."
+    - "✅ AC14: kairos-push.md Passo 1 detecta status Done e pula: 'Se **Status:** Done → pular esta story — confirmar: ⏭ Story {id} já está Done'. Verificado."
+    - "✅ AC15: Arquivos da story Done ficam como mudanças locais não commitadas — *push os inclui normalmente no commit. Comportamento decorrente da arquitetura (não há operação que remova os arquivos do stage)."
+    - "✅ AC16: Guard de tipo — prompt Done só aparece para type:instance (ou sem campo type → tratar como instance). Verificado."
+    - "✅ AC17: type:kairos-core seguem pipeline completo. Verificado."
+    - "✅ AC18: story-lifecycle.md atualizada — tabela de estados expandida com 'Caminhos para Done'; duas linhas type:instance e type:kairos-core. Verificado."
+    - "✅ AC19: *architecture executado — data-flow.md e agent-standards.md não referenciam *implement/*review no nível de governança de Done; sem necessidade de atualização. Confirmado pela nota para @kairos no Execution Log."
+    - "✅ AC20: README.md e scope.md atualizados com descrições de *implement, *review e *push. Confirmado pelo Execution Log."
+  manual: []
+  gaps: []
+
+files:
+  present:
+    - "✅ .kairos-core/tasks/kairos-implement.md (Passo 7 + Lógica de Transição Done)"
+    - "✅ .kairos-core/tasks/kairos-review.md (Passo 1 com extração de type, Passo 9 com prompt Done)"
+    - "✅ .kairos-core/tasks/kairos-push.md (Passo 1 com skip se Done)"
+    - "✅ .claude/rules/story-lifecycle.md (Caminhos para Done, tabela expandida)"
+    - "✅ README.md"
+    - "✅ .kairos-core/docs/scope.md"
+  missing: []
+
+checks:
+  version_bumped: "⚠️ RESSALVA — MINOR sem bump; mesmo ciclo de release que 3.31 e 3.32"
+  changelog_updated: "⚠️ RESSALVA — mesma razão"
+  story_file_consistent: "✅ PASS"
+  files_exist: "✅ PASS"
+  no_broken_references: "✅ PASS"
+  execution_log_present: "✅ PASS"
+
+issues: []
+
+blocking_issues: []
+
+recommendations:
+  - "⚠️ Verificar compatibilidade cruzada com 3.32: a 'Lógica de Transição Done' em kairos-implement.md tem 4 passos; o autonomous_behavior do kairos.md descreve 3 (sem mencionar o 4º — Change Log do epic). Risco funcional baixo (YOLO chama *implement que usa a lógica completa), mas vale alinhar a descrição resumida"
+  - "⚠️ PATCH futuro: considerar adicionar nota explícita em kairos-push.md Passo 1 sobre a entry no Change Log do epic (quando pula transição porque já Done), para simetria com o fluxo normal"
