@@ -27,7 +27,7 @@ Checklist:
 
 Regenera as personas em `.claude/commands/kairos/agents/{id}.md` para os agentes de um squad cujo `.yaml` foi editado desde a última geração (SHA drift detectado).
 
-A regeneração é **incremental**: apenas personas com drift são regeneradas. Personas sem marcador SHA (criadas antes da story 5.33) são ignoradas silenciosamente.
+A regeneração é **incremental**: apenas personas com drift são regeneradas. Personas sem marcador SHA são ignoradas silenciosamente.
 
 ---
 

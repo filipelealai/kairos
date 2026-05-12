@@ -1,41 +1,40 @@
-version: 4.2.0
-installedAt: '2026-04-06T00:00:00.000Z'
-updatedAt: '2026-05-12T00:00:00.000Z'
-update_source: https://github.com/filipelealweb/kairos
+devLoadAlwaysFiles:
+- .kairos-core/docs/agent-standards.md
+- .kairos-core/docs/data-flow.md
+- docs/scope.md
 framework:
-  tasksLocation: .kairos-core/tasks/
   agentsLocation: .kairos-core/agents/
-  dataLocation: .kairos-core/data/
-  templatesLocation: .kairos-core/templates/
+  changelogFile: CHANGELOG.md
   commandsLocation: .claude/commands/kairos/agents/
-  rulesLocation: .claude/rules/
+  constitutionFile: .kairos-core/constitution.md
+  dataLocation: .kairos-core/data/
+  frameworkScopeFile: .kairos-core/docs/scope.md
   hooksLocation: .claude/hooks/
+  instanceScopeFile: docs/scope.md
+  kbFile: .kairos-core/data/kairos-kb.md
+  rulesLocation: .claude/rules/
   squadsLocation: squads/
   storiesLocation: docs/stories/
-  changelogFile: CHANGELOG.md
-  frameworkScopeFile: .kairos-core/docs/scope.md
-  instanceScopeFile: docs/scope.md
-  constitutionFile: .kairos-core/constitution.md
-  kbFile: .kairos-core/data/kairos-kb.md
+  tasksLocation: .kairos-core/tasks/
+  templatesLocation: .kairos-core/templates/
   workersFile: .kairos-core/data/workers.yaml
+installedAt: '2026-04-06T00:00:00.000Z'
 runtime:
   handoffsLocation: .kairos-core/runtime/handoffs/
   outputsLocation: data/outputs/
+squads: {}
+update_source: https://github.com/filipelealweb/kairos
+updatedAt: '2026-05-12T00:00:00.000Z'
+version: 4.2.0
 versioning:
-  scheme: semver
+  authority: kairos
   bump_rules:
     MAJOR: Novo escopo, breaking change, mudança de arquitetura, modificações em arquivos
       L1
     MINOR: Novo comando, nova task, nova rule, nova capacidade ou expansão significativa
       de capacidade
     PATCH: Correção de bugs, ajuste de instrução, documentação
+  scheme: semver
   story_required_for:
   - MAJOR
   - MINOR
-  authority: kairos
-agents:
-  squads: {}
-devLoadAlwaysFiles:
-- .kairos-core/docs/agent-standards.md
-- .kairos-core/docs/data-flow.md
-- docs/scope.md

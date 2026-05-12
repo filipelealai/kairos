@@ -143,9 +143,9 @@ A seção `## Execution Log` deve ser adicionada **antes** do `## Change Log` da
 ## Exemplo de story corretamente atualizada pelo executor
 
 ```markdown
-# Story 3.1 — Tasks de Governança do @kairos
+# Story X.Y — Título da Story
 
-**Epic:** 3
+**Epic:** N
 **Status:** In Review          ← atualizado pelo executor
 **Complexidade:** G
 ...

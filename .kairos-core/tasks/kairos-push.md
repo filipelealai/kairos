@@ -305,22 +305,23 @@ Para cada story com `gate_ok = true` (gate PASS ou RESSALVA confirmado no Passo 
       - Padrão quando ambíguo: `feat`
 
    b. Leia a versão atual de `.kairos-core/core-config.yaml`
-   c. Exiba para ciência (não para edição):
+   c. **Regra de commit — referências a artefatos de instância:**
+      Mensagens de commit nunca devem mencionar stories, epics, gates ou IDs de rastreamento de instância quando o commit incluir qualquer arquivo de framework (listado no manifesto). Referências a artefatos de instância são permitidas **apenas** quando todos os arquivos do commit são user-owned/instância (scope = instance-only).
+   d. Exiba para ciência (não para edição):
       ```
       Mudanças não commitadas encontradas.
       Mensagem sugerida: "{type}: {descrição derivada} v{version}"
       Deseja fazer commit agora? (s/n):
       ```
-   d. Se `s` (ou `sim`):
+   e. Se `s` (ou `sim`):
       - Execute `git add` nos arquivos relevantes (excluindo `.kairos-core/runtime/`, `data/`, `node_modules/`)
       - Construa a mensagem de commit:
         - Subject: `{type}: {descrição derivada} v{version}`
         - Corpo estendido (concatenar linhas abaixo conforme aplicável, separadas por linha em branco):
-          - Se há stories com gate_ok: `Stories: {story-id1}[, {story-id2}, ...]`
           - Se `local_intent = true` na sessão (Passo 0c-bis): `⚠️  framework files modified outside contributor flow`
       - Execute `git commit` passando subject + corpo via heredoc (se houver corpo) ou apenas subject
       - Confirme: `✓ Commit realizado`
-   e. Se `n` (ou `não`):
+   f. Se `n` (ou `não`):
       **BLOCK:**
       ```
       🚫 BLOCK — Mudanças não commitadas. Faça o commit manualmente e rode *push novamente.

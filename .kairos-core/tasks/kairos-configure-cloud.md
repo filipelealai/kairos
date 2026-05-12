@@ -467,7 +467,7 @@ Atualizar `.kairos-core/runtime/cloud-sync.json`:
 ## Notas Técnicas
 
 - Symlinks em macOS/Linux requerem apenas permissão de escrita no diretório pai — sem privilégio especial.
-- No Windows, symlinks fora do Developer Mode exigem privilégio de administrador. A task não tenta workarounds (decisão arquitetural — ver AC da story 7.4).
+- No Windows, symlinks fora do Developer Mode exigem privilégio de administrador. A task não tenta workarounds (decisão arquitetural).
 - `.kairos-core/runtime/cloud-sync.json` é L4 (volátil, gitignored) — não entra no manifesto.
 - O `*doctor` lê `cloud-sync.json` para validar integridade do symlink após configuração.
 - Cold start de mounts rclone pode levar 10–30s. O polling de validação (Passo 7) cobre essa janela.

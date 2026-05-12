@@ -78,7 +78,7 @@ Verifique `.kairos-core/runtime/handoffs/` por handoff com `consumed: false`. Se
   4 — Novos Escopos: Backlog
 
 🔍 Último Gate
-  Story 1.2 — PASS — 2026-04-06
+  PASS — 2026-04-06
 
 💬 Handoff Pendente
   {from-agent} → {to-agent} (aguardando *{command})
