@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [4.0.1] - 2026-05-11
+
+### Mudado
+- install.sh, install.ps1: seleção de provedor de cloud e persistência de estado em cloud-sync.json
+
+---
+
 ## [4.0.0] - 2026-05-11
 
 ### Mudado

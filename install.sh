@@ -365,15 +365,32 @@ read -rp "   Quer configurar o sync de outputs agora? [s/N] → " do_cloud </dev
 
 if [[ "${do_cloud,,}" == "s" ]]; then
   echo ""
+  echo "   Qual provedor de cloud você está usando?"
+  echo "     1) Google Drive   2) OneDrive   3) Dropbox"
+  echo "     4) iCloud         5) rclone     6) Outro/Custom"
+  echo ""
+  read -rp "   Escolha [1-6] → " cloud_provider_choice </dev/tty
+
+  case "$cloud_provider_choice" in
+    1) CLOUD_PROVIDER="Google Drive"; CLOUD_PATH_EXAMPLE="~/Google Drive/Meu Drive/Kairos Outputs" ;;
+    2) CLOUD_PROVIDER="OneDrive";     CLOUD_PATH_EXAMPLE="~/OneDrive/Kairos Outputs" ;;
+    3) CLOUD_PROVIDER="Dropbox";      CLOUD_PATH_EXAMPLE="~/Dropbox/Kairos Outputs" ;;
+    4) CLOUD_PROVIDER="iCloud";       CLOUD_PATH_EXAMPLE="~/Library/Mobile Documents/com~apple~CloudDocs/Kairos Outputs" ;;
+    5) CLOUD_PROVIDER="rclone";       CLOUD_PATH_EXAMPLE="~/gdrive/Kairos Outputs" ;;
+    *) CLOUD_PROVIDER="custom";       CLOUD_PATH_EXAMPLE="/caminho/absoluto/para/pasta" ;;
+  esac
+
+  echo ""
   echo "   Certifique-se de que o app do seu provedor está instalado e sincronizando:"
   echo "   • Google Drive Desktop → https://drive.google.com/drive/download"
   echo "   • OneDrive             → disponível para Mac/Linux; já incluído no Windows"
   echo "   • Dropbox              → https://www.dropbox.com/install"
+  echo "   • rclone               → https://rclone.org/install/ (com mount ativo)"
   echo ""
   echo "   Informe o caminho da pasta compartilhada com o time"
   echo "   (a pasta já deve existir no seu computador)."
   echo ""
-  read -rp "   Caminho da pasta (ex: ~/Google Drive/Kairos Outputs): " CLOUD_PATH </dev/tty
+  read -rp "   Caminho (ex: ${CLOUD_PATH_EXAMPLE}): " CLOUD_PATH </dev/tty
   # Expandir ~ manualmente
   CLOUD_PATH="${CLOUD_PATH/#\~/$HOME}"
   CLOUD_PATH="${CLOUD_PATH%/}"
@@ -398,6 +415,22 @@ if [[ "${do_cloud,,}" == "s" ]]; then
     fi
     if ln -s "$CLOUD_PATH" "$OUTPUTS_DIR" 2>/dev/null; then
       ok "Cloud sync configurado: data/outputs → $CLOUD_PATH"
+
+      # Gravar estado em .kairos-core/runtime/cloud-sync.json
+      RUNTIME_DIR="${INSTALL_DIR}/.kairos-core/runtime"
+      mkdir -p "$RUNTIME_DIR"
+      CLOUD_TIMESTAMP=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+      # Escapar aspas e backslashes do path para inserir em JSON
+      CLOUD_PATH_JSON="${CLOUD_PATH//\\/\\\\}"
+      CLOUD_PATH_JSON="${CLOUD_PATH_JSON//\"/\\\"}"
+      cat > "${RUNTIME_DIR}/cloud-sync.json" <<EOF
+{
+  "configured": true,
+  "symlink_target": "${CLOUD_PATH_JSON}",
+  "provider": "${CLOUD_PROVIDER}",
+  "configured_at": "${CLOUD_TIMESTAMP}"
+}
+EOF
     else
       warn "Não foi possível criar o symlink."
       warn "Configure depois com: @kairos *configure-cloud"
