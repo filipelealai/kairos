@@ -160,7 +160,8 @@ Para cada story em `In Review` com `type: kairos-core`:
 Se há bump pendente detectado:
 
 ```
-⚠️  Modo dev detectado: há stories type:kairos-core sem bump desde o último release.
+⚠️  Modo dev detectado: há stories type:kairos-core sem bump desde o último release
+(obrigatório para contribuir com o framework; opcional para uso próprio).
 
 Stories pendentes: {id1}[, {id2}, ...]
 
