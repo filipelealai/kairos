@@ -395,15 +395,32 @@ $doCloud = Read-Host "  Quer configurar o sync de outputs agora? [s/N]"
 
 if ($doCloud -match '^[Ss]') {
     Write-Host ""
+    Write-Host "  Qual provedor de cloud você está usando?"
+    Write-Host "    1) Google Drive   2) OneDrive   3) Dropbox"
+    Write-Host "    4) iCloud         5) rclone     6) Outro/Custom"
+    Write-Host ""
+    $cloudProviderChoice = Read-Host "  Escolha [1-6]"
+
+    switch ($cloudProviderChoice) {
+        '1' { $cloudProvider = "Google Drive"; $cloudPathExample = "C:\Users\Voce\Google Drive\Meu Drive\Kairos Outputs" }
+        '2' { $cloudProvider = "OneDrive";     $cloudPathExample = "C:\Users\Voce\OneDrive\Kairos Outputs" }
+        '3' { $cloudProvider = "Dropbox";      $cloudPathExample = "C:\Users\Voce\Dropbox\Kairos Outputs" }
+        '4' { $cloudProvider = "iCloud";       $cloudPathExample = "C:\Users\Voce\iCloudDrive\Kairos Outputs" }
+        '5' { $cloudProvider = "rclone";       $cloudPathExample = "C:\rclone\gdrive\Kairos Outputs" }
+        default { $cloudProvider = "custom";   $cloudPathExample = "C:\caminho\absoluto\para\pasta" }
+    }
+
+    Write-Host ""
     Write-Host "  Certifique-se de que o app do seu provedor está instalado e sincronizando:"
     Write-Host "    OneDrive:             já incluído no Windows"
     Write-Host "    Google Drive Desktop: https://drive.google.com/drive/download"
     Write-Host "    Dropbox:              https://www.dropbox.com/install"
+    Write-Host "    rclone:               https://rclone.org/install/ (com mount ativo)"
     Write-Host ""
     Write-Host "  Informe o caminho da pasta compartilhada com o time"
     Write-Host "  (será criada automaticamente se não existir)."
     Write-Host ""
-    $cloudPath = Read-Host "  Caminho da pasta (ex: C:\Users\Voce\OneDrive\Kairos Outputs)"
+    $cloudPath = Read-Host "  Caminho (ex: $cloudPathExample)"
 
     if ([string]::IsNullOrWhiteSpace($cloudPath)) {
         Write-Warn "Nenhum caminho informado - pulando cloud sync."
@@ -420,9 +437,11 @@ if ($doCloud -match '^[Ss]') {
             if (Test-Path $outputsPath) {
                 Remove-Item $outputsPath -Recurse -Force -ErrorAction SilentlyContinue
             }
+            $cloudSyncSuccess = $false
             try {
                 New-Item -ItemType SymbolicLink -Path $outputsPath -Target $cloudPath -ErrorAction Stop | Out-Null
                 Write-Ok "Cloud sync configurado: data\outputs -> $cloudPath"
+                $cloudSyncSuccess = $true
             } catch {
                 Write-Host ""
                 Write-Warn "Criar symlink requer permissão de administrador."
@@ -448,6 +467,7 @@ try {
                     Remove-Item $symResultFile -ErrorAction SilentlyContinue
                     if ($elevResult -eq 'OK' -and (Test-Path $outputsPath)) {
                         Write-Ok "Cloud sync configurado: data\outputs -> $cloudPath"
+                        $cloudSyncSuccess = $true
                     } elseif (-not [string]::IsNullOrEmpty($elevResult) -and $elevResult -ne 'OK') {
                         Write-Warn "Erro ao criar symlink: $elevResult"
                         Write-Warn "Configure depois: @kairos *configure-cloud"
@@ -457,6 +477,19 @@ try {
                 } else {
                     Write-Warn "Configure depois: @kairos *configure-cloud"
                 }
+            }
+
+            if ($cloudSyncSuccess) {
+                $runtimeDir = Join-Path $dirInput ".kairos-core\runtime"
+                New-Item -ItemType Directory -Path $runtimeDir -Force -ErrorAction SilentlyContinue | Out-Null
+                $cloudSyncState = [ordered]@{
+                    configured     = $true
+                    symlink_target = $cloudPath
+                    provider       = $cloudProvider
+                    configured_at  = (Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ssZ")
+                }
+                $cloudSyncJson = $cloudSyncState | ConvertTo-Json -Depth 3
+                Set-Content -Path (Join-Path $runtimeDir "cloud-sync.json") -Value $cloudSyncJson -Encoding UTF8
             }
         }
     }
