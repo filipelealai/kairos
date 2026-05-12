@@ -1,4 +1,4 @@
-kairos_version: 4.1.0
+kairos_version: 4.2.2
 generated_at: '2026-05-12'
 owned_files:
 - path: .kairos-core/constitution.md
@@ -162,11 +162,11 @@ owned_files:
   sha256: 8db23a6c2ac4dd55d011c0fc79c16f5b268b8875a3d85df33b451cc4b1fb65db
 - path: CHANGELOG.md
   layer: L3
-  sha256: 3bfe119be45ea91835c2f7a07641d010766b2cabf97e445c4a53a1e726ef6822
+  sha256: 8968d758102e32465c155ddb01ddc7d2095021d788f1ae7d5fb09a599c7decfe
 - path: .github/CODEOWNERS
   layer: L3
   sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4
-- path: .github/README.md
+- path: .github/OVERVIEW.md
   layer: L3
   sha256: d2c44a9583f6c6b78a95a4bb3d1891fc7de4f804bc6a975259be0217c92494a5
 - path: .github/PULL_REQUEST_TEMPLATE.md

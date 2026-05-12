@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [4.2.2] — 2026-05-12
+
+### Corrigido
+- Renomeado .github/README.md → .github/OVERVIEW.md para não suplantar o README root no GitHub
+
+---
+
 ## [4.2.1] — 2026-05-12
 
 ### Corrigido

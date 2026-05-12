@@ -143,7 +143,7 @@ Antes de contribuir com mudanças estruturais, leia [`.claude/rules/ownership.md
 
 `*pre-push` retorna PASS ou BLOCK. `*push` executa o cycle completo. PRs com BLOCK não são aceitos sem resolução dos issues.
 
-O CI `version-guard` (`.github/workflows/version-guard.yml`) verifica automaticamente bump, frontmatter, CHANGELOG e **status `Done` + gate de review** para qualquer PR com arquivos de framework. Ver [`.github/README.md`](.github/README.md) para a lista completa de checks que bloqueiam merge.
+O CI `version-guard` (`.github/workflows/version-guard.yml`) verifica automaticamente bump, frontmatter, CHANGELOG e **status `Done` + gate de review** para qualquer PR com arquivos de framework. Ver [`.github/OVERVIEW.md`](.github/OVERVIEW.md) para a lista completa de checks que bloqueiam merge.
 
 ### Dependências para checks locais
 
