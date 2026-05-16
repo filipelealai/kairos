@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.3.1
+kairos-version: 4.4.0
 ---
 
 # Instalação e Desinstalação do Kairos
@@ -100,6 +100,7 @@ cd ~/kairos && claude
 ```
 @kairos *status      → ver estado do sistema e versão
 @kairos *help        → todos os comandos disponíveis
+@kairos *chat        → conversar / planejar sem disparar comandos
 @kairos *new-squad   → criar seu primeiro squad
 ```
 

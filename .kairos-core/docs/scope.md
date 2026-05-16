@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.2.0
+kairos-version: 4.4.0
 ---
 
 # Kairos — Escopo e Arquitetura do Framework
@@ -57,6 +57,7 @@ Claude Code na conversa principal (constrói e mantém o Kairos)
 - Atualiza o framework via `*update` (sem necessidade de Git)
 - Configura sync de outputs para nuvem via `*configure-cloud`
 - Exporta e importa squads via `*export-squad` / `*import-squad`
+- Modo conversacional de sessão via `*chat` (auto-detect quando a primeira mensagem é em linguagem natural; ações só após confirmação explícita)
 - Modo autônomo de sessão via `*yolo` (afeta apenas stories `type: instance`; encadeia `*implement` automaticamente; pipeline de release separado)
 
 **Agentes de squad — Operacionais:**
@@ -159,6 +160,7 @@ O workflow `version-guard` (`.github/workflows/version-guard.yml`) é o gate can
 | `*kb` | Adiciona ou consulta o Knowledge Base do framework | — |
 | `*doctor` | Inspeciona saúde e integridade do framework | — |
 | `*yolo on/off` | Liga/desliga modo autônomo de sessão (apenas `type: instance`; encadeia `*implement`; pipeline de release separado) | — |
+| `*chat` | Modo conversacional — planejar e perguntar sem disparar comandos; auto-detect pós-greeting; ações só após confirmação (1× read-only, 2× escrita; `*push`/`*pre-push`/`*version`/`*update` jamais executados) | — |
 | `*version` | Bump de versão semântica (com *doctor como Passo 1) | **Git** |
 | `*pre-push` | Valida gate de review (type:kairos-core) e spot check | **Git** |
 | `*push` | Orquestrador de release: doctor, drift, modo contribuidor e transição Done (type:kairos-core); commit e push. Pula transição Done para stories `type: instance` já marcadas via `*implement`/`*review` | **Git** |

@@ -1,5 +1,5 @@
-kairos_version: 4.3.1
-generated_at: '2026-05-15'
+kairos_version: 4.4.0
+generated_at: '2026-05-16'
 owned_files:
 - path: .kairos-core/constitution.md
   layer: L1
@@ -24,7 +24,7 @@ owned_files:
   sha256: self-referential
 - path: .claude/commands/kairos/agents/kairos.md
   layer: L2
-  sha256: 7f82cba50eb154bbe8bd482ab94a12d800ce258f207f617f9419fae73d8c0670
+  sha256: 56da31b2fbab15cb387469eed2c87af041cf276100da4309b35b0a7c694744df
 - path: .claude/hooks/kairos-code-intel.cjs
   layer: L2
   sha256: 84edddf2f613f3f32eddb422e2d8db60dcc00e5846141f52fa56fbf431be6203
@@ -40,12 +40,15 @@ owned_files:
 - path: .kairos-core/tasks/kairos-architecture.md
   layer: L2
   sha256: 032745c52d0bef8d7e4dba7ea61883bc30f11e18b06ddc8cd194feac44d86cc4
+- path: .kairos-core/tasks/kairos-chat.md
+  layer: L2
+  sha256: fb34c52d1dcd6db6e648399e07de69ced5b3949822201261f258726f96a99fa3
 - path: .kairos-core/tasks/kairos-doctor.md
   layer: L2
   sha256: 82c5f7e0d2d4f251a08d1784c7463e83fe38f79c8752f290921f54bef078d656
 - path: .kairos-core/tasks/kairos-help.md
   layer: L2
-  sha256: 81fc9cbbdae939e8e9f9c9dfd2e0a2e5bf76d626822f5d97a897b7238ada01ec
+  sha256: cfda7c31bce399296a0b97de867b064e9d0509c567632c089eda0550c99435cf
 - path: .kairos-core/tasks/kairos-kb.md
   layer: L2
   sha256: b1fc8b5bea931e503b9030cb3da4487d1322bcec0b8086a6957b73e0e8a8797e
@@ -144,7 +147,7 @@ owned_files:
   sha256: 8b0a67026986fbf6a0cd2a6b1ea3eda9023a10d2c6d0aa6a63bc95f30ba1fe00
 - path: .kairos-core/docs/scope.md
   layer: L3
-  sha256: 9f8c83727b2cffc4bdfed0bd1056467182832d76a65ea4900614cf52b713b155
+  sha256: 17584a4bb1ae10473dcf5b6752dd2d59cc489888f65f8f8a6f667ee8ab8b8b09
 - path: install.sh
   layer: L2
   sha256: 16adc769445195de7cf158f3ea120779f390b1cb08304b6150aa2c54b09e1bf4
@@ -159,10 +162,10 @@ owned_files:
   sha256: 2212c83fe06f359119376940882088d3bea662d88407eed5566507c620d0054a
 - path: .kairos-core/docs/install.md
   layer: L3
-  sha256: c5b0580b67f218529453de5af804178c2c167fc4ca0b3a751779048983e95379
+  sha256: 5955ed01fd541543a40fd63a290abdd10d9ba6632e615bfe8a2d9a6f745f2d64
 - path: CHANGELOG.md
   layer: L3
-  sha256: 003885c4ce31bf740b633b808311e7d2a38e962dd0548541e5788d950fdde124
+  sha256: fc8133f19ca13e6d193c64c756e45be08ecc3379135b59bd4dd519cea7293dc7
 - path: .github/CODEOWNERS
   layer: L3
   sha256: 1507db7a83cb76a992052a327151a580e1ae8aa2a0caec656be02c15c66b7c09

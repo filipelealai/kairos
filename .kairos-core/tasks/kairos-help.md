@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.3.1
+kairos-version: 4.4.0
 task: Kairos Help
 responsavel: "@kairos"
 responsavel_type: agent
@@ -212,6 +212,20 @@ DIAGNÓSTICO
                         Resultado: HEALTHY / WARNING / CRITICAL.
 
 META
+  *chat                 Modo conversacional — planejar, perguntar, explorar sem
+                        disparar comandos. Ativa por auto-detect quando a primeira
+                        mensagem pós-greeting é em linguagem natural ("vamos
+                        planejar", "me explica X", "como funciona Y").
+                        Princípios: respostas curtas, leitura sob demanda (KB,
+                        MEMORY, squad.yaml, rules), sugere plan mode para
+                        planejamento profundo.
+                        Ações só após confirmação: 1× para read-only (*status,
+                        *roadmap, *doctor...), 2× para escrita (*new-story,
+                        *new-squad, *implement...). *push, *pre-push, *version
+                        e *update jamais executados pelo chat — apenas instrução.
+                        Saídas: *chat off | qualquer *comando | *exit.
+                        → Incompatível com YOLO — avisa sem auto-toggle.
+
   *help [{topic}]       Esta ajuda. Topics: flows | commands | stories |
                         versioning | push | squads | review
   *guide                Guia completo com modelo de governança e diagramas.
@@ -367,6 +381,7 @@ Diagnóstico         *validate-squad {squad} | *doctor
 Atualizar framework *update            (sem Git — baixa tarball do GitHub)
 Cloud sync          *configure-cloud   (sync outputs via app de nuvem)
 Compartilhar squad  *export-squad {squad} | *import-squad {arquivo}
+Conversa            *chat   (ativa também por auto-detect; *chat off para sair)
 Ajuda               *help [{topic}] | *guide
 Sair                *exit
 

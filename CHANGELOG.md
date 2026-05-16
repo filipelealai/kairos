@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [4.4.0] — 2026-05-16
+
+### Adicionado
+- Adicionar modo conversacional *chat ao @kairos: nova task kairos-chat.md, auto-detect pós-greeting, 3 níveis de confirmação para ações
+
+---
+
 ## [4.3.1] — 2026-05-15
 
 ### Corrigido
