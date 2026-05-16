@@ -233,7 +233,7 @@ handoff_to: "{próximo agente no pipeline}"
 - {armadilhas conhecidas — inclua causa, sintoma e solução}
 
 ## Promotion Candidates
-<!-- Padrões vistos em 3+ execuções — candidatos para .claude/rules/ -->
+<!-- Padrões vistos em 3+ execuções — candidatos para .kairos-core/rules/ -->
 
 ## Archived
 <!-- Padrões obsoletos — manter para histórico -->

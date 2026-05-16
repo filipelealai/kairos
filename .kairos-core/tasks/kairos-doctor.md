@@ -33,10 +33,10 @@ Não verifica comportamento — verifica que o framework está fisicamente ínte
 **1. Fundação (L1)**
 - [ ] `.kairos-core/constitution.md` existe
 - [ ] `.kairos-core/manifest.yaml` existe
-- [ ] `.claude/rules/agent-authority.md` existe
-- [ ] `.claude/rules/framework-layers.md` existe
-- [ ] `.claude/rules/ids-principles.md` existe
-- [ ] `.claude/rules/ownership.md` existe
+- [ ] `.kairos-core/rules/agent-authority.md` existe
+- [ ] `.kairos-core/rules/framework-layers.md` existe
+- [ ] `.kairos-core/rules/ids-principles.md` existe
+- [ ] `.kairos-core/rules/ownership.md` existe
 
 **2. Configuração Central (L2)**
 - [ ] `.kairos-core/core-config.yaml` existe e tem campo `version`
@@ -152,7 +152,7 @@ Para cada entrada em `owned_sections[*]` do tipo `json_keys`:
 **11. Identificação da Instância**
 
 - [ ] `.env` existe e contém `KAIROS_INSTANCE_NAME` definido com valor não-vazio
-  → ⚠️ WARN "KAIROS_INSTANCE_NAME ausente ou vazio em .env — outputs vão usar fallback `default`. Configure para evitar colisão em equipe (ver `.claude/rules/output-naming.md`)" se ausente/vazio
+  → ⚠️ WARN "KAIROS_INSTANCE_NAME ausente ou vazio em .env — outputs vão usar fallback `default`. Configure para evitar colisão em equipe (ver `.kairos-core/rules/output-naming.md`)" se ausente/vazio
   → ⚠️ WARN "KAIROS_INSTANCE_NAME contém caracteres fora de kebab-case: {valor}" se o valor tem espaço, maiúscula ou caractere especial
   → PASS silencioso se válido
 

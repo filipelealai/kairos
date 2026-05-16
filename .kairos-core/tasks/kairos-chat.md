@@ -70,11 +70,11 @@ A leitura é **lazy**: só carrega um arquivo quando a pergunta o exige. A tabel
 |---|---|
 | "O que faz o squad X?" | `squads/{X}/README.md`, `squads/{X}/squad.yaml` |
 | "Como funciona o pipeline do X?" | `squads/{X}/workflows/`, `squads/{X}/rules/{X}-lifecycle.md` |
-| "Qual a autoridade do agente Y?" | `squads/{squad-do-Y}/rules/agent-authority.md`, `.claude/rules/agent-authority.md` |
+| "Qual a autoridade do agente Y?" | `squads/{squad-do-Y}/rules/agent-authority.md`, `.kairos-core/rules/agent-authority.md` |
 | "O que o agente Y aprendeu até agora?" | `.kairos-core/agents/{Y}/MEMORY.md` |
 | "Por que decidimos X?" | `.kairos-core/data/kairos-kb.md` |
-| "Como o Kairos versiona / o que vai num bump?" | `.claude/rules/framework-layers.md`, `.kairos-core/constitution.md` |
-| "O que é manifesto / ownership?" | `.claude/rules/ownership.md`, `.kairos-core/manifest.yaml` |
+| "Como o Kairos versiona / o que vai num bump?" | `.kairos-core/rules/framework-layers.md`, `.kairos-core/constitution.md` |
+| "O que é manifesto / ownership?" | `.kairos-core/rules/ownership.md`, `.kairos-core/manifest.yaml` |
 | "Estado do repo / o que está aberto" | usar `*status` ou `*roadmap` (sugerir, não executar inline a menos que o usuário confirme) |
 | "Histórico recente" | `CHANGELOG.md`, últimos arquivos em `docs/stories/` |
 | "Como uso o comando Z" | `.kairos-core/tasks/kairos-{Z}.md` e `*help {Z}` |

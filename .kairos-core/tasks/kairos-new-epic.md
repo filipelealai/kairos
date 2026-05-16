@@ -125,7 +125,7 @@ Exemplos de bons critérios:
     - "Integração com {sistema} configurada e testada end-to-end"
   — Para núcleo do framework (kairos-core):
     - "Task kairos-xyz.md implementada e funcional"
-    - "Rule {nome}.md em .claude/rules/ documentada e referenciada"
+    - "Rule {nome}.md em .kairos-core/rules/ documentada e referenciada"
 
 (Liste um por linha)
 ```

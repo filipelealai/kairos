@@ -45,7 +45,7 @@ Execução parcial é permitida — cada agente pode ser rodado individualmente.
 | `@{agent-id-1}` | {tipo} | `data/outputs/{squad-name}/{tipo}/{agent-id-1}_{filename}-{INSTANCE}-YYYY-MM-DD.{ext}` |
 | `@{agent-id-2}` | {tipo} | `data/outputs/{squad-name}/{tipo}/{agent-id-2}_{filename}-{INSTANCE}-YYYY-MM-DD.{ext}` |
 
-> `{INSTANCE}` é resolvido a partir de `KAIROS_INSTANCE_NAME` (fallback: `default`). Ver `.claude/rules/output-naming.md`.
+> `{INSTANCE}` é resolvido a partir de `KAIROS_INSTANCE_NAME` (fallback: `default`). Ver `.kairos-core/rules/output-naming.md`.
 
 ---
 

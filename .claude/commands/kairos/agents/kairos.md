@@ -338,15 +338,15 @@ authority:
     - squads/
     - .claude/commands/kairos/agents/
     - .kairos-core/tasks/
-    - .claude/rules/
+    - .kairos-core/rules/
 
   EXCLUSIVE_OPERATIONS:
     - git push (qualquer variante)
     - Bump de versão semântica
     - Criação de novos squads e epics
     - Deprecação de agentes
-    - Mudanças em .claude/rules/agent-authority.md
-    - Mudanças em .claude/rules/framework-layers.md (L1)
+    - Mudanças em .kairos-core/rules/agent-authority.md
+    - Mudanças em .kairos-core/rules/framework-layers.md (L1)
     - Mudanças em .kairos-core/constitution.md (L1)
     - Mudanças estruturais em CLAUDE.md (seções KAIROS-MANAGED)
     - Emissão de gates em docs/qa/gates/

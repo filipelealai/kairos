@@ -11,8 +11,10 @@ framework:
   agentsLocation: .kairos-core/agents/
   dataLocation: .kairos-core/data/
   templatesLocation: .kairos-core/templates/
+  rulesLocation: .kairos-core/rules/
+  instructionsLocation: .kairos-core/instructions/
+  runtimesLocation: .kairos-core/runtimes/
   commandsLocation: .claude/commands/kairos/agents/
-  rulesLocation: .claude/rules/
   hooksLocation: .claude/hooks/
   squadsLocation: squads/
   storiesLocation: docs/stories/
@@ -22,6 +24,23 @@ framework:
   constitutionFile: .kairos-core/constitution.md
   kbFile: .kairos-core/data/kairos-kb.md
   workersFile: .kairos-core/data/workers.yaml
+runtimes:
+  claude:
+    status: stable
+    recipeFile: .kairos-core/runtimes/claude/runtime.yaml
+    instructionsFile: CLAUDE.md
+    commandsLocation: .claude/commands/kairos/agents/
+    rulesTargetLocation: .claude/rules/
+    hooksTargetLocation: .claude/hooks/
+    settingsFile: .claude/settings.json
+    stateLocation: .kairos-core/runtime/claude/
+  codex:
+    status: beta
+    recipeFile: .kairos-core/runtimes/codex/runtime.yaml
+    instructionsFile: AGENTS.md
+    skillFile: .agents/skills/kairos/SKILL.md
+    hooksFile: .codex/hooks.json
+    stateLocation: .kairos-core/runtime/codex/
 runtime:
   handoffsLocation: .kairos-core/runtime/handoffs/
   outputsLocation: data/outputs/

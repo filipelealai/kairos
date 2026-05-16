@@ -97,7 +97,7 @@ kairos-version: 4.2.0
 
 **Decisão:** A fronteira framework/usuário é definida por `.kairos-core/manifest.yaml`, não por localização de arquivo.
 
-**Motivo:** Um arquivo pode estar em `.claude/rules/` e ser framework-shipped, user-criado ou pré-existente de um brownfield install — path sozinho não distingue origem. O manifesto é a fonte autoritativa; default-deny (arquivo fora do manifesto é do usuário) garante que updates nunca toquem conteúdo do usuário.
+**Motivo:** Um arquivo pode estar em `.kairos-core/rules/` e ser framework-shipped, user-criado ou pré-existente de um brownfield install — path sozinho não distingue origem. O manifesto é a fonte autoritativa; default-deny (arquivo fora do manifesto é do usuário) garante que updates nunca toquem conteúdo do usuário.
 
 **Trade-off aceito:** Manifesto precisa ser mantido consistente com o filesystem — validado pelo `*doctor`.
 

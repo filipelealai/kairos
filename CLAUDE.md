@@ -33,7 +33,7 @@ Este repo contém:
 - Manter cada agente focado em uma responsabilidade
 - Não criar abstrações desnecessárias — clareza é melhor que elegância prematura
 - Responder em português (Brasil)
-- As diretrizes de como usar skills, MCPs e APIs estão em `.claude/rules/external-integrations.md`.
+- As diretrizes de como usar skills, MCPs e APIs estão em `.kairos-core/rules/external-integrations.md`.
 <!-- KAIROS-MANAGED-END: framework-conventions -->
 
 <!-- KAIROS-MANAGED-START: agent-system -->

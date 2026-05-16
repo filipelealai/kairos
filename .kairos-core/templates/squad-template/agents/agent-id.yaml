@@ -53,7 +53,7 @@ commands:
     description: "Sair do modo {agent-id}"
 
 outputs:
-  # Padrão canônico — ver .claude/rules/output-naming.md
+  # Padrão canônico — ver .kairos-core/rules/output-naming.md
   # {INSTANCE} é resolvido em runtime a partir de KAIROS_INSTANCE_NAME (fallback: "default")
   - "data/outputs/{squad-name}/{tipo}/{agent-id}_{filename}-{INSTANCE}-YYYY-MM-DD.{ext}"
 

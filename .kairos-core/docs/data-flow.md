@@ -65,7 +65,7 @@ Leitura é **read-only** do ponto de vista do Kairos — escrita em sistemas ext
 
 ### Outputs de Agente
 
-Outputs seguem o padrão canônico (definido em `.claude/rules/output-naming.md`):
+Outputs seguem o padrão canônico (definido em `.kairos-core/rules/output-naming.md`):
 
 ```
 data/outputs/{squad}/{tipo}/{agent-id}_{tipo-curto}-{INSTANCE}-YYYY-MM-DD.{ext}
@@ -75,7 +75,7 @@ Onde:
 - `{INSTANCE}` vem de `KAIROS_INSTANCE_NAME` no `.env` (fallback: `default`)
 - `{tipo}` é definido pelo squad — não é uma convenção do framework
 
-O segmento `{INSTANCE}` garante que dois membros do time rodando o mesmo agente no mesmo dia gerem arquivos com nomes distintos, sem colisão. Ver `.claude/rules/output-naming.md` para regras completas de normalização e fallback.
+O segmento `{INSTANCE}` garante que dois membros do time rodando o mesmo agente no mesmo dia gerem arquivos com nomes distintos, sem colisão. Ver `.kairos-core/rules/output-naming.md` para regras completas de normalização e fallback.
 
 Idempotência por data: regerar no mesmo dia (mesma instância) sobrescreve o arquivo anterior (constituição IV.13).
 
@@ -105,7 +105,7 @@ handoff:
   next_action: "{o-que-o-proximo-agente-deve-fazer}"
 ```
 
-**Lifecycle:** criado pelo agente que termina uma fase → lido e marcado `consumed: true` pelo próximo agente na ativação. Ver `.claude/rules/agent-handoff.md` para o protocolo completo.
+**Lifecycle:** criado pelo agente que termina uma fase → lido e marcado `consumed: true` pelo próximo agente na ativação. Ver `.kairos-core/rules/agent-handoff.md` para o protocolo completo.
 
 ---
 
@@ -129,7 +129,7 @@ Regra: este arquivo descreve o framework genericamente — squads, integrações
 | Outputs são idempotentes por data — regerar no mesmo dia sobrescreve | Constituição IV.13 |
 | Ações com side effects em sistemas externos são explícitas e confirméveis | Constituição I.2 |
 | Integrações externas seguem hierarquia: Skills → MCPs → scripts → HTTP | Constituição I.1 / I.4 |
-| Autoridade de agente é escopada ao squad | `.claude/rules/agent-authority.md` |
+| Autoridade de agente é escopada ao squad | `.kairos-core/rules/agent-authority.md` |
 
 Restrições específicas de squad (quem pode acionar qual sistema externo, quais campos são read-only) vivem em `squads/{squad}/` — não aqui.
 
@@ -137,8 +137,8 @@ Restrições específicas de squad (quem pode acionar qual sistema externo, quai
 
 ## Referências
 
-- `.claude/rules/agent-handoff.md` — protocolo de handoff em detalhe
-- `.claude/rules/agent-authority.md` — matriz de autoridade por agente
-- `.claude/rules/external-integrations.md` — hierarquia de integrações externas
+- `.kairos-core/rules/agent-handoff.md` — protocolo de handoff em detalhe
+- `.kairos-core/rules/agent-authority.md` — matriz de autoridade por agente
+- `.kairos-core/rules/external-integrations.md` — hierarquia de integrações externas
 - `squads/{squad}/workflows/data-flow.md` — fluxo específico do squad ativo
 - `squads/{squad}/data/workflow-chains.yaml` — sequência do pipeline e condições de transição

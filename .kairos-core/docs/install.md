@@ -298,5 +298,5 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 - [`*export-squad`](../../.kairos-core/tasks/kairos-export-squad.md) — exportar squad para arquivo
 - [`*import-squad`](../../.kairos-core/tasks/kairos-import-squad.md) — importar squad de arquivo
 - [`*doctor`](../../.kairos-core/tasks/kairos-doctor.md) — health check do framework
-- [output-naming.md](../../.claude/rules/output-naming.md) — padrão de nomenclatura de outputs
-- [ownership.md](../../.claude/rules/ownership.md) — fronteira framework/usuário
+- [output-naming.md](../../.kairos-core/rules/output-naming.md) — padrão de nomenclatura de outputs
+- [ownership.md](../../.kairos-core/rules/ownership.md) — fronteira framework/usuário

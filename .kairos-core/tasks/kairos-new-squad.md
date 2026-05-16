@@ -288,7 +288,7 @@ data:
   {se arquivo:   input_file: {path}}
   {se api:       input_api: {endpoint}}
   outputs:
-    # Padrão canônico — ver .claude/rules/output-naming.md
+    # Padrão canônico — ver .kairos-core/rules/output-naming.md
     # Cada path deve seguir: data/outputs/{squad}/{tipo}/{agent}_{filename}-{INSTANCE}-YYYY-MM-DD.{ext}
     {lista de paths com formato}
   handoffs: .kairos-core/runtime/handoffs/
@@ -406,7 +406,7 @@ commands:
     description: "Sair do modo {id}"
 
 outputs:
-  # Padrão canônico — ver .claude/rules/output-naming.md
+  # Padrão canônico — ver .kairos-core/rules/output-naming.md
   # {INSTANCE} resolvido em runtime a partir de KAIROS_INSTANCE_NAME (fallback: "default")
   - "data/outputs/{squad_name}/{tipo}/{id}_{filename}-{INSTANCE}-YYYY-MM-DD.{ext}"
 
@@ -609,7 +609,7 @@ Checklist:
 - (sem gotchas registrados ainda)
 
 ## Promotion Candidates
-<!-- Padrões vistos em 3+ execuções — candidatos para .claude/rules/ -->
+<!-- Padrões vistos em 3+ execuções — candidatos para .kairos-core/rules/ -->
 
 ## Archived
 <!-- Padrões obsoletos — manter para histórico -->
@@ -636,7 +636,7 @@ Estes são os locais canônicos — os agentes devem ler sua memória na ativaç
 ```markdown
 # {squad_name} — Matriz de Autoridade
 
-Matriz de autoridade dos agentes do squad {squad_name}. Autoridade do @kairos e regras universais vivem em `.claude/rules/agent-authority.md`.
+Matriz de autoridade dos agentes do squad {squad_name}. Autoridade do @kairos e regras universais vivem em `.kairos-core/rules/agent-authority.md`.
 
 ---
 

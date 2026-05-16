@@ -34,7 +34,7 @@ kairos-version: 4.2.0
 
 ## III. Autoridade dos Agentes
 
-9. A **matriz de autoridade** em `.claude/rules/agent-authority.md` é vinculante — nenhum agente executa operação fora de seu escopo.
+9. A **matriz de autoridade** em `.kairos-core/rules/agent-authority.md` é vinculante — nenhum agente executa operação fora de seu escopo.
 10. **`@kairos`** tem autoridade sobre todos os outros agentes, mas **não substitui** o trabalho operacional dos squads — governa, não executa.
 11. Stories em `docs/stories/` rastreiam **desenvolvimento do framework Kairos** — outputs operacionais (emails, scores, relatórios) vão para `data/outputs/`.
 
@@ -46,15 +46,15 @@ kairos-version: 4.2.0
 
 ## V. Evolução do Framework
 
-15. Novas capacidades seguem o princípio **IDS: REUTILIZAR > ADAPTAR > CRIAR** (ver `.claude/rules/ids-principles.md`).
-16. Mudanças nas camadas L1 e L2 (ver `.claude/rules/framework-layers.md`) **requerem justificativa explícita** e revisão de @kairos.
+15. Novas capacidades seguem o princípio **IDS: REUTILIZAR > ADAPTAR > CRIAR** (ver `.kairos-core/rules/ids-principles.md`).
+16. Mudanças nas camadas L1 e L2 (ver `.kairos-core/rules/framework-layers.md`) **requerem justificativa explícita** e revisão de @kairos.
 17. A constituição **não é editada** pelo executor — apenas @kairos pode propor mudanças, e apenas com bump MAJOR.
 
 ## VI. Fronteira Framework / Usuário
 
 18. **O Kairos é a infraestrutura; squads, agentes e integrações são o que o usuário constrói com ela.** São coisas distintas. A identidade do framework não depende de nenhum squad específico, nenhuma skill ou integração particular.
 
-19. **Artefatos de framework** (infraestrutura): `.kairos-core/`, `.claude/rules/`, `.claude/commands/kairos/agents/`, hooks, tasks, templates, constituição. Estes definem o que o Kairos É. **`src/` é integralmente user-owned** — o manifesto é a fonte autoritativa; qualquer diretório não listado nele é conteúdo do usuário.
+19. **Artefatos de framework** (infraestrutura): `.kairos-core/`, `.kairos-core/rules/`, `.claude/commands/kairos/agents/`, hooks, tasks, templates, constituição. Estes definem o que o Kairos É. **`src/` é integralmente user-owned** — o manifesto é a fonte autoritativa; qualquer diretório não listado nele é conteúdo do usuário.
 
 20. **Artefatos do usuário** (produtos do framework): squads em `squads/`, agents em `src/agents/`, skills em `.claude/skills/`, MCPs e integrações configuradas. Estes definem o que o usuário FAZ com o Kairos.
 

@@ -1,0 +1,50 @@
+id: claude
+status: stable
+description: Runtime Claude Code. Materializa o Kairos nos caminhos esperados pelo Claude Code.
+
+materialize:
+  - template: templates/CLAUDE.md
+    target: CLAUDE.md
+    type: markdown_blocks
+    blocks:
+      - name: framework-conventions
+        source: ../../instructions/framework-conventions.md
+      - name: agent-system
+        source: ../../instructions/agent-system.md
+      - name: kairos-core
+        source: ../../instructions/core-structure.md
+
+  - source: ../../rules/ownership.md
+    target: .claude/rules/ownership.md
+    type: owned_file
+  - source: ../../rules/agent-authority.md
+    target: .claude/rules/agent-authority.md
+    type: owned_file
+  - source: ../../rules/framework-layers.md
+    target: .claude/rules/framework-layers.md
+    type: owned_file
+  - source: ../../rules/ids-principles.md
+    target: .claude/rules/ids-principles.md
+    type: owned_file
+  - source: ../../rules/output-naming.md
+    target: .claude/rules/output-naming.md
+    type: owned_file
+  - source: ../../rules/agent-handoff.md
+    target: .claude/rules/agent-handoff.md
+    type: owned_file
+  - source: ../../rules/story-lifecycle.md
+    target: .claude/rules/story-lifecycle.md
+    type: owned_file
+  - source: ../../rules/external-integrations.md
+    target: .claude/rules/external-integrations.md
+    type: owned_file
+
+  - source: hooks/kairos-code-intel.cjs
+    target: .claude/hooks/kairos-code-intel.cjs
+    type: owned_file
+  - source: hooks/kairos-precompact.cjs
+    target: .claude/hooks/kairos-precompact.cjs
+    type: owned_file
+  - source: hooks/kairos-version-check.cjs
+    target: .claude/hooks/kairos-version-check.cjs
+    type: owned_file

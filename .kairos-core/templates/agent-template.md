@@ -118,7 +118,7 @@ dependencies:
   scripts:
     - src/agents/{id}.{ext}
   data:
-    # Padrão canônico — ver .claude/rules/output-naming.md
+    # Padrão canônico — ver .kairos-core/rules/output-naming.md
     # {INSTANCE} resolvido em runtime a partir de KAIROS_INSTANCE_NAME (fallback: "default")
     - data/outputs/{squad}/{tipo}/{id}_{filename}-{INSTANCE}-YYYY-MM-DD.{ext}
 
