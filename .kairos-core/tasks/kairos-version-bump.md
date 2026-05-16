@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.2.0
+kairos-version: 4.3.0
 task: Kairos Version Bump
 responsavel: "@kairos"
 responsavel_type: agent
@@ -241,7 +241,7 @@ Para cada entrada em `owned_sections`, atualizar os SHAs por bloco/chave/seção
   - Calcule `sha256` da string serializada
   - Se divergir do `sha256_by_key[chave]` registrado → atualize o campo no manifesto
 
-**env_sections (ex: .env.example):**
+**comment_blocks (ex: .env.example, .gitignore):**
 - Para cada seção em `owned_sections[*]`:
   - Extraia o conteúdo interno entre os markers START/END (excluindo as linhas de marker)
   - Calcule `sha256` do conteúdo interno

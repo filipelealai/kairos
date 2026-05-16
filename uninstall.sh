@@ -244,7 +244,7 @@ if stype == 'markdown_blocks' or (not stype and filepath.endswith('.md')):
         with open(filepath, 'w') as f:
             f.write(cleaned)
 
-elif stype == 'env_sections':
+elif stype == 'comment_blocks':
     with open(filepath, 'r') as f:
         content = f.read()
     cleaned = re.sub(
@@ -279,7 +279,7 @@ PYEOF
     # Fallback sem python3: só markdown e env
     if [[ "$stype" == "markdown_blocks" ]] || [[ "$file" == *.md ]]; then
       sed -i '/<!-- KAIROS-MANAGED-START:/,/<!-- KAIROS-MANAGED-END:.*-->/d' "$file"
-    elif [[ "$stype" == "env_sections" ]]; then
+    elif [[ "$stype" == "comment_blocks" ]]; then
       sed -i '/# KAIROS-MANAGED-START:/,/# KAIROS-MANAGED-END:/d' "$file"
     fi
   fi

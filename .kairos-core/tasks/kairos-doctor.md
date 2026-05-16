@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.1.0
+kairos-version: 4.3.0
 id: kairos-doctor
 title: Health Check do Framework Kairos
 agent: kairos
@@ -126,7 +126,7 @@ Para cada entrada em `owned_sections[*]` do tipo `yaml_keys`:
   serializar o valor da chave usando esse algoritmo e comparar o SHA com o registrado
   → ⚠️ WARN "drift de SHA na chave {chave} de {path}" se divergir
 
-Para cada entrada em `owned_sections[*]` do tipo `env_sections`:
+Para cada entrada em `owned_sections[*]` do tipo `comment_blocks`:
 
 - [ ] Para cada seção em `owned_sections[*]` com `sha256` declarado: verificar que os markers
   `# KAIROS-MANAGED-START: {nome}` e `# KAIROS-MANAGED-END: {nome}` existem no arquivo

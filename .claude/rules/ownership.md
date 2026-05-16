@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.14.0
+kairos-version: 4.3.0
 ---
 
 # Ownership — Fronteira Framework / Usuário
@@ -90,7 +90,7 @@ Arquivos como `CLAUDE.md`, `.claude/settings.json`, `.kairos-core/core-config.ya
 |------|-------------|-----------|
 | `markdown_blocks` | Arquivos Markdown | Blocos `<!-- KAIROS-MANAGED-START: {nome} -->` ... `<!-- KAIROS-MANAGED-END: {nome} -->`. Tudo dentro é framework; tudo fora é usuário. |
 | `yaml_keys` | Arquivos YAML | O manifesto declara `owned_keys` — lista de chaves top-level que são framework. Chaves fora são user-owned. SHA tracking por chave via `sha256_by_key`. |
-| `env_sections` | Arquivos `.env` | Blocos `# KAIROS-MANAGED-START: {nome}` ... `# KAIROS-MANAGED-END: {nome}`. SHA tracking por seção. |
+| `comment_blocks` | Arquivos com comentário `#` (`.env`, `.gitignore`, etc.) | Blocos `# KAIROS-MANAGED-START: {nome}` ... `# KAIROS-MANAGED-END: {nome}`. SHA tracking por seção. |
 | `json_keys` | Arquivos JSON | O manifesto declara `owned_keys` — lista de chaves top-level que são framework. Chaves fora são user-owned. SHA tracking via `sha256_by_key` (sem marcadores no arquivo — ownership declarado puramente no manifesto). Exemplo: `.claude/settings.json` com `owned_keys: [hooks]` — a seção `permissions` é user-owned. |
 
 **Por que `json_keys` não usa marcadores no arquivo:** JSON puro não suporta comentários, e Claude Code valida `settings.json` como JSON estrito (rejeita JSONC). O ownership é declarado inteiramente no manifesto, sem modificar o arquivo gerenciado.

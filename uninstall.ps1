@@ -1,4 +1,4 @@
-﻿#Requires -Version 5.1
+#Requires -Version 5.1
 # Kairos - Desinstalador Interativo (Windows PowerShell nativo)
 # Remove apenas conteudo declarado no manifesto.
 # Preserva, por padrao, outputs e .env do usuario.
@@ -288,7 +288,7 @@ function Remove-ManagedSections {
         }
         Write-TextUtf8 $filePath ($cleaned + "`n")
 
-    } elseif ($sectionType -eq 'env_sections') {
+    } elseif ($sectionType -eq 'comment_blocks') {
         $lines = (Read-TextUtf8 $filePath) -split '\r?\n'
         $result = [System.Collections.Generic.List[string]]::new()
         $inBlock = $false

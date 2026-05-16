@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.0.0
+kairos-version: 4.3.0
 task: Kairos Review
 responsavel: "@kairos"
 responsavel_type: agent
@@ -258,7 +258,7 @@ Reviewed: {data}
 ✅ GATE PASS — implementação validada.
 
 Gate salvo em: docs/qa/gates/{story_id}-{data}.yaml
-Próximo passo: *version {tipo} "descrição" → *pre-push → *push
+Próximo passo: *pre-push → *push
 ```
 
 **Se PASS — story `type: instance` (ou sem campo `type`):**
@@ -291,7 +291,7 @@ Ressalvas (não bloqueantes):
 
 Gate conta como PASS para fins de *pre-push, mas as ressalvas devem ser endereçadas.
 Gate salvo em: docs/qa/gates/{story_id}-{data}.yaml
-Próximo passo: *version {tipo} "descrição" → *pre-push → *push
+Próximo passo: *pre-push → *push
 ```
 
 **Se RESSALVA — story `type: instance` (ou sem campo `type`):**

@@ -1,3 +1,4 @@
+# KAIROS-MANAGED-START: framework
 node_modules/
 dist/
 .env
@@ -8,3 +9,4 @@ data/cache/
 
 # Runtime do Kairos (L4 — efêmero, nunca versionar)
 .kairos-core/runtime/*.json
+# KAIROS-MANAGED-END: framework

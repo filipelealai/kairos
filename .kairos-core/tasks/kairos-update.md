@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.13.0
+kairos-version: 4.3.0
 id: kairos-update
 title: Atualizar o framework Kairos para a versão mais recente
 agent: kairos
@@ -64,7 +64,7 @@ Se `versão_local > versão_remota` (improvável mas possível em fork):
 **`owned_sections` tipo `yaml_keys`:** para cada entrada com `sha256_by_key`:
 - Para cada chave com SHA registrado: ler o valor da chave no YAML local, serializar usando o algoritmo descrito em `sha_method`, calcular sha256 e comparar com o registrado
 
-**`owned_sections` tipo `env_sections`:** para cada entrada com seções declaradas:
+**`owned_sections` tipo `comment_blocks`:** para cada entrada com seções declaradas:
 - Para cada seção com `sha256`: extrair o conteúdo interno entre `# KAIROS-MANAGED-START: {nome}` e `# KAIROS-MANAGED-END: {nome}` (excluindo as linhas de marker), calcular sha256 e comparar com o registrado
 
 **`owned_sections` tipo `json_keys`:** para cada entrada com `sha256_by_key`:

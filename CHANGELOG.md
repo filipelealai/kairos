@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [4.3.0] — 2026-05-15
+
+### Mudado
+- Renomear `env_sections` → `comment_blocks` em todos os pontos executáveis; incluir `.gitignore` como `owned_sections comment_blocks` no manifesto
+
+---
+
 ## [4.2.2] — 2026-05-12
 
 ### Corrigido
