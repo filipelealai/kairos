@@ -1,0 +1,38 @@
+id: codex-context-map
+runtime: codex
+description: Contexto canônico que o Codex deve carregar ao operar o Kairos.
+
+load_order:
+  foundation:
+    - .kairos-core/constitution.md
+    - .kairos-core/manifest.yaml
+    - .kairos-core/core-config.yaml
+  runtime_contract:
+    - .kairos-core/runtimes/codex/runtime.yaml
+    - .kairos-core/runtimes/codex/context-map.yaml
+    - .kairos-core/runtimes/codex/boundary-policy.yaml
+  rules:
+    glob: .kairos-core/rules/*.md
+  instructions:
+    glob: .kairos-core/instructions/*.md
+  dev_load_always:
+    source: .kairos-core/core-config.yaml
+    key: devLoadAlwaysFiles
+  agent:
+    kairos:
+      persona: .claude/commands/kairos/agents/kairos.md
+      note: Fonte provisória da persona @kairos até canonicalização futura.
+  command_task:
+    pattern: .kairos-core/tasks/kairos-{command}.md
+    load_when: "A mensagem resolver para um comando Kairos com task associada."
+
+session_continuity:
+  mode: session_context
+  rule: "Após ativação com @kairos, mensagens subsequentes iniciadas por * pertencem ao Kairos até *exit, enquanto o contexto da conversa estiver claro."
+  ambiguity: "Se o contexto estiver ambíguo, pedir reativação explícita com @kairos."
+
+unsupported_in_phase_2:
+  - squads operacionais no Codex
+  - persistência de agente ativo em arquivo
+  - hook de PreCompact
+  - comandos de release no Codex sem validação manual adicional

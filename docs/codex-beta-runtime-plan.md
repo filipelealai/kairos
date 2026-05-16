@@ -56,13 +56,11 @@ AGENTS.md/.codex   materialização para Codex
     codex/
       runtime.yaml
       templates/
-      hooks/
-      context-loader.cjs
-      boundary-check.cjs
+      context-map.yaml
+      boundary-policy.yaml
 
   runtime/
     handoffs/
-    codex/
 ```
 
 Targets materializados:
@@ -117,8 +115,18 @@ materialize:
     type: owned_file
 ```
 
-`runtime.yaml` é receita de materialização. `manifest.yaml` continua sendo o
-contrato de ownership.
+`runtime.yaml` é receita de materialização e contrato de capabilities do
+runtime. `manifest.yaml` continua sendo o contrato de ownership.
+
+Todo runtime deve declarar os mesmos conceitos no `runtime.yaml`:
+
+- `capabilities` — o que é nativo, explícito, ausente ou coberto por fallback;
+- `protocol` — como o runtime entra no Kairos e onde estão as fontes canônicas;
+- `materialize` — quais targets são gerados para o runtime.
+
+A simetria é de contrato, não de arquivos idênticos. Um runtime só deve ter
+arquivo auxiliar próprio quando uma capability exigir esse arquivo e ele estiver
+referenciado no `runtime.yaml`.
 
 ## Contrato Framework / Instância
 
@@ -194,36 +202,69 @@ Fase 1 resolve:
 
 Fase 2 deve cobrir:
 
-- `AGENTS.md` com managed block de bootloader.
-- `.agents/skills/kairos/SKILL.md`.
-- `.codex/hooks.json`.
-- `.kairos-core/runtimes/codex/context-loader.cjs`.
-- `.kairos-core/runtimes/codex/boundary-check.cjs`.
-- `.kairos-core/runtime/codex/active-agent.json`.
+- Expandir `runtime.yaml` de Claude e Codex com `capabilities`, `protocol` e
+  `sources` canônicas.
+- Criar `.kairos-core/runtimes/codex/context-map.yaml`.
+- Criar `.kairos-core/runtimes/codex/boundary-policy.yaml`.
+- Atualizar `.agents/skills/kairos/SKILL.md` e seu template para operar pelo
+  contrato declarativo do runtime Codex.
+- Atualizar o manifesto para registrar os novos contratos.
 
-O context loader deve carregar:
+Fase 2 NÃO cria:
 
-- constitution;
-- manifest;
-- core rules;
-- instructions;
-- `devLoadAlwaysFiles`;
-- persona do `@kairos`;
-- task do comando;
-- estado de agente ativo até `*exit`.
+- loader executável obrigatório;
+- dependência Node/Python/CLI para operar o runtime Codex;
+- arquivo persistente de agente ativo;
+- cópias Codex de persona, task ou rule.
+
+O runtime Codex deve carregar explicitamente, via `context-map.yaml`:
+
+- constituição;
+- manifesto;
+- config;
+- contrato do runtime;
+- rules canônicas;
+- instructions canônicas;
+- arquivos em `devLoadAlwaysFiles`;
+- persona do `@kairos` como fonte provisória;
+- task canônica do comando.
+
+Continuidade de agente é session-only, como no Kairos atual. Após ativação com
+`@kairos`, comandos iniciados por `*` pertencem ao Kairos até `*exit` enquanto o
+contexto da conversa estiver claro. Não há arquivo `active-agent.json`.
+
+PreCompact não é replicado no Codex nesta fase. O Claude declara
+`pre_compaction_digest: native_hook`; o Codex declara `pre_compaction_digest:
+unsupported` com fallback `reload_context_on_kairos_intent`.
 
 Critério de aceite:
 
 ```text
+@kairos *help
 @kairos *status
 @kairos *doctor
-@kairos *review
-mensagem seguinte sem repetir @kairos
+@kairos *chat
+mensagem seguinte sem repetir @kairos: *status ou *doctor
 *exit
 ```
 
-devem funcionar no Codex com protocolo, memoria operacional e boundaries
-equivalentes ao Claude Code.
+devem funcionar no Codex com protocolo e boundaries equivalentes ao escopo
+read-only de governança do Claude Code.
+
+## Decisões Permanentes da Fase 2
+
+- Estado de agente, `chat_active`, `yolo_active` e `pre_push_passed` são
+  session-only. Não persistir em arquivo.
+- Runtime Codex é declarativo nesta etapa: sem loader executável obrigatório.
+- O manifesto continua sendo a única fonte de ownership. `boundary-policy.yaml`
+  apenas ensina o Codex a aplicar o manifesto.
+- Codex usa `.kairos-core/rules/`, `.kairos-core/instructions/` e
+  `.kairos-core/tasks/` como fontes canônicas. Não usa `.claude/rules/` como
+  fonte.
+- A persona `@kairos` ainda é lida de `.claude/commands/kairos/agents/kairos.md`
+  como fonte provisória até canonicalização futura.
+- Hooks são capabilities de runtime. Claude possui hooks nativos; Codex não
+  declara paridade de PreCompact nesta fase.
 
 ## Fase 3+: Ainda Precisa Detalhar
 
@@ -233,10 +274,10 @@ Ainda está abstrato e precisa de planejamento separado:
 - mapear tasks de squad;
 - carregar memória por agente operacional;
 - consumir handoffs;
-- manter agente operacional ativo até `*exit`;
 - adaptar `new-squad`, `update-squad`, `regenerate-squad`, `export-squad` e
   `import-squad` para runtimes;
-- hardening de boundary-check e drift detection;
+- canonicalizar persona `@kairos` fora de `.claude/`;
+- hardening de boundary policy e drift detection;
 - integração com `push-dual`/`codex-beta`.
 
 ## Regras de Design

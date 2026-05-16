@@ -1,0 +1,42 @@
+id: codex-boundary-policy
+runtime: codex
+description: Como o runtime Codex aplica a fronteira framework/instância.
+
+source_of_truth:
+  manifest: .kairos-core/manifest.yaml
+  ownership_rule: .kairos-core/rules/ownership.md
+
+default: user_owned
+
+write_policy:
+  owned_files:
+    framework_operation: allow
+    requirement: "Arquivo inteiro listado em manifest.yaml:owned_files."
+  owned_sections:
+    framework_operation: allow_declared_only
+    requirement: "Editar apenas blocos/chaves declarados em manifest.yaml:owned_sections."
+  sync_files:
+    framework_operation: block
+    reason: "sync_files são sincronizados, mas não owned por update."
+  unlisted:
+    framework_operation: block
+    reason: "Default-deny: arquivos fora do manifesto são user-owned."
+
+runtime_targets:
+  note: "Targets como AGENTS.md, .agents/**, .codex/** e .claude/** não são fonte de verdade."
+  canonical_sources:
+    - .kairos-core/rules/
+    - .kairos-core/instructions/
+    - .kairos-core/tasks/
+    - .kairos-core/runtimes/
+
+before_write_checklist:
+  - "Ler manifest.yaml."
+  - "Classificar o path como owned_file, owned_section, sync_file ou unlisted."
+  - "Para mixed files, confirmar que a edição fica dentro da seção/chave declarada."
+  - "Se houver ambiguidade, HALT e pedir decisão do usuário."
+
+session_state:
+  persistence: session_only
+  storage: conversation_context
+  note: "Codex não cria arquivo de estado ativo na Fase 2; isso espelha o comportamento session-only do Kairos atual."

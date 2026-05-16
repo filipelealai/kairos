@@ -2,6 +2,45 @@ id: codex
 status: beta
 description: Runtime Codex. Materializa o Kairos nos caminhos esperados pelo Codex.
 
+capabilities:
+  command_persona:
+    mode: skill
+    entrypoint: .agents/skills/kairos/SKILL.md
+  active_agent_continuity:
+    mode: session_context
+    persistence: session_only
+    clear_on: "*exit"
+  context_loading:
+    mode: explicit
+    map: context-map.yaml
+  boundary_enforcement:
+    mode: protocol
+    policy: boundary-policy.yaml
+  pre_compaction_digest:
+    mode: unsupported
+    fallback: reload_context_on_kairos_intent
+  version_check:
+    mode: unsupported
+
+protocol:
+  project_context: AGENTS.md
+  agent_entrypoint: .agents/skills/kairos/SKILL.md
+  command_prefix: "*"
+  canonical_sources:
+    constitution: .kairos-core/constitution.md
+    manifest: .kairos-core/manifest.yaml
+    config: .kairos-core/core-config.yaml
+    rules: .kairos-core/rules/
+    instructions: .kairos-core/instructions/
+    tasks: .kairos-core/tasks/
+  session_state:
+    persistence: session_only
+    variables:
+      - chat_active
+      - yolo_active
+      - pre_push_passed
+    storage: conversation_context
+
 materialize:
   - template: templates/AGENTS.md
     target: AGENTS.md

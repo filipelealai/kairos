@@ -91,7 +91,7 @@ owned_files:
   sha256: 44442724db05abae116f90202b34b2bcfac17db93eed06f9d4631b04a99e636c
 - path: .kairos-core/tasks/kairos-doctor.md
   layer: L2
-  sha256: fcc4219203da17bcba9bdd0c4f4d5b1a6a6fd99649cbd7d4db322c78b897d87b
+  sha256: 9bea4afca3ac6c5fb05ef48f0bca28b369d01829c58a9971b73a370b741c148a
 - path: .kairos-core/tasks/kairos-help.md
   layer: L2
   sha256: cfda7c31bce399296a0b97de867b064e9d0509c567632c089eda0550c99435cf
@@ -189,7 +189,7 @@ owned_files:
   layer: L2
   runtime: claude
   role: runtime_recipe
-  sha256: abf9e23f9a7b77549746031b0e86577c9c32064289a3019729117f0896ba2efc
+  sha256: 758286352fb829687a450b16a792a37465cc2b2153d28533bf353eb066358d6c
 - path: .kairos-core/runtimes/claude/templates/CLAUDE.md
   layer: L2
   runtime: claude
@@ -214,7 +214,17 @@ owned_files:
   layer: L2
   runtime: codex
   role: runtime_recipe
-  sha256: b28b848130c184a4e7900308333aac514daa5cea795867229b5cf682cd3f421e
+  sha256: 68f0c9ee99454caac2357fdc6cf325965972c1fbc70221bbd73c4e89cb3d1238
+- path: .kairos-core/runtimes/codex/context-map.yaml
+  layer: L2
+  runtime: codex
+  role: runtime_contract
+  sha256: a5cbe159603f043a7b08181defb53b1cce82e1e9c3b51684152b30eb50e641c9
+- path: .kairos-core/runtimes/codex/boundary-policy.yaml
+  layer: L2
+  runtime: codex
+  role: runtime_contract
+  sha256: 05147dc3b46183fad26a982f22168d2b9ce8c6caa62ad733430809c15d08e3c4
 - path: .kairos-core/runtimes/codex/templates/AGENTS.md
   layer: L2
   runtime: codex
@@ -229,7 +239,7 @@ owned_files:
   layer: L2
   runtime: codex
   role: source
-  sha256: e4ddf6723eb406abea701fe76cdf5fe642c75c1d64ae6c60ea61be3559abb9e2
+  sha256: ba4f90273ba1035370205d5768a5ee0152705aec6727ae34cb7731dcd347e5ab
 - path: .kairos-core/runtimes/codex/templates/hooks.json
   layer: L2
   runtime: codex
@@ -240,7 +250,7 @@ owned_files:
   runtime: codex
   role: materialized_target
   generated_from: .kairos-core/runtimes/codex/templates/SKILL.md
-  sha256: e4ddf6723eb406abea701fe76cdf5fe642c75c1d64ae6c60ea61be3559abb9e2
+  sha256: ba4f90273ba1035370205d5768a5ee0152705aec6727ae34cb7731dcd347e5ab
 - path: .codex/hooks.json
   layer: L2
   runtime: codex
@@ -338,7 +348,7 @@ owned_files:
   layer: L3
   runtime: codex
   role: beta_plan
-  sha256: f3d60b0450b69c4e7a7fbf7cc714aa4b95a1c884eea78955afdd81d1135f047e
+  sha256: 9eb852fc3f30623fb81991558cb9a125a99e0fad3d44cd3f93b8912403d64dce
 sync_files:
 - path: README.md
   layer: L3

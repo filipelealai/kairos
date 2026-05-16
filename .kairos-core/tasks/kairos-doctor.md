@@ -116,8 +116,18 @@ Para cada entrada em `owned_sections[*]` do tipo `markdown_blocks`:
 - [ ] Nenhum marker órfão (`KAIROS-MANAGED-START/END` sem par) existe no arquivo
   → ❌ FAIL se houver
 - [ ] Para cada bloco com `sha256` declarado: calcular SHA do conteúdo interno (excluindo
-  linhas de marker) e comparar com o registrado
+  linhas de marker, removendo apenas quebras de linha externas com `strip("\n")`) e comparar
+  com o registrado
   → ⚠️ WARN "drift de SHA no bloco {name} de {path}" se divergir
+
+  Algoritmo canônico:
+
+  ```python
+  start_idx = text.index(start_marker) + len(start_marker)
+  end_idx = text.index(end_marker, start_idx)
+  content = text[start_idx:end_idx].strip("\n")
+  sha256 = hashlib.sha256(content.encode("utf-8")).hexdigest()
+  ```
 
 Para cada entrada em `owned_sections[*]` do tipo `yaml_keys`:
 
@@ -126,12 +136,20 @@ Para cada entrada em `owned_sections[*]` do tipo `yaml_keys`:
   serializar o valor da chave usando esse algoritmo e comparar o SHA com o registrado
   → ⚠️ WARN "drift de SHA na chave {chave} de {path}" se divergir
 
+  Para `.kairos-core/core-config.yaml`, o algoritmo atual é:
+
+  ```python
+  serialized = yaml.dump({key: value}, sort_keys=False)
+  sha256 = hashlib.sha256(serialized.encode("utf-8")).hexdigest()
+  ```
+
 Para cada entrada em `owned_sections[*]` do tipo `comment_blocks`:
 
 - [ ] Para cada seção em `owned_sections[*]` com `sha256` declarado: verificar que os markers
   `# KAIROS-MANAGED-START: {nome}` e `# KAIROS-MANAGED-END: {nome}` existem no arquivo
   → ❌ FAIL "marker {nome} ausente/desemparelhado em {path}" se inválido
-- [ ] Calcular SHA do conteúdo interno (excluindo linhas de marker) e comparar com o registrado
+- [ ] Calcular SHA do conteúdo interno (excluindo linhas de marker, removendo apenas quebras
+  de linha externas com `strip("\n")`) e comparar com o registrado
   → ⚠️ WARN "drift de SHA na seção {nome} de {path}" se divergir
 
 Para cada entrada em `owned_sections[*]` do tipo `json_keys`:

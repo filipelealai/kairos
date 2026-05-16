@@ -2,6 +2,51 @@ id: claude
 status: stable
 description: Runtime Claude Code. Materializa o Kairos nos caminhos esperados pelo Claude Code.
 
+capabilities:
+  command_persona:
+    mode: native_command
+    entrypoint: .claude/commands/kairos/agents/kairos.md
+  active_agent_continuity:
+    mode: session_context
+    persistence: session_only
+    clear_on: "*exit"
+  context_loading:
+    mode: native
+    via:
+      - CLAUDE.md
+      - .claude/commands/kairos/agents/
+      - .claude/rules/
+  boundary_enforcement:
+    mode: hybrid
+    source_of_truth: .kairos-core/manifest.yaml
+    rule: .kairos-core/rules/ownership.md
+    assistive_hooks:
+      - .claude/hooks/kairos-code-intel.cjs
+  pre_compaction_digest:
+    mode: native_hook
+    hook: .claude/hooks/kairos-precompact.cjs
+  version_check:
+    mode: native_hook
+    hook: .claude/hooks/kairos-version-check.cjs
+
+protocol:
+  project_context: CLAUDE.md
+  agent_entrypoint: .claude/commands/kairos/agents/kairos.md
+  command_prefix: "*"
+  canonical_sources:
+    constitution: .kairos-core/constitution.md
+    manifest: .kairos-core/manifest.yaml
+    config: .kairos-core/core-config.yaml
+    rules: .kairos-core/rules/
+    instructions: .kairos-core/instructions/
+    tasks: .kairos-core/tasks/
+  session_state:
+    persistence: session_only
+    variables:
+      - chat_active
+      - yolo_active
+      - pre_push_passed
+
 materialize:
   - template: templates/CLAUDE.md
     target: CLAUDE.md

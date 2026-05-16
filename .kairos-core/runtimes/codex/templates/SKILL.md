@@ -14,18 +14,25 @@ Este skill é o ponto de entrada do Kairos no Codex.
 - Targets de runtime (`AGENTS.md`, `.agents/**`, `.codex/**`, `.claude/**`) não
   são fonte de verdade.
 - Não duplique regra, protocolo, persona ou task entre runtimes.
+- O contrato do runtime Codex está em `.kairos-core/runtimes/codex/runtime.yaml`.
+- O mapa de contexto está em `.kairos-core/runtimes/codex/context-map.yaml`.
+- A fronteira framework/instância está em `.kairos-core/runtimes/codex/boundary-policy.yaml`,
+  que aplica o manifesto; ela não redefine ownership.
 - Para qualquer operação Kairos, carregue antes:
   - `.kairos-core/constitution.md`
   - `.kairos-core/manifest.yaml`
   - `.kairos-core/core-config.yaml`
+  - `.kairos-core/runtimes/codex/runtime.yaml`
+  - `.kairos-core/runtimes/codex/context-map.yaml`
+  - `.kairos-core/runtimes/codex/boundary-policy.yaml`
   - `.kairos-core/rules/*.md`
   - arquivos em `devLoadAlwaysFiles`
 
 ## Fase Atual
 
-Este runtime está em beta estrutural. A Fase 1 materializa o contrato
-multi-runtime; a execução fluida de `@kairos` via context loader será completada
-na Fase 2.
+Este runtime está em beta operacional. A continuidade de agente é session-only,
+como no Kairos atual: após `@kairos`, comandos iniciados por `*` pertencem ao
+Kairos até `*exit`, enquanto o contexto da conversa estiver claro.
 
 ## Sintaxe Kairos
 
@@ -36,7 +43,27 @@ Reconheça como intenção Kairos:
 - `*comando` quando houver agente Kairos ativo
 - `kairos ...`
 
-Enquanto o context loader Codex não estiver completo, opere de forma explícita:
-leia os arquivos canônicos necessários antes de responder ou modificar qualquer
-arquivo do framework.
+## Protocolo Operacional
 
+1. Ao detectar intenção Kairos, carregue o contexto declarado no context map.
+2. Para `@kairos`, use a persona em `.claude/commands/kairos/agents/kairos.md`
+   como fonte provisória até canonicalização futura.
+3. Ao executar `*comando`, carregue a task canônica correspondente em
+   `.kairos-core/tasks/` quando ela existir.
+4. Se o usuário enviar `*exit`, encerre o modo Kairos na conversa.
+5. Antes de qualquer escrita de framework, aplique a boundary policy e o
+   manifesto. Se houver ambiguidade, pare e pergunte.
+6. Não crie estado ativo persistente em arquivo. `chat_active`, `yolo_active` e
+   `pre_push_passed` são session-only.
+
+## Escopo Beta
+
+Nesta etapa, priorize comandos read-only de governança:
+
+- `*help`
+- `*status`
+- `*doctor`
+- `*chat`
+
+Comandos de release, push, versionamento, implementação e squads exigem revisão
+explícita antes de serem tratados como suportados no runtime Codex.
