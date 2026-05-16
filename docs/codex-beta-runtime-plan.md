@@ -200,6 +200,9 @@ Fase 1 resolve:
 
 ## Fase 2: Runtime Codex Funcional Para `@kairos`
 
+Status: implementada e enviada para `origin/codex-beta` no commit
+`c620385 Define Codex runtime operational contract`.
+
 Fase 2 deve cobrir:
 
 - Expandir `runtime.yaml` de Claude e Codex com `capabilities`, `protocol` e
@@ -266,7 +269,71 @@ read-only de governança do Claude Code.
 - Hooks são capabilities de runtime. Claude possui hooks nativos; Codex não
   declara paridade de PreCompact nesta fase.
 
-## Fase 3+: Ainda Precisa Detalhar
+## Resultado do Teste da Fase 2
+
+Teste manual em conversa nova do Codex:
+
+```text
+@kairos *help
+@kairos *status
+*doctor
+*chat
+*exit
+```
+
+Resultado:
+
+- `@kairos *help` carregou skill, runtime, context-map, boundary-policy, persona
+  provisória e task canônica.
+- `@kairos *status` leu estado real do repo.
+- `*doctor` sem repetir `@kairos` foi tratado como comando Kairos, validando
+  continuidade `session_context`.
+- `*chat` e `*exit` funcionaram conforme esperado.
+- Nenhum `active-agent.json` foi criado.
+- Nenhum loader executável foi necessário.
+
+Achados fora do escopo da Fase 2:
+
+- `.claude/settings.json` referencia `kairos-powershell-encoding-guard.cjs`,
+  mas o arquivo não existe.
+- `.kairos-core/runtime/cloud-sync.json` indica sync ativo, mas `data/outputs`
+  não existe/não é symlink.
+- `docs/scope.md` está em `devLoadAlwaysFiles`, mas não existe nesta checkout.
+
+Correção aplicada durante o teste:
+
+- `kairos-doctor.md` agora documenta o algoritmo canônico de SHA para blocos
+  mixed, evitando WARN falso em `CLAUDE.md` e `AGENTS.md`.
+
+## Fase 3: Persona Canônica e Runtime-Aware Doctor
+
+Objetivo: remover a última dependência conceitual de `.claude/` como fonte
+provisória da persona `@kairos`, e fazer o diagnóstico do framework entender
+runtimes explicitamente.
+
+Fase 3 deve planejar antes de implementar:
+
+- Onde fica a fonte canônica da persona `@kairos` fora de `.claude/`.
+- Como materializar a versão Claude da persona a partir dessa fonte.
+- Como o runtime Codex consome a mesma fonte sem duplicar persona.
+- Como atualizar `manifest.yaml`, `core-config.yaml` e `runtime.yaml`.
+- Como tornar `kairos-doctor.md` runtime-aware:
+  - validar runtime Claude;
+  - validar runtime Codex;
+  - distinguir checks específicos de runtime de checks canônicos do core.
+- Se o materializer baseado em `runtime.yaml` entra nesta fase ou deve ficar
+  para fase posterior.
+
+Critério de aceite sugerido:
+
+- `.claude/commands/kairos/agents/kairos.md` deixa de ser fonte de verdade e vira
+  target materializado ou entrypoint runtime-specific.
+- Codex não depende mais de `.claude/commands/.../kairos.md` como fonte
+  provisória.
+- `*doctor` reporta claramente checks de core, Claude e Codex.
+- Nenhuma task, rule ou persona é duplicada por runtime.
+
+## Fase 4+: Ainda Precisa Detalhar
 
 Ainda está abstrato e precisa de planejamento separado:
 
