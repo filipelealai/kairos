@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [4.3.1] — 2026-05-15
+
+### Corrigido
+- Remotes git atualizados via git remote set-url: origin → filipelealai/kairos.git, private → filipelealai/kairos-pessoal.git; referências a filipelealweb substituídas por filipelealai em arquivos de framework, docs e histórico
+
+---
+
 ## [4.3.0] — 2026-05-15
 
 ### Mudado
@@ -123,7 +130,7 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 ## [3.9.1] — 2026-04-25
 
 ### Adicionado
-- branch protection habilitada na branch `main` de `filipelealweb/kairos` via `gh api PUT`
+- branch protection habilitada na branch `main` de `filipelealai/kairos` via `gh api PUT`
 
 ---
 

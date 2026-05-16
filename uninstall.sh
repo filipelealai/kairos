@@ -419,7 +419,7 @@ if [[ "$KEEP_ENV" == "true" ]]; then
 fi
 echo ""
 echo "   Para reinstalar: bash install.sh"
-echo "   (ou: curl -fsSL https://raw.githubusercontent.com/filipelealweb/kairos/main/install.sh | bash)"
+echo "   (ou: curl -fsSL https://raw.githubusercontent.com/filipelealai/kairos/main/install.sh | bash)"
 echo ""
 
 # ─── Auto-deleção do script ───────────────────────────────────────────────────

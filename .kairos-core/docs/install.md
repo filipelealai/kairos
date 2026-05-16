@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.15.0
+kairos-version: 4.3.1
 ---
 
 # Instalação e Desinstalação do Kairos
@@ -38,13 +38,13 @@ O Kairos é construído sobre o Claude Code — sem ele, nenhum agente pode ser 
 Execute o instalador via curl (sem precisar de Git):
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/filipelealweb/kairos/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/filipelealai/kairos/main/install.sh | bash
 ```
 
 Ou baixe e execute manualmente:
 
 ```bash
-curl -fsSL -o install-kairos.sh https://raw.githubusercontent.com/filipelealweb/kairos/main/install.sh
+curl -fsSL -o install-kairos.sh https://raw.githubusercontent.com/filipelealai/kairos/main/install.sh
 bash install-kairos.sh
 ```
 
@@ -65,7 +65,7 @@ O instalador vai:
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/filipelealweb/kairos/main/install.ps1" -OutFile "$env:TEMP\install-kairos.ps1"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/filipelealai/kairos/main/install.ps1" -OutFile "$env:TEMP\install-kairos.ps1"
 & "$env:TEMP\install-kairos.ps1"
 ```
 
@@ -271,7 +271,7 @@ Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
 - Sem internet: verifique a conexão
 - Rate limit do GitHub: aguarde alguns minutos
 - Proxy corporativo: configure as variáveis `http_proxy`/`https_proxy`
-- Baixe manualmente em https://github.com/filipelealweb/kairos/releases
+- Baixe manualmente em https://github.com/filipelealai/kairos/releases
 
 ### *doctor reporta arquivos ausentes após update
 

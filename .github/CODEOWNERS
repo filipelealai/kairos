@@ -3,7 +3,7 @@
 # Sintaxe: https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 # Default: todos os arquivos pertencem ao maintainer do Kairos
-* @filipelealweb
+* @filipelealai
 
 # Framework core — arquivos gerenciados pelo manifesto
-/.kairos-core/ @filipelealweb
+/.kairos-core/ @filipelealai

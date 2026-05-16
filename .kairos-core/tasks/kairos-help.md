@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.2.0
+kairos-version: 4.3.1
 task: Kairos Help
 responsavel: "@kairos"
 responsavel_type: agent
@@ -163,7 +163,7 @@ DOCUMENTAÇÃO
 
 ATUALIZAÇÃO E COLABORAÇÃO
   *update               Atualiza o framework Kairos para a versão semver mais recente
-                        publicada em filipelealweb/kairos. Sem necessidade de Git.
+                        publicada em filipelealai/kairos. Sem necessidade de Git.
                         Compara versão local vs remota; se igual, encerra sem ação.
                         Atualiza apenas arquivos do manifesto (owned_files/sections).
                         Preserva todo conteúdo user-owned. Roda *doctor ao final.

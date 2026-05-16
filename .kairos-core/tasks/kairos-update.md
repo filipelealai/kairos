@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.3.0
+kairos-version: 4.3.1
 id: kairos-update
 title: Atualizar o framework Kairos para a versão mais recente
 agent: kairos
@@ -13,7 +13,7 @@ version: 1
 ## Propósito
 
 Atualizar o framework Kairos da instância atual para a versão semver mais recente publicada
-no repositório público (`filipelealweb/kairos`), sem exigir Git instalado.
+no repositório público (`filipelealai/kairos`), sem exigir Git instalado.
 
 Apenas arquivos declarados no `manifest.yaml` (owned_files e owned_sections) são atualizados.
 Conteúdo user-owned é preservado integralmente.
@@ -23,7 +23,7 @@ Conteúdo user-owned é preservado integralmente.
 ## Pré-condições
 
 - `core-config.yaml` existe e tem campo `version`
-- `core-config.yaml` tem campo `update_source` (fallback: `https://github.com/filipelealweb/kairos`)
+- `core-config.yaml` tem campo `update_source` (fallback: `https://github.com/filipelealai/kairos`)
 - Acesso de rede à API GitHub e download de tarball
 
 ---
@@ -33,7 +33,7 @@ Conteúdo user-owned é preservado integralmente.
 ### Passo 1 — Consultar versão remota
 
 ```
-GET https://api.github.com/repos/filipelealweb/kairos/releases/latest
+GET https://api.github.com/repos/filipelealai/kairos/releases/latest
 ```
 
 Extrair campo `tag_name` (ex: `v3.14.0`) → versão remota sem o `v`.
@@ -85,7 +85,7 @@ Revise as modificações antes de atualizar. O update não foi executado.
 
 URL de download:
 ```
-https://github.com/filipelealweb/kairos/archive/refs/tags/v{versão_remota}.tar.gz
+https://github.com/filipelealai/kairos/archive/refs/tags/v{versão_remota}.tar.gz
 ```
 
 Download para pasta temporária local (ex: `/tmp/kairos-update-{versão_remota}/`).

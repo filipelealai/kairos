@@ -11,7 +11,7 @@ O núcleo do Kairos é composto por markdown, YAML e CJS com docs, rules, tasks 
 > **Git é obrigatório para contribuir.** O Kairos funciona sem Git para uso normal (instalação, atualização, trabalho operacional), mas para abrir PRs e contribuir com o framework você precisa do Git instalado.
 
 ```bash
-git clone https://github.com/filipelealweb/kairos
+git clone https://github.com/filipelealai/kairos
 cd kairos
 ```
 
@@ -109,12 +109,12 @@ O Kairos, idealmente, usa dois remotes:
 
 | Remote | Repo | Conteúdo |
 |--------|------|----------|
-| `origin` | `filipelealweb/kairos` (público) ou seu branch fork | Framework puro — apenas artefatos listados no manifesto |
+| `origin` | `filipelealai/kairos` (público) ou seu branch fork | Framework puro — apenas artefatos listados no manifesto |
 | `private` | `{seu-usuario}/kairos-pessoal` (privado) | Instância completa para uso pessoal — framework + squads + dados do usuário |
 
 **Para contribuidores externos:**
 
-1. Fork de `filipelealweb/kairos` (branch `main`)
+1. Fork de `filipelealai/kairos` (branch `main`)
 2. Implemente na sua branch
 3. Abra PR contra `main` do repositório público
 

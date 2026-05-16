@@ -3,12 +3,12 @@
 # Instala o framework Kairos sem necessidade de Git.
 #
 # Uso:
-#   curl -fsSL https://raw.githubusercontent.com/filipelealweb/kairos/main/install.sh | bash
+#   curl -fsSL https://raw.githubusercontent.com/filipelealai/kairos/main/install.sh | bash
 #   ou: bash install.sh
 
 set -euo pipefail
 
-KAIROS_REPO="filipelealweb/kairos"
+KAIROS_REPO="filipelealai/kairos"
 KAIROS_API="https://api.github.com/repos/${KAIROS_REPO}/releases/latest"
 DEFAULT_INSTALL_DIR="${HOME}/kairos"
 

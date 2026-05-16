@@ -1,4 +1,4 @@
-kairos_version: 4.3.0
+kairos_version: 4.3.1
 generated_at: '2026-05-15'
 owned_files:
 - path: .kairos-core/constitution.md
@@ -33,7 +33,7 @@ owned_files:
   sha256: 41e1ef7c965c6cee85dbb6d70232890f96a3f25e4227ffe7b536ca673c0fd79f
 - path: .claude/hooks/kairos-version-check.cjs
   layer: L2
-  sha256: 806b34fbc3d8947e0c82c0ea5abe8a1118d6b0d1610977614b675d0a6525276e
+  sha256: 24e91584576cc21646e27b49b45ce1b545c25dba453116184ffcab678d3f7785
 - path: .kairos-core/data/workers.yaml
   layer: L2
   sha256: 9add36be14b4d1b81dfbf23d858e4ae7dcbaf2600be5a23ae3bc8a9a79842deb
@@ -45,7 +45,7 @@ owned_files:
   sha256: 82c5f7e0d2d4f251a08d1784c7463e83fe38f79c8752f290921f54bef078d656
 - path: .kairos-core/tasks/kairos-help.md
   layer: L2
-  sha256: cae75665c4dd9cbefe192d6826e5c7f6248b48b7c3cc0936e4766eb232c7e5aa
+  sha256: 81fc9cbbdae939e8e9f9c9dfd2e0a2e5bf76d626822f5d97a897b7238ada01ec
 - path: .kairos-core/tasks/kairos-kb.md
   layer: L2
   sha256: b1fc8b5bea931e503b9030cb3da4487d1322bcec0b8086a6957b73e0e8a8797e
@@ -81,7 +81,7 @@ owned_files:
   sha256: a811ea80fc4b69196e62800a65ad431b3f75117c195313ea72aee2d5619df617
 - path: .kairos-core/tasks/kairos-update.md
   layer: L2
-  sha256: 0be75df41eabd39366e4bc1694fedfcd5fe24d60579a916497ac9b36f80552c2
+  sha256: 7c5d0de180878c7f10016f5b5c917d54f18328a236d8388bfd7fe3bb031c4942
 - path: .kairos-core/tasks/kairos-review.md
   layer: L2
   sha256: 6f6e169d4f4da2a3e733cebc729cbde376d468a56d0531f846eeb067f6374a5e
@@ -147,25 +147,25 @@ owned_files:
   sha256: 9f8c83727b2cffc4bdfed0bd1056467182832d76a65ea4900614cf52b713b155
 - path: install.sh
   layer: L2
-  sha256: 2ed6401ecc6aed357c1dc315ab1129c49ed9ef4815c570a729d9bc195bf0595f
+  sha256: 16adc769445195de7cf158f3ea120779f390b1cb08304b6150aa2c54b09e1bf4
 - path: install.ps1
   layer: L2
-  sha256: dbe23decfdfd9061447700bd691192f8ff36876780dd0702fb80bd3b3a11e1c1
+  sha256: 42a13e438bd878bbff4379424854841bb450c2e72dc102d4b0c02068b4c3a78b
 - path: uninstall.sh
   layer: L2
-  sha256: 4c614ef04b85db78bc3f1c0a4d629d4898fb4eeba418208003c4c72bf823db87
+  sha256: 96e5fb0bae0cbe70ee4a3550d5d25d7c5b905174b96c84f4a600a0596d3e2a6e
 - path: uninstall.ps1
   layer: L2
   sha256: 2212c83fe06f359119376940882088d3bea662d88407eed5566507c620d0054a
 - path: .kairos-core/docs/install.md
   layer: L3
-  sha256: 8db23a6c2ac4dd55d011c0fc79c16f5b268b8875a3d85df33b451cc4b1fb65db
+  sha256: c5b0580b67f218529453de5af804178c2c167fc4ca0b3a751779048983e95379
 - path: CHANGELOG.md
   layer: L3
-  sha256: 8f7cbdcca1f48b6c3559ca3f0b3350e12bd0a014357b430753b5e9848dc0c781
+  sha256: 003885c4ce31bf740b633b808311e7d2a38e962dd0548541e5788d950fdde124
 - path: .github/CODEOWNERS
   layer: L3
-  sha256: 096ccae12debac89abd241c98736f3f5993171e9e8a5f2a59c774bc71174b5c4
+  sha256: 1507db7a83cb76a992052a327151a580e1ae8aa2a0caec656be02c15c66b7c09
 - path: .github/OVERVIEW.md
   layer: L3
   sha256: d2c44a9583f6c6b78a95a4bb3d1891fc7de4f804bc6a975259be0217c92494a5
@@ -224,15 +224,15 @@ owned_sections:
   - name: framework-conventions
     start: '<!-- KAIROS-MANAGED-START: framework-conventions -->'
     end: '<!-- KAIROS-MANAGED-END: framework-conventions -->'
-    sha256: e52bb7d27b192263708268719d28a674ab6f4e9ae9030f3386cb3e3ac3dc1865
+    sha256: 2476891e04856b09468200023c532f738289fd0f858db1ab92bdfc9581210573
   - name: agent-system
     start: '<!-- KAIROS-MANAGED-START: agent-system -->'
     end: '<!-- KAIROS-MANAGED-END: agent-system -->'
-    sha256: 2c95f9c95b7a1aa4f23f2f6a9fb7881f3fa2955c79e5cee5a1a96121dfafd88d
+    sha256: 232cb6556338f4fbe9d8ae3ac986fcf13119bce2513a7437a4b9b9e52a6f7b2a
   - name: kairos-core
     start: '<!-- KAIROS-MANAGED-START: kairos-core -->'
     end: '<!-- KAIROS-MANAGED-END: kairos-core -->'
-    sha256: 784f5c24282bcac281e1ac28a21f3c26aeefed2e97a055250749f6f57b5e98b6
+    sha256: a623331e607b85139e3bc0ab4494a68bb3e9aa691c566a67e27ba70b0e719cc3
 - path: .kairos-core/core-config.yaml
   type: yaml_keys
   owned_keys:
@@ -241,9 +241,9 @@ owned_sections:
   - versioning
   sha_method: 'yaml.dump({key: value}, sort_keys=False)'
   sha256_by_key:
-    framework: 14a51f4874b5c58668e56cde5e4e0e9eb1ed2b850a9c5379b5755ce318016d73
-    runtime: ad55b07b13649bc9ef47ed92d15a435e617b66f2c0ece22d1632836c01e2abe6
-    versioning: dfc0513489c8b6c1e3738031c7de30b10e29957b1a718754f5608e5f134b8cee
+    framework: ad6c0f935b1e9b995d9b919bf51f55259193950ad0bb0ce2723ddea64ff8172f
+    runtime: 0bf1dd004cabf147627d46a50c54ad9dae140226a602aeb7dc0d8faf24832eef
+    versioning: 208725cd9d4d1ba534905a5283851c89c61e23c4946ea8200988fd81e2e6cd9b
 - path: .env.example
   type: comment_blocks
   notes: 'Categorias shipped pelo framework (ai-providers, automation, database,
@@ -255,21 +255,21 @@ owned_sections:
     '
   owned_sections:
   - name: framework
-    sha256: 4b19d295a9601e33bd1d4d45064a92a501a4f571c23baee51cbadad3a8de306a
+    sha256: 2cab33a978d39871bfea128ba0b00a2a8a718aea821888430041c083600156d1
   - name: ai-providers
-    sha256: 17cfee75f3eaeeec92aed708ab19c56e94dbe989b2a154f279f59543c72bb5b7
+    sha256: 32415bdeb7e3571d7f741114b51ac1f30b683eaf9a1f4926ac8a8ea34fc1ce83
   - name: automation
-    sha256: e1cdce281e41b87cd4553859c2ba0f041981d0ce21d3f3bdb97235a72e0016a8
+    sha256: 1ff697e63ee01ed4decf6831c5a6a8a11a47f23343b43590630ee3f746a0daf7
   - name: database
-    sha256: cb2ca0630bea560ff1705bde65a956a2dd876d77ef7447e83e09e666c1763765
+    sha256: 8347f452e754090fe60103b063e3117bd5b1e9254e66e9cca2380e3b713cd786
   - name: communication
-    sha256: 8de6a9da32a21204d0a5307c85d3dd8b5c9a80d551c93ea5cabaedda0ab31671
+    sha256: 9fd285ff5f7f75e5ac58d1fa00e4ec56f205a89d9f34e711ef36265f3d8f7bf7
   - name: search
-    sha256: 1161119be8269d27922ff5412463c4be08dff3e95ef2eed2dc85bfaf07a90add
+    sha256: 5ab9981d41238a17d4bc848cf2e57ebe302650894ee56e5e189c3206e08bf48f
   - name: version-control
-    sha256: 94b31d61fc740233083adc1cc4622ceb3b4f99758d006a99cc6bce09c95243b3
+    sha256: 53c0928d555ae86d3e4d9fbddf0c5a488d399beba0db1c0c91af137c3414a217
   - name: project-management
-    sha256: b37d8f0a86ef086a9e420fc7b78540a01ed37340397da6450c9474d6cd3e6f6a
+    sha256: ab5a545ac0e498b90bbcbcc56f60726d35e1287de93559eec6b00df8a4f096c1
 - path: .gitignore
   type: comment_blocks
   notes: 'Regras base de ignore do framework. Regras específicas da instância ficam

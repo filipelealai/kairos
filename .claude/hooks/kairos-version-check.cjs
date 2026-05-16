@@ -21,7 +21,7 @@ const HOOK_TIMEOUT_MS = 8000;
 const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hora
 const CACHE_FILE = '.kairos-core/runtime/version-check.json';
 const CONFIG_FILE = '.kairos-core/core-config.yaml';
-const DEFAULT_REPO = 'filipelealweb/kairos';
+const DEFAULT_REPO = 'filipelealai/kairos';
 
 const fs = require('fs');
 const path = require('path');
@@ -61,7 +61,7 @@ function readUpdateSource(cwd) {
     const content = fs.readFileSync(configPath, 'utf8');
     const match = content.match(/^update_source:\s*['"]?([^\s'"]+)['"]?/m);
     if (match) {
-      // Extrair owner/repo da URL — ex: https://github.com/filipelealweb/kairos
+      // Extrair owner/repo da URL — ex: https://github.com/filipelealai/kairos
       const url = match[1].trim();
       const repoMatch = url.match(/github\.com\/([^/]+\/[^/]+?)(?:\.git)?$/);
       return repoMatch ? repoMatch[1] : DEFAULT_REPO;

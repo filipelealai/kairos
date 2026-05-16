@@ -8,7 +8,7 @@
 #   .\install.ps1
 #
 # Ou via PowerShell (uma linha):
-#   Set-Content "$env:TEMP\kairos.ps1" (Invoke-WebRequest "https://raw.githubusercontent.com/filipelealweb/kairos/main/install.ps1").Content -Encoding UTF8; & "$env:TEMP\kairos.ps1"
+#   Set-Content "$env:TEMP\kairos.ps1" (Invoke-WebRequest "https://raw.githubusercontent.com/filipelealai/kairos/main/install.ps1").Content -Encoding UTF8; & "$env:TEMP\kairos.ps1"
 
 [CmdletBinding()]
 param(
@@ -33,7 +33,7 @@ $OutputEncoding = [System.Text.Encoding]::UTF8
 Set-StrictMode -Version Latest
 $ErrorActionPreference = "Stop"
 
-$KairosRepo   = "filipelealweb/kairos"
+$KairosRepo   = "filipelealai/kairos"
 $KairosApi    = "https://api.github.com/repos/$KairosRepo/releases/latest"
 $DefaultDir   = Join-Path $env:USERPROFILE "kairos"
 

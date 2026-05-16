@@ -4,7 +4,7 @@
 
 Kairos é um framework de orquestração de agentes de IA construído sobre o Claude Code. Organiza o trabalho em **squads** — grupos de agentes especializados que executam domínios específicos — e fornece a infraestrutura de governança, memória, handoffs, workers agendados e ferramentas de desenvolvimento para criar, evoluir e operar esses squads ao longo do tempo.
 
-**Versão atual:** `4.3.0` — ver [CHANGELOG.md](CHANGELOG.md)
+**Versão atual:** `4.3.1` — ver [CHANGELOG.md](CHANGELOG.md)
 
 ---
 
@@ -80,14 +80,14 @@ Exemplos comuns de conteúdo instanciado incluem:
 **Linux / macOS / WSL:**
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/filipelealweb/kairos/main/install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/filipelealai/kairos/main/install.sh | bash
 ```
 
 **Windows (PowerShell):**
 
 ```powershell
 Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/filipelealweb/kairos/main/install.ps1" -OutFile "$env:TEMP\install-kairos.ps1"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/filipelealai/kairos/main/install.ps1" -OutFile "$env:TEMP\install-kairos.ps1"
 & "$env:TEMP\install-kairos.ps1"
 ```
 
@@ -98,7 +98,7 @@ Para instruções completas, troubleshooting e setup de cloud sync, ver [`.kairo
 ### Com Git (contribuidores)
 
 ```bash
-git clone https://github.com/filipelealweb/kairos
+git clone https://github.com/filipelealai/kairos
 cd kairos
 cp .env.example .env
 ```
