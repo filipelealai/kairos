@@ -6,6 +6,13 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [4.4.1] — 2026-05-16
+
+### Corrigido
+- kairos-new-story.md — seção "Após Criar" reescrita para diferenciar executor por tipo (kairos-core vs instance)
+
+---
+
 ## [4.4.0] — 2026-05-16
 
 ### Adicionado

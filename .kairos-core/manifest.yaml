@@ -1,4 +1,4 @@
-kairos_version: 4.4.0
+kairos_version: 4.4.1
 generated_at: '2026-05-16'
 owned_files:
 - path: .kairos-core/constitution.md
@@ -63,13 +63,13 @@ owned_files:
   sha256: b580c7f67f6a4cf035f2dee411c292fb6e4bc9b25c5d71d93b6fb01afc7db333
 - path: .kairos-core/tasks/kairos-implement.md
   layer: L2
-  sha256: 85f3c1ef7762c6438146ff252471970b69879c90ecb4feba0fc02b96c32b9b83
+  sha256: 04b4ff208f755ab5581a5dc9a7d9ab8b01a5bc2db06555c6b02d42b19f321194
 - path: .kairos-core/tasks/kairos-validate-squad.md
   layer: L2
   sha256: 9348af087b44301e292e04f7ea1c6781c962868a0fd32f604d865ac02fc1145e
 - path: .kairos-core/tasks/kairos-new-story.md
   layer: L2
-  sha256: 617459c3fbffcd5f1890be3b406fffe8b0eb609e2ea9c15742fa5b633439c58e
+  sha256: 0a935648808cf886b075ae3f16bb72bb7dacb344d75a8d1e6d4716396e026aee
 - path: .kairos-core/tasks/kairos-prd.md
   layer: L2
   sha256: accdd840df7aa5f9839ffe0743cfeed5eb12f0d1b44a7c0bd50c6cd24dcc547d
@@ -165,7 +165,7 @@ owned_files:
   sha256: 5955ed01fd541543a40fd63a290abdd10d9ba6632e615bfe8a2d9a6f745f2d64
 - path: CHANGELOG.md
   layer: L3
-  sha256: fc8133f19ca13e6d193c64c756e45be08ecc3379135b59bd4dd519cea7293dc7
+  sha256: 31f0a44bc8135db714d605d5863c85f8448157df9ca71dc6483437a28627b44f
 - path: .github/CODEOWNERS
   layer: L3
   sha256: 1507db7a83cb76a992052a327151a580e1ae8aa2a0caec656be02c15c66b7c09

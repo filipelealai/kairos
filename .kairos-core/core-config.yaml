@@ -1,10 +1,11 @@
-version: 4.4.0
+version: 4.4.1
 installedAt: '2026-04-06T00:00:00.000Z'
 updatedAt: '2026-05-16T00:00:00.000Z'
 update_source: https://github.com/filipelealai/kairos
-agents:
-  master: kairos
-  squads: {}
+devLoadAlwaysFiles:
+- .kairos-core/docs/agent-standards.md
+- .kairos-core/docs/data-flow.md
+- docs/scope.md
 framework:
   tasksLocation: .kairos-core/tasks/
   agentsLocation: .kairos-core/agents/
@@ -36,7 +37,5 @@ versioning:
   - MAJOR
   - MINOR
   authority: kairos
-devLoadAlwaysFiles:
-- .kairos-core/docs/agent-standards.md
-- .kairos-core/docs/data-flow.md
-- docs/scope.md
+agents:
+  squads: {}

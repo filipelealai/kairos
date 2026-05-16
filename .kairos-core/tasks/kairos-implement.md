@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.0.0
+kairos-version: 4.4.1
 task: Kairos Implement
 responsavel: "@kairos"
 responsavel_type: agent
@@ -328,6 +328,8 @@ Aguardar resposta:
 
   Próximo: *push (quando quiser commitar) | continuar com outro comando
   ```
+
+  > ⚠️ **Distinção de executor:** ao sugerir próximos passos, nunca recomendar `*implement {id}` sem verificar o tipo da story pendente. Stories `type: kairos-core` são executadas pelo Claude Code plain — indicar `*exit → implementar na conversa principal`. Apenas stories `type: instance` aceitam `*implement`.
 - **Se `n`:** story permanece `In Review` — sem mensagem adicional.
 
 **Para stories `type: kairos-core`:** não exibir o prompt Done. Exibir apenas:

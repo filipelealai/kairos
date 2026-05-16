@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.10.0
+kairos-version: 4.4.1
 task: Kairos New Story
 responsavel: "@kairos"
 responsavel_type: agent
@@ -24,7 +24,6 @@ Checklist:
   - "[ ] Elicitar: estimativa de complexidade (P/M/G)"
   - "[ ] Elicitar: dependências de outras stories"
   - "[ ] Criar arquivo docs/stories/{epic}.{N}.story.md"
-  - "[ ] Atualizar docs/stories/README.md com a nova story"
   - "[ ] Atualizar docs/epics/epic-{N}-*.md com a nova story na tabela"
 ---
 
@@ -213,6 +212,7 @@ e risco do usuário.
 
 ## Após Criar
 
-1. Atualizar `docs/stories/README.md` — adicionar linha na tabela de stories
-2. Atualizar `docs/epics/epic-{N}-*.md` — adicionar story na tabela de stories do epic
-3. Informar ao usuário: "Story {epic}.{N} criada em Draft. Quando pronto para implementar, Claude Code executa — ao concluir, rode `*review {epic}.{N}`."
+1. Atualizar `docs/epics/epic-{N}-*.md` — adicionar story na tabela de stories do epic
+2. Informar ao usuário, com mensagem diferenciada por tipo:
+   - **Se `type: kairos-core`:** "Story {epic}.{N} criada em Draft. Quando pronto para implementar, Claude Code executa — ao concluir, rode `*review {epic}.{N}`."
+   - **Se `type: instance`:** "Story {epic}.{N} criada em Draft. Quando pronto para implementar, rode `*implement {epic}.{N}` (executor: @kairos)."
