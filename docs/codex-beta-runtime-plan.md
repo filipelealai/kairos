@@ -352,6 +352,10 @@ Ainda está abstrato e precisa de planejamento separado:
 - Não duplicar regra, protocolo, persona ou task entre Claude e Codex.
 - Se é comportamento do Kairos, mora no core.
 - Se é formato exigido por runtime, mora em `.kairos-core/runtimes/{runtime}/`.
+- `.kairos-core/instructions/` contém apenas contexto operacional
+  runtime-neutral que todo runtime pode carregar. Não deve conter regra
+  normativa forte (`rules/`), comando (`tasks/`), persona (`agents/`) nem
+  template/casca de runtime (`runtimes/{runtime}/templates/`).
 - Targets materializados não são fonte de verdade.
 - Usuário final não deve sentir `runtimes/` nem precisar sincronizar manualmente.
 - Desenvolvimento do framework pode usar comandos de manutenção, mas eles devem
