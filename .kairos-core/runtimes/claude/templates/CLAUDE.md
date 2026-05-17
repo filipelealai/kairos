@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 5.0.0
+---
+
 <!-- KAIROS-TEMPLATE: CLAUDE.md -->
 <!-- Runtime shell for Claude Code. The content inside managed blocks is sourced
 from canonical Kairos files declared in runtime.yaml and manifest.yaml. -->

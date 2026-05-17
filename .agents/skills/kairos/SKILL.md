@@ -1,4 +1,6 @@
 ---
+kairos-owned: true
+kairos-version: 5.0.0
 name: kairos
 description: Runtime Kairos para Codex. Use quando o usuário invocar @kairos, @agent, *comando em modo Kairos, ou pedir para operar o framework Kairos.
 ---
@@ -47,15 +49,20 @@ Reconheça como intenção Kairos:
 
 1. Ao detectar intenção Kairos, carregue o contexto declarado no context map.
 2. Para `@kairos`, use a persona canônica em `.kairos-core/agents/kairos.md`.
-3. Ao executar `*comando`, carregue a task canônica correspondente em
+3. Na primeira resposta de ativação de `@kairos`, aplique obrigatoriamente o
+   envelope de resposta definido na persona canônica: greeting, papel/status
+   quando exigidos, execução do pedido se houver, e assinatura final. O runtime
+   Codex não redefine o texto desse envelope; apenas obedece à persona.
+   Nenhuma atualização visível do runtime Codex deve sair antes do greeting.
+4. Ao executar `*comando`, carregue a task canônica correspondente em
    `.kairos-core/tasks/` quando ela existir.
-4. Enquanto o modo Kairos estiver ativo, siga a continuidade definida na persona
+5. Enquanto o modo Kairos estiver ativo, siga a continuidade definida na persona
    canônica. Se a intenção parecer ser para o runtime Codex fora do Kairos, peça
    confirmação antes de sair do modo Kairos.
-5. Se o usuário enviar `*exit`, encerre o modo Kairos na conversa.
-6. Antes de qualquer escrita de framework, aplique a boundary policy e o
+6. Se o usuário enviar `*exit`, encerre o modo Kairos na conversa.
+7. Antes de qualquer escrita de framework, aplique a boundary policy e o
    manifesto. Se houver ambiguidade, pare e pergunte.
-7. Não crie estado ativo persistente em arquivo. `chat_active`, `yolo_active` e
+8. Não crie estado ativo persistente em arquivo. `chat_active`, `yolo_active` e
    `pre_push_passed` são session-only.
 
 ## Escopo Beta

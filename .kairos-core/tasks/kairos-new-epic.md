@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.10.0
+kairos-version: 5.0.0
 task: Kairos New Epic
 responsavel: "@kairos"
 responsavel_type: agent

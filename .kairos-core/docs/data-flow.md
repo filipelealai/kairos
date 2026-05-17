@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.15.0
+kairos-version: 5.0.0
 ---
 
 # Fluxo de Dados — Kairos

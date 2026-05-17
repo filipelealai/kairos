@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.12.2
+kairos-version: 5.0.0
 ---
 
 # Output Naming — Padrão Canônico de Nomenclatura

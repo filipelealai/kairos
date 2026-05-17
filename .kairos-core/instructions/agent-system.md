@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 5.0.0
+---
+
 # Sistema de Agentes Kairos
 
 ## Dois Tipos de Agentes
@@ -57,4 +62,3 @@ stories).
 
 Stories em `docs/stories/` = log, histórico e desenvolvimento criados e
 gerenciados pelo Kairos. Outputs operacionais dos agentes = `data/`.
-

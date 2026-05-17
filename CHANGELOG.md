@@ -6,6 +6,14 @@ Formato: [Semver](https://semver.org/). Gerenciado por `@kairos *version`.
 
 ---
 
+## [5.0.0] — 2026-05-17
+
+### A PREENCHER
+- Placeholder temporário do ciclo `codex-beta`. Completar esta entrada quando o
+  port multi-runtime estiver fechado e pronto para release.
+
+---
+
 ## [4.4.1] — 2026-05-16
 
 ### Corrigido

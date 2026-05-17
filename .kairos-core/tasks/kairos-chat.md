@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.3.1
+kairos-version: 5.0.0
 task: Kairos Chat
 responsavel: "@kairos"
 responsavel_type: agent

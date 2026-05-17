@@ -1,35 +1,35 @@
-kairos_version: 4.4.1
+kairos_version: 5.0.0
 generated_at: '2026-05-16'
 owned_files:
 - path: .kairos-core/constitution.md
   layer: L1
-  sha256: 28337d39db6127b32bd18d4f39d2d67c17f439d8ba1d24096592588a768aa47b
+  sha256: 5582909640067fceda1d4dab90e8a95516fc36395f8a376990702eee6b870a99
 - path: .kairos-core/rules/ownership.md
   layer: L1
   role: source
-  sha256: bd9acd42d4f7bd69865c7f4824ba5be388f818e36f26b32838fade6ac6271569
+  sha256: 7407073cbf6f93b270aa79f9c0911686ef4ed7d12bc65311cbf40b916f50939b
 - path: .kairos-core/rules/agent-authority.md
   layer: L1
   role: source
-  sha256: de49653412492a1e83a71d6e10c1f446899502a40976499eccfd23c88a48e1a9
+  sha256: 4ac8fa31d37fe6acb0b40127ac4f2272a4a5c0533ed7fdb1f531d487187299d3
 - path: .kairos-core/rules/framework-layers.md
   layer: L1
   role: source
-  sha256: 34cd2b60664756fadd6d80d419abe67cd66cd90b99b5406260d7a76b9859822c
+  sha256: dd3725f0b671feaa8b81a1022b0646550e18fc7a22fabed35052dab14549a1ee
 - path: .kairos-core/rules/ids-principles.md
   layer: L1
   role: source
-  sha256: 454b7b84dec405e659c123cad15e55bb9ffffecfb318926c876382b7c5ff4a22
+  sha256: 891709657faa667b5038131c3537124ae812c4b19b0e65e710c1ab0b43e0ccbc
 - path: .kairos-core/rules/output-naming.md
   layer: L3
   role: source
-  sha256: c558e66e8fbe400c3691e3d259baba88b887bdc50875a7f6468820e49bb3c4f8
+  sha256: 167302b30181a5c3f2a1e1188a05a4c9a942266b6a1a616c22ee991b6186f1c2
 - path: .claude/rules/ownership.md
   layer: L1
   runtime: claude
   role: materialized_target
   generated_from: .kairos-core/rules/ownership.md
-  sha256: bd9acd42d4f7bd69865c7f4824ba5be388f818e36f26b32838fade6ac6271569
+  sha256: 7407073cbf6f93b270aa79f9c0911686ef4ed7d12bc65311cbf40b916f50939b
 - path: .claude/rules/agent-authority.md
   layer: L1
   runtime: claude
@@ -41,13 +41,13 @@ owned_files:
   runtime: claude
   role: materialized_target
   generated_from: .kairos-core/rules/framework-layers.md
-  sha256: 34cd2b60664756fadd6d80d419abe67cd66cd90b99b5406260d7a76b9859822c
+  sha256: dd3725f0b671feaa8b81a1022b0646550e18fc7a22fabed35052dab14549a1ee
 - path: .claude/rules/ids-principles.md
   layer: L1
   runtime: claude
   role: materialized_target
   generated_from: .kairos-core/rules/ids-principles.md
-  sha256: 454b7b84dec405e659c123cad15e55bb9ffffecfb318926c876382b7c5ff4a22
+  sha256: 891709657faa667b5038131c3537124ae812c4b19b0e65e710c1ab0b43e0ccbc
 - path: .claude/rules/output-naming.md
   layer: L3
   runtime: claude
@@ -60,13 +60,13 @@ owned_files:
 - path: .kairos-core/agents/kairos.md
   layer: L2
   role: source
-  sha256: 613c552aa4d556e05f48ce2585c0904ead2f4e1b3011de4e96f9c9e5068ce457
+  sha256: d29d555980cb954553b69f3f58811f426d1650c0672f6e7b109d40787f50cc7c
 - path: .claude/commands/kairos/agents/kairos.md
   layer: L2
   runtime: claude
   role: materialized_target
   generated_from: .kairos-core/agents/kairos.md
-  sha256: 613c552aa4d556e05f48ce2585c0904ead2f4e1b3011de4e96f9c9e5068ce457
+  sha256: d29d555980cb954553b69f3f58811f426d1650c0672f6e7b109d40787f50cc7c
 - path: .claude/hooks/kairos-code-intel.cjs
   layer: L2
   runtime: claude
@@ -93,10 +93,10 @@ owned_files:
   sha256: 032745c52d0bef8d7e4dba7ea61883bc30f11e18b06ddc8cd194feac44d86cc4
 - path: .kairos-core/tasks/kairos-chat.md
   layer: L2
-  sha256: 44442724db05abae116f90202b34b2bcfac17db93eed06f9d4631b04a99e636c
+  sha256: 55567895da290a9cb43a0a2c50ba19e75508ee1a6d2dbcbf840a4d5ca127a582
 - path: .kairos-core/tasks/kairos-doctor.md
   layer: L2
-  sha256: 9bea4afca3ac6c5fb05ef48f0bca28b369d01829c58a9971b73a370b741c148a
+  sha256: c28d4bc561b0b2830b8fbc5171a210c5ee0eee3a72e92011db3409227e133c66
 - path: .kairos-core/tasks/kairos-help.md
   layer: L2
   sha256: cfda7c31bce399296a0b97de867b064e9d0509c567632c089eda0550c99435cf
@@ -105,10 +105,10 @@ owned_files:
   sha256: b1fc8b5bea931e503b9030cb3da4487d1322bcec0b8086a6957b73e0e8a8797e
 - path: .kairos-core/tasks/kairos-new-epic.md
   layer: L2
-  sha256: 5304904f745a839626366350e79f479819048559cc24554fe9f49f975cf8df07
+  sha256: b18d15fa8853c8a86d8b2205c15e5a7d00e5399918ff45224c7ef15ef71c97c9
 - path: .kairos-core/tasks/kairos-new-squad.md
   layer: L2
-  sha256: c2fec7c3e5886b5148deb724da1613a5885dd5aeca17294529bfccca5e02482e
+  sha256: af9ebca30fcd6e693fc9ff1562702ec8f203022468c49ecfa677792a1ca20279
 - path: .kairos-core/tasks/kairos-update-squad.md
   layer: L2
   sha256: b580c7f67f6a4cf035f2dee411c292fb6e4bc9b25c5d71d93b6fb01afc7db333
@@ -162,13 +162,13 @@ owned_files:
   sha256: 3af1973dfcefe6cec813062b664fa91578b85c2890eb0204e8f84c30d2b5613c
 - path: .kairos-core/templates/agent-template.md
   layer: L2
-  sha256: da5831523fb19e1e068e6d1319f2385f3a15477f53dec2b3845f58e01efe56d0
+  sha256: 1fd577d628d41e335f200149af6740ada6e2e544debede14fa8945ff676d18b4
 - path: .kairos-core/templates/story-template.md
   layer: L2
   sha256: 423fb4ff71062f1859a0d62f17fd9df765083afaadd3f7587ce45352abbf974d
 - path: .kairos-core/templates/squad-template/README.md
   layer: L2
-  sha256: 20c0a480b8fff83c840b06d44c52b5d7fcc008a1ca0ccd1bfc2a30b4d2e7da6d
+  sha256: ea38f4d6a4378b5a72883996cf8b93a63f69bbc990ce8fbbbf8a95bc29caedec
 - path: .kairos-core/templates/squad-template/squad.yaml
   layer: L2
   sha256: 7bb6f85a5c5bd20e1f465c8c7a1e72cfde603b5998e0932c453406d61f6f4272
@@ -181,15 +181,15 @@ owned_files:
 - path: .kairos-core/instructions/framework-conventions.md
   layer: L2
   role: source
-  sha256: c39a243355ab09c17a225c7ae54e42e6fdce2716b12f0062cd9d12573db74de3
+  sha256: a5acb2c0c967811d6b788941a92c03fef8d10adb1f207a8dad9cce6ddc1cfe3c
 - path: .kairos-core/instructions/agent-system.md
   layer: L2
   role: source
-  sha256: a2db08b7fa693181f4acd943becf3018334be2e6f6e28daae0ab2d0930903b32
+  sha256: e2fd855843d44d228d63d8d44f25a70e42e8fecd24a868bda034ff2b99a8228d
 - path: .kairos-core/instructions/core-structure.md
   layer: L2
   role: source
-  sha256: 37fa6ab27d57b15afdbb2c473a4b24f416fa74a41c42594667464d67f46f6a57
+  sha256: 284470dacf8845f5d420fa5d1e3a2475565b077514258db10e06cd669e90471a
 - path: .kairos-core/runtimes/claude/runtime.yaml
   layer: L2
   runtime: claude
@@ -199,7 +199,7 @@ owned_files:
   layer: L2
   runtime: claude
   role: source
-  sha256: 3bfa99a29f039c684f3b46a158a47170ff5d62388c4d875fb6343ca2866358f0
+  sha256: 716192ceb6a3c560022c9e43dab87dbe608ac2b07396b5667c4496ca62bbb7eb
 - path: .kairos-core/runtimes/claude/hooks/kairos-code-intel.cjs
   layer: L2
   runtime: claude
@@ -234,17 +234,17 @@ owned_files:
   layer: L2
   runtime: codex
   role: source
-  sha256: 191bac488f905e90f81734e9289e9255a6b9b9ab63e5c4de2b4b1d63b4bfc471
+  sha256: 377d5a859dd2482033404b69bf741ab92d1e63f14f2e8d38efff82706ae06ad2
 - path: .kairos-core/runtimes/codex/templates/bootloader.md
   layer: L2
   runtime: codex
   role: source
-  sha256: 99283198ec9754030dac195a006238a900996d00f18ad4099aa0f47b988f18fd
+  sha256: 1ed69cc60a8597f4095a2cdf8da5843581e71c1a8e4775b78e0f33348d8a8bda
 - path: .kairos-core/runtimes/codex/templates/SKILL.md
   layer: L2
   runtime: codex
   role: source
-  sha256: bf2288818bfa72b4d3937f0e7a0736bfdf5f6ba9bb5b142adcd3f4f4a8e9e2de
+  sha256: f2e21e346b443ef9eebba69bcf2e7cf80dcf12c7da42cc217f18cfc141579a54
 - path: .kairos-core/runtimes/codex/templates/hooks.json
   layer: L2
   runtime: codex
@@ -255,7 +255,7 @@ owned_files:
   runtime: codex
   role: materialized_target
   generated_from: .kairos-core/runtimes/codex/templates/SKILL.md
-  sha256: bf2288818bfa72b4d3937f0e7a0736bfdf5f6ba9bb5b142adcd3f4f4a8e9e2de
+  sha256: f2e21e346b443ef9eebba69bcf2e7cf80dcf12c7da42cc217f18cfc141579a54
 - path: .codex/hooks.json
   layer: L2
   runtime: codex
@@ -283,24 +283,24 @@ owned_files:
 - path: .kairos-core/rules/agent-handoff.md
   layer: L3
   role: source
-  sha256: 6fa7e77e6cdd80a07554ab6ade34fff3d6b542908b919d44a8fc4b2653653bdf
+  sha256: c588bf0c6261e1051e6be2a4a7cb580021fb38c10eaa05bee77740e15f2204a5
 - path: .kairos-core/rules/story-lifecycle.md
   layer: L3
   role: source
-  sha256: 3d766de9f1d3301006de3525845a40a0bcd0889505acc81bb565a3e59b8251c3
+  sha256: 10e9e980459c44a8c541a889e1d348d08da4b09c43bb81a5e7d7816e4f5cad22
 - path: .kairos-core/rules/external-integrations.md
   layer: L3
   role: source
-  sha256: e1505c45309fdc5e35ae3cf0407bedde104c33a233ebf0d26ab143ccba25e662
+  sha256: 8101898d7729a6ff67bd6e1a37513f6e9b01671e5e0089d17c79292a8c9a4738
 - path: .kairos-core/data/kairos-kb.md
   layer: L3
-  sha256: ca86923b74e6e244146087e074e7b0441774399d73eabeb082ae4d446028d7b6
+  sha256: ee85b0079ad756b8e131996098f4197d489a4db028ee77d8e7ef36e1fbbd63ab
 - path: .kairos-core/docs/agent-standards.md
   layer: L3
-  sha256: 94bc62a75e3cbcf2d0bd1c592172f26c9a06681ad774bd95adae5416639a551c
+  sha256: c43276e3324bb918fc012b758b1dd6774480552db969555a2bea3322b2cfb4c4
 - path: .kairos-core/docs/data-flow.md
   layer: L3
-  sha256: 51c3223b1a2a325006776ec09ded39b720f8e79fbc279ecbfa60dffe458844e2
+  sha256: c0b75601f3efeac216fc11133a10c9c9796709cf0c9d7e5dbf440f4367390f6a
 - path: .kairos-core/docs/scope.md
   layer: L3
   sha256: 17584a4bb1ae10473dcf5b6752dd2d59cc489888f65f8f8a6f667ee8ab8b8b09
@@ -318,10 +318,10 @@ owned_files:
   sha256: 2212c83fe06f359119376940882088d3bea662d88407eed5566507c620d0054a
 - path: .kairos-core/docs/install.md
   layer: L3
-  sha256: 0b32dc2d5c7697dba573baae8eb6b8e2d29b7815fe1540f781574a8958863230
+  sha256: ab16d27ed15f65cf7d26e72ce73eb5ec3aca96685b61e91060c3893d8fd98119
 - path: CHANGELOG.md
   layer: L3
-  sha256: 31f0a44bc8135db714d605d5863c85f8448157df9ca71dc6483437a28627b44f
+  sha256: c73b09a52ac5750d33b6d5fc57544bf0983ac58f2f128aa4e57a79c0fbcb94b8
 - path: .github/CODEOWNERS
   layer: L3
   sha256: 1507db7a83cb76a992052a327151a580e1ae8aa2a0caec656be02c15c66b7c09
@@ -353,7 +353,7 @@ owned_files:
   layer: L3
   runtime: codex
   role: beta_plan
-  sha256: 405694a8a480ab883c52dc245a37619909e5f8ffab06b070d68aa06a56e1c22f
+  sha256: 1c879486485efc77c8559a0a7a16b9c32141389fe71e4f3ad67442ca2833aaa1
 sync_files:
 - path: README.md
   layer: L3

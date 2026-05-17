@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 5.0.0
+---
+
 # Codex Beta Runtime Plan
 
 Este documento registra o plano consolidado da conversa sobre tornar o Kairos
@@ -337,6 +342,25 @@ materializer executável obrigatório:
 - A continuidade do modo Kairos é declarada nos runtimes como
   `all_messages_until_exit`, mas a semântica detalhada mora apenas na persona
   canônica para evitar duplicação.
+
+Fase 3B torna `kairos-doctor.md` runtime-aware sem criar um executor/script novo:
+
+- Os checks passam a ser agrupados em core canônico, runtime Claude, runtime
+  Codex, materialização/ownership, instância/squads e operação local.
+- O doctor valida que `.kairos-core/agents/kairos.md` é a fonte canônica da
+  persona `@kairos`.
+- O doctor valida que `.claude/commands/kairos/agents/kairos.md` é target
+  materializado de `.kairos-core/agents/kairos.md`, não fonte de verdade.
+- O doctor valida que o runtime Codex aponta para `.kairos-core/agents/kairos.md`
+  no `runtime.yaml` e no `context-map.yaml`.
+- A ativação do `@kairos` deve preservar o envelope da persona canônica também
+  no Codex: greeting archetypal, papel/status quando exigidos e assinatura final.
+  Se a ativação vier com comando (`@kairos *doctor`), o comando roda depois do
+  greeting e a resposta fecha com a assinatura; o runtime não redefine o texto,
+  apenas obedece à persona. Nenhuma atualização visível do runtime deve sair
+  antes do greeting.
+- O doctor deixa explícito que squads operacionais no Codex continuam pendentes
+  nesta fase.
 
 Critério de aceite sugerido:
 

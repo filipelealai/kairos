@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 5.0.0
+---
+
 # Kairos — Orquestrador de Agentes
 
 Kairos é um framework de orquestração de agentes de IA. O nome vem do grego
@@ -39,4 +44,3 @@ Este repo contém:
 - Diretrizes de integrações vivem em `.kairos-core/rules/external-integrations.md`
 - Targets de runtime (`.claude/**`, `AGENTS.md`, `.agents/**`, `.codex/**`) não
   são a fonte canônica do comportamento do Kairos
-

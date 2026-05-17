@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 2.0.0
+kairos-version: 5.0.0
 ---
 
 # Integrações Externas — Skills, CLIs, MCPs e APIs

@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 5.0.0
+---
+
 # Estrutura Kairos Core
 
 ```text

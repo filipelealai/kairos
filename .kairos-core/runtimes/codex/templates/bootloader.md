@@ -1,3 +1,8 @@
+---
+kairos-owned: true
+kairos-version: 5.0.0
+---
+
 # Kairos on Codex
 
 Este projeto usa o Kairos como framework de orquestração de agentes.

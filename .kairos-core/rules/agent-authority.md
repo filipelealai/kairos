@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.9.1
+kairos-version: 5.0.0
 ---
 
 # Agent Authority — Matriz de Autoridade

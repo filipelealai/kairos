@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.3.0
+kairos-version: 5.0.0
 ---
 
 # Ownership — Fronteira Framework / Usuário

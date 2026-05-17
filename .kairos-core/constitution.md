@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.2.0
+kairos-version: 5.0.0
 ---
 
 # Constituição do Kairos
