@@ -20,16 +20,18 @@ load_order:
     key: devLoadAlwaysFiles
   agent:
     kairos:
-      persona: .claude/commands/kairos/agents/kairos.md
-      note: Fonte provisória da persona @kairos até canonicalização futura.
+      persona: .kairos-core/agents/kairos.md
+      note: Fonte canônica da persona @kairos.
   command_task:
     pattern: .kairos-core/tasks/kairos-{command}.md
     load_when: "A mensagem resolver para um comando Kairos com task associada."
 
 session_continuity:
   mode: session_context
-  rule: "Após ativação com @kairos, mensagens subsequentes iniciadas por * pertencem ao Kairos até *exit, enquanto o contexto da conversa estiver claro."
-  ambiguity: "Se o contexto estiver ambíguo, pedir reativação explícita com @kairos."
+  source: .kairos-core/agents/kairos.md
+  clear_on: "*exit"
+  rule: "Aplicar a continuidade definida na persona canônica do @kairos."
+  ambiguity: "Se a intenção parecer ser para o runtime Codex fora do Kairos, pedir confirmação antes de sair do modo Kairos."
 
 unsupported_in_phase_2:
   - squads operacionais no Codex

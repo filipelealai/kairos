@@ -5,11 +5,13 @@ description: Runtime Claude Code. Materializa o Kairos nos caminhos esperados pe
 capabilities:
   command_persona:
     mode: native_command
+    source: .kairos-core/agents/kairos.md
     entrypoint: .claude/commands/kairos/agents/kairos.md
   active_agent_continuity:
     mode: session_context
     persistence: session_only
     clear_on: "*exit"
+    scope: all_messages_until_exit
   context_loading:
     mode: native
     via:
@@ -37,11 +39,13 @@ protocol:
     constitution: .kairos-core/constitution.md
     manifest: .kairos-core/manifest.yaml
     config: .kairos-core/core-config.yaml
+    agents: .kairos-core/agents/
     rules: .kairos-core/rules/
     instructions: .kairos-core/instructions/
     tasks: .kairos-core/tasks/
   session_state:
     persistence: session_only
+    active_agent_scope: all_messages_until_exit
     variables:
       - chat_active
       - yolo_active
@@ -92,4 +96,8 @@ materialize:
     type: owned_file
   - source: hooks/kairos-version-check.cjs
     target: .claude/hooks/kairos-version-check.cjs
+    type: owned_file
+
+  - source: ../../agents/kairos.md
+    target: .claude/commands/kairos/agents/kairos.md
     type: owned_file

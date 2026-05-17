@@ -7,7 +7,7 @@
   constitution.md            # Princípios não-negociáveis do framework (L1)
   core-config.yaml           # Configuração central e versão semântica
   manifest.yaml              # Ownership: o que é framework vs. usuário
-  agents/                    # MEMORY.md persistente por agente
+  agents/                    # Personas canônicas do framework e MEMORY.md de agentes
   tasks/                     # Definições de tasks executáveis
   rules/                     # Regras cross-cutting canônicas
   instructions/              # Blocos canônicos de instrução do framework
@@ -21,7 +21,7 @@
   templates/                 # Templates do Kairos para agentes, squads, stories etc.
 
 .claude/                     # Target materializado do runtime Claude
-  commands/kairos/agents/    # Personas no formato esperado pelo Claude Code
+  commands/kairos/agents/    # Targets de personas no formato esperado pelo Claude Code
   rules/                     # Projeção das rules canônicas para Claude Code
   hooks/                     # Hooks do Claude Code
 
@@ -63,4 +63,3 @@ Regras:
 
 Autoridade para versionar: `@kairos *version` (standalone ou via modo
 contribuidor no `*push`).
-

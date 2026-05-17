@@ -15,7 +15,7 @@ owned_files:
 - path: .kairos-core/rules/framework-layers.md
   layer: L1
   role: source
-  sha256: 0aff9004757a48c2b59bff1ca816e61cce5fdecd06a3333ec775e926608f6689
+  sha256: 34cd2b60664756fadd6d80d419abe67cd66cd90b99b5406260d7a76b9859822c
 - path: .kairos-core/rules/ids-principles.md
   layer: L1
   role: source
@@ -41,7 +41,7 @@ owned_files:
   runtime: claude
   role: materialized_target
   generated_from: .kairos-core/rules/framework-layers.md
-  sha256: 0aff9004757a48c2b59bff1ca816e61cce5fdecd06a3333ec775e926608f6689
+  sha256: 34cd2b60664756fadd6d80d419abe67cd66cd90b99b5406260d7a76b9859822c
 - path: .claude/rules/ids-principles.md
   layer: L1
   runtime: claude
@@ -57,11 +57,16 @@ owned_files:
 - path: .kairos-core/manifest.yaml
   layer: L2
   sha256: self-referential
+- path: .kairos-core/agents/kairos.md
+  layer: L2
+  role: source
+  sha256: 613c552aa4d556e05f48ce2585c0904ead2f4e1b3011de4e96f9c9e5068ce457
 - path: .claude/commands/kairos/agents/kairos.md
   layer: L2
   runtime: claude
-  role: runtime_entrypoint
-  sha256: 2f807805a9665716eaf4800b19ba499db56b9701e27ac5935508b43a94f3c331
+  role: materialized_target
+  generated_from: .kairos-core/agents/kairos.md
+  sha256: 613c552aa4d556e05f48ce2585c0904ead2f4e1b3011de4e96f9c9e5068ce457
 - path: .claude/hooks/kairos-code-intel.cjs
   layer: L2
   runtime: claude
@@ -184,12 +189,12 @@ owned_files:
 - path: .kairos-core/instructions/core-structure.md
   layer: L2
   role: source
-  sha256: e8e382d2f21ead9231fd6760f92b2f8f14c27fccffe97a1c13195a57a739829c
+  sha256: 37fa6ab27d57b15afdbb2c473a4b24f416fa74a41c42594667464d67f46f6a57
 - path: .kairos-core/runtimes/claude/runtime.yaml
   layer: L2
   runtime: claude
   role: runtime_recipe
-  sha256: 758286352fb829687a450b16a792a37465cc2b2153d28533bf353eb066358d6c
+  sha256: 42258b5d1624af51f229b4c27fe486dabe64b8e9c13a390eccf23b9e5783a510
 - path: .kairos-core/runtimes/claude/templates/CLAUDE.md
   layer: L2
   runtime: claude
@@ -214,12 +219,12 @@ owned_files:
   layer: L2
   runtime: codex
   role: runtime_recipe
-  sha256: 68f0c9ee99454caac2357fdc6cf325965972c1fbc70221bbd73c4e89cb3d1238
+  sha256: 152a8240fdf21b899616a59c859d6547f3be4fc40534b9411dedede6217bb9ed
 - path: .kairos-core/runtimes/codex/context-map.yaml
   layer: L2
   runtime: codex
   role: runtime_contract
-  sha256: a5cbe159603f043a7b08181defb53b1cce82e1e9c3b51684152b30eb50e641c9
+  sha256: d704446c1e978906463017ca57239d329badddba27cbf65866fb46d0f70273c1
 - path: .kairos-core/runtimes/codex/boundary-policy.yaml
   layer: L2
   runtime: codex
@@ -239,7 +244,7 @@ owned_files:
   layer: L2
   runtime: codex
   role: source
-  sha256: ba4f90273ba1035370205d5768a5ee0152705aec6727ae34cb7731dcd347e5ab
+  sha256: bf2288818bfa72b4d3937f0e7a0736bfdf5f6ba9bb5b142adcd3f4f4a8e9e2de
 - path: .kairos-core/runtimes/codex/templates/hooks.json
   layer: L2
   runtime: codex
@@ -250,7 +255,7 @@ owned_files:
   runtime: codex
   role: materialized_target
   generated_from: .kairos-core/runtimes/codex/templates/SKILL.md
-  sha256: ba4f90273ba1035370205d5768a5ee0152705aec6727ae34cb7731dcd347e5ab
+  sha256: bf2288818bfa72b4d3937f0e7a0736bfdf5f6ba9bb5b142adcd3f4f4a8e9e2de
 - path: .codex/hooks.json
   layer: L2
   runtime: codex
@@ -348,7 +353,7 @@ owned_files:
   layer: L3
   runtime: codex
   role: beta_plan
-  sha256: 96fd03eb96da422847c6fa2ef7c135599a248ed73fc57eb2ff2347886355be74
+  sha256: 405694a8a480ab883c52dc245a37619909e5f8ffab06b070d68aa06a56e1c22f
 sync_files:
 - path: README.md
   layer: L3
@@ -462,8 +467,12 @@ notes: |
     NÃO são framework — vivem em .kairos-core/tasks/ mas são conteúdo do usuário
     por não estarem neste manifesto (default-deny).
 
+  - A persona canônica do @kairos vive em .kairos-core/agents/kairos.md.
+    .claude/commands/kairos/agents/kairos.md é apenas target materializado do
+    runtime Claude.
+
   - Personas de agentes de squad (.claude/commands/kairos/agents/{squad-agent}.md)
-    são user-content. Apenas .claude/commands/kairos/agents/kairos.md é framework.
+    são user-content.
 
   - MEMORY.md em .kairos-core/agents/*/MEMORY.md é SEMPRE user-content
     (memória persistente aprendida) — nunca entra no manifesto.

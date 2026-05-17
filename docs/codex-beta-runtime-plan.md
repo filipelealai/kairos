@@ -229,12 +229,13 @@ O runtime Codex deve carregar explicitamente, via `context-map.yaml`:
 - rules canônicas;
 - instructions canônicas;
 - arquivos em `devLoadAlwaysFiles`;
-- persona do `@kairos` como fonte provisória;
+- persona do `@kairos` como fonte provisória na Fase 2;
 - task canônica do comando.
 
-Continuidade de agente é session-only, como no Kairos atual. Após ativação com
-`@kairos`, comandos iniciados por `*` pertencem ao Kairos até `*exit` enquanto o
-contexto da conversa estiver claro. Não há arquivo `active-agent.json`.
+Continuidade de agente é session-only, como no Kairos atual. A Fase 3A move a
+regra detalhada de continuidade para a persona canônica do `@kairos`; runtimes
+devem apenas apontar para essa fonte e aplicá-la até `*exit`. Não há arquivo
+`active-agent.json`.
 
 PreCompact não é replicado no Codex nesta fase. O Claude declara
 `pre_compaction_digest: native_hook`; o Codex declara `pre_compaction_digest:
@@ -264,8 +265,9 @@ read-only de governança do Claude Code.
 - Codex usa `.kairos-core/rules/`, `.kairos-core/instructions/` e
   `.kairos-core/tasks/` como fontes canônicas. Não usa `.claude/rules/` como
   fonte.
-- A persona `@kairos` ainda é lida de `.claude/commands/kairos/agents/kairos.md`
-  como fonte provisória até canonicalização futura.
+- Na Fase 2, a persona `@kairos` ainda era lida de
+  `.claude/commands/kairos/agents/kairos.md` como fonte provisória. A Fase 3A
+  remove essa dependência.
 - Hooks são capabilities de runtime. Claude possui hooks nativos; Codex não
   declara paridade de PreCompact nesta fase.
 
@@ -283,8 +285,8 @@ Teste manual em conversa nova do Codex:
 
 Resultado:
 
-- `@kairos *help` carregou skill, runtime, context-map, boundary-policy, persona
-  provisória e task canônica.
+- `@kairos *help` carregou skill, runtime, context-map, boundary-policy, a
+  persona provisória da Fase 2 e task canônica.
 - `@kairos *status` leu estado real do repo.
 - `*doctor` sem repetir `@kairos` foi tratado como comando Kairos, validando
   continuidade `session_context`.
@@ -323,6 +325,18 @@ Fase 3 deve planejar antes de implementar:
   - distinguir checks específicos de runtime de checks canônicos do core.
 - Se o materializer baseado em `runtime.yaml` entra nesta fase ou deve ficar
   para fase posterior.
+
+Fase 3A implementa a canonicalização da persona `@kairos` sem criar um
+materializer executável obrigatório:
+
+- `.kairos-core/agents/kairos.md` passa a ser a fonte canônica.
+- `.claude/commands/kairos/agents/kairos.md` passa a ser target materializado do
+  runtime Claude.
+- Codex passa a carregar `.kairos-core/agents/kairos.md` pelo `context-map`.
+- `runtime.yaml` de Claude e Codex declaram a mesma fonte canônica.
+- A continuidade do modo Kairos é declarada nos runtimes como
+  `all_messages_until_exit`, mas a semântica detalhada mora apenas na persona
+  canônica para evitar duplicação.
 
 Critério de aceite sugerido:
 

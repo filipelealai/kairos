@@ -47,7 +47,8 @@ Artefatos de framework que definem como o Kairos funciona. Mudanças via @kairos
 | Artefato | Local | Por que é L2 |
 |----------|-------|--------------|
 | Configuração central | `.kairos-core/core-config.yaml` | Versão, paths, squads registrados |
-| Personas dos agentes | `.claude/commands/kairos/agents/*.md` | Identidade e comportamento dos agentes |
+| Persona canônica do @kairos | `.kairos-core/agents/kairos.md` | Identidade e comportamento do agente de governança |
+| Targets Claude de personas | `.claude/commands/kairos/agents/*.md` | Entrypoints no formato esperado pelo Claude Code |
 | Tasks de governança | `.kairos-core/tasks/kairos-*.md` | Comandos do @kairos |
 | Tasks operacionais | `.kairos-core/tasks/{squad}-*.md` | Comandos dos agentes de squad |
 | Definições de squads | `squads/*/squad.yaml` | Manifesto do squad |

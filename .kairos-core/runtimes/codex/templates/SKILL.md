@@ -31,8 +31,8 @@ Este skill é o ponto de entrada do Kairos no Codex.
 ## Fase Atual
 
 Este runtime está em beta operacional. A continuidade de agente é session-only,
-como no Kairos atual: após `@kairos`, comandos iniciados por `*` pertencem ao
-Kairos até `*exit`, enquanto o contexto da conversa estiver claro.
+como no Kairos atual. Após `@kairos`, aplique a continuidade definida na persona
+canônica até `*exit`.
 
 ## Sintaxe Kairos
 
@@ -46,14 +46,16 @@ Reconheça como intenção Kairos:
 ## Protocolo Operacional
 
 1. Ao detectar intenção Kairos, carregue o contexto declarado no context map.
-2. Para `@kairos`, use a persona em `.claude/commands/kairos/agents/kairos.md`
-   como fonte provisória até canonicalização futura.
+2. Para `@kairos`, use a persona canônica em `.kairos-core/agents/kairos.md`.
 3. Ao executar `*comando`, carregue a task canônica correspondente em
    `.kairos-core/tasks/` quando ela existir.
-4. Se o usuário enviar `*exit`, encerre o modo Kairos na conversa.
-5. Antes de qualquer escrita de framework, aplique a boundary policy e o
+4. Enquanto o modo Kairos estiver ativo, siga a continuidade definida na persona
+   canônica. Se a intenção parecer ser para o runtime Codex fora do Kairos, peça
+   confirmação antes de sair do modo Kairos.
+5. Se o usuário enviar `*exit`, encerre o modo Kairos na conversa.
+6. Antes de qualquer escrita de framework, aplique a boundary policy e o
    manifesto. Se houver ambiguidade, pare e pergunte.
-6. Não crie estado ativo persistente em arquivo. `chat_active`, `yolo_active` e
+7. Não crie estado ativo persistente em arquivo. `chat_active`, `yolo_active` e
    `pre_push_passed` são session-only.
 
 ## Escopo Beta
