@@ -58,15 +58,20 @@ Reconheça como intenção Kairos:
    usuário. Não coloque greeting, proposta, pergunta de confirmação, relatório,
    veredito de task ou assinatura final em commentary/progress updates. Updates
    de progresso podem existir, mas nunca substituem a resposta Kairos final.
-5. Ao executar `*comando`, carregue a task canônica correspondente em
+5. Em comandos Kairos de escrita controlada ou tasks com confirmação/elicitação,
+   não use ferramentas de escrita antes de uma resposta final visível contendo o
+   envelope Kairos e a proposta concreta. A invocação inicial do usuário é
+   contexto, não confirmação. Confirmação só vale depois que o usuário viu a
+   proposta/rascunho/arquivos concretos em uma resposta final Kairos.
+6. Ao executar `*comando`, carregue a task canônica correspondente em
    `.kairos-core/tasks/` quando ela existir.
-6. Enquanto o modo Kairos estiver ativo, siga a continuidade definida na persona
+7. Enquanto o modo Kairos estiver ativo, siga a continuidade definida na persona
    canônica. Se a intenção parecer ser para o runtime Codex fora do Kairos, peça
    confirmação antes de sair do modo Kairos.
-7. Se o usuário enviar `*exit`, encerre o modo Kairos na conversa.
-8. Antes de qualquer escrita de framework, aplique a boundary policy e o
+8. Se o usuário enviar `*exit`, encerre o modo Kairos na conversa.
+9. Antes de qualquer escrita de framework, aplique a boundary policy e o
    manifesto. Se houver ambiguidade, pare e pergunte.
-9. Não crie estado ativo persistente em arquivo. `chat_active`, `yolo_active` e
+10. Não crie estado ativo persistente em arquivo. `chat_active`, `yolo_active` e
    `pre_push_passed` são session-only.
 
 ## Escopo Beta

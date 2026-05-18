@@ -207,6 +207,11 @@ Com base na seleção do usuário (ou no contexto fornecido), faça apenas as pe
 
 ### Passo 3 — Confirmação antes de escrever
 
+O texto inicial usado para chamar `*prd` é contexto da mudança, não aprovação de
+escrita. Mesmo no modo UPDATE com contexto suficiente, apresente a proposta
+concreta em uma resposta Kairos e pare. Só escreva depois de confirmação do
+usuário em uma mensagem posterior.
+
 ```
 Vou fazer as seguintes mudanças em docs/scope.md:
 

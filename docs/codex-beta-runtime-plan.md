@@ -723,6 +723,20 @@ Resultado do teste inicial de `*prd` UPDATE:
   existir, mas nunca substituem a resposta Kairos final.
 - `*prd` UPDATE segue pendente de reteste após essa correção.
 
+Resultado do segundo teste de `*prd` UPDATE:
+
+- Worktree: `/tmp/kairos-codex-prd-retest`, branch `codex-beta-prd-retest`.
+- JSONL: `/home/filipe_leal/.codex/sessions/2026/05/18/rollout-2026-05-18T20-48-27-019e3d7d-ae13-72d0-b8ea-a098f154f68d.jsonl`.
+- A resposta substantiva saiu em `final_answer`, mas só depois da execução.
+- O greeting/header foi adiado até o fim e a escrita foi aplicada sem antes
+  parar em uma resposta final Kairos com proposta/rascunho para confirmação.
+- Correção aplicada: o runtime Codex agora bloqueia ferramentas de escrita em
+  comandos Kairos de escrita controlada antes de uma resposta final com envelope
+  Kairos e proposta concreta; `kairos-prd.md` também explicita que a invocação
+  inicial é contexto, não aprovação.
+- O conteúdo escrito no teste foi coerente e limitado a `docs/scope.md`, mas o
+  protocolo interativo ainda precisa de reteste.
+
 ## Fase 5: Squads no Codex
 
 Squads ficam depois da paridade das tasks do `@kairos`, porque dependem de
