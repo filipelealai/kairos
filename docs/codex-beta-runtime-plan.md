@@ -410,7 +410,7 @@ Inventário realizado:
 | `kairos-pre-push.md` | Read-only candidata com estado de sessão | Não commita, não faz bump e não executa doctor; usa Git para detectar escopo e seta `pre_push_passed` session-only. | Validar em 4C como diagnóstico; confirmar semântica session-only no Codex. |
 | `kairos-architecture.md` | Suporte parcial por modo | Modo framework audita e pode atualizar `.kairos-core/docs/data-flow.md` e `.kairos-core/docs/agent-standards.md`; modo squad escreve `squads/{squad}/workflows/data-flow.md`. | Validar o modo framework como ele existe hoje. Se houver escrita, Codex deve aplicar o mesmo contrato de boundary/ownership do Kairos, não um modo reduzido. |
 | `kairos-new-story.md` | Escrita controlada | Cria `docs/stories/{epic}.{N}.story.md` e atualiza epic. | Fase 4D, depois de contrato de escrita/story. |
-| `kairos-new-epic.md` | Escrita controlada | Cria `docs/epics/epic-{N}-{slug}.md` e atualiza índice de stories. | Fase 4D. |
+| `kairos-new-epic.md` | Escrita controlada | Cria `docs/epics/epic-{N}-{slug}.md`; `docs/stories/README.md` é legado/deprecado. | Fase 4D. |
 | `kairos-prd.md` | Escrita controlada | Cria/atualiza `docs/scope.md` e versiona o próprio PRD. | Fase 4D; também resolver divergência `docs/scope.md` vs `.kairos-core/docs/scope.md`. |
 | `kairos-review.md` | Escrita controlada | Cria gate em `docs/qa/gates/` e pode transicionar story/epic para Done/In Progress. | Fase 4D, antes de `*push`. |
 | `kairos-implement.md` | Escrita controlada / instance-only | Implementa stories `type: instance`, altera arquivos declarados nos ACs e move story para In Review. | Fase 4D após contrato de escrita e confirmação. |
@@ -604,6 +604,33 @@ Resultado do teste inicial de `*new-story`:
   frontmatter, então a proposta/AC ainda citou `kairos-owned: false`. O
   frontmatter foi removido manualmente da fixture e a fonte canônica já foi
   corrigida para manter stories/epics sem frontmatter.
+
+Segundo corte da Fase 4D: `*new-epic`.
+
+Escopo:
+
+- `kairos-new-epic.md` cria `docs/epics/epic-{N}-{slug}.md`.
+- `docs/stories/README.md` é legado/deprecado e não faz parte do contrato.
+- Epics são metadados de instância/projeto, fora do manifesto e sem frontmatter.
+- A task deve aplicar manifesto/boundary do runtime ativo antes de escrever e
+  não assumir Claude Code como executor universal.
+
+Aplicação inicial:
+
+- O contrato de escrita foi explicitado na task canônica.
+- A referência a persona `.claude/commands/...` em exemplo de critério foi
+  substituída por target materializado declarado pelo runtime ativo.
+- O runtime Codex declara `*new-epic` como escrita controlada em validação, ao
+  lado de `*new-story`.
+
+Validação esperada:
+
+- testar em worktree volátil, nunca no branch `codex-beta` limpo;
+- criar um epic novo via `@kairos *new-epic "..."`;
+- confirmar que apenas `docs/epics/` foi alterado;
+- rodar `*pre-push`;
+- opcionalmente acionar o handoff para `*new-story` e validar que o contrato da
+  story continua igual ao teste anterior.
 
 ## Fase 5: Squads no Codex
 

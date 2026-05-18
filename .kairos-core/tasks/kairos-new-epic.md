@@ -10,18 +10,39 @@ Entrada: |
   - titulo: título sugerido (opcional — pode ser elicitado)
 Saida: |
   - docs/epics/epic-{N}-{slug}.md criado
-  - docs/stories/README.md atualizado (tabela de epics)
   - handoff condicional para *new-story (com confirmação do usuário)
 Checklist:
   - "[ ] Detectar próximo número de epic disponível"
   - "[ ] Elicitar campos via perguntas guiadas"
   - "[ ] Confirmar conteúdo completo com usuário"
   - "[ ] Criar docs/epics/epic-{N}-{slug}.md"
-  - "[ ] Atualizar docs/stories/README.md"
   - "[ ] Oferecer handoff condicional para *new-story"
 ---
 
 # *new-epic — Criação de Epic
+
+---
+
+## Contrato de Escrita
+
+`*new-epic` cria conteúdo de instância/projeto:
+
+- cria `docs/epics/epic-{N}-{slug}.md`;
+- não atualiza `docs/stories/README.md` ou qualquer índice legado;
+- não toca arquivos framework-owned nem `owned_sections` do manifesto.
+
+Epics são metadados de planejamento da instância/projeto. Eles permanecem fora
+do manifesto e sem frontmatter; ownership é determinado pelo manifesto/default-deny,
+não por metadado local no arquivo.
+
+Antes de escrever:
+
+1. aplicar o manifesto e a boundary policy do runtime ativo;
+2. confirmar que `docs/epics/` não é target framework-owned;
+3. se o arquivo alvo já existir, parar e pedir confirmação.
+
+Esta task é runtime-neutral. O executor é o runtime Kairos ativo; não assumir
+Claude Code ou Codex como executor universal.
 
 ---
 
@@ -120,7 +141,7 @@ Liste pelo menos 3 itens verificáveis (eles virarão checkboxes).
 Exemplos de bons critérios:
   — Para squads / workers / agentes (uso mais comum):
     - "Squad {nome} scaffoldado com persona, tasks e pipeline documentados"
-    - "Agente {id} com persona .claude/commands/kairos/agents/{id}.md funcional"
+    - "Agente {id} com persona materializada no target declarado pelo runtime ativo"
     - "Worker agendado rodando pipeline completo semanalmente"
     - "Integração com {sistema} configurada e testada end-to-end"
   — Para núcleo do framework (kairos-core):
@@ -258,16 +279,6 @@ Nenhuma story candidata definida ainda.
 
 ---
 
-## Atualizar docs/stories/README.md
-
-Adicionar linha na tabela de epics:
-
-```markdown
-| [{N}](../epics/epic-{N}-{slug}.md) | {Tema} | {Status} |
-```
-
----
-
 ## Handoff condicional para *new-story
 
 Após criar o epic, perguntar:
@@ -285,6 +296,7 @@ Deseja criar a primeira story para este epic agora?
 Se "s":
 - Executar `*new-story` com o epic {N} já pré-selecionado
 - Pular a pergunta "qual epic?" na elicitação do *new-story
+- Seguir o contrato de escrita de `*new-story` antes de criar qualquer story
 
 Se "n":
 - Exibir: `Epic registrado. Para criar stories depois: *new-story "título" (epic {N})`

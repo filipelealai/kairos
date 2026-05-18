@@ -105,7 +105,7 @@ owned_files:
   sha256: b1fc8b5bea931e503b9030cb3da4487d1322bcec0b8086a6957b73e0e8a8797e
 - path: .kairos-core/tasks/kairos-new-epic.md
   layer: L2
-  sha256: b18d15fa8853c8a86d8b2205c15e5a7d00e5399918ff45224c7ef15ef71c97c9
+  sha256: f2e21176140a19039bb04a32d8f01fef761fbf811be5c38d6e0a9afbb1c7c8e0
 - path: .kairos-core/tasks/kairos-new-squad.md
   layer: L2
   sha256: af9ebca30fcd6e693fc9ff1562702ec8f203022468c49ecfa677792a1ca20279
@@ -244,7 +244,7 @@ owned_files:
   layer: L2
   runtime: codex
   role: source
-  sha256: d758f08f5d831067e0a582b607d920d591987f65f7e6298c06d050cc35a8040a
+  sha256: 8e275ca8d3dcdcc318d30e291b04ff8e7bfaf4e64f5c883c27e8d192bba7f700
 - path: .kairos-core/runtimes/codex/templates/hooks.json
   layer: L2
   runtime: codex
@@ -255,7 +255,7 @@ owned_files:
   runtime: codex
   role: materialized_target
   generated_from: .kairos-core/runtimes/codex/templates/SKILL.md
-  sha256: d758f08f5d831067e0a582b607d920d591987f65f7e6298c06d050cc35a8040a
+  sha256: 8e275ca8d3dcdcc318d30e291b04ff8e7bfaf4e64f5c883c27e8d192bba7f700
 - path: .codex/hooks.json
   layer: L2
   runtime: codex
@@ -353,7 +353,7 @@ owned_files:
   layer: L3
   runtime: codex
   role: beta_plan
-  sha256: b47a142743c662eef592146aa343ba1b2e54df7097988adaa535902177c98457
+  sha256: 2f673736b8ca302f9662cf56313a3fdf416e83ebee94fec4693a2877e8224547
 sync_files:
 - path: README.md
   layer: L3
