@@ -396,37 +396,47 @@ Codex:
 - **Squad-dependent**: depende de agentes de squad, memória operacional,
   handoffs ou materialização de squads.
 
-Classificação inicial esperada:
+Inventário realizado:
 
-- Suportada agora:
-  - `kairos-help.md`
-  - `kairos-status.md`
-  - `kairos-doctor.md`
-  - `kairos-chat.md`
-- Read-only candidata:
-  - `kairos-architecture.md`
-  - `kairos-kb.md`
-  - `kairos-validate-story.md`
-  - `kairos-validate-squad.md`
-  - `kairos-pre-push.md` em modo diagnóstico, se não executar push/version bump
-- Escrita controlada:
-  - `kairos-new-story.md`
-  - `kairos-new-epic.md`
-  - `kairos-prd.md`
-  - `kairos-implement.md`
-  - `kairos-review.md`
-- Release/update sensível:
-  - `kairos-push.md`
-  - `kairos-version-bump.md`
-  - `kairos-update.md`
-  - `kairos-configure-cloud.md`
-- Squad-dependent:
-  - `kairos-new-squad.md`
-  - `kairos-update-squad.md`
-  - `kairos-regenerate-squad.md`
-  - `kairos-export-squad.md`
-  - `kairos-import-squad.md`
-  - `kairos-workers.md`
+| Task | Classe Codex | Motivo | Próxima ação |
+| --- | --- | --- | --- |
+| `kairos-help.md` | Suportada agora | Exibe help em tela; sem escrita. | Manter no escopo suportado. |
+| `kairos-status.md` | Suportada agora | Lê config, changelog, stories, epics, gates e handoffs; sem escrita. | Manter no escopo suportado. |
+| `kairos-doctor.md` | Suportada agora | Já está runtime-aware; diagnóstico estrutural sem escrita. | Manter no escopo suportado e expandir checks conforme novas fases. |
+| `kairos-chat.md` | Suportada agora | Session-only; ações concretas exigem confirmação explícita. | Manter no escopo suportado. |
+| `kairos-kb.md` | Suporte parcial | `*kb` e `*kb {tópico}` são read-only; `*kb add` escreve em `.kairos-core/data/kairos-kb.md`. | Validar modos read-only em 4C; tratar `add` como escrita controlada. |
+| `kairos-validate-story.md` | Read-only candidata | Valida documentos de story e exibe relatório; não verifica implementação nem escreve gate. | Validar em 4C. |
+| `kairos-validate-squad.md` | Read-only candidata | Diagnóstico de conteúdo instanciado; lê squad/config/personas/tasks. | Validar em 4C, mesmo antes de squads operacionais. |
+| `kairos-pre-push.md` | Read-only candidata com estado de sessão | Não commita, não faz bump e não executa doctor; usa Git para detectar escopo e seta `pre_push_passed` session-only. | Validar em 4C como diagnóstico; confirmar semântica session-only no Codex. |
+| `kairos-architecture.md` | Suporte parcial por modo | Modo framework audita e pode atualizar `.kairos-core/docs/data-flow.md` e `.kairos-core/docs/agent-standards.md`; modo squad escreve `squads/{squad}/workflows/data-flow.md`. | Validar o modo framework como ele existe hoje. Se houver escrita, Codex deve aplicar o mesmo contrato de boundary/ownership do Kairos, não um modo reduzido. |
+| `kairos-new-story.md` | Escrita controlada | Cria `docs/stories/{epic}.{N}.story.md` e atualiza epic. | Fase 4D, depois de contrato de escrita/story. |
+| `kairos-new-epic.md` | Escrita controlada | Cria `docs/epics/epic-{N}-{slug}.md` e atualiza índice de stories. | Fase 4D. |
+| `kairos-prd.md` | Escrita controlada | Cria/atualiza `docs/scope.md` e versiona o próprio PRD. | Fase 4D; também resolver divergência `docs/scope.md` vs `.kairos-core/docs/scope.md`. |
+| `kairos-review.md` | Escrita controlada | Cria gate em `docs/qa/gates/` e pode transicionar story/epic para Done/In Progress. | Fase 4D, antes de `*push`. |
+| `kairos-implement.md` | Escrita controlada / instance-only | Implementa stories `type: instance`, altera arquivos declarados nos ACs e move story para In Review. | Fase 4D após contrato de escrita e confirmação. |
+| `kairos-version-bump.md` | Release/update sensível | Executa doctor, altera versão, changelog, README, frontmatters e hashes do manifesto. | Fase 4D tardia; exige validação forte de ownership/materialização. |
+| `kairos-push.md` | Release/update sensível | Orquestra versionamento, transição Done, commit e `git push`; depende de `pre_push_passed`. | Fase 6 ou fim da 4D, junto da estratégia `codex-beta`/`push-dual`. |
+| `kairos-update.md` | Release/update sensível | Usa rede/GitHub/tarball e atualiza arquivos owned/owned_sections. | Fase 6; precisa materializer/update multi-runtime. |
+| `kairos-configure-cloud.md` | Release/update sensível / ambiente local | Cria symlink, mexe em `data/outputs`, pode usar rclone/systemd/PowerShell. | Fora do pacote read-only; tratar como operação local com confirmação forte. |
+| `kairos-new-squad.md` | Squad-dependent | Cria árvore `squads/`, personas em `.claude/`, memória, rules, `CLAUDE.md` e story. | Fase 5; precisa canonicalizar personas de squad por runtime. |
+| `kairos-update-squad.md` | Squad-dependent | Cria story de evolução de squad e ainda referencia `CLAUDE.md`. | Fase 5. |
+| `kairos-regenerate-squad.md` | Squad-dependent | Regenera personas em `.claude/commands/...`; Claude-specific hoje. | Fase 5; transformar em materialização por runtime. |
+| `kairos-export-squad.md` | Squad-dependent | Empacota squads, personas `.claude`, env patch e checksum. | Fase 5/6 após definir formato multi-runtime de squad. |
+| `kairos-import-squad.md` | Squad-dependent | Extrai pacote, valida checksum, resolve conflitos, aplica env e registra imports em `CLAUDE.md`. | Fase 5/6 após formato multi-runtime de squad. |
+| `kairos-workers.md` | Squad-dependent com capability Claude-only | Listagem é read-only, mas `new/enable/delete/run` escrevem `workers.yaml`; `schedule` depende de `/schedule` do Claude Code. | Listagem pode ser validada depois; scheduling real exige capability por runtime. |
+
+Resultado da Fase 4A:
+
+- O pacote imediato de 4C deve ser `*kb` read-only, `*validate-story`,
+  `*validate-squad`, `*pre-push` diagnóstico e `*architecture` em modo
+  framework.
+- `*review`, `*implement`, `*new-story`, `*new-epic` e `*prd` ficam para escrita
+  controlada em 4D.
+- Release/update (`*version`, `*push`, `*update`, `*configure-cloud`) não devem
+  ser tratados como suportados no Codex até o contrato de materialização,
+  versionamento e ambiente local estar fechado.
+- Tasks de squad continuam fora do escopo imediato porque ainda assumem personas
+  `.claude`, `CLAUDE.md`, memória operacional e handoffs no formato atual.
 
 ### Fase 4B — Runtime-Neutralização das Tasks
 
@@ -443,17 +453,22 @@ Regras:
   específicas do runtime Claude.
 - Tasks devem continuar stack-agnostic: sem dependência obrigatória de Node,
   Python, CLI externa ou servidor.
+- Tasks com modos mistos devem ter o comportamento canônico explicitado por modo
+  antes de entrarem no pacote 4C. O Codex não deve receber uma versão reduzida da
+  task; se a task escreve no Claude, o Codex deve poder escrever também, desde
+  que aplique o mesmo contrato de boundary/ownership.
 
 ### Fase 4C — Validação do Pacote Read-Only Expandido
 
 Validar em conversa nova do Codex:
 
 ```text
-@kairos *architecture
 @kairos *kb
-@kairos *validate-story
-@kairos *validate-squad
+@kairos *kb decisoes
+@kairos *validate-story all
+@kairos *validate-squad {squad-existente}
 @kairos *pre-push
+@kairos *architecture
 *exit
 ```
 
@@ -461,7 +476,12 @@ Critério de aceite:
 
 - Todas carregam fonte canônica em `.kairos-core/tasks/`.
 - Nenhuma usa `.claude/` como fonte de task, rule ou persona.
-- Nenhuma escreve em framework/instância sem confirmação e boundary explícita.
+- Escritas que já fazem parte da task canônica são permitidas no Codex quando
+  respeitam o mesmo contrato de boundary/ownership aplicado no Claude.
+- `*kb add` não é considerado suportado nesta etapa.
+- `*architecture` deve manter a função canônica. Se atualizar docs no Claude,
+  pode atualizar no Codex sob o mesmo contrato; se esse contrato estiver
+  insuficiente, a correção deve ser na task canônica, não em um modo Codex-only.
 - O envelope de persona do `@kairos` permanece ativo.
 - O resultado no Codex é funcionalmente equivalente ao Claude para o escopo
   suportado.
