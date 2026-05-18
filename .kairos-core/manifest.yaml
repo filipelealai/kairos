@@ -353,7 +353,7 @@ owned_files:
   layer: L3
   runtime: codex
   role: beta_plan
-  sha256: 7dd43085e4e9fcab9de965cf600c56c69b11b313b08a8a565af5b4e2656fa683
+  sha256: 1b91f833fe6cd7cd02baf41cab152b2ce9ad46f95edf17e8801ab9af1943c299
 sync_files:
 - path: README.md
   layer: L3

@@ -695,6 +695,21 @@ Resultado do teste inicial de `*prd`:
   podem ser sugeridos no PRD, mas só podem ser materializados por `*new-epic`,
   `*new-story` ou `*new-squad` em confirmações separadas.
 
+Resultado do reteste de `*prd` CREATE:
+
+- Worktree: `/tmp/kairos-codex-prd-retest`, branch `codex-beta-prd-retest`.
+- JSONL: `/home/filipe_leal/.codex/sessions/2026/05/18/rollout-2026-05-18T20-14-25-019e3d5e-84c3-7ed3-98ad-2612b117f040.jsonl`.
+- `@kairos *prd "Esta instância valida o runtime Codex do Kairos, com foco em
+  planejamento e governança, sem criar epics ou stories nesta etapa."`
+  apresentou rascunho de `docs/scope.md` e aguardou confirmação antes de
+  escrever.
+- Após confirmação, criou apenas `docs/scope.md`.
+- Não criou `docs/epics/`, `docs/stories/` nem `squads/`.
+- `*pre-push` detectou `scope=instance-only` e marcou `pre_push_passed = true`
+  em sessão.
+- O divider `---` separou corretamente o bloco de greeting/header do corpo, sem
+  duplicar assinatura no header.
+
 ## Fase 5: Squads no Codex
 
 Squads ficam depois da paridade das tasks do `@kairos`, porque dependem de
