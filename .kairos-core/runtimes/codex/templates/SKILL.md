@@ -82,5 +82,10 @@ Pacote expandido em validação na Fase 4C:
 - `*pre-push`
 - `*architecture`
 
-Comandos de release, push, versionamento, implementação e squads exigem revisão
-explícita antes de serem tratados como suportados no runtime Codex.
+Escrita controlada em validação na Fase 4D:
+
+- `*new-story`
+
+Comandos de release, push, versionamento, implementação, PRD, epics e squads
+exigem revisão explícita antes de serem tratados como suportados no runtime
+Codex.

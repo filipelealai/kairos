@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 4.4.1
+kairos-version: 5.0.0
 task: Kairos New Story
 responsavel: "@kairos"
 responsavel_type: agent
@@ -28,6 +28,27 @@ Checklist:
 ---
 
 # *new-story — Criar Nova Story de Desenvolvimento do Kairos
+
+## Contrato de Escrita
+
+`*new-story` cria e atualiza conteúdo de instância/projeto:
+
+- cria `docs/stories/{epic}.{N}.story.md`;
+- atualiza o epic correspondente em `docs/epics/epic-{N}-*.md`.
+
+Esses arquivos são user-owned/instance-owned por padrão, mesmo quando a story é
+`type: kairos-core`. Nesse caso, a story descreve uma mudança futura no núcleo do
+Kairos, mas a story em si continua sendo metadado de planejamento da instância.
+
+Antes de escrever:
+
+1. aplicar o manifesto e a boundary policy do runtime ativo;
+2. confirmar que os arquivos-alvo não são `owned_files` nem `owned_sections` do
+   framework;
+3. se houver conflito com conteúdo existente, parar e pedir confirmação.
+
+Esta task é runtime-neutral. O executor é o runtime Kairos ativo; não assumir
+Claude Code ou Codex como executor universal.
 
 ## Modos de Entrada
 
@@ -125,6 +146,10 @@ Esta story modifica o núcleo do framework Kairos. Alterações são livres (Kai
 ### Para `type: instance` (padrão)
 
 ```markdown
+---
+kairos-owned: false
+---
+
 # Story {epic}.{N} — {Título}
 
 **Epic:** {N}
@@ -164,6 +189,10 @@ Esta story modifica o núcleo do framework Kairos. Alterações são livres (Kai
 ### Para `type: kairos-core`
 
 ```markdown
+---
+kairos-owned: false
+---
+
 # Story {epic}.{N} — {Título}
 
 **Epic:** {N}
@@ -214,5 +243,5 @@ e risco do usuário.
 
 1. Atualizar `docs/epics/epic-{N}-*.md` — adicionar story na tabela de stories do epic
 2. Informar ao usuário, com mensagem diferenciada por tipo:
-   - **Se `type: kairos-core`:** "Story {epic}.{N} criada em Draft. Quando pronto para implementar, Claude Code executa — ao concluir, rode `*review {epic}.{N}`."
-   - **Se `type: instance`:** "Story {epic}.{N} criada em Draft. Quando pronto para implementar, rode `*implement {epic}.{N}` (executor: @kairos)."
+   - **Se `type: kairos-core`:** "Story {epic}.{N} criada em Draft. Quando pronto para implementar no runtime ativo, execute `*implement {epic}.{N}` ou encaminhe ao executor apropriado; ao concluir, rode `*review {epic}.{N}`."
+   - **Se `type: instance`:** "Story {epic}.{N} criada em Draft. Quando pronto para implementar, rode `*implement {epic}.{N}` (executor: runtime Kairos ativo)."

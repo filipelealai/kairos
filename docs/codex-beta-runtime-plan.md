@@ -554,6 +554,36 @@ Essas tasks só entram como suportadas no Codex quando o contrato de escrita,
 ownership, versionamento e materialização estiver explícito no doctor e no
 manifesto.
 
+Primeiro corte da Fase 4D: `*new-story`.
+
+Escopo:
+
+- `kairos-new-story.md` é a menor escrita útil para retomar o ciclo operacional
+  normal do Kairos no Codex.
+- A task cria `docs/stories/{epic}.{N}.story.md` e atualiza
+  `docs/epics/epic-{N}-*.md`; ambos são conteúdo de instância/projeto e não
+  entram no manifesto como framework-owned.
+- Stories `type: kairos-core` continuam sendo metadados user-owned que descrevem
+  mudança futura no núcleo; elas não tornam o arquivo da story framework-owned.
+- A task deve aplicar manifesto/boundary do runtime ativo antes de escrever e
+  não assumir Claude Code como executor universal.
+
+Aplicação inicial:
+
+- `kairos-new-story.md` passa para `kairos-version: 5.0.0`.
+- O formato gerado inclui frontmatter `kairos-owned: false`.
+- A mensagem final fala em runtime Kairos ativo/executor apropriado, não em
+  Claude Code como norma.
+- O runtime Codex declara `*new-story` como escrita controlada em validação, sem
+  liberar ainda `*new-epic`, `*prd`, `*implement`, `*push`, release ou squads.
+
+Validação esperada:
+
+- testar em worktree volátil, nunca no branch `codex-beta` limpo;
+- criar uma story nova em epic existente;
+- rodar `*validate-story {id}` e `*pre-push`;
+- confirmar que apenas `docs/stories/` e `docs/epics/` foram alterados.
+
 ## Fase 5: Squads no Codex
 
 Squads ficam depois da paridade das tasks do `@kairos`, porque dependem de
