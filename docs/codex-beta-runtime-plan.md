@@ -632,6 +632,24 @@ Validação esperada:
 - opcionalmente acionar o handoff para `*new-story` e validar que o contrato da
   story continua igual ao teste anterior.
 
+Resultado do teste inicial de `*new-epic`:
+
+- Worktree: `/tmp/kairos-codex-new-epic-test`, branch
+  `codex-beta-new-epic-test`.
+- JSONL: `/home/filipe_leal/.codex/sessions/2026/05/18/rollout-2026-05-18T19-10-13-019e3d23-bf47-7b73-9cf5-434a560da642.jsonl`.
+- `@kairos *new-epic "Validar criação de epic no runtime Codex com escrita
+  controlada"` derivou proposta, aguardou confirmação explícita e só então
+  escreveu.
+- Após confirmação, criou apenas
+  `docs/epics/epic-1-validar-criacao-de-epic-no-runtime-codex-com-escrita-controlada.md`.
+- `*pre-push` detectou `scope=instance-only`, pulou gate de review e marcou
+  `pre_push_passed = true` em sessão.
+- A escrita não criou nem atualizou `docs/stories/README.md`.
+- Finding transversal dos testes: quando uma ativação `@kairos` vinha com comando
+  na mesma mensagem, o Codex tendia a colar o corpo da execução no greeting. A
+  persona canônica agora exige uma linha divisória entre o bloco de
+  greeting/header e o corpo do comando/pedido.
+
 ## Fase 5: Squads no Codex
 
 Squads ficam depois da paridade das tasks do `@kairos`, porque dependem de
