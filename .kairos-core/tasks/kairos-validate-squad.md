@@ -75,8 +75,12 @@ Para cada agente do squad (derivado do Check 1 — IDs extraídos dos paths quan
 
 - [ ] Definição canônica do agente existe em `squads/{squad}/agents/{agent-id}.yaml` ou caminho equivalente declarado em `squad.yaml`
   → ❌ FAIL se ausente
-- [ ] Persona materializada existe no target esperado pelo runtime disponível (Claude atual: `.claude/commands/kairos/agents/{agent-id}.md`; outros runtimes podem declarar targets próprios)
-  → ⚠️ WARN se ausente em runtime ainda não suportado para squads; ❌ FAIL se o runtime corrente declara suporte operacional para squads
+- [ ] Ler o runtime ativo em `.kairos-core/runtimes/{runtime}/runtime.yaml` e verificar `capabilities.squad_agent_materialization`
+  - Se `status: supported` e `target_pattern` estiver definido: verificar a persona materializada no target declarado pelo runtime
+    → ❌ FAIL se ausente
+  - Se `status: unsupported` ou não houver `target_pattern`: não assumir target de outro runtime
+    → ⚠️ WARN uma vez por agente: runtime atual ainda não declara materialização operacional de agentes de squad
+  - Nunca usar `.claude/commands/...` como fallback quando o runtime ativo não for Claude
 
 ---
 
@@ -152,8 +156,8 @@ Check 1 — squad.yaml válido
 
 Check 2 — Personas existem
   ✅ PASS   — definição canônica squads/{squad-name}/agents/{agent-id-1}.yaml
-  ✅ PASS   — target Claude .claude/commands/kairos/agents/{agent-id-1}.md
-  ⚠️  WARN   — target materializado ausente para {agent-id-3} no runtime atual
+  ✅ PASS   — target do runtime claude .claude/commands/kairos/agents/{agent-id-1}.md
+  ⚠️  WARN   — runtime codex ainda não declara materialização operacional para {agent-id-3}
 
 Check 3 — Tasks existem
   ✅ PASS   — squads/{squad-name}/tasks/{task-id-1}.md

@@ -30,6 +30,10 @@ capabilities:
   version_check:
     mode: native_hook
     hook: .claude/hooks/kairos-version-check.cjs
+  squad_agent_materialization:
+    status: supported
+    mode: native_command_targets
+    target_pattern: .claude/commands/kairos/agents/{agent-id}.md
 
 protocol:
   project_context: CLAUDE.md

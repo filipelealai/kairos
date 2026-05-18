@@ -521,6 +521,23 @@ do teste. O branch `codex-beta` deve permanecer com conteúdo de framework limpo
 sem fixtures de instância, para preservar merge limpo com `main` e evitar viés
 instanciado no comportamento do framework.
 
+Resultado do Teste B em worktree volátil:
+
+- Worktree: `/tmp/kairos-codex-beta-test`, branch `codex-beta-volatile-test`.
+- JSONL: `/home/filipe_leal/.codex/sessions/2026/05/18/rollout-2026-05-18T15-55-24-019e3c71-625a-7b11-b9fd-1f8dbaa199e8.jsonl`.
+- `*validate-story all` validou `docs/stories/1.1.story.md` com score 100/100.
+- `*validate-squad codex-test` validou a estrutura mínima com WARNs esperados:
+  squad não registrado no core config, agente sem memória e materialização
+  operacional de squad ainda ausente no runtime Codex.
+- `*pre-push` detectou `scope=instance-only`, pulou gate de review e marcou
+  `pre_push_passed = true` em sessão.
+- `*architecture` reportou arquitetura consistente para fixture volátil, com
+  lacunas esperadas de instância mínima.
+- Finding corrigido após o teste: `*validate-squad` não deve citar
+  `.claude/commands/...` como target ausente quando o runtime ativo é Codex. A
+  task agora consulta `capabilities.squad_agent_materialization` no contrato do
+  runtime ativo.
+
 ### Fase 4D — Escrita Controlada e Release
 
 Depois do pacote read-only, avaliar separadamente:

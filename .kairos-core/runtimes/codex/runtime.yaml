@@ -23,6 +23,10 @@ capabilities:
     fallback: reload_context_on_kairos_intent
   version_check:
     mode: unsupported
+  squad_agent_materialization:
+    status: unsupported
+    mode: pending_phase_5
+    target_pattern: null
 
 protocol:
   project_context: AGENTS.md
