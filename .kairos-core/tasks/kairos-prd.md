@@ -34,6 +34,12 @@ Checklist:
 `*prd` cria ou atualiza apenas `docs/scope.md`, que é o PRD/escopo da
 instância/projeto.
 
+Mesmo que o contexto do usuário mencione epics, stories, squads ou tarefas
+futuras, `*prd` NÃO deve criar nem atualizar `docs/epics/`, `docs/stories/`,
+`squads/` ou qualquer outro arquivo. Esses itens podem aparecer no PRD como
+planejamento sugerido, mas devem ser materializados depois pelas tasks próprias
+(`*new-epic`, `*new-story`, `*new-squad`) e sempre com confirmação separada.
+
 Não confundir:
 
 - `docs/scope.md` — escopo da instância/projeto, user-owned por default-deny;
@@ -46,7 +52,8 @@ Antes de escrever:
 2. confirmar que `docs/scope.md` não é `owned_file` nem `owned_section` do
    framework;
 3. nunca alterar `.kairos-core/docs/scope.md`;
-4. se houver conflito ou ambiguidade entre escopo de instância e escopo do
+4. nunca criar/alterar `docs/epics/`, `docs/stories/` ou `squads/`;
+5. se houver conflito ou ambiguidade entre escopo de instância e escopo do
    framework, parar e pedir confirmação.
 
 Esta task é runtime-neutral. O executor é o runtime Kairos ativo; não assumir
@@ -137,6 +144,10 @@ Ficou bom ou quer ajustar alguma coisa?
 ```
 
 Aguarde confirmação ou ajustes. Só após aprovação → escrever o arquivo.
+
+Se o rascunho sugerir epics, stories ou squads, deixe claro que são apenas
+próximos passos recomendados no texto do PRD. Não crie esses arquivos nesta
+task.
 
 ---
 

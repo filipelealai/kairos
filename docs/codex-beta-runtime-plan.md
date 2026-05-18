@@ -679,6 +679,22 @@ Validação esperada:
 - rodar `*pre-push`;
 - repetir depois em modo update para validar versionamento interno do PRD.
 
+Resultado do teste inicial de `*prd`:
+
+- Worktree: `/tmp/kairos-codex-prd-test`, branch `codex-beta-prd-test`.
+- JSONL: `/home/filipe_leal/.codex/sessions/2026/05/18/rollout-2026-05-18T19-26-31-019e3d32-aa47-7c51-a06b-fbeba5ea7090.jsonl`.
+- `*pre-push` detectou `scope=instance-only` e confirmou que não houve diff em
+  `.kairos-core`, `AGENTS.md`, `.agents` ou `.codex`.
+- Finding 1: o divider anterior usava uma linha longa que quebrava no chat
+  lateral do Codex. A persona canônica agora usa `---` como divisor Markdown.
+- Finding 2: o greeting com comando duplicava a assinatura, uma vez no header e
+  outra no fechamento. A persona canônica agora omite a assinatura no header
+  quando há corpo operacional e mantém a assinatura apenas no fechamento.
+- Finding 3: `*prd` criou também epic e stories, apesar do contrato pretender
+  limitar a escrita a `docs/scope.md`. A task foi reforçada: epics/stories/squads
+  podem ser sugeridos no PRD, mas só podem ser materializados por `*new-epic`,
+  `*new-story` ou `*new-squad` em confirmações separadas.
+
 ## Fase 5: Squads no Codex
 
 Squads ficam depois da paridade das tasks do `@kairos`, porque dependem de

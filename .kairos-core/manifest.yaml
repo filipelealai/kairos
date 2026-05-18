@@ -60,13 +60,13 @@ owned_files:
 - path: .kairos-core/agents/kairos.md
   layer: L2
   role: source
-  sha256: 3a5206b1d73ba8da6035e140fa1a77d58f204d69ea4ef2a61d19a0a01f43a40f
+  sha256: 1974dc97cbb05433f7c362236f984611c5c2b0bf4b54989d05bec00ac39f05f1
 - path: .claude/commands/kairos/agents/kairos.md
   layer: L2
   runtime: claude
   role: materialized_target
   generated_from: .kairos-core/agents/kairos.md
-  sha256: 3a5206b1d73ba8da6035e140fa1a77d58f204d69ea4ef2a61d19a0a01f43a40f
+  sha256: 1974dc97cbb05433f7c362236f984611c5c2b0bf4b54989d05bec00ac39f05f1
 - path: .claude/hooks/kairos-code-intel.cjs
   layer: L2
   runtime: claude
@@ -123,7 +123,7 @@ owned_files:
   sha256: 2fe9e3114dcb27e73010004e5b099bf35cf0fb49fcda00e631ed4edbbe98813b
 - path: .kairos-core/tasks/kairos-prd.md
   layer: L2
-  sha256: 944381229cf00609a1f9345f8afdcfc82da000eabc9c5c17148858679d4d2be8
+  sha256: 8b7e41b969314da71d2454810229177e072d309cefdf305bd711c867707336c2
 - path: .kairos-core/tasks/kairos-pre-push.md
   layer: L2
   sha256: 438329ca7b6a3fc06e679ed3af653a830ca67a3bf4ca77ba943ea1187543d5d4
@@ -353,7 +353,7 @@ owned_files:
   layer: L3
   runtime: codex
   role: beta_plan
-  sha256: 305774d8eca6bd45a40d0ca62ab44bc13c81a4b6979df1854118f50870c4de9d
+  sha256: 7dd43085e4e9fcab9de965cf600c56c69b11b313b08a8a565af5b4e2656fa683
 sync_files:
 - path: README.md
   layer: L3
