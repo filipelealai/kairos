@@ -146,10 +146,6 @@ Esta story modifica o núcleo do framework Kairos. Alterações são livres (Kai
 ### Para `type: instance` (padrão)
 
 ```markdown
----
-kairos-owned: false
----
-
 # Story {epic}.{N} — {Título}
 
 **Epic:** {N}
@@ -189,10 +185,6 @@ kairos-owned: false
 ### Para `type: kairos-core`
 
 ```markdown
----
-kairos-owned: false
----
-
 # Story {epic}.{N} — {Título}
 
 **Epic:** {N}

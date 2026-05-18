@@ -120,7 +120,7 @@ owned_files:
   sha256: dc010a57a9793892fe36b26f49348098f0f5f15a00c8968a3f2ae2ea667cce24
 - path: .kairos-core/tasks/kairos-new-story.md
   layer: L2
-  sha256: dca516f117c749c9d9800bfe6013b02b536e52efd8fd8b870e709001a7c5f161
+  sha256: 2fe9e3114dcb27e73010004e5b099bf35cf0fb49fcda00e631ed4edbbe98813b
 - path: .kairos-core/tasks/kairos-prd.md
   layer: L2
   sha256: accdd840df7aa5f9839ffe0743cfeed5eb12f0d1b44a7c0bd50c6cd24dcc547d
@@ -353,7 +353,7 @@ owned_files:
   layer: L3
   runtime: codex
   role: beta_plan
-  sha256: 8868959c02362cc62f4b1bb7a298376a105ebfd96ea7e8930547b9caaae80285
+  sha256: b47a142743c662eef592146aa343ba1b2e54df7097988adaa535902177c98457
 sync_files:
 - path: README.md
   layer: L3

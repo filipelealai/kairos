@@ -571,7 +571,9 @@ Escopo:
 Aplicação inicial:
 
 - `kairos-new-story.md` passa para `kairos-version: 5.0.0`.
-- O formato gerado inclui frontmatter `kairos-owned: false`.
+- O formato gerado permanece sem frontmatter, igual ao padrão existente de
+  stories/epics; ownership vem do manifesto/default-deny, não de metadado local
+  no arquivo.
 - A mensagem final fala em runtime Kairos ativo/executor apropriado, não em
   Claude Code como norma.
 - O runtime Codex declara `*new-story` como escrita controlada em validação, sem
@@ -583,6 +585,25 @@ Validação esperada:
 - criar uma story nova em epic existente;
 - rodar `*validate-story {id}` e `*pre-push`;
 - confirmar que apenas `docs/stories/` e `docs/epics/` foram alterados.
+
+Resultado do teste inicial de `*new-story`:
+
+- Worktree: `/tmp/kairos-codex-new-story-test`, branch
+  `codex-beta-new-story-test`.
+- JSONL: `/home/filipe_leal/.codex/sessions/2026/05/18/rollout-2026-05-18T16-40-59-019e3c9b-200d-7182-b865-fb10fea3b8e4.jsonl`.
+- `@kairos *new-story "Criar uma story de teste para validar escrita controlada
+  no runtime Codex"` derivou proposta, aguardou confirmação explícita e só então
+  escreveu.
+- Após confirmação, criou `docs/stories/1.1.story.md` e atualizou
+  `docs/epics/epic-1-new-story-runtime-test.md`.
+- `*validate-story all` validou a story criada com score 100/100.
+- `*pre-push` detectou `scope=instance-only`, pulou gate de review e marcou
+  `pre_push_passed = true` em sessão.
+- A escrita ficou limitada a `docs/stories/` e `docs/epics/`.
+- Caveat: o teste foi iniciado a partir do commit anterior à correção de
+  frontmatter, então a proposta/AC ainda citou `kairos-owned: false`. O
+  frontmatter foi removido manualmente da fixture e a fonte canônica já foi
+  corrigida para manter stories/epics sem frontmatter.
 
 ## Fase 5: Squads no Codex
 
