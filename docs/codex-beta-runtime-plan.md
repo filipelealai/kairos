@@ -371,19 +371,142 @@ Critério de aceite sugerido:
 - `*doctor` reporta claramente checks de core, Claude e Codex.
 - Nenhuma task, rule ou persona é duplicada por runtime.
 
-## Fase 4+: Ainda Precisa Detalhar
+## Fase 4: Paridade das Tasks do `@kairos`
 
-Ainda está abstrato e precisa de planejamento separado:
+Antes de squads, o próximo gargalo é a paridade das tasks do próprio `@kairos`.
+O runtime Codex já sabe carregar tasks pelo padrão
+`.kairos-core/tasks/kairos-{command}.md`, mas o escopo testado até agora é
+apenas read-only de governança: `*help`, `*status`, `*doctor` e `*chat`.
+
+Objetivo: expandir o conjunto de tasks Kairos suportadas no Codex sem duplicar
+tasks por runtime e sem transformar Claude Code em norma implícita.
+
+### Fase 4A — Inventário e Classificação
+
+Classificar cada task canônica de `.kairos-core/tasks/` por nível de suporte no
+Codex:
+
+- **Suportada agora**: já testada no Codex sem restrição adicional.
+- **Read-only candidata**: pode funcionar no Codex com ajustes textuais ou de
+  boundary, sem escrita destrutiva.
+- **Escrita controlada**: modifica framework, instância ou stories e exige
+  validação explícita do contrato framework/instância.
+- **Release/update sensível**: toca versionamento, update, push, cloud sync ou
+  estado externo.
+- **Squad-dependent**: depende de agentes de squad, memória operacional,
+  handoffs ou materialização de squads.
+
+Classificação inicial esperada:
+
+- Suportada agora:
+  - `kairos-help.md`
+  - `kairos-status.md`
+  - `kairos-doctor.md`
+  - `kairos-chat.md`
+- Read-only candidata:
+  - `kairos-architecture.md`
+  - `kairos-kb.md`
+  - `kairos-validate-story.md`
+  - `kairos-validate-squad.md`
+  - `kairos-pre-push.md` em modo diagnóstico, se não executar push/version bump
+- Escrita controlada:
+  - `kairos-new-story.md`
+  - `kairos-new-epic.md`
+  - `kairos-prd.md`
+  - `kairos-implement.md`
+  - `kairos-review.md`
+- Release/update sensível:
+  - `kairos-push.md`
+  - `kairos-version-bump.md`
+  - `kairos-update.md`
+  - `kairos-configure-cloud.md`
+- Squad-dependent:
+  - `kairos-new-squad.md`
+  - `kairos-update-squad.md`
+  - `kairos-regenerate-squad.md`
+  - `kairos-export-squad.md`
+  - `kairos-import-squad.md`
+  - `kairos-workers.md`
+
+### Fase 4B — Runtime-Neutralização das Tasks
+
+Ajustar tasks que ainda assumem Claude Code como executor universal.
+
+Regras:
+
+- Se o comportamento é do Kairos, fica na própria task canônica.
+- Se o runtime impõe formato/capability específica, a task deve declarar a
+  diferença como capability de runtime, não criar uma task Codex paralela.
+- Referências a Claude Code devem virar "runtime atual" ou "executor principal"
+  quando forem conceituais.
+- Referências a Claude Code permanecem apenas quando forem realmente
+  específicas do runtime Claude.
+- Tasks devem continuar stack-agnostic: sem dependência obrigatória de Node,
+  Python, CLI externa ou servidor.
+
+### Fase 4C — Validação do Pacote Read-Only Expandido
+
+Validar em conversa nova do Codex:
+
+```text
+@kairos *architecture
+@kairos *kb
+@kairos *validate-story
+@kairos *validate-squad
+@kairos *pre-push
+*exit
+```
+
+Critério de aceite:
+
+- Todas carregam fonte canônica em `.kairos-core/tasks/`.
+- Nenhuma usa `.claude/` como fonte de task, rule ou persona.
+- Nenhuma escreve em framework/instância sem confirmação e boundary explícita.
+- O envelope de persona do `@kairos` permanece ativo.
+- O resultado no Codex é funcionalmente equivalente ao Claude para o escopo
+  suportado.
+
+### Fase 4D — Escrita Controlada e Release
+
+Depois do pacote read-only, avaliar separadamente:
+
+- tasks que criam/alteram stories e epics;
+- tasks que alteram framework ou instância;
+- `*pre-push` completo;
+- `*version-bump`;
+- `*push`;
+- `*update`;
+- `*configure-cloud`.
+
+Essas tasks só entram como suportadas no Codex quando o contrato de escrita,
+ownership, versionamento e materialização estiver explícito no doctor e no
+manifesto.
+
+## Fase 5: Squads no Codex
+
+Squads ficam depois da paridade das tasks do `@kairos`, porque dependem de
+contratos já estabilizados de task, persona, memória e handoff.
+
+Itens ainda a detalhar:
 
 - resolver agentes de squad no Codex;
+- definir fonte canônica das personas de squad;
 - mapear tasks de squad;
 - carregar memória por agente operacional;
 - consumir handoffs;
 - adaptar `new-squad`, `update-squad`, `regenerate-squad`, `export-squad` e
   `import-squad` para runtimes;
-- canonicalizar persona `@kairos` fora de `.claude/`;
+- declarar o que é source canônico e o que é target materializado em Claude e
+  Codex.
+
+## Fase 6+: Materialização e Release Multi-Runtime
+
+Itens posteriores:
+
+- materializer integrado a `install`, `update`, `doctor` e `push`;
 - hardening de boundary policy e drift detection;
-- integração com `push-dual`/`codex-beta`.
+- integração com `push-dual`/`codex-beta`;
+- estratégia final para merge em `main` e cherry-pick para instância pessoal.
 
 ## Regras de Design
 
