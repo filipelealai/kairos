@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.10.0
+kairos-version: 5.0.0
 task: Kairos Architecture
 responsavel: "@kairos"
 responsavel_type: agent
@@ -80,7 +80,7 @@ Verifique cada item com base no que está declarado em `docs/scope.md`:
 
 | Check | Como checar |
 |-------|-------------|
-| Núcleo do framework (markdown + YAML + CJS) | `.claude/hooks/` tem arquivos `.cjs`? `.kairos-core/` existe? |
+| Núcleo do framework (markdown + YAML + capabilities de runtime) | `.kairos-core/` existe? Runtimes declarados em `.kairos-core/runtimes/` têm capabilities/targets presentes conforme `runtime.yaml` e `manifest.yaml`? |
 | Runtime da instância | Declarado em `docs/scope.md` seção Stack → verificar se arquivo de dependências correspondente existe (ex: `package.json` para Node.js, `requirements.txt` para Python). Se runtime não declarado → ⚠️ "Runtime não declarado em docs/scope.md" |
 | Modelo AI (se instância usa AI) | Declarado em `docs/scope.md` seção Stack → buscar o modelo declarado nos scripts e tools da instância |
 | Consistência docs vs código | Se SDK AI declarado em scope.md → verificar se script client equivalente existe; se não declarado → ⚠️ "SDK não declarado em docs/scope.md" |
@@ -95,8 +95,8 @@ Leia `.kairos-core/core-config.yaml`. Para cada agente em `agents.squads.{squad}
 
 | Check | Como checar |
 |-------|-------------|
-| Persona existe | `.claude/commands/kairos/agents/{id}.md` existe? |
-| Definição no squad existe | `squads/{squad}/agents/{id}.md` existe? |
+| Persona existe | Definição canônica do agente existe em `squads/{squad}/agents/{id}.yaml` ou caminho equivalente declarado? Target materializado existe no runtime que declara suporte ao agente? |
+| Definição no squad existe | `squads/{squad}/agents/{id}.yaml` existe? |
 | MEMORY.md existe | `.kairos-core/agents/{id}/MEMORY.md` existe? |
 | Script do agente existe | Ler campo `dependencies.scripts` na persona do agente; se declarado → verificar existência de cada path. Se não declarado → ⚠️ "Scripts não declarados no escopo" |
 | `id` no YAML da persona bate | Campo `agent.id` no persona file bate com o nome do arquivo? |
@@ -162,7 +162,7 @@ Marcar cada item: ✅ consistente / ⚠️ possível divergência / ❌ divergê
 
 ### Passo 4.5 — Verificar Agent Standards
 
-Leia `.kairos-core/docs/agent-standards.md` e compare com as personas existentes em `.claude/commands/kairos/agents/`.
+Leia `.kairos-core/docs/agent-standards.md` e compare com as definições canônicas de agentes e os targets materializados declarados pelos runtimes.
 
 **Descoberta de agentes:** ler `core-config.yaml → agents.squads` para lista de agentes ativos.
 
@@ -173,7 +173,7 @@ Para cada agente ativo, verificar:
 | Formato da persona | Persona tem os campos obrigatórios: `activation-instructions`, `agent`, `persona_profile`, `persona`, `core_principles`, `commands`, `{id}-task`, `dependencies`, `autoClaude`? |
 | Greeting em 6 steps | Persona inclui Step 5.5 (handoff check no greeting)? |
 | `blocking` e `completion` declarados | `{id}-task.blocking` e `{id}-task.completion` presentes na persona? |
-| Definição no squad | `squads/{squad}/agents/{id}.md` existe e tem campos obrigatórios (`agent`, `commands_key`, `outputs`, `handoff_to`)? |
+| Definição no squad | `squads/{squad}/agents/{id}.yaml` existe e tem campos obrigatórios (`agent`, `commands_key`, `outputs`, `handoff_to`)? |
 | MEMORY.md | `.kairos-core/agents/{id}/MEMORY.md` existe e tem seções `Active Patterns`, `Gotchas Técnicos`, `Promotion Candidates`, `Archived`? |
 | Nomenclatura | ID em kebab-case? Nome da persona em PascalCase? Arquivo de task em kebab-case? |
 
@@ -190,7 +190,7 @@ Marcar cada check: ✅ conforme / ⚠️ parcial / ❌ não conforme
 Para cada arquivo em `.kairos-core/docs/`:
 - Links internos (`[texto](../...)`) apontam para arquivos que existem?
 - Caminhos de arquivo mencionados no texto existem no repo?
-- Agentes mencionados existem em `.claude/commands/kairos/agents/`?
+- Agentes mencionados existem nas fontes canônicas de squad e/ou nos targets materializados declarados pelos runtimes?
 
 Marcar: ✅ OK / ⚠️ referência não verificável / ❌ referência quebrada
 
@@ -323,7 +323,7 @@ Para cada agente:
 
 | Item | Onde encontrar |
 |------|----------------|
-| Persona | `.claude/commands/kairos/agents/{id}.md` |
+| Persona | Fonte canônica em `squads/{squad}/agents/{id}.yaml`; target materializado conforme runtime |
 | Script | `src/agents/{id}.*` (ou equivalente na linguagem da instância) |
 | MEMORY.md | `.kairos-core/agents/{id}/MEMORY.md` |
 
@@ -352,7 +352,7 @@ Verificar:
 | Check | O que checar |
 |-------|--------------|
 | Agentes em squad.yaml têm script | Campo `dependencies.scripts` na persona de cada agente — verificar existência dos paths declarados; se não declarado → ⚠️ "Scripts não declarados no escopo" |
-| Agentes em squad.yaml têm persona | `.claude/commands/kairos/agents/{id}.md` existe? |
+| Agentes em squad.yaml têm persona | Fonte canônica do agente existe e, para runtimes com suporte operacional a squads, target materializado existe? |
 | Pipeline documentado | `squads/{squad}/workflows/` tem pelo menos um arquivo de pipeline? |
 | Data-flow cobre todos os agentes | Cada agente do squad aparece no data-flow? |
 | Outputs documentados batem com paths reais | Paths declarados no pipeline existem ou são coerentes com `core-config.yaml`? |

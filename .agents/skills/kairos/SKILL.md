@@ -74,5 +74,13 @@ Nesta etapa, priorize comandos read-only de governança:
 - `*doctor`
 - `*chat`
 
+Pacote expandido em validação na Fase 4C:
+
+- `*kb` e `*kb {tópico}` (read-only; `*kb add` continua escrita controlada)
+- `*validate-story`
+- `*validate-squad`
+- `*pre-push`
+- `*architecture`
+
 Comandos de release, push, versionamento, implementação e squads exigem revisão
 explícita antes de serem tratados como suportados no runtime Codex.

@@ -90,7 +90,7 @@ owned_files:
   sha256: 9add36be14b4d1b81dfbf23d858e4ae7dcbaf2600be5a23ae3bc8a9a79842deb
 - path: .kairos-core/tasks/kairos-architecture.md
   layer: L2
-  sha256: 032745c52d0bef8d7e4dba7ea61883bc30f11e18b06ddc8cd194feac44d86cc4
+  sha256: 2f0b2a34e47a01d1733f42aa42d4d88dbb564d272f0b2d20edaf931e601c78ab
 - path: .kairos-core/tasks/kairos-chat.md
   layer: L2
   sha256: 55567895da290a9cb43a0a2c50ba19e75508ee1a6d2dbcbf840a4d5ca127a582
@@ -117,7 +117,7 @@ owned_files:
   sha256: 04b4ff208f755ab5581a5dc9a7d9ab8b01a5bc2db06555c6b02d42b19f321194
 - path: .kairos-core/tasks/kairos-validate-squad.md
   layer: L2
-  sha256: 9348af087b44301e292e04f7ea1c6781c962868a0fd32f604d865ac02fc1145e
+  sha256: ad3ffefbc6d82a62de49060d9c84d13f562047b087144f1a3e68196d9ebbed37
 - path: .kairos-core/tasks/kairos-new-story.md
   layer: L2
   sha256: 0a935648808cf886b075ae3f16bb72bb7dacb344d75a8d1e6d4716396e026aee
@@ -144,7 +144,7 @@ owned_files:
   sha256: 8af56621e87804e0a5c1ba92bd083396cf5d21f9ca21ddaa2209695d02e3faf2
 - path: .kairos-core/tasks/kairos-validate-story.md
   layer: L2
-  sha256: 99398d070c9c927bb44ffe7d32a2885263732c823ce97dfcb5c03df2996e1088
+  sha256: 096bc771bd60993e1003576897c29f20722646efb8f748712097c5747f2afc9f
 - path: .kairos-core/tasks/kairos-version-bump.md
   layer: L2
   sha256: 80391a2a2eed9f6cb08cfc3d34a4b524941de016c1b55eaa22f724df4fbae459
@@ -239,12 +239,12 @@ owned_files:
   layer: L2
   runtime: codex
   role: source
-  sha256: 1ed69cc60a8597f4095a2cdf8da5843581e71c1a8e4775b78e0f33348d8a8bda
+  sha256: fdc78f689064973557f9a5dcc1454652e367bf786532485e2275b00b9cade960
 - path: .kairos-core/runtimes/codex/templates/SKILL.md
   layer: L2
   runtime: codex
   role: source
-  sha256: f2e21e346b443ef9eebba69bcf2e7cf80dcf12c7da42cc217f18cfc141579a54
+  sha256: d4d62e86d1ddedce79f29b8809807e44dcc03e2d39948951e4e041d46c0b09b1
 - path: .kairos-core/runtimes/codex/templates/hooks.json
   layer: L2
   runtime: codex
@@ -255,7 +255,7 @@ owned_files:
   runtime: codex
   role: materialized_target
   generated_from: .kairos-core/runtimes/codex/templates/SKILL.md
-  sha256: f2e21e346b443ef9eebba69bcf2e7cf80dcf12c7da42cc217f18cfc141579a54
+  sha256: d4d62e86d1ddedce79f29b8809807e44dcc03e2d39948951e4e041d46c0b09b1
 - path: .codex/hooks.json
   layer: L2
   runtime: codex
@@ -353,7 +353,7 @@ owned_files:
   layer: L3
   runtime: codex
   role: beta_plan
-  sha256: 5c2b2ddb947689b4663c782960372d216f97ab65b62938bf4bc4d0ec2a7a8c28
+  sha256: 34af8d3922c5253f7d431ea243c0df20cd9f7055f7921fb83ac23b65438cf054
 sync_files:
 - path: README.md
   layer: L3
@@ -415,7 +415,7 @@ owned_sections:
     start: '<!-- KAIROS-MANAGED-START: kairos-codex-bootloader -->'
     end: '<!-- KAIROS-MANAGED-END: kairos-codex-bootloader -->'
     generated_from: .kairos-core/runtimes/codex/templates/bootloader.md
-    sha256: a4b04596511b364a0dfbd5fbbc75c5f153ebf83f9037fe7ff3496c75059c4f8e
+    sha256: 64ffafcc9a857d6acd1c0dc4a785993cbd7cce63b6c7737fdd27f2964306f3af
 - path: .kairos-core/core-config.yaml
   type: yaml_keys
   owned_keys:

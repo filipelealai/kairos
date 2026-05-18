@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.3.1
+kairos-version: 5.0.0
 task: Kairos Validate Story
 responsavel: "@kairos"
 responsavel_type: agent
@@ -231,7 +231,7 @@ Inconsistência de ID → ❌ FALHA.
 
 - Epic file referenciado existe? (`docs/epics/epic-{N}-*.md`)
 - Arquivos listados em `## Dependências` existem?
-- Tasks ou agentes mencionados no corpo existem em `.kairos-core/tasks/` ou `.claude/commands/kairos/agents/`?
+- Tasks ou agentes mencionados no corpo existem nas fontes canônicas do Kairos (`.kairos-core/tasks/`, `.kairos-core/agents/`) ou em targets materializados declarados pelo runtime ativo?
 
 Referência quebrada a arquivo obrigatório → ❌ FALHA.
 Menção informal que não pode ser verificada estaticamente → ignorar.
@@ -322,7 +322,7 @@ Score: {N}/100
 ✅ STORY VÁLIDA — {story_id}
 
 A story está bem formada e pronta para execução.
-Próximo passo: Claude Code implementa → move status para "In Review" → *review {story_id}
+Próximo passo: executor principal/runtime atual implementa → move status para "In Review" → *review {story_id}
 ```
 
 **Se RESSALVA:**

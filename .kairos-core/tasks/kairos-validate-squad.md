@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.10.0
+kairos-version: 5.0.0
 id: kairos-validate-squad
 title: Validação de Coerência de Squad
 agent: kairos
@@ -71,10 +71,12 @@ Verificar `squads/{squad}/squad.yaml`:
 
 ### Check 2 — Personas existem
 
-Para cada agente do squad (derivado do Check 1 — IDs extraídos dos paths quando necessário, ex: `agents/campaign-analyst.md` → `campaign-analyst`):
+Para cada agente do squad (derivado do Check 1 — IDs extraídos dos paths quando necessário, ex: `agents/campaign-analyst.yaml` → `campaign-analyst`):
 
-- [ ] Persona existe em `.claude/commands/kairos/agents/{agent-id}.md`
-  → ❌ FAIL se ausente (agente sem persona não pode ser ativado)
+- [ ] Definição canônica do agente existe em `squads/{squad}/agents/{agent-id}.yaml` ou caminho equivalente declarado em `squad.yaml`
+  → ❌ FAIL se ausente
+- [ ] Persona materializada existe no target esperado pelo runtime disponível (Claude atual: `.claude/commands/kairos/agents/{agent-id}.md`; outros runtimes podem declarar targets próprios)
+  → ⚠️ WARN se ausente em runtime ainda não suportado para squads; ❌ FAIL se o runtime corrente declara suporte operacional para squads
 
 ---
 
@@ -149,9 +151,9 @@ Check 1 — squad.yaml válido
   ✅ PASS   — status encontrado em core-config.yaml: active
 
 Check 2 — Personas existem
-  ✅ PASS   — .claude/commands/kairos/agents/{agent-id-1}.md
-  ✅ PASS   — .claude/commands/kairos/agents/{agent-id-2}.md
-  ⚠️  WARN   — .claude/commands/kairos/agents/{agent-id-3}.md: arquivo ausente
+  ✅ PASS   — definição canônica squads/{squad-name}/agents/{agent-id-1}.yaml
+  ✅ PASS   — target Claude .claude/commands/kairos/agents/{agent-id-1}.md
+  ⚠️  WARN   — target materializado ausente para {agent-id-3} no runtime atual
 
 Check 3 — Tasks existem
   ✅ PASS   — squads/{squad-name}/tasks/{task-id-1}.md
@@ -176,6 +178,6 @@ Ações recomendadas:
   ⚠️  Criar tasks ausentes em squads/{squad-name}/tasks/:
      • {task-id-2}.md
      • {task-id-3}.md
-  ⚠️  Criar persona ausente: .claude/commands/kairos/agents/{agent-id-3}.md
+  ⚠️  Materializar persona ausente para {agent-id-3} no runtime alvo
   ⚠️  Criar MEMORY.md ausente: .kairos-core/agents/{agent-id-3}/MEMORY.md
 ```

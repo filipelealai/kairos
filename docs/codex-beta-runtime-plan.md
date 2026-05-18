@@ -458,7 +458,19 @@ Regras:
   task; se a task escreve no Claude, o Codex deve poder escrever também, desde
   que aplique o mesmo contrato de boundary/ownership.
 
-### Fase 4C — Validação do Pacote Read-Only Expandido
+Fase 4B aplicada:
+
+- `kairos-validate-story.md`: removeu "Claude Code" como executor genérico e
+  passou a validar agentes contra fontes canônicas ou targets materializados do
+  runtime ativo.
+- `kairos-validate-squad.md`: deixou de tratar `.claude/commands/...` como a
+  única forma de persona; agora distingue definição canônica de agente e target
+  materializado por runtime.
+- `kairos-architecture.md`: deixou de tratar hooks/personas `.claude` como
+  núcleo universal e passou a consultar capabilities e targets declarados pelos
+  runtimes.
+
+### Fase 4C — Validação do Pacote Expandido
 
 Validar em conversa nova do Codex:
 
@@ -485,6 +497,29 @@ Critério de aceite:
 - O envelope de persona do `@kairos` permanece ativo.
 - O resultado no Codex é funcionalmente equivalente ao Claude para o escopo
   suportado.
+
+Resultado do Teste A em checkout sem instância:
+
+- `*kb`, `*kb decisoes`, `*validate-story all`, `*pre-push`, `*architecture` e
+  `*exit` executaram sem quebrar no checkout sem `docs/stories/`, `squads/` ou
+  `docs/scope.md`.
+- A continuidade `@kairos` funcionou sem repetir `@kairos`.
+- `*validate-story all` encerrou corretamente por ausência de stories.
+- `*pre-push` detectou `scope=framework`, não exigiu gate por ausência de
+  stories In Review e marcou `pre_push_passed = true` em sessão.
+- `*architecture` reportou ressalvas coerentes: ausência de `docs/scope.md`,
+  docs ainda parcialmente Claude-centric e ausência de ADR log.
+- Falha encontrada: o Codex enviou preâmbulos visíveis antes do greeting inicial
+  do `@kairos`. Correção aplicada no bootloader do Codex: em ativação `@kairos`,
+  a primeira mensagem visível deve ser o greeting da persona canônica.
+- Reteste da ativação inicial confirmou que o greeting foi corrigido.
+
+Teste B não deve ser feito no branch `codex-beta` limpo. Para validar operação
+real com stories/squads/scope, criar uma cópia temporária ou worktree descartável
+do `codex-beta`, instanciar conteúdo mínimo apenas nessa cópia e descartar depois
+do teste. O branch `codex-beta` deve permanecer com conteúdo de framework limpo,
+sem fixtures de instância, para preservar merge limpo com `main` e evitar viés
+instanciado no comportamento do framework.
 
 ### Fase 4D — Escrita Controlada e Release
 
