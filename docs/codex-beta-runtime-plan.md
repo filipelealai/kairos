@@ -411,7 +411,7 @@ Inventário realizado:
 | `kairos-architecture.md` | Suporte parcial por modo | Modo framework audita e pode atualizar `.kairos-core/docs/data-flow.md` e `.kairos-core/docs/agent-standards.md`; modo squad escreve `squads/{squad}/workflows/data-flow.md`. | Validar o modo framework como ele existe hoje. Se houver escrita, Codex deve aplicar o mesmo contrato de boundary/ownership do Kairos, não um modo reduzido. |
 | `kairos-new-story.md` | Escrita controlada | Cria `docs/stories/{epic}.{N}.story.md` e atualiza epic. | Fase 4D, depois de contrato de escrita/story. |
 | `kairos-new-epic.md` | Escrita controlada | Cria `docs/epics/epic-{N}-{slug}.md`; `docs/stories/README.md` é legado/deprecado. | Fase 4D. |
-| `kairos-prd.md` | Escrita controlada | Cria/atualiza `docs/scope.md` e versiona o próprio PRD. | Fase 4D; também resolver divergência `docs/scope.md` vs `.kairos-core/docs/scope.md`. |
+| `kairos-prd.md` | Escrita controlada | Cria/atualiza `docs/scope.md`; `.kairos-core/docs/scope.md` é documentação do framework e fica fora da task. | Fase 4D. |
 | `kairos-review.md` | Escrita controlada | Cria gate em `docs/qa/gates/` e pode transicionar story/epic para Done/In Progress. | Fase 4D, antes de `*push`. |
 | `kairos-implement.md` | Escrita controlada / instance-only | Implementa stories `type: instance`, altera arquivos declarados nos ACs e move story para In Review. | Fase 4D após contrato de escrita e confirmação. |
 | `kairos-version-bump.md` | Release/update sensível | Executa doctor, altera versão, changelog, README, frontmatters e hashes do manifesto. | Fase 4D tardia; exige validação forte de ownership/materialização. |
@@ -649,6 +649,35 @@ Resultado do teste inicial de `*new-epic`:
   na mesma mensagem, o Codex tendia a colar o corpo da execução no greeting. A
   persona canônica agora exige uma linha divisória entre o bloco de
   greeting/header e o corpo do comando/pedido.
+
+Terceiro corte da Fase 4D: `*prd`.
+
+Escopo:
+
+- `kairos-prd.md` cria ou atualiza apenas `docs/scope.md`.
+- `docs/scope.md` é PRD/escopo da instância/projeto, user-owned por
+  default-deny.
+- `.kairos-core/docs/scope.md` é documentação do escopo do framework e não deve
+  ser tocado por `*prd`.
+- O arquivo gerado permanece sem frontmatter.
+- A task deve aplicar manifesto/boundary do runtime ativo antes de escrever e
+  não assumir Claude Code como executor universal.
+
+Aplicação inicial:
+
+- `kairos-prd.md` passa para `kairos-version: 5.0.0`.
+- O contrato de escrita separa explicitamente `docs/scope.md` de
+  `.kairos-core/docs/scope.md`.
+- O runtime Codex declara `*prd` como escrita controlada em validação, ao lado de
+  `*new-story` e `*new-epic`.
+
+Validação esperada:
+
+- testar em worktree volátil, nunca no branch `codex-beta` limpo;
+- criar `docs/scope.md` via `@kairos *prd "..."`
+- confirmar que apenas `docs/scope.md` foi criado/alterado;
+- rodar `*pre-push`;
+- repetir depois em modo update para validar versionamento interno do PRD.
 
 ## Fase 5: Squads no Codex
 

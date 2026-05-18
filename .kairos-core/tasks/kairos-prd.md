@@ -1,6 +1,6 @@
 ---
 kairos-owned: true
-kairos-version: 3.9.1
+kairos-version: 5.0.0
 task: Kairos PRD
 responsavel: "@kairos"
 responsavel_type: agent
@@ -26,6 +26,34 @@ Checklist:
 # *prd — Criação e Atualização do Product Requirements Document
 
 `docs/scope.md` é o escopo desta instância do Kairos — descreve os squads, objetivos e restrições específicos deste projeto. Esta task é a única responsável por criar e atualizar esse documento.
+
+---
+
+## Contrato de Escrita
+
+`*prd` cria ou atualiza apenas `docs/scope.md`, que é o PRD/escopo da
+instância/projeto.
+
+Não confundir:
+
+- `docs/scope.md` — escopo da instância/projeto, user-owned por default-deny;
+- `.kairos-core/docs/scope.md` — documentação do escopo do framework Kairos,
+  framework-owned e fora do escopo desta task.
+
+Antes de escrever:
+
+1. aplicar o manifesto e a boundary policy do runtime ativo;
+2. confirmar que `docs/scope.md` não é `owned_file` nem `owned_section` do
+   framework;
+3. nunca alterar `.kairos-core/docs/scope.md`;
+4. se houver conflito ou ambiguidade entre escopo de instância e escopo do
+   framework, parar e pedir confirmação.
+
+Esta task é runtime-neutral. O executor é o runtime Kairos ativo; não assumir
+Claude Code ou Codex como executor universal.
+
+`docs/scope.md` permanece sem frontmatter; ownership vem do manifesto/default-deny,
+não de metadado local no arquivo.
 
 ---
 

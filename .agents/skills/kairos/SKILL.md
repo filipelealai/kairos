@@ -86,6 +86,7 @@ Escrita controlada em validação na Fase 4D:
 
 - `*new-story`
 - `*new-epic`
+- `*prd`
 
-Comandos de release, push, versionamento, implementação, PRD e squads exigem
-revisão explícita antes de serem tratados como suportados no runtime Codex.
+Comandos de release, push, versionamento, implementação e squads exigem revisão
+explícita antes de serem tratados como suportados no runtime Codex.
