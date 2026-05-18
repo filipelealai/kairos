@@ -244,7 +244,7 @@ owned_files:
   layer: L2
   runtime: codex
   role: source
-  sha256: 8f27744b0f1b0ff78f93a93fcf6bb927707065840613a801158c021327f6b37f
+  sha256: 1eb5bf23d1c4f0ac2f04ddb85217d0dcc129f738307fb2f60b2833e3ad83d9f2
 - path: .kairos-core/runtimes/codex/templates/hooks.json
   layer: L2
   runtime: codex
@@ -255,7 +255,7 @@ owned_files:
   runtime: codex
   role: materialized_target
   generated_from: .kairos-core/runtimes/codex/templates/SKILL.md
-  sha256: 8f27744b0f1b0ff78f93a93fcf6bb927707065840613a801158c021327f6b37f
+  sha256: 1eb5bf23d1c4f0ac2f04ddb85217d0dcc129f738307fb2f60b2833e3ad83d9f2
 - path: .codex/hooks.json
   layer: L2
   runtime: codex
@@ -353,7 +353,7 @@ owned_files:
   layer: L3
   runtime: codex
   role: beta_plan
-  sha256: 1b91f833fe6cd7cd02baf41cab152b2ce9ad46f95edf17e8801ab9af1943c299
+  sha256: e63ca6e42b7478152527c112109a03c09731caeed81e25448095affab21aa706
 sync_files:
 - path: README.md
   layer: L3

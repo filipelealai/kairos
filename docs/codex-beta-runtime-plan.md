@@ -710,6 +710,19 @@ Resultado do reteste de `*prd` CREATE:
 - O divider `---` separou corretamente o bloco de greeting/header do corpo, sem
   duplicar assinatura no header.
 
+Resultado do teste inicial de `*prd` UPDATE:
+
+- Worktree: `/tmp/kairos-codex-prd-retest`, branch `codex-beta-prd-retest`.
+- JSONL: `/home/filipe_leal/.codex/sessions/2026/05/18/rollout-2026-05-18T20-36-42-019e3d72-ed4a-7911-8fac-76bb7bf8bdcc.jsonl`.
+- Falhou antes da escrita: a proposta substantiva do Kairos saiu em
+  commentary/progress, que o Codex exibe colapsado, enquanto a resposta final
+  visível ficou apenas com a assinatura.
+- Correção aplicada no runtime Codex: respostas Kairos substantivas, incluindo
+  greeting, proposta, pergunta de confirmação, relatório, veredito e assinatura,
+  devem sair na resposta final visível. Commentary/progress updates podem
+  existir, mas nunca substituem a resposta Kairos final.
+- `*prd` UPDATE segue pendente de reteste após essa correção.
+
 ## Fase 5: Squads no Codex
 
 Squads ficam depois da paridade das tasks do `@kairos`, porque dependem de
