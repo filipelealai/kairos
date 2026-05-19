@@ -737,6 +737,21 @@ Resultado do segundo teste de `*prd` UPDATE:
 - O conteúdo escrito no teste foi coerente e limitado a `docs/scope.md`, mas o
   protocolo interativo ainda precisa de reteste.
 
+Resultado do reteste final de `*prd` UPDATE:
+
+- Worktree: `/tmp/kairos-codex-prd-retest`, branch `codex-beta-prd-retest`.
+- JSONL: `/home/filipe_leal/.codex/sessions/2026/05/18/rollout-2026-05-18T20-54-06-019e3d82-da3d-7993-ad31-5e297d9cfa11.jsonl`.
+- A primeira resposta visível trouxe greeting/header Kairos, proposta concreta e
+  pergunta de confirmação antes de qualquer escrita.
+- Após a confirmação posterior do usuário, o runtime aplicou a escrita somente em
+  `docs/scope.md`.
+- O PRD de instância foi atualizado de `1.1` para `1.2`, registrando o reteste
+  do modo UPDATE e o critério de confirmação visível.
+- Não foram criados nem alterados `docs/epics/`, `docs/stories/`, `squads/` ou
+  arquivos de framework.
+- Veredito: `*prd` CREATE e UPDATE passam como escrita controlada no runtime
+  Codex para a Fase 4D.
+
 ## Fase 5: Squads no Codex
 
 Squads ficam depois da paridade das tasks do `@kairos`, porque dependem de
